@@ -1,0 +1,10 @@
+<html>
+    <head>
+        <title>Assembly.org</title>
+    </head>
+
+    <body>
+        <div tal:replace="structure view/render">
+        </div>
+    </body>
+</html>

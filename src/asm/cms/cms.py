@@ -5,6 +5,7 @@ import grok
 import megrok.pagelet
 import zope.interface
 import asm.cms.page
+import asm.cms.interfaces
 
 
 class CMS(grok.Application, asm.cms.page.Page):
@@ -13,5 +14,6 @@ class CMS(grok.Application, asm.cms.page.Page):
 
 class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
+    grok.layer(asm.cms.interfaces.ICMSSkin)
 
     megrok.pagelet.template('templates/layout.pt')

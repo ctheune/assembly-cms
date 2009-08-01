@@ -14,4 +14,6 @@
 
   <include package=".generations" />
 
+  <browser:defaultSkin name="Basic" />
+
 </configure>

@@ -7,4 +7,5 @@ import zope.schema
 
 class IPage(zope.interface.Interface):
 
-    body = zope.schema.Text(title=u'Content')
+    __name__ = zope.schema.TextLine(title=u'Name')
+    content = zope.schema.Text(title=u'Content')

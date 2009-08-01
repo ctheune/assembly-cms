@@ -19,7 +19,6 @@ CMS
     -> page (xhtml), folder
     -> asset (file, image, media)
     -> micro-application
-
     - select additional layouts for an object from skin
 
 - Get multi-language right
@@ -38,6 +37,8 @@ CMS
     - link checker
     - search
     - search folders
+
+- import content from plone and linguaplone
 
 Management
 

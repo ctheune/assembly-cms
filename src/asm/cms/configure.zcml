@@ -4,6 +4,11 @@
   i18n_domain="asm.cms">
 
   <include package="grok" />
+
+  <include package="zope.mimetype" file="meta.zcml"/>
+  <include package="zope.mimetype" />
+
+
   <includeDependencies package="." />
   <grok:grok package="." />
 

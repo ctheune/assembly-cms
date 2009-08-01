@@ -1,0 +1,11 @@
+<html>
+    <head>
+        <title>CMS</title>
+    </head>
+
+    <body>
+        <div tal:replace="structure view/render">
+        </div>
+    </body>
+</html>
+

@@ -20,7 +20,8 @@ CMS
     -> asset (file, image, media)
     -> micro-application
     - select additional layouts for an object from skin
-
+- Simple security
+- Simple publication workflow/copy editing
 - Get multi-language right
 - Very simple editing UI
     - name of page

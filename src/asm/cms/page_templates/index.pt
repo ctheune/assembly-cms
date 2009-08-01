@@ -1,1 +1,1 @@
-asdf
+<tal:block tal:replace="structure context/content"/>

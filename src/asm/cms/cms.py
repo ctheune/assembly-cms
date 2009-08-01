@@ -14,4 +14,4 @@ class CMS(grok.Application, asm.cms.page.Page):
 class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
 
-    megrok.pagelet.template('templates/cms-owrap.pt')
+    megrok.pagelet.template('templates/layout.pt')

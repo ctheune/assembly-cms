@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>CMS</title>
+    </head>
+
+    <body>
+        <div tal:replace="structure view/render">
+        </div>
+
+        <fieldset>
+            <!-- XXX viewlets -->
+            <a href="edit">Edit</a>
+            <a href=".">View</a>
+            <a href="addpage">Page</a>
+        </fieldset>
+
+        <fieldset>
+            <!-- XXX viewlets -->
+            <legend>Navigation</legend>
+
+            <ul>
+                <li tal:repeat="page context/values">
+                    <a tal:attributes="href python:view.url(page)"
+                        tal:content="page/__name__"></a>
+                    </li>
+            </ul>
+        </fieldset>
+    </body>
+</html>

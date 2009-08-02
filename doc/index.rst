@@ -11,13 +11,17 @@ However, webcrew's (and the CMS editors') experience hasn't been free from
 negative experiences:
 
 - Upgrading Plone is a tedious effort and thus has not happened.
+
 - Plone's rich environment is overly complex for trying to add small features
   to the website in an agile matter.
+
 - Archiving required us to keep a copy of a full Zope/Plone installation
   running, consuming memory on the servers and requiring separate
   administrative attention.
+
 - Managing content in multiple languages has had annoying bugs hindering
   editors of updating content.
+
 - Plone's UI tended to be overly complex for editors "just trying to change a
   sentence".
 
@@ -72,6 +76,7 @@ Editing
 - Most simple security: logged in or not, define principals in ZCML/buildout for now
   - do user-management based on SSO later
 - Simple publication workflow (working copy editing?)
+  -> preview of things currently in working copy
 
 CMS plugins
 -----------
@@ -80,8 +85,8 @@ CMS plugins
 - Smart folders/saved searches as content?
 - Search
 - Import content from Plone/LinguaPlone. Import archived content?
-- Banners editable by content editors
-- Non-navigational pages (like for the site guide)
+- Banner rotation system, editable by content authors
+- Site guide
 
 Retail plugins
 --------------
@@ -89,9 +94,12 @@ Retail plugins
 - Custom skins
   - multiple skin variants: mobile, regular
 - News listing
-- Schedule
+- Schedule (micro application)
   - ical export
 - Portlets
+  - news
+  - upcoming events
+  - forums (latest posts)
 - Search
 - Party counter
 

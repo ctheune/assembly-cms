@@ -4,11 +4,11 @@
 import grok
 import megrok.pagelet
 import zope.interface
-import asm.cms.page
+import asm.cms.location
 import asm.cms.interfaces
 
 
-class CMS(grok.Application, asm.cms.page.Page):
+class CMS(grok.Application, asm.cms.location.Location):
     pass
 
 

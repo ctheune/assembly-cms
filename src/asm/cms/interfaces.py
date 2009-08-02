@@ -6,9 +6,19 @@ import zope.schema
 import grok
 
 
-class IPage(zope.interface.Interface):
+class ILocation(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(title=u'Name')
+    sublocations = zope.interface.Attribute('All locations below this one.')
+
+
+class IVariation(zope.interface.Interface):
+
+    parameters = zope.schema.TextLine(title=u'Variation parameters')
+
+
+class IPage(zope.interface.Interface):
+
     content = zope.schema.Text(title=u'Content')
 
 

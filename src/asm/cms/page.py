@@ -9,27 +9,24 @@ import zope.interface
 import zope.html.widget
 
 
-class Page(grok.Container):
+class Page(asm.cms.location.Variation):
 
     zope.interface.implements(asm.cms.interfaces.IPage)
 
     content = u''
 
 
-class Index(megrok.pagelet.Pagelet):
-    pass
+class RetailIndex(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.name('index')
+    grok.template('index')
 
 
-class Edit(asm.cms.form.EditForm):
+class CMSIndex(grok.EditForm):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.name('index')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
     form_fields['content'].custom_widget = zope.html.widget.FckeditorWidget
-
-
-class AddPage(asm.cms.form.AddForm):
-
-    form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
-    factory = Page
-
-    def chooseName(self, obj):
-        return obj.__name__

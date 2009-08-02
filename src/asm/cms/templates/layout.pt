@@ -8,18 +8,30 @@
         </div>
 
         <fieldset>
-            <!-- XXX viewlets -->
-            <a href="edit">Edit</a>
-            <a href=".">View</a>
-            <a href="addpage">Page</a>
+            <legend>Variations</legend>
+
+            <form action="addvariation">
+                <label>Add: <input type="text" name="parameters" /></label>
+            </form>
+
+            <ul>
+                <li tal:repeat="variation context/variations">
+                    <a tal:attributes="href python:view.url('selectvariation',
+                        data=dict(parameters=' '.join(variation.parameters)))"
+                        tal:content="variation/parameters">
+                    </a>
+                </li>
+            </ul>
         </fieldset>
 
         <fieldset>
             <!-- XXX viewlets -->
-            <legend>Navigation</legend>
+            <legend>Sub-locations</legend>
+
+            <a href="addlocation">Add</a>
 
             <ul>
-                <li tal:repeat="page context/values">
+                <li tal:repeat="page context/sublocations">
                     <a tal:attributes="href python:view.url(page)"
                         tal:content="page/__name__"></a>
                     </li>

@@ -7,7 +7,6 @@
         <div tal:replace="structure view/render">
         </div>
 
-
         <div>
             <a href="selectvariation?parameters=lang:fi">Finnish</a> | <a
                 href="selectvariation?parameters=lang:en">English</a>

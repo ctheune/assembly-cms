@@ -1,0 +1,2 @@
+<li tal:condition="python:'workflow:draft' in context.parameters"><a href="publish">Publish</a></li>
+<li><a href="revert">Revert draft</a></li>

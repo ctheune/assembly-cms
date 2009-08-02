@@ -15,6 +15,9 @@ class Page(asm.cms.location.Variation):
 
     content = u''
 
+    def copyFrom(self, other):
+        self.content = other.content
+
 
 class RetailIndex(megrok.pagelet.Pagelet):
 
@@ -23,7 +26,7 @@ class RetailIndex(megrok.pagelet.Pagelet):
     grok.template('index')
 
 
-class CMSIndex(grok.EditForm):
+class CMSIndex(asm.cms.form.EditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.name('index')

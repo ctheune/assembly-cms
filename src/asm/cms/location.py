@@ -95,7 +95,22 @@ def select_cms_variation(request):
 
 class Actions(grok.ViewletManager):
     grok.name('actions')
-    grok.context(Variation)
+    grok.context(zope.interface.Interface)
+
+
+class Variations(grok.ViewletManager):
+    grok.name('variations')
+    grok.context(zope.interface.Interface)
+
+
+class LocationVariations(grok.Viewlet):
+    grok.viewletmanager(Variations)
+    grok.context(asm.cms.interfaces.ILocation)
+
+
+class VariationVariations(grok.Viewlet):
+    grok.viewletmanager(Variations)
+    grok.context(asm.cms.interfaces.IVariation)
 
 
 @grok.adapter(Variation, grok.IBrowserRequest)
@@ -145,10 +160,21 @@ class RootTraverse(grok.Traverser):
         return obj
 
 
-class LocationIndex(megrok.pagelet.Pagelet):
+class RetailLocationIndex(megrok.pagelet.Pagelet):
 
+    grok.layer(asm.cms.interfaces.IRetailSkin)
     grok.context(asm.cms.interfaces.ILocation)
     grok.name('index')
 
     def render(self):
         return 'This page is not available.'
+
+
+class CMSLocationIndex(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.context(asm.cms.interfaces.ILocation)
+    grok.name('index')
+
+    def render(self):
+        return 'This page is not available with the currently selected variation.'

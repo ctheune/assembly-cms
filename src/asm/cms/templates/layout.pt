@@ -2,51 +2,47 @@
     <head>
         <title>CMS</title>
         <style>
-            li.selected {font-weight:bold;}
+            .selected {font-weight:bold;}
+            #cms-ui { width: 200px; float:left;
+                      padding-right:1em; margin-right: 1em;}
+
+            #content {float:left;}
         </style>
     </head>
 
-
     <body>
 
-        <div tal:replace="structure context/@@messages"/>
+        <div id="cms-ui">
+            <fieldset>
+                <legend>Navigation</legend>
 
-        <div tal:replace="structure view/render">
+                <tal:block replace="structure context/@@navtree"/>
+            </fieldset>
+
+            <fieldset>
+                <legend>Actions</legend>
+
+                <ul>
+                    <li><a href="addlocation">Add sub-page</a></li>
+                    <tal:block replace="structure provider:actions"/>
+                </ul>
+            </fieldset>
+
+            <fieldset>
+                <legend>Variations</legend>
+
+                <ul>
+                    <tal:block replace="structure provider:variations"/>
+                </ul>
+            </fieldset>
+
         </div>
 
-        <fieldset>
-            <legend>Actions</legend>
+        <div id="content">
+            <div tal:replace="structure context/@@messages"></div>
 
-            <ul>
-                <tal:block replace="structure provider:actions"/>
-            </ul>
-        </fieldset>
+            <tal:block replace="structure view/render"></tal:block>
+        </div>
 
-        <fieldset>
-            <legend>Variations</legend>
-
-            <ul>
-                <li tal:repeat="variation context/__parent__/variations"
-                    tal:attributes="class python:variation is context and 'selected' or ' '">
-                    <a tal:attributes="href python:view.url('selectvariation',
-                        data=dict(parameters=' '.join(variation.parameters)))"
-                        tal:content="python:' '.join(variation.parameters)">
-                    </a>
-                </li>
-            </ul>
-        </fieldset>
-
-        <fieldset>
-            <legend>Sub-locations</legend>
-
-            <a href="addlocation">Add</a>
-
-            <ul>
-                <li tal:repeat="page context/__parent__/sublocations">
-                    <a tal:attributes="href python:view.url(page)"
-                        tal:content="page/__name__"></a>
-                    </li>
-            </ul>
-        </fieldset>
     </body>
 </html>

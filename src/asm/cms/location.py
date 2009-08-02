@@ -6,6 +6,7 @@ import zope.interface
 import asm.cms.interfaces
 import asm.cms.form
 import megrok.pagelet
+import BTrees.OOBTree
 
 
 class Location(grok.Container):
@@ -26,19 +27,34 @@ class Location(grok.Container):
 
     def getVariation(self, parameters):
         for var in self.variations:
-            if parameters == var.parameters:
+            if set(parameters) == set(var.parameters):
                 return var
         raise KeyError(parameters)
+
+    def addVariation(self, parameters, variation=None):
+        if variation is None:
+            variation = self.factory()
+        variation.parameters.update(parameters)
+        self['-'.join(parameters)] = variation
+        return variation
+
+    @property
+    def factory(self):
+        return asm.cms.page.Page
 
 
 class Variation(grok.Model):
 
     zope.interface.implements(asm.cms.interfaces.IVariation)
 
+    def __init__(self):
+        super(Variation, self).__init__()
+        self.parameters = BTrees.OOBTree.OOTreeSet()
+
 
 class AddLocation(asm.cms.form.AddForm):
 
-    grok.context(asm.cms.interfaces.ILocation)
+    grok.context(asm.cms.interfaces.IVariation)
 
     form_fields = grok.AutoFields(asm.cms.interfaces.ILocation)
     factory = Location
@@ -46,42 +62,17 @@ class AddLocation(asm.cms.form.AddForm):
     def chooseName(self, obj):
         return obj.__name__
 
-
-class AddVariation(grok.View):
-
-    grok.context(asm.cms.interfaces.ILocation)
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-
-    def update(self, parameters):
-        page = asm.cms.page.Page()
-        page.parameters = set(parameters.split())
-        self.context[parameters] = page
-
-        session = zope.session.interfaces.ISession(self.request)
-        session['asm.cms']['variation'] = parameters
-
-    def render(self):
-        self.redirect(self.url(self.context))
+    def add(self, obj):
+        name = self.chooseName(obj)
+        self.context.__parent__[name] = obj
+        self.target = obj
 
 
-class Index(megrok.pagelet.Pagelet):
-
-    grok.context(asm.cms.interfaces.ILocation)
-
-    def __init__(self, context, request):
-        super(Index, self).__init__(context, request)
-        session = zope.session.interfaces.ISession(self.request)
-
-        try:
-            self.variation = context.getVariation(session['asm.cms']['variation'])
-        except KeyError:
-            self.variation = None
-
-    def __call__(self):
-        if self.variation:
-            view = zope.component.getMultiAdapter((self.variation, self.request), name='index')
-            self.render = view.__call__
-        return super(Index, self).__call__()
+@grok.subscribe(asm.cms.interfaces.ILocation, grok.IObjectAddedEvent)
+def add_initial_variation(location, event):
+    variation = location.factory()
+    zope.event.notify(asm.cms.interfaces.InitialVariationCreated(variation))
+    location.addVariation(variation.parameters, variation)
 
 
 class SelectVariation(grok.View):
@@ -94,3 +85,70 @@ class SelectVariation(grok.View):
 
     def render(self):
         self.redirect(self.url(self.context))
+
+
+@zope.component.adapter(asm.cms.interfaces.ICMSSkin)
+def select_cms_variation(request):
+    session = zope.session.interfaces.ISession(request)
+    return session['asm.cms'].get('variation', [])
+
+
+class Actions(grok.ViewletManager):
+    grok.name('actions')
+    grok.context(Variation)
+
+
+@grok.adapter(Variation, grok.IBrowserRequest)
+@grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
+def variation_url(variation, request):
+    return zope.component.getMultiAdapter(
+        (variation.__parent__, request),
+        zope.traversing.browser.interfaces.IAbsoluteURL)
+
+
+class VariationTraverse(grok.Traverser):
+
+    grok.context(asm.cms.interfaces.IVariation)
+
+    def traverse(self, name):
+        obj = self.context.__parent__.get(name)
+        if not asm.cms.interfaces.ILocation.providedBy(obj):
+            return
+        arguments = set()
+        for args in zope.component.subscribers(
+            (self.request,), asm.cms.interfaces.IVariationSelector):
+            arguments.update(args)
+        try:
+            obj = obj.getVariation(arguments)
+        except KeyError:
+            pass
+        return obj
+
+
+class RootTraverse(grok.Traverser):
+
+    grok.context(zope.app.folder.interfaces.IRootFolder)
+    grok.layer(grok.IBrowserRequest)
+
+    def traverse(self, name):
+        obj = self.context.get(name)
+        if not asm.cms.interfaces.ILocation.providedBy(obj):
+            return
+        arguments = set()
+        for args in zope.component.subscribers(
+            (self.request,), asm.cms.interfaces.IVariationSelector):
+            arguments.update(args)
+        try:
+            obj = obj.getVariation(arguments)
+        except KeyError:
+            pass
+        return obj
+
+
+class LocationIndex(megrok.pagelet.Pagelet):
+
+    grok.context(asm.cms.interfaces.ILocation)
+    grok.name('index')
+
+    def render(self):
+        return 'This page is not available.'

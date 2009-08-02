@@ -28,11 +28,12 @@ class BasicAddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
 
     @grok.action("Add")
     def createAndAdd(self, **data):
+        self.target = self.context
         obj = self.create(**data)
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.applyData(obj, **data)
         self.add(obj)
-        self.redirect(self.url(self.context))
+        self.redirect(self.url(self.target))
 
     def add(self, obj):
         name = self.chooseName(obj)

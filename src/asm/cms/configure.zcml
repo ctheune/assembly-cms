@@ -8,12 +8,17 @@
   <include package="zope.mimetype" file="meta.zcml"/>
   <include package="zope.mimetype" />
 
-
   <includeDependencies package="." />
   <grok:grok package="." />
 
+  <include package="asm.workflow" />
   <include package=".generations" />
 
   <browser:defaultSkin name="Basic" />
+
+  <subscriber
+    factory=".location.select_cms_variation"
+    provides="asm.cms.interfaces.IVariationSelector"
+    />
 
 </configure>

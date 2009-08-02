@@ -1,37 +1,48 @@
 <html>
     <head>
         <title>CMS</title>
+        <style>
+            li.selected {font-weight:bold;}
+        </style>
     </head>
 
+
     <body>
+
+        <div tal:replace="structure context/@@messages"/>
+
         <div tal:replace="structure view/render">
         </div>
 
         <fieldset>
-            <legend>Variations</legend>
-
-            <form action="addvariation">
-                <label>Add: <input type="text" name="parameters" /></label>
-            </form>
+            <legend>Actions</legend>
 
             <ul>
-                <li tal:repeat="variation context/variations">
+                <tal:block replace="structure provider:actions"/>
+            </ul>
+        </fieldset>
+
+        <fieldset>
+            <legend>Variations</legend>
+
+            <ul>
+                <li tal:repeat="variation context/__parent__/variations"
+                    tal:attributes="class python:variation is context and 'selected' or ' '">
                     <a tal:attributes="href python:view.url('selectvariation',
                         data=dict(parameters=' '.join(variation.parameters)))"
-                        tal:content="variation/parameters">
+                        tal:content="python:' '.join(variation.parameters)">
                     </a>
                 </li>
             </ul>
         </fieldset>
 
         <fieldset>
-            <!-- XXX viewlets -->
             <legend>Sub-locations</legend>
 
             <a href="addlocation">Add</a>
 
             <ul>
-                <li tal:repeat="page context/sublocations">
+                <li tal:repeat="page context/__parent__/sublocations">
                     <a tal:attributes="href python:view.url(page)"
                         tal:content="page/__name__"></a>
                     </li>

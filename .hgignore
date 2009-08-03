@@ -5,3 +5,4 @@ parts
 bin
 develop-eggs
 egg-info
+eggs

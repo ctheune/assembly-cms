@@ -1,4 +1,4 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
 import asm.cms.interfaces

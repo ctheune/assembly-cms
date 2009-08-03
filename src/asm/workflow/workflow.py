@@ -31,16 +31,19 @@ class Publish(grok.View):
     grok.context(asm.cms.interfaces.IVariation)
 
     def update(self):
-        parameters = set(self.context.parameters)
-        parameters.remove(STATE_DRAFT)
-        parameters.add(STATE_PUBLIC)
+        draft = self.context
+        location = draft.__parent__
 
-        location = self.context.__parent__
+        public = set(draft.parameters)
+        public.remove(STATE_DRAFT)
+        public.add(STATE_PUBLIC)
+
         try:
-            variation = location.getVariation(parameters)
+            public = location.getVariation(public)
         except KeyError:
-            variation = location.addVariation(parameters)
-        variation.copyFrom(self.context)
+            public = location.addVariation(public)
+
+        public.copyFrom(draft)
         self.flash(u"Published draft.")
 
     def render(self):

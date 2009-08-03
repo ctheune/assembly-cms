@@ -13,13 +13,16 @@ import zope.traversing.api
 class Form(megrok.pagelet.component.FormPageletMixin, grok.Form):
 
     grok.baseclass()
+    grok.name('index')
+    grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     extra_content = None
 
 
-class BasicAddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
+class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
 
     grok.baseclass()
+    grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     extra_content = None
 
@@ -52,16 +55,18 @@ class BasicAddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
 
 
 
-class BasicEditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
+class EditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
 
     grok.baseclass()
+    grok.name('index')
+    grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     extra_content = None
     redirect_to_parent = False
 
-    @grok.action("Apply")
+    @grok.action("Save")
     def handle_edit_action(self, **data):
-        super(BasicEditForm, self).handle_edit_action.success(data)
+        super(EditForm, self).handle_edit_action.success(data)
         if not self.errors:
             self.flash(self.status)
             if self.redirect_to_parent:
@@ -69,7 +74,3 @@ class BasicEditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
             else:
                 target = self.context
             self.redirect(self.url(target))
-
-
-AddForm = BasicAddForm
-EditForm = BasicEditForm

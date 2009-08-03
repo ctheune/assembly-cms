@@ -61,7 +61,7 @@ class Variation(grok.Model):
 
 class AddLocation(asm.cms.form.AddForm):
 
-    grok.context(asm.cms.interfaces.IVariation)
+    grok.context(asm.cms.interfaces.ILocation)
 
     form_fields = grok.AutoFields(asm.cms.interfaces.ILocation)
     form_fields['type'].custom_widget = (
@@ -75,7 +75,7 @@ class AddLocation(asm.cms.form.AddForm):
 
     def add(self, obj):
         name = self.chooseName(obj)
-        self.context.__parent__[name] = obj
+        self.context[name] = obj
         self.target = obj
 
 
@@ -86,27 +86,46 @@ def add_initial_variation(location, event):
     location.addVariation(variation.parameters, variation)
 
 
-class SelectVariation(grok.View):
+class DeleteLocation(grok.View):
 
-    grok.context(zope.interface.Interface)
+    grok.context(asm.cms.interfaces.ILocation)
 
-    def update(self, parameters):
-        session = zope.session.interfaces.ISession(self.request)
-        session['asm.cms']['variation'] = set(parameters.split(' '))
+    def update(self):
+        location = self.context
+        self.target = location.__parent__
+        del location.__parent__[location.__name__]
 
     def render(self):
-        self.redirect(self.url(self.context))
+        self.redirect(self.url(self.target))
 
 
-@zope.component.adapter(asm.cms.interfaces.ICMSSkin)
-def select_cms_variation(request):
-    session = zope.session.interfaces.ISession(request)
-    return session['asm.cms'].get('variation', [])
+class DeleteVariation(grok.View):
+
+    grok.context(Variation)
+
+    def update(self):
+        location = self.context.__parent__
+        self.target = location
+        del location[self.context.__name__]
+
+    def render(self):
+        self.redirect(self.url(self.target))
 
 
 class Actions(grok.ViewletManager):
     grok.name('actions')
     grok.context(zope.interface.Interface)
+
+
+class VariationActions(grok.Viewlet):
+
+    grok.viewletmanager(Actions)
+    grok.context(Variation)
+
+class LocationActions(grok.Viewlet):
+
+    grok.viewletmanager(Actions)
+    grok.context(Location)
 
 
 class Variations(grok.ViewletManager):
@@ -120,7 +139,7 @@ class LocationVariations(grok.Viewlet):
     grok.template('variations')
 
 
-@grok.adapter(Variation, grok.IBrowserRequest)
+@grok.adapter(Variation, asm.cms.interfaces.IRetailSkin)
 @grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
 def variation_url(variation, request):
     return zope.component.getMultiAdapter(
@@ -131,6 +150,7 @@ def variation_url(variation, request):
 class LocationTraverse(grok.Traverser):
 
     grok.context(asm.cms.interfaces.ILocation)
+    grok.layer(asm.cms.interfaces.IRetailSkin)
 
     def traverse(self, name):
         location = self.context
@@ -150,6 +170,7 @@ class LocationTraverse(grok.Traverser):
 class VariationTraverse(grok.Traverser):
 
     grok.context(asm.cms.interfaces.IVariation)
+    grok.layer(asm.cms.interfaces.IRetailSkin)
 
     def traverse(self, name):
         location = self.context.__parent__
@@ -169,7 +190,7 @@ class VariationTraverse(grok.Traverser):
 class RootTraverse(grok.Traverser):
 
     grok.context(zope.app.folder.interfaces.IRootFolder)
-    grok.layer(grok.IBrowserRequest)
+    grok.layer(asm.cms.interfaces.IRetailSkin)
 
     def traverse(self, name):
         location = self.context.get(name)
@@ -192,6 +213,7 @@ class RetailLocationIndex(megrok.pagelet.Pagelet):
     grok.name('index')
 
     def render(self):
+        self.request.response.setStatus(404)
         return 'This page is not available.'
 
 
@@ -200,7 +222,4 @@ class CMSLocationIndex(megrok.pagelet.Pagelet):
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.context(asm.cms.interfaces.ILocation)
     grok.name('index')
-
-    def render(self):
-        return ('This page is not available with the currently selected variation of %s' % 
-                zope.session.interfaces.ISession(self.request)['asm.cms'].get('variation'))
+    grok.template('index')

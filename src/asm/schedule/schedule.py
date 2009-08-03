@@ -1,48 +1,23 @@
 import BTrees
 import StringIO
-import asm.cms.form
-import asm.cms.interfaces
-import asm.cms.location
+import asm.cms
 import asm.schedule.interfaces
+import asm.workflow.interfaces
 import csv
 import datetime
 import grok
-import megrok.pagelet
 import persistent
 import time
 import zope.interface
 
-@grok.subscribe(asm.workflow.interfaces.PublishedEvent)
-def publish_schedule(event):
-    if not isinstance(event.draft, Schedule):
-        return
-    location = event.draft.__parent__
-    parameters = set(x for x in event.public.parameters
-                     if not x.startswith('lang:'))
-    for lang in ['fi', 'en']:
-        p = parameters.copy()
-        p.add('lang:%s' % lang)
-        try:
-            public = location.getVariation(p)
-        except KeyError:
-            publish = True
-        else:
-            publish = (public._workflow_publication_date !=
-                       event.public._workflow_publication_date)
-        if publish:
-            p.remove('workflow:public')
-            p.add('workflow:draft')
-            asm.workflow.workflow.publish(location.getVariation(p),
-                                 event.public._workflow_publication_date)
 
+class Schedule(asm.cms.Variation):
+    """A schedule maintains a list of events and offers a retail UI that
+    allows users to efficiently browse the events by filtering and selecting
+    specific days and mark past, current and future events visually.
+    """
 
-def extract_date(date):
-    return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
-
-
-class Schedule(asm.cms.location.Variation):
-
-    zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
+    zope.interface.classProvides(asm.cms.IVariationFactory)
 
     def __init__(self):
         super(Schedule, self).__init__()
@@ -54,17 +29,26 @@ class Schedule(asm.cms.location.Variation):
             self.events[key] = value
 
 
-class Edit(asm.cms.form.Form):
+class Event(persistent.Persistent):
+    """A single event - mostly a data bag."""
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
+
+class Edit(asm.cms.Form):
+    """Editing a schedule means uploading a CSV file (as produced by Jussi)
+    and updating both language variations from that file.
+
+    It doesn't matter which variation we upload to: we simply put the Finnish
+    items into the Finnish variation and work with the English variation
+    accordingly.
+
+    """
 
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
 
     @grok.action(u'Upload')
     def upload(self, data):
         location = self.context.__parent__
-        
+
         parameters = set(self.context.parameters)
         for p in list(parameters):
             if p.startswith('lang:'):
@@ -88,37 +72,52 @@ class Edit(asm.cms.form.Form):
         for row in reader:
             if row['public'] != 'Yes':
                 continue
-            event_fi = Event()
-            event_fi.start = extract_date(row['start_date'])
-            event_fi.end = extract_date(row['finish_date'])
-            event_fi.major = row['major'] == 'Yes'
-            event_fi.class_ = row['class_'].decode('UTF-8')
-            event_fi.url = row['url']
-            event_fi.title = row['title_fi'].decode('UTF-8')
-            event_fi.location = row['location_fi'].decode('UTF-8')
-            event_fi.location_url = row['location_url']
-            finnish.events[int(row['id'])] = event_fi
-            
-            event_en = Event()
-            event_en.start = extract_date(row['start_date'])
-            event_en.end = extract_date(row['finish_date'])
-            event_en.major = row['major'] == 'Yes'
-            event_en.class_ = row['class_'].decode('UTF-8')
-            event_en.url = row['url']
-            event_en.title = row['title_en'].decode('UTF-8')
-            event_en.location = row['location_en'].decode('UTF-8')
-            event_en.location_url = row['location_url']
-            english.events[int(row['id'])] = event_en
+            for schedule, lang in [(finnish, 'fi',) (english, 'en')]:
+                event = Event()
+                event.start = extract_date(row['start_date'])
+                event.end = extract_date(row['finish_date'])
+                event.major = row['major'] == 'Yes'
+                event.class_ = row['class_'].decode('UTF-8')
+                event.url = row['url']
+                event.title = row['title_%s' % lang].decode('UTF-8')
+                event.location = row['location_%s' % lang].decode('UTF-8')
+                event.location_url = row['location_url']
+                schedule.events[int(row['id'])] = event
 
-        self.flash(u'Schedule imported')
+        self.flash(u'Your schedule was imported successfully.')
 
 
-class Event(persistent.Persistent):
-    pass
+@grok.subscribe(asm.workflow.interfaces.PublishedEvent)
+def publish_schedule(event):
+    # This event listener ensures that the schedule is always published in
+    # English and Finnish synchronously.
+    if not isinstance(event.draft, Schedule):
+        return
+    location = event.draft.__parent__
+    parameters = event.public.parameters.remove('lang:*')
+    for lang in ['fi', 'en']:
+        lang_p = parameters.add('lang:%s' % lang).replace('workflow:draft',
+                                                          'workflow:public')
+
+        try:
+            public = location.getVariation(p.replace(')
+        except KeyError:
+            publish = True
+        else:
+            publish = (public._workflow_publication_date !=
+                       event.public._workflow_publication_date)
+        if publish:
+            p.remove('workflow:public')
+            p.add('workflow:draft')
+            asm.workflow.workflow.publish(location.getVariation(p),
+                                 event.public._workflow_publication_date)
 
 
-class Index(megrok.pagelet.Pagelet):
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+def extract_date(date):
+    return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
+
+
+class Index(asm.cms.Page):
 
     def events(self):
         events = []
@@ -132,10 +131,8 @@ class Index(megrok.pagelet.Pagelet):
         return events
 
     def format_date(self, date):
-        specials = { 1 : 'st', 2 : 'nd', 3 : 'rd', 21: 'st',
-                22: 'nd', 23: 'rd', 31: 'st', }
+        specials = {1 : 'st', 2 : 'nd', 3 : 'rd', 21: 'st',
+                    22: 'nd', 23: 'rd', 31: 'st'}
         day = '%s%s' % (date.day, specials.get(date.day, 'th')) 
         return '%s %s of %s %s' % (date.strftime('%A'), day,
                                    date.strftime('%B'), date.strftime('%Y'))
-
- 

@@ -12,3 +12,8 @@ class Layout(megrok.pagelet.Layout):
     grok.layer(asm.cms.interfaces.IRetailSkin)
 
     megrok.pagelet.template('templates/retail.pt')
+
+
+class Page(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.IRetailSkin)

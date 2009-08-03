@@ -14,6 +14,8 @@ class Asset(asm.cms.location.Variation):
     zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
 
+    content = ''
+
     def copyFrom(self, other):
         self.content = other.content
 

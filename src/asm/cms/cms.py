@@ -9,7 +9,7 @@ import asm.cms.interfaces
 
 
 class CMS(grok.Application, asm.cms.location.Location):
-    pass
+    type = 'page'
 
 
 class Layout(megrok.pagelet.Layout):

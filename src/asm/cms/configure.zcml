@@ -13,6 +13,7 @@
 
   <include package="asm.workflow" />
   <include package="asm.translation" />
+  <include package="asm.contact" />
 
   <include package=".generations" />
 

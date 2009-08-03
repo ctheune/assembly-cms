@@ -25,10 +25,12 @@ class Location(grok.Container):
             if asm.cms.interfaces.IVariation.providedBy(obj):
                 yield obj
 
-    def getVariation(self, parameters):
+    def getVariation(self, parameters, create=False):
         for var in self.variations:
             if set(parameters) == set(var.parameters):
                 return var
+        if create:
+            return self.addVariation(parameters)
         raise KeyError(parameters)
 
     def addVariation(self, parameters, variation=None):
@@ -50,6 +52,9 @@ class Variation(grok.Model):
     def __init__(self):
         super(Variation, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
+
+    def variations(self):
+        return self.__parent__.variations
 
 
 class AddLocation(asm.cms.form.AddForm):
@@ -105,12 +110,8 @@ class Variations(grok.ViewletManager):
 
 class LocationVariations(grok.Viewlet):
     grok.viewletmanager(Variations)
-    grok.context(asm.cms.interfaces.ILocation)
-
-
-class VariationVariations(grok.Viewlet):
-    grok.viewletmanager(Variations)
-    grok.context(asm.cms.interfaces.IVariation)
+    grok.context(zope.interface.Interface)
+    grok.template('variations')
 
 
 @grok.adapter(Variation, grok.IBrowserRequest)
@@ -177,4 +178,5 @@ class CMSLocationIndex(megrok.pagelet.Pagelet):
     grok.name('index')
 
     def render(self):
-        return 'This page is not available with the currently selected variation.'
+        return ('This page is not available with the currently selected variation of %s' % 
+                zope.session.interfaces.ISession(self.request)['asm.cms'].get('variation'))

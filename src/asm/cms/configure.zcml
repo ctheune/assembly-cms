@@ -12,6 +12,8 @@
   <grok:grok package="." />
 
   <include package="asm.workflow" />
+  <include package="asm.translation" />
+
   <include package=".generations" />
 
   <browser:defaultSkin name="Basic" />

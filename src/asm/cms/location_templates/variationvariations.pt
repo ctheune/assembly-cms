@@ -1,7 +1,0 @@
-<li tal:repeat="variation context/__parent__/variations"
-    tal:attributes="class python:variation is context and 'selected' or ' '">
-    <a tal:attributes="href python:view.url('selectvariation',
-        data=dict(parameters=' '.join(variation.parameters)))"
-        tal:content="python:' '.join(variation.parameters)">
-    </a>
-</li>

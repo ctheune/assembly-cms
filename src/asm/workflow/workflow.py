@@ -2,12 +2,33 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
+import datetime
 import grok
 import zope.component
+import zope.event
 import zope.interface
 
 STATE_PUBLIC = 'workflow:public'
 STATE_DRAFT = 'workflow:draft'
+
+
+def publish(draft, publication_date=None):
+    if publication_date is None:
+        publication_date = datetime.datetime.now()
+    location = draft.__parent__
+
+    public = set(draft.parameters)
+    public.remove(STATE_DRAFT)
+    public.add(STATE_PUBLIC)
+
+    try:
+        public = location.getVariation(public)
+    except KeyError:
+        public = location.addVariation(public)
+
+    public.copyFrom(draft)
+    public._workflow_publication_date = publication_date
+    zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
 
 
 @grok.subscribe(asm.cms.interfaces.IInitialVariationCreated)
@@ -31,19 +52,7 @@ class Publish(grok.View):
     grok.context(asm.cms.interfaces.IVariation)
 
     def update(self):
-        draft = self.context
-        location = draft.__parent__
-
-        public = set(draft.parameters)
-        public.remove(STATE_DRAFT)
-        public.add(STATE_PUBLIC)
-
-        try:
-            public = location.getVariation(public)
-        except KeyError:
-            public = location.addVariation(public)
-
-        public.copyFrom(draft)
+        publish(self.context)
         self.flash(u"Published draft.")
 
     def render(self):

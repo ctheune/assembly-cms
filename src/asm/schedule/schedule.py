@@ -12,6 +12,29 @@ import persistent
 import time
 import zope.interface
 
+@grok.subscribe(asm.workflow.interfaces.PublishedEvent)
+def publish_schedule(event):
+    if not isinstance(event.draft, Schedule):
+        return
+    location = event.draft.__parent__
+    parameters = set(x for x in event.public.parameters
+                     if not x.startswith('lang:'))
+    for lang in ['fi', 'en']:
+        p = parameters.copy()
+        p.add('lang:%s' % lang)
+        try:
+            public = location.getVariation(p)
+        except KeyError:
+            publish = True
+        else:
+            publish = (public._workflow_publication_date !=
+                       event.public._workflow_publication_date)
+        if publish:
+            p.remove('workflow:public')
+            p.add('workflow:draft')
+            asm.workflow.workflow.publish(location.getVariation(p),
+                                 event.public._workflow_publication_date)
+
 
 def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
@@ -114,4 +137,5 @@ class Index(megrok.pagelet.Pagelet):
         day = '%s%s' % (date.day, specials.get(date.day, 'th')) 
         return '%s %s of %s %s' % (date.strftime('%A'), day,
                                    date.strftime('%B'), date.strftime('%Y'))
+
  

@@ -26,7 +26,7 @@ def select_retail_variation(request):
 class ITranslation(zope.interface.Interface):
 
     language = zope.schema.Choice(title=u'Language to translate to',
-                                  values=['fi'])
+                                  values=['fi', 'en'])
 
 
 class TranslationMenu(grok.Viewlet):

@@ -2,6 +2,7 @@
     <head>
         <title>CMS</title>
         <style>
+            * { font-family: "Helvetica", "Lucida Sans", Arial, sans-serif; }
             .selected {font-weight:bold;}
             #cms-ui { width: 200px; float:left;
                       padding-right:1em; margin-right: 1em;}
@@ -23,7 +24,6 @@
                 <legend>Actions</legend>
 
                 <ul>
-                    <li><a href="addlocation">Add sub-page</a></li>
                     <tal:block replace="structure provider:actions"/>
                 </ul>
             </fieldset>

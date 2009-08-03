@@ -1,0 +1,10 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="asm.cms">
+
+  <grok:grok package="." />
+
+  <utility component=".contact.Contact" name="contact" />
+
+</configure>

@@ -1,12 +1,13 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import grok
-import zope.interface
-import asm.cms.interfaces
-import asm.cms.form
-import megrok.pagelet
 import BTrees.OOBTree
+import asm.cms.form
+import asm.cms.interfaces
+import grok
+import megrok.pagelet
+import zope.app.form.browser.source
+import zope.interface
 
 
 class Location(grok.Container):
@@ -63,6 +64,10 @@ class AddLocation(asm.cms.form.AddForm):
     grok.context(asm.cms.interfaces.IVariation)
 
     form_fields = grok.AutoFields(asm.cms.interfaces.ILocation)
+    form_fields['type'].custom_widget = (
+        lambda field, request: zope.app.form.browser.source.SourceRadioWidget(
+                field, field.source, request))
+
     factory = Location
 
     def chooseName(self, obj):

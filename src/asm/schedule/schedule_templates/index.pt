@@ -1,5 +1,12 @@
+<p><strong>Select day:</strong><br />
+<tal:block repeat="day view/events">
+<a style="" tal:attributes="href string:#day-${repeat/day/index}" tal:content="python: day['date'].strftime('%A')">Thursday</a>  <tal:block condition="not:repeat/day/end">-</tal:block>
+</tal:block>
+</p>
+
 <tal:block repeat="day view/events">
 
+<a tal:attributes="name string:day-${repeat/day/index}" />
 <h2 tal:content="python:view.format_date(day['date'])"></h2>
 <table>
     <tr tal:repeat="event day/events">

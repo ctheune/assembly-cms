@@ -123,23 +123,42 @@ def variation_url(variation, request):
         zope.traversing.browser.interfaces.IAbsoluteURL)
 
 
-class VariationTraverse(grok.Traverser):
+class LocationTraverse(grok.Traverser):
 
-    grok.context(asm.cms.interfaces.IVariation)
+    grok.context(asm.cms.interfaces.ILocation)
 
     def traverse(self, name):
-        obj = self.context.__parent__.get(name)
-        if not asm.cms.interfaces.ILocation.providedBy(obj):
+        location = self.context
+        sublocation = location.get(name)
+        if not asm.cms.interfaces.ILocation.providedBy(sublocation):
             return
         arguments = set()
         for args in zope.component.subscribers(
             (self.request,), asm.cms.interfaces.IVariationSelector):
             arguments.update(args)
         try:
-            obj = obj.getVariation(arguments)
+            return sublocation.getVariation(arguments)
         except KeyError:
-            pass
-        return obj
+            return sublocation
+
+
+class VariationTraverse(grok.Traverser):
+
+    grok.context(asm.cms.interfaces.IVariation)
+
+    def traverse(self, name):
+        location = self.context.__parent__
+        sublocation = location.get(name)
+        if not asm.cms.interfaces.ILocation.providedBy(sublocation):
+            return
+        arguments = set()
+        for args in zope.component.subscribers(
+            (self.request,), asm.cms.interfaces.IVariationSelector):
+            arguments.update(args)
+        try:
+            return sublocation.getVariation(arguments)
+        except KeyError:
+            return sublocation
 
 
 class RootTraverse(grok.Traverser):
@@ -148,18 +167,17 @@ class RootTraverse(grok.Traverser):
     grok.layer(grok.IBrowserRequest)
 
     def traverse(self, name):
-        obj = self.context.get(name)
-        if not asm.cms.interfaces.ILocation.providedBy(obj):
+        location = self.context.get(name)
+        if not asm.cms.interfaces.ILocation.providedBy(location):
             return
         arguments = set()
         for args in zope.component.subscribers(
             (self.request,), asm.cms.interfaces.IVariationSelector):
             arguments.update(args)
         try:
-            obj = obj.getVariation(arguments)
+            return location.getVariation(arguments)
         except KeyError:
-            pass
-        return obj
+            return location
 
 
 class RetailLocationIndex(megrok.pagelet.Pagelet):

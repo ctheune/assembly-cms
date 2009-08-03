@@ -1,4 +1,4 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
 import grok
@@ -42,7 +42,8 @@ class Location(grok.Container):
 
     @property
     def factory(self):
-        return asm.cms.page.Page
+        return zope.component.getUtility(
+            asm.cms.interfaces.IVariationFactory, name=self.type)
 
 
 class Variation(grok.Model):

@@ -6,7 +6,7 @@ History
 =======
 
 The Assembly website has been run using Plone since fall of 2003. In those
-past 6 years it was run relatively successfully without major outtages.
+past 6 years it was run relatively successfully without major outages.
 However, webcrew's (and the CMS editors') experience hasn't been free from
 negative experiences:
 
@@ -57,8 +57,8 @@ Content model
   UI? How do micro applications fit in? Assets not translated? General
   approach to "multi version/multi aspect content?")
 
-- Very lightweight metadata model: Title, last changed, created, tags
-- Automatically extract metadata for pages: title via <h1>
+- Very lightweight meta-data model: Title, last changed, created, tags
+- Automatically extract meta-data for pages: title via <h1>
 
 
 Layout / Styling
@@ -75,11 +75,11 @@ Editing
 - Show editor + sub-pages side by side
 - Most simple security: logged in or not, define principals in ZCML/buildout for now
   - do user-management based on SSO later
-- Simple publication workflow (working copy editing?)
+- Simple publication work-flow (working copy editing?)
   -> preview of things currently in working copy
 
-CMS plugins
------------
+CMS plug-ins
+------------
 
 - LMS support
 - Smart folders/saved searches as content?

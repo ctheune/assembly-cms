@@ -23,4 +23,7 @@
     provides="asm.cms.interfaces.IVariationSelector"
     />
 
+  <utility component=".page.Page" name="page" />
+  <utility component=".asset.Asset" name="asset" />
+
 </configure>

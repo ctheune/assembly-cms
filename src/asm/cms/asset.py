@@ -1,30 +1,30 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import asm.cms.form
+import asm.cms.interfaces
+import asm.cms.location
 import grok
 import megrok.pagelet
-import asm.cms.interfaces
-import asm.cms.form
 import zope.interface
-import zope.html.widget
 
 
-class Page(asm.cms.location.Variation):
+class Asset(asm.cms.location.Variation):
 
-    zope.interface.implements(asm.cms.interfaces.IPage)
+    zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
-
-    content = u''
 
     def copyFrom(self, other):
         self.content = other.content
 
 
-class RetailIndex(megrok.pagelet.Pagelet):
+class RetailIndex(grok.View):
 
     grok.layer(asm.cms.interfaces.IRetailSkin)
     grok.name('index')
-    grok.template('index')
+
+    def render(self):
+        return self.context.content
 
 
 class CMSIndex(asm.cms.form.EditForm):
@@ -32,5 +32,4 @@ class CMSIndex(asm.cms.form.EditForm):
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.name('index')
 
-    form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
-    form_fields['content'].custom_widget = zope.html.widget.FckeditorWidget
+    form_fields = grok.AutoFields(asm.cms.interfaces.IAsset)

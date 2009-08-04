@@ -7,7 +7,6 @@ import csv
 import datetime
 import grok
 import persistent
-import time
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 

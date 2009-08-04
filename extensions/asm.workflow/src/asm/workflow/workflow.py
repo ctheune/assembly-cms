@@ -6,7 +6,6 @@ import datetime
 import grok
 import zope.component
 import zope.event
-import zope.interface
 
 
 WORKFLOW_PUBLIC = 'workflow:public'

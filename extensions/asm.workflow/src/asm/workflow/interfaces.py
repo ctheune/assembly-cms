@@ -1,6 +1,4 @@
 
-import zope.interface
-
 
 class PublishedEvent(object):
 

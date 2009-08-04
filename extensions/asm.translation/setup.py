@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 
-setup(name='asm.cms',
+setup(name='asm.translation',
       version='0.1dev',
-      description="Assembly Website CMS",
+      description="Multi-lingual content for Assembly CMS",
       author="Webcrew",
       author_email="web@assembly.org",
       url="",

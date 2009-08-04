@@ -9,6 +9,7 @@ import grok
 import persistent
 import time
 import zope.interface
+from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 
 
 class Schedule(asm.cms.Variation):
@@ -93,24 +94,31 @@ def publish_schedule(event):
     # English and Finnish synchronously.
     if not isinstance(event.draft, Schedule):
         return
-    location = event.draft.__parent__
-    parameters = event.public.parameters.remove('lang:*')
-    for lang in ['fi', 'en']:
-        lang_p = parameters.add('lang:%s' % lang).replace('workflow:draft',
-                                                          'workflow:public')
 
+    # We do not know which language the user published because we will be
+    # triggered by publishing the other version too. Thus we have to check
+    # both possible languages and stop an infinite recursion.
+    for lang in ['fi', 'en']:
+        public_p = (self.context.parameters.
+                  replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC).
+                  replace('lang:*', 'lang:%s' % lang))
+
+        # We need to publish the draft of this language again, if: no public
+        # version exists yet, or the publication date is not the one of the
+        # publication that triggered us.
         try:
-            public = location.getVariation(p.replace(')
+            public = self.context.location.getVariation(public)
         except KeyError:
-            publish = True
+            pass
         else:
-            publish = (public._workflow_publication_date !=
-                       event.public._workflow_publication_date)
-        if publish:
-            p.remove('workflow:public')
-            p.add('workflow:draft')
-            asm.workflow.workflow.publish(location.getVariation(p),
-                                 event.public._workflow_publication_date)
+            if (public._workflow_publication_date ==
+                event.public._workflow_publication_date):
+                # The public version is up to date, so we ignore it.
+                continue
+
+        draft = self.context.location.getVariation(
+            public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT))
+        asm.workflow.publish(draft, event.public._workflow_publication_date)
 
 
 def extract_date(date):

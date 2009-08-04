@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2009 Assembly Organizing
 # See also LICENSE.txt
 
+import asm.cms.interfaces
 import grok
 import megrok.pagelet
 import os.path
@@ -13,7 +14,6 @@ import zope.traversing.api
 class Form(megrok.pagelet.component.FormPageletMixin, grok.Form):
 
     grok.baseclass()
-    grok.name('index')
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     extra_content = None
@@ -58,7 +58,6 @@ class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
 class EditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
 
     grok.baseclass()
-    grok.name('index')
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     extra_content = None

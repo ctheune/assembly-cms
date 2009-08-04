@@ -10,4 +10,10 @@
     provides="asm.cms.interfaces.IVariationSelector"
     />
 
+  <utility
+    component=".workflow.select_initial_parameters"
+    provides="asm.cms.IInitialVariationParameters"
+    name="workflow"
+    />
+
 </configure>

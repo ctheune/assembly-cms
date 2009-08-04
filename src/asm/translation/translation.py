@@ -1,19 +1,17 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import asm.cms.form
-import asm.cms.interfaces
+import asm.cms
 import grok
 import zope.interface
 import zope.schema
 
 
-@grok.subscribe(asm.cms.interfaces.IInitialVariationCreated)
-def set_initial_language(event):
-    event.variation.parameters.insert('lang:en')
+def select_initial_language():
+    return set(['lang:en'])
 
 
-@zope.component.adapter(asm.cms.interfaces.IRetailSkin)
+@zope.component.adapter(asm.cms.IRetailSkin)
 def select_retail_variation(request):
     for lang in request.headers.get('Accept-Language', '').split(','):
         lang = lang.split(';')[0]
@@ -25,34 +23,33 @@ def select_retail_variation(request):
 
 class ITranslation(zope.interface.Interface):
 
+    # XXX Turn this static list into a contextual source which will not offer
+    # languages that already exist.
     language = zope.schema.Choice(title=u'Language to translate to',
                                   values=['fi', 'en'])
 
 
 class TranslationMenu(grok.Viewlet):
-    grok.viewletmanager(asm.cms.location.Actions)
-    grok.context(asm.cms.interfaces.IVariation)
+
+    grok.viewletmanager(asm.cms.Actions)
+    grok.context(asm.cms.IVariation)
 
 
-class Translate(asm.cms.form.Form):
+class Translate(asm.cms.Form):
 
-    grok.context(asm.cms.interfaces.IVariation)
+    grok.context(asm.cms.IVariation)
     form_fields = grok.AutoFields(ITranslation)
 
     @grok.action(u'Translate')
     def translate(self, language):
-        parameters = set()
-        for parameter in self.context.parameters:
-            if parameter.startswith('lang:'):
-                continue
-            parameters.add(parameter)
-        parameters.add('lang:%s' % language)
-        location = self.context.__parent__
+        translation = self.context.parameters.replace(
+            'lang:*', 'lang:%s' % language)
         try:
-            variation = location.getVariation(parameters)
+            translation = self.context.location.getVariation(translation)
         except KeyError:
-            variation = location.addVariation(parameters)
-            variation.copyFrom(self.context)
-            self.flash(u'Created translation.')
+            translation = self.context.location.addVariation(translation)
+            translation.copyFrom(self.context)
+            self.flash(u'Translation created.')
         else:
             self.flash(u'Translation already exists.')
+        self.redirect(self.url(translation))

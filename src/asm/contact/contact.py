@@ -9,10 +9,10 @@ import zope.interface
 import zope.schema
 
 
-class Contact(asm.cms.Variation):
+class Contact(asm.cms.Edition):
 
     zope.interface.implements(asm.contact.interfaces.IContactForm)
-    zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
+    zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     email = ''
 

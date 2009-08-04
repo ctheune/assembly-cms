@@ -7,18 +7,18 @@ import grok
 import zc.sourcefactory.basic
 
 
-class IVariationFactory(zope.interface.Interface):
+class IEditionFactory(zope.interface.Interface):
 
     def __call__():
-        """Return a variation."""
+        """Return an edition."""
 
 
-class VariationFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
-    """Provide the names of all variation factories as a source."""
+class EditionFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
+    """Provide the names of all edition factories as a source."""
 
     def getValues(self):
         return [name for name, factory in
-                zope.component.getUtilitiesFor(IVariationFactory)]
+                zope.component.getUtilitiesFor(IEditionFactory)]
 
     def getTitle(self, item):
         return item
@@ -31,25 +31,25 @@ class IPage(zope.interface.Interface):
 
     type = zope.schema.Choice(
         title=u'Type',
-        source=VariationFactorySource())
+        source=EditionFactorySource())
 
 
-class IVariation(zope.interface.Interface):
+class IEdition(zope.interface.Interface):
 
-    parameters = zope.schema.TextLine(title=u'Variation parameters')
+    parameters = zope.schema.TextLine(title=u'Edition parameters')
 
     def copyFrom(other):
-        """Copy all content from another variation of the same kind."""
+        """Copy all content from another edition of the same kind."""
 
 
-class IInitialVariationParameters(zope.interface.Interface):
-    """Describes a set of parameters that should be set on initial variations
+class IInitialEditionParameters(zope.interface.Interface):
+    """Describes a set of parameters that should be set on initial editions
     of a page.
 
     """
 
     def __call__():
-        """Return a set of parameters to be used for initial variations."""
+        """Return a set of parameters to be used for initial editions."""
 
 
 class IHTMLPage(zope.interface.Interface):
@@ -70,8 +70,8 @@ class IRetailSkin(grok.IDefaultBrowserLayer):
     grok.skin('retail')
 
 
-class IVariationSelector(zope.interface.Interface):
+class IEditionSelector(zope.interface.Interface):
 
     def __call__(self):
-        """Return a set of variation arguments to use for looking up a
-        variation."""
+        """Return a set of edition arguments to use for looking up an
+        edition."""

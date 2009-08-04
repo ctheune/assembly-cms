@@ -6,13 +6,13 @@
   <grok:grok package="." />
 
   <subscriber
-    factory=".workflow.select_retail_variation"
-    provides="asm.cms.interfaces.IVariationSelector"
+    factory=".workflow.select_retail_edition"
+    provides="asm.cms.interfaces.IEditionSelector"
     />
 
   <utility
     component=".workflow.select_initial_parameters"
-    provides="asm.cms.IInitialVariationParameters"
+    provides="asm.cms.IInitialEditionParameters"
     name="workflow"
     />
 

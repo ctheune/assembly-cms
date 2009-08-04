@@ -10,10 +10,10 @@ import zope.html.widget
 import asm.cms.page
 
 
-class HTMLPage(asm.cms.page.Variation):
+class HTMLPage(asm.cms.page.Edition):
 
     zope.interface.implements(asm.cms.interfaces.IHTMLPage)
-    zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
+    zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     content = u''
 

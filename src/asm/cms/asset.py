@@ -9,10 +9,10 @@ import megrok.pagelet
 import zope.interface
 
 
-class Asset(asm.cms.Variation):
+class Asset(asm.cms.Edition):
 
     zope.interface.implements(asm.cms.interfaces.IAsset)
-    zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)
+    zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     content = ''
 

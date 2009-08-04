@@ -17,7 +17,7 @@ grok.View.application = property(fget=application)
 import zope.deferredimport
 
 zope.deferredimport.define(
-    Variation='asm.cms.page:Variation',
+    Edition='asm.cms.page:Edition',
     Actions='asm.cms.page:Actions',
 
     Form='asm.cms.form:Form',
@@ -28,8 +28,8 @@ zope.deferredimport.define(
 
     IRetailSkin='asm.cms.interfaces:IRetailSkin',
     ICMSSkin='asm.cms.interfaces:ICMSSkin',
-    IVariationFactory='asm.cms.interfaces:IVariationFactory',
-    IVariation='asm.cms.interfaces:IVariation',
-    IInitialVariationParameters='asm.cms.interfaces:IInitialVariationParameters',
+    IEditionFactory='asm.cms.interfaces:IEditionFactory',
+    IEdition='asm.cms.interfaces:IEdition',
+    IInitialEditionParameters='asm.cms.interfaces:IInitialEditionParameters',
 
     ActionView='asm.cms.cms:ActionView')

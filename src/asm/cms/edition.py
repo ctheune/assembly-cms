@@ -2,12 +2,9 @@
 # See also LICENSE.txt
 
 import BTrees.OOBTree
-import asm.cms.form
 import asm.cms.interfaces
 import grok
-import megrok.pagelet
 import re
-import zope.app.form.browser.source
 import zope.interface
 
 

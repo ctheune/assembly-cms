@@ -3,13 +3,13 @@
 
 import asm.cms.form
 import asm.cms.interfaces
-import asm.cms
+import asm.cms.edition
 import grok
 import megrok.pagelet
 import zope.interface
 
 
-class Asset(asm.cms.Edition):
+class Asset(asm.cms.edition.Edition):
 
     zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)

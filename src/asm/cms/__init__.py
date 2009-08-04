@@ -17,13 +17,16 @@ grok.View.application = property(fget=application)
 import zope.deferredimport
 
 zope.deferredimport.define(
-    Edition='asm.cms.page:Edition',
-    Actions='asm.cms.page:Actions',
+    Edition='asm.cms.edition:Edition',
+
+    Actions='asm.cms.cmsui:Actions',
+    ActionView='asm.cms.cmsui:ActionView',
 
     Form='asm.cms.form:Form',
     EditForm='asm.cms.form:EditForm',
     AddForm='asm.cms.form:AddForm',
 
+    # XXX Rename! This is a name clash with page.Page
     Page='asm.cms.retail:Page',
 
     IRetailSkin='asm.cms.interfaces:IRetailSkin',
@@ -31,5 +34,4 @@ zope.deferredimport.define(
     IEditionFactory='asm.cms.interfaces:IEditionFactory',
     IEdition='asm.cms.interfaces:IEdition',
     IInitialEditionParameters='asm.cms.interfaces:IInitialEditionParameters',
-
-    ActionView='asm.cms.cms:ActionView')
+    )

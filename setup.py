@@ -30,5 +30,6 @@ setup(name='asm.cms',
                         'zope.lifecycleevent',
                         'zope.schema',
                         'zope.traversing',
+                        'lxml',
                         ],
       )

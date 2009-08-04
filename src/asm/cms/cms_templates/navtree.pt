@@ -6,7 +6,7 @@
         <a tal:attributes="class python:item is context and 'selected' or ' ';
                            href python:view.url(item)"
            tal:content="item/__name__"></a>
-        <tal:block define="items item/sublocations">
+        <tal:block define="items item/subpages">
             <ul tal:condition="items">
                 <metal:block use-macro="template/macros/inner">
                 </metal:block>

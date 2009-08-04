@@ -17,8 +17,8 @@ grok.View.application = property(fget=application)
 import zope.deferredimport
 
 zope.deferredimport.define(
-    Variation='asm.cms.location:Variation',
-    Actions='asm.cms.location:Actions',
+    Variation='asm.cms.page:Variation',
+    Actions='asm.cms.page:Actions',
 
     Form='asm.cms.form:Form',
     EditForm='asm.cms.form:EditForm',

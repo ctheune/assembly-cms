@@ -20,7 +20,7 @@
 
   <browser:defaultSkin name="Basic" />
 
-  <utility component=".page.Page" name="page" />
+  <utility component=".htmlpage.HTMLPage" name="htmlpage" />
   <utility component=".asset.Asset" name="asset" />
 
 </configure>

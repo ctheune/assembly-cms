@@ -2,14 +2,14 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
-import asm.cms.location
+import asm.cms
 import asm.contact.interfaces
 import grok
 import zope.interface
 import zope.schema
 
 
-class Contact(asm.cms.location.Variation):
+class Contact(asm.cms.Variation):
 
     zope.interface.implements(asm.contact.interfaces.IContactForm)
     zope.interface.classProvides(asm.cms.interfaces.IVariationFactory)

@@ -2,15 +2,15 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
-import asm.cms.location
+import asm.cms.page
 import grok
 import megrok.pagelet
 import zope.interface
 
 
-class CMS(grok.Application, asm.cms.location.Location):
+class CMS(grok.Application, asm.cms.page.Page):
 
-    type = 'page'
+    type = 'htmlpage'
 
 
 class Layout(megrok.pagelet.Layout):

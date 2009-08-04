@@ -9,7 +9,7 @@ import zope.interface
 import zope.schema
 
 
-class Actions(grok.Viewlet):
+class ImportActions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.Actions)
     grok.context(asm.cms.cms.CMS)

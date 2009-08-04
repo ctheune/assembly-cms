@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 
-setup(name='asm.contact',
+setup(name='asm.schedule',
       version='0.1',
-      description="Contact form micro-application for Assembly CMS",
+      description="Schedule micro-application for Assembly CMS",
       author="Webcrew",
       author_email="web@assembly.org",
       url="",
@@ -14,7 +14,9 @@ setup(name='asm.contact',
       zip_safe=False,
       install_requires=['setuptools',
                         'grok',
-                        'asm.cms',
+                        'zope.html',
+                        'ZODB3',
+                        'asm.workflow',
                         'zope.interface',
                         'zope.schema',
                         ],

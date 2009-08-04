@@ -68,7 +68,7 @@ class AddPage(asm.cms.form.AddForm):
         self.target = obj
 
 
-class DeletePage(grok.View):
+class Delete(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
 
@@ -87,7 +87,7 @@ class Actions(grok.Viewlet):
     grok.context(Page)
 
 
-class RetailPageIndex(megrok.pagelet.Pagelet):
+class RetailIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.IRetailSkin)
     grok.context(asm.cms.interfaces.IPage)
@@ -98,7 +98,7 @@ class RetailPageIndex(megrok.pagelet.Pagelet):
         return 'This page is not available.'
 
 
-class CMSPageIndex(megrok.pagelet.Pagelet):
+class CMSIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.context(asm.cms.interfaces.IPage)

@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 
+
 setup(name='asm.workflow',
       version='0.1dev',
       description="Workflow extension for the Assembly CMS",
@@ -15,9 +16,6 @@ setup(name='asm.workflow',
                         'grok',
                         'zope.deferredimport',
                         'asm.cms',
-                        'zope.interface',
                         'zope.component',
                         'zope.event',
-                        'zope.interface',
-                        ],
-      )
+                        'zope.interface'])

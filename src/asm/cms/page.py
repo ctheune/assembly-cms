@@ -84,7 +84,7 @@ class Delete(grok.View):
 class Actions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.Actions)
-    grok.context(Page)
+    grok.context(asm.cms.interfaces.IPage)
 
 
 class RetailIndex(megrok.pagelet.Pagelet):

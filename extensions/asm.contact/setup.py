@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='asm.contact',
-      version='0.1',
+      version='0.1dev',
       description="Contact form micro-application for Assembly CMS",
       author="Webcrew",
       author_email="web@assembly.org",

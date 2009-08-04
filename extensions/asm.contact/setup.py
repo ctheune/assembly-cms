@@ -16,6 +16,4 @@ setup(name='asm.contact',
                         'grok',
                         'asm.cms',
                         'zope.interface',
-                        'zope.schema',
-                        ],
-      )
+                        'zope.schema'])

@@ -1,16 +1,17 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import asm.cms.edition
+import asm.cms.form
+import asm.cms.interfaces
+import asm.cms.page
 import grok
 import megrok.pagelet
-import asm.cms.interfaces
-import asm.cms.form
-import zope.interface
 import zope.html.widget
-import asm.cms.page
+import zope.interface
 
 
-class HTMLPage(asm.cms.page.Edition):
+class HTMLPage(asm.cms.edition.Edition):
 
     zope.interface.implements(asm.cms.interfaces.IHTMLPage)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)

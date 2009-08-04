@@ -73,7 +73,7 @@ def add_initial_edition(page, event):
     page.addEdition(parameters)
 
 
-class DeleteEdition(grok.View):
+class Delete(grok.View):
 
     grok.context(Edition)
 
@@ -86,7 +86,7 @@ class DeleteEdition(grok.View):
         self.redirect(self.url(self.target))
 
 
-class EditionActions(grok.Viewlet):
+class Actions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.Actions)
     grok.context(Edition)

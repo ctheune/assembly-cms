@@ -2,15 +2,66 @@
 The Assembly CMS
 ================
 
+>>> import cStringIO
 >>> from zope.testbrowser.testing import Browser
 >>> b = Browser()
 >>> b.addHeader('Authorization', 'Basic mgr:mgrpw')
 >>> b.open('http://localhost/')
 >>> b.getControl('Name your new app').value = 'summer09'
->>> b.handleErrors = False
 >>> b.getControl('Create').click()
 >>> b.open('http://localhost/++skin++cms/summer09')
 >>> print b.contents
 <html> ...
     <title>CMS</title>
 ...
+
+>>> b.getLink('Add sub-page').click()
+>>> b.getControl('Name').value = 'testpage'
+>>> b.getControl(name='form.type').displayValue = ['htmlpage']
+>>> b.getControl('Add').click()
+>>> print b.contents
+<html> ...
+    class="selected">testpage</a>
+...
+
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
+>>> b.getControl('Content').value = 'lots of meaningful text'
+>>> b.getControl('Save').click()
+
+>>> b.open('http://localhost/++skin++retail/summer09/testpage')
+>>> print b.contents
+<html> ...
+lots of meaningful text
+...
+
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
+>>> b.getLink('Delete edition').click()
+>>> b.open('http://localhost/++skin++retail/summer09/testpage')
+Traceback (most recent call last):
+httperror_seek_wrapper: HTTP Error 404: Not Found
+
+>>> b.open('http://localhost/++skin++cms/summer09/testpage')
+>>> b.getLink('Delete page').click()
+>>> 'testpage' not in b.contents
+True
+
+>>> b.open('http://localhost/++skin++cms/summer09/')
+>>> b.getLink('Add sub-page').click()
+>>> b.getControl('Name').value = 'testasset'
+>>> b.getControl(name='form.type').displayValue = ['asset']
+>>> b.getControl('Add').click()
+>>> print b.contents
+<html> ...
+    class="selected">testasset</a>
+...
+
+>>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-')
+>>> b.getControl('File').add_file(cStringIO.StringIO('Test file contents'), 'text/plain', 'test.txt')
+>>> b.getControl('Save').click()
+
+>>> b.open('http://localhost/++skin++retail/summer09/testasset/')
+>>> print b.contents
+Test file contents
+
+
+

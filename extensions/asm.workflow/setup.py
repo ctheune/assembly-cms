@@ -1,9 +1,8 @@
 from setuptools import setup, find_packages
 
-
-setup(name='asm.cms',
+setup(name='asm.workflow',
       version='0.1dev',
-      description="Assembly Website CMS",
+      description="Workflow extension for the Assembly CMS",
       author="Webcrew",
       author_email="web@assembly.org",
       url="",
@@ -14,10 +13,11 @@ setup(name='asm.cms',
       zip_safe=False,
       install_requires=['setuptools',
                         'grok',
-                        'zc.resourcelibrary',
-                        'grokui.admin',
-                        'zc.sourcefactory',
-                        'megrok.pagelet',
-                        'zope.html',
+                        'zope.deferredimport',
+                        'asm.cms',
+                        'zope.interface',
+                        'zope.component',
+                        'zope.event',
+                        'zope.interface',
                         ],
       )

@@ -11,11 +11,6 @@
   <includeDependencies package="." />
   <grok:grok package="." />
 
-  <include package="asm.workflow" />
-  <include package="asm.translation" />
-  <include package="asm.contact" />
-  <include package="asm.schedule" />
-
   <include package=".generations" />
 
   <browser:defaultSkin name="Basic" />

@@ -1,77 +1,67 @@
-==================
-Content variations
-==================
+================
+Content editions
+================
 
-Content objects are identified by a location in the site hierarchy. However,
-depending on the user, different variations of that object may be desired to
-be seen:
+Content objects are identified as a "page" in the site hierarchy. However,
+depending on the user, different editions of that object may be desired to be
+seen:
 
-- a draft version or the published version
-- the English or Finnish version
+- a draft or public edition
+- the English or Finnish edition
 
-Variations are identifier by tags we call `variation parameters`. Tags are
-strings and are grouped by namespaces which are stated with a colon, for
-example: "publication:draft", "publication:published", "lang:fi"
-
-
-Splitting up locations from variations
---------------------------------------
-
-A location represents a specific content object but holds only abstract data
-about it:
-
-- the location's name
-- sub-locations
+Editions are identified by tags we call "edition parameters". Parameters are
+opaque strings, but we recommend using namespaces with colons to separate
+parameters that are introduced by distinct extensions. Examples:
+"publication:draft", "publication:published", "lang:fi"
 
 
-Variations are content objects with specific data for one set of variation
-parameters and hold the following data:
+Splitting up pages from editions
+--------------------------------
 
-- the variation parameters
-- any content-specific data (the body)
-- Meta data: title, creation date, 
+A page represents a specific piece of content as in "web page". However, the
+object only holds abstract data:
 
+- the page's name
+- the sub-pages
+
+Editions are objects with specific data for one set of parameters and hold the
+following data:
+
+- the edition parameters
+- any content-specific data (e.g. the body)
+- meta data: title, creation date, modification date, content tags
 
 Retail behaviour
 ----------------
 
-The publisher will select a variation for publishing based on the request as
+The Zope publisher will select an edition to publish based on the request as
 it was post-processed by plug-ins which establish a set of required tags.
 
-A plug-in can return a list of tags which are acceptable in the order of their
-priority for showing. For example the publication extension when asked for a
-preview of the site will return [set('draft'), set('published')]. When asked
-for the public view, it will return [set('published')]. At the same time, the
-language feature might return [set('fi'), set('en')] when asked for Finnish
-with English as the fall-back language, but will return [set('en')] for English
-without a fall-back.
-
-Open issue: how do we prioritize combined fall-back options?
+XXX Describe fall-back mechanism here. 
 
 
 CMS extensions
 --------------
 
-CMS extensions provide specific variation uses. They will introduce namespaces
-according to their needs. Two extensions we intend to create immediately are:
+CMS extensions provide specific semantics for editions. Two extensions we
+intend to create immediately are:
 
-- translation/language extension
-- publication/work-flow extension
+- multi-lingual content (translations) 
+- work-flow
 
-Extensions will create new UI elements which allow to interact with variations
+Extensions will create new UI elements which allow to interact with editions
 according to that extension's semantics. (E.g. add a button to all draft
-variations for publishing them.)
+editions for publishing them.)
 
 Extensions will create a plug-in for request pre-processing to establish a
-request parameter giving a set of variation parameters which are required 
-
+determine the edition parameters that are acceptable for editions to publish.
 
 
 Benefits
 --------
 
-- Locations stay the same when talking about different variations. This means
-  that one piece of content can be displayed to a user's preferences without
-  screwing link integrity.
+- Pages stay the same when talking about different editions. This means that
+  one piece of content can be displayed according to a user's preferences
+  without screwing link integrity.
 
-- Preview mode will link correctly, no adjustments to URLs are needed
+- Preview becomes simple to implement, no adjustments to URLs are needed.

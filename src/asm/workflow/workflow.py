@@ -15,7 +15,7 @@ WORKFLOW_DRAFT = 'workflow:draft'
 
 def publish(draft, publication_date=None):
     public = draft.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
-    public = draft.location.getVariation(public, create=True)
+    public = draft.page.getVariation(public, create=True)
     public.copyFrom(draft)
     # XXX Sticking the publication date on a protected arg is icky
     public._workflow_publication_date = (
@@ -58,14 +58,15 @@ class Revert(asm.cms.ActionView):
     grok.context(asm.cms.IVariation)
 
     def update(self):
+        page = self.context.page
         public = self.context.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
         try:
-            public = self.context.location.getVariation(public)
+            public = page.getVariation(public)
         except KeyError:
             self.flash(u"Can not revert because no public edition exists.")
             return
 
         draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
-        draft = location.getVariation(draft, create=True)
+        draft = page.getVariation(draft, create=True)
         draft.copyFrom(public)
         self.flash(u"Reverted draft changes.")

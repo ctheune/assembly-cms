@@ -24,10 +24,10 @@ class VariationFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
         return item
 
 
-class ILocation(zope.interface.Interface):
+class IPage(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(title=u'Name')
-    sublocations = zope.interface.Attribute('All locations below this one.')
+    subpages = zope.interface.Attribute('All pages below this one.')
 
     type = zope.schema.Choice(
         title=u'Type',
@@ -44,7 +44,7 @@ class IVariation(zope.interface.Interface):
 
 class IInitialVariationParameters(zope.interface.Interface):
     """Describes a set of parameters that should be set on initial variations
-    of a location.
+    of a page.
 
     """
 
@@ -52,7 +52,7 @@ class IInitialVariationParameters(zope.interface.Interface):
         """Return a set of parameters to be used for initial variations."""
 
 
-class IPage(zope.interface.Interface):
+class IHTMLPage(zope.interface.Interface):
 
     content = zope.schema.Text(title=u'Content')
 

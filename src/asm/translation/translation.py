@@ -42,12 +42,13 @@ class Translate(asm.cms.Form):
 
     @grok.action(u'Translate')
     def translate(self, language):
+        page = self.context.page
         translation = self.context.parameters.replace(
             'lang:*', 'lang:%s' % language)
         try:
-            translation = self.context.location.getVariation(translation)
+            translation = page.getVariation(translation)
         except KeyError:
-            translation = self.context.location.addVariation(translation)
+            translation = page.addVariation(translation)
             translation.copyFrom(self.context)
             self.flash(u'Translation created.')
         else:

@@ -48,19 +48,14 @@ class Edit(asm.cms.Form):
 
     @grok.action(u'Upload')
     def upload(self, data):
-        location = self.context.__parent__
+        page = self.context.page
 
-        parameters = set(self.context.parameters)
-        for p in list(parameters):
-            if p.startswith('lang:'):
-                parameters.remove(p)
-        finnish = parameters.copy()
-        finnish.add('lang:fi')
-        finnish = location.getVariation(finnish, create=True)
+        finnish = self.context.parameters.replace('lang:*', 'lang:fi')
+        finnish = page.getVariation(finnish, create=True)
         finnish.events.clear()
-        english = parameters.copy()
-        english.add('lang:en')
-        english = location.getVariation(english, create=True)
+
+        english = self.context.parameters.replace('lang:*', 'lang:en')
+        english = page.getVariation(english, create=True)
         english.events.clear()
 
         dialect = csv.Sniffer().sniff(data)
@@ -95,6 +90,8 @@ def publish_schedule(event):
     if not isinstance(event.draft, Schedule):
         return
 
+    page = self.context.page
+
     # We do not know which language the user published because we will be
     # triggered by publishing the other version too. Thus we have to check
     # both possible languages and stop an infinite recursion.
@@ -107,7 +104,7 @@ def publish_schedule(event):
         # version exists yet, or the publication date is not the one of the
         # publication that triggered us.
         try:
-            public = self.context.location.getVariation(public)
+            public = page.getVariation(public)
         except KeyError:
             pass
         else:
@@ -116,8 +113,8 @@ def publish_schedule(event):
                 # The public version is up to date, so we ignore it.
                 continue
 
-        draft = self.context.location.getVariation(
-            public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT))
+        draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+        draft = page.getVariation(draft)
         asm.workflow.publish(draft, event.public._workflow_publication_date)
 
 

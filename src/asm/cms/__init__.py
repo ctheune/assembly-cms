@@ -1,6 +1,5 @@
 # Make this a Python package
 import grok
-import zope.app.appsetup.interfaces
 
 def application(self):
     obj = self.context

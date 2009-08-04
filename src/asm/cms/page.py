@@ -41,7 +41,7 @@ class Page(grok.Container):
     def addEdition(self, parameters):
         edition = self.factory()
         edition.parameters = asm.cms.edition.EditionParameters(parameters)
-        self['-'.join(parameters)] = edition
+        self['edition-' + '-'.join(parameters)] = edition
         return edition
 
     @property

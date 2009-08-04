@@ -6,13 +6,13 @@
   <grok:grok package="." />
 
   <subscriber
-    factory=".translation.select_retail_variation"
-    provides="asm.cms.interfaces.IVariationSelector"
+    factory=".translation.select_retail_edition"
+    provides="asm.cms.interfaces.IEditionSelector"
     />
 
   <utility
     component=".translation.select_initial_language"
-    provides="asm.cms.IInitialVariationParameters"
+    provides="asm.cms.IInitialEditionParameters"
     name="translation"
     />
 

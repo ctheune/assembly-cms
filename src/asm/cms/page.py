@@ -22,42 +22,42 @@ class Page(grok.Container):
                 yield obj
 
     @property
-    def variations(self):
+    def editions(self):
         for obj in self.values():
-            if asm.cms.interfaces.IVariation.providedBy(obj):
+            if asm.cms.interfaces.IEdition.providedBy(obj):
                 yield obj
 
-    def getVariation(self, parameters, create=False):
-        assert isinstance(parameters, VariationParameters)
-        for var in self.variations:
+    def getEdition(self, parameters, create=False):
+        assert isinstance(parameters, EditionParameters)
+        for var in self.editions:
             if var.parameters == parameters:
                 return var
         if create:
-            return self.addVariation(parameters)
+            return self.addEdition(parameters)
         raise KeyError(parameters)
 
-    def addVariation(self, parameters):
-        variation = self.factory()
-        variation.parameters = VariationParameters(parameters)
-        self['-'.join(parameters)] = variation
-        return variation
+    def addEdition(self, parameters):
+        edition = self.factory()
+        edition.parameters = EditionParameters(parameters)
+        self['-'.join(parameters)] = edition
+        return edition
 
     @property
     def factory(self):
         return zope.component.getUtility(
-            asm.cms.interfaces.IVariationFactory, name=self.type)
+            asm.cms.interfaces.IEditionFactory, name=self.type)
 
 
-class Variation(grok.Model):
+class Edition(grok.Model):
 
-    zope.interface.implements(asm.cms.interfaces.IVariation)
+    zope.interface.implements(asm.cms.interfaces.IEdition)
 
     def __init__(self):
-        super(Variation, self).__init__()
+        super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
 
-    def variations(self):
-        return self.__parent__.variations
+    def editions(self):
+        return self.__parent__.editions
 
     @property
     def page(self):
@@ -85,12 +85,12 @@ class AddPage(asm.cms.form.AddForm):
 
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
-def add_initial_variation(page, event):
+def add_initial_edition(page, event):
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
-            asm.cms.interfaces.IInitialVariationParameters):
+            asm.cms.interfaces.IInitialEditionParameters):
         parameters.update(factory())
-    page.addVariation(parameters)
+    page.addEdition(parameters)
 
 
 class DeletePage(grok.View):
@@ -106,9 +106,9 @@ class DeletePage(grok.View):
         self.redirect(self.url(self.target))
 
 
-class DeleteVariation(grok.View):
+class DeleteEdition(grok.View):
 
-    grok.context(Variation)
+    grok.context(Edition)
 
     def update(self):
         page = self.context.__parent__
@@ -124,10 +124,10 @@ class Actions(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
-class VariationActions(grok.Viewlet):
+class EditionActions(grok.Viewlet):
 
     grok.viewletmanager(Actions)
-    grok.context(Variation)
+    grok.context(Edition)
 
 class PageActions(grok.Viewlet):
 
@@ -135,22 +135,22 @@ class PageActions(grok.Viewlet):
     grok.context(Page)
 
 
-class Variations(grok.ViewletManager):
-    grok.name('variations')
+class Editions(grok.ViewletManager):
+    grok.name('editions')
     grok.context(zope.interface.Interface)
 
 
-class PageVariations(grok.Viewlet):
-    grok.viewletmanager(Variations)
+class PageEditions(grok.Viewlet):
+    grok.viewletmanager(Editions)
     grok.context(zope.interface.Interface)
-    grok.template('variations')
+    grok.template('editions')
 
 
-@grok.adapter(Variation, asm.cms.interfaces.IRetailSkin)
+@grok.adapter(Edition, asm.cms.interfaces.IRetailSkin)
 @grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
-def variation_url(variation, request):
+def edition_url(edition, request):
     return zope.component.getMultiAdapter(
-        (variation.__parent__, request),
+        (edition.__parent__, request),
         zope.traversing.browser.interfaces.IAbsoluteURL)
 
 
@@ -166,18 +166,18 @@ class PageTraverse(grok.Traverser):
             return
         parameters = set()
         for args in zope.component.subscribers(
-            (self.request,), asm.cms.interfaces.IVariationSelector):
+            (self.request,), asm.cms.interfaces.IEditionSelector):
             parameters.update(args)
-        parameters = VariationParameters(parameters)
+        parameters = EditionParameters(parameters)
         try:
-            return subpage.getVariation(parameters)
+            return subpage.getEdition(parameters)
         except KeyError:
             return subpage
 
 
-class VariationTraverse(grok.Traverser):
+class EditionTraverse(grok.Traverser):
 
-    grok.context(asm.cms.interfaces.IVariation)
+    grok.context(asm.cms.interfaces.IEdition)
     grok.layer(asm.cms.interfaces.IRetailSkin)
 
     def traverse(self, name):
@@ -187,11 +187,11 @@ class VariationTraverse(grok.Traverser):
             return
         parameters = set()
         for args in zope.component.subscribers(
-            (self.request,), asm.cms.interfaces.IVariationSelector):
+            (self.request,), asm.cms.interfaces.IEditionSelector):
             parameters.update(args)
-        parameters = VariationParameters(parameters)
+        parameters = EditionParameters(parameters)
         try:
-            return subpage.getVariation(parameters)
+            return subpage.getEdition(parameters)
         except KeyError:
             return subpage
 
@@ -207,11 +207,11 @@ class RootTraverse(grok.Traverser):
             return
         parameters = set()
         for args in zope.component.subscribers(
-            (self.request,), asm.cms.interfaces.IVariationSelector):
+            (self.request,), asm.cms.interfaces.IEditionSelector):
             parameters.update(args)
-        parameters = VariationParameters(parameters)
+        parameters = EditionParameters(parameters)
         try:
-            return page.getVariation(parameters)
+            return page.getEdition(parameters)
         except KeyError:
             return page
 
@@ -235,8 +235,8 @@ class CMSPageIndex(megrok.pagelet.Pagelet):
     grok.template('index')
 
 
-class VariationParameters(object):
-    """Variation parameters are immutable.
+class EditionParameters(object):
+    """Edition parameters are immutable.
 
     All operations return a mutated copy of the parameters.
 
@@ -271,4 +271,4 @@ class VariationParameters(object):
                 continue
             parameters.add(p)
 
-        return VariationParameters(parameters)
+        return EditionParameters(parameters)

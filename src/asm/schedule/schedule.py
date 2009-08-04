@@ -12,13 +12,13 @@ import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 
 
-class Schedule(asm.cms.Variation):
+class Schedule(asm.cms.Edition):
     """A schedule maintains a list of events and offers a retail UI that
     allows users to efficiently browse the events by filtering and selecting
     specific days and mark past, current and future events visually.
     """
 
-    zope.interface.classProvides(asm.cms.IVariationFactory)
+    zope.interface.classProvides(asm.cms.IEditionFactory)
 
     def __init__(self):
         super(Schedule, self).__init__()
@@ -36,10 +36,10 @@ class Event(persistent.Persistent):
 
 class Edit(asm.cms.Form):
     """Editing a schedule means uploading a CSV file (as produced by Jussi)
-    and updating both language variations from that file.
+    and updating both language editions from that file.
 
-    It doesn't matter which variation we upload to: we simply put the Finnish
-    items into the Finnish variation and work with the English variation
+    It doesn't matter which edition we upload to: we simply put the Finnish
+    items into the Finnish edition and work with the English edition
     accordingly.
 
     """
@@ -51,11 +51,11 @@ class Edit(asm.cms.Form):
         page = self.context.page
 
         finnish = self.context.parameters.replace('lang:*', 'lang:fi')
-        finnish = page.getVariation(finnish, create=True)
+        finnish = page.getEdition(finnish, create=True)
         finnish.events.clear()
 
         english = self.context.parameters.replace('lang:*', 'lang:en')
-        english = page.getVariation(english, create=True)
+        english = page.getEdition(english, create=True)
         english.events.clear()
 
         dialect = csv.Sniffer().sniff(data)
@@ -104,7 +104,7 @@ def publish_schedule(event):
         # version exists yet, or the publication date is not the one of the
         # publication that triggered us.
         try:
-            public = page.getVariation(public)
+            public = page.getEdition(public)
         except KeyError:
             pass
         else:
@@ -114,7 +114,7 @@ def publish_schedule(event):
                 continue
 
         draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
-        draft = page.getVariation(draft)
+        draft = page.getEdition(draft)
         asm.workflow.publish(draft, event.public._workflow_publication_date)
 
 

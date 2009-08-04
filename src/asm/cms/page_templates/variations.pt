@@ -1,8 +1,0 @@
-<li tal:repeat="variation context/variations"
-    tal:attributes="class python:variation is context and 'selected' or ' '">
-    <a tal:attributes="href python:view.url(variation)">
-        <span tal:repeat="var variation/parameters"
-              tal:content="var"
-              i18n:translate=""/>
-    </a>
-</li>

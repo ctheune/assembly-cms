@@ -29,10 +29,10 @@
             </fieldset>
 
             <fieldset>
-                <legend>Variations</legend>
+                <legend>Editions</legend>
 
                 <ul>
-                    <tal:block replace="structure provider:variations"/>
+                    <tal:block replace="structure provider:editions"/>
                 </ul>
             </fieldset>
 

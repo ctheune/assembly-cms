@@ -12,7 +12,7 @@ def select_initial_language():
 
 
 @zope.component.adapter(asm.cms.IRetailSkin)
-def select_retail_variation(request):
+def select_retail_edition(request):
     for lang in request.headers.get('Accept-Language', '').split(','):
         lang = lang.split(';')[0]
         lang = lang.split('-')[0]
@@ -32,12 +32,12 @@ class ITranslation(zope.interface.Interface):
 class TranslationMenu(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.Actions)
-    grok.context(asm.cms.IVariation)
+    grok.context(asm.cms.IEdition)
 
 
 class Translate(asm.cms.Form):
 
-    grok.context(asm.cms.IVariation)
+    grok.context(asm.cms.IEdition)
     form_fields = grok.AutoFields(ITranslation)
 
     @grok.action(u'Translate')
@@ -46,9 +46,9 @@ class Translate(asm.cms.Form):
         translation = self.context.parameters.replace(
             'lang:*', 'lang:%s' % language)
         try:
-            translation = page.getVariation(translation)
+            translation = page.getEdition(translation)
         except KeyError:
-            translation = page.addVariation(translation)
+            translation = page.addEdition(translation)
             translation.copyFrom(self.context)
             self.flash(u'Translation created.')
         else:

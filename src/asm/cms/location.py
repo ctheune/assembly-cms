@@ -6,6 +6,7 @@ import asm.cms.form
 import asm.cms.interfaces
 import grok
 import megrok.pagelet
+import re
 import zope.app.form.browser.source
 import zope.interface
 
@@ -27,17 +28,17 @@ class Location(grok.Container):
                 yield obj
 
     def getVariation(self, parameters, create=False):
+        assert isinstance(parameters, VariationParameters)
         for var in self.variations:
-            if set(parameters) == set(var.parameters):
+            if var.parameters == parameters:
                 return var
         if create:
             return self.addVariation(parameters)
         raise KeyError(parameters)
 
-    def addVariation(self, parameters, variation=None):
-        if variation is None:
-            variation = self.factory()
-        variation.parameters.update(parameters)
+    def addVariation(self, parameters):
+        variation = self.factory()
+        variation.parameters = VariationParameters(parameters)
         self['-'.join(parameters)] = variation
         return variation
 
@@ -57,6 +58,10 @@ class Variation(grok.Model):
 
     def variations(self):
         return self.__parent__.variations
+
+    @property
+    def location(self):
+        return self.__parent__
 
 
 class AddLocation(asm.cms.form.AddForm):
@@ -81,9 +86,11 @@ class AddLocation(asm.cms.form.AddForm):
 
 @grok.subscribe(asm.cms.interfaces.ILocation, grok.IObjectAddedEvent)
 def add_initial_variation(location, event):
-    variation = location.factory()
-    zope.event.notify(asm.cms.interfaces.InitialVariationCreated(variation))
-    location.addVariation(variation.parameters, variation)
+    parameters = set()
+    for factory in zope.component.getAllUtilitiesRegisteredFor(
+            asm.cms.interfaces.IInitialVariationParameters):
+        parameters.update(factory())
+    location.addVariation(parameters)
 
 
 class DeleteLocation(grok.View):
@@ -157,12 +164,13 @@ class LocationTraverse(grok.Traverser):
         sublocation = location.get(name)
         if not asm.cms.interfaces.ILocation.providedBy(sublocation):
             return
-        arguments = set()
+        parameters = set()
         for args in zope.component.subscribers(
             (self.request,), asm.cms.interfaces.IVariationSelector):
-            arguments.update(args)
+            parameters.update(args)
+        parameters = VariationParameters(parameters)
         try:
-            return sublocation.getVariation(arguments)
+            return sublocation.getVariation(parameters)
         except KeyError:
             return sublocation
 
@@ -177,12 +185,13 @@ class VariationTraverse(grok.Traverser):
         sublocation = location.get(name)
         if not asm.cms.interfaces.ILocation.providedBy(sublocation):
             return
-        arguments = set()
+        parameters = set()
         for args in zope.component.subscribers(
             (self.request,), asm.cms.interfaces.IVariationSelector):
-            arguments.update(args)
+            parameters.update(args)
+        parameters = VariationParameters(parameters)
         try:
-            return sublocation.getVariation(arguments)
+            return sublocation.getVariation(parameters)
         except KeyError:
             return sublocation
 
@@ -196,12 +205,13 @@ class RootTraverse(grok.Traverser):
         location = self.context.get(name)
         if not asm.cms.interfaces.ILocation.providedBy(location):
             return
-        arguments = set()
+        parameters = set()
         for args in zope.component.subscribers(
             (self.request,), asm.cms.interfaces.IVariationSelector):
-            arguments.update(args)
+            parameters.update(args)
+        parameters = VariationParameters(parameters)
         try:
-            return location.getVariation(arguments)
+            return location.getVariation(parameters)
         except KeyError:
             return location
 
@@ -223,3 +233,42 @@ class CMSLocationIndex(megrok.pagelet.Pagelet):
     grok.context(asm.cms.interfaces.ILocation)
     grok.name('index')
     grok.template('index')
+
+
+class VariationParameters(object):
+    """Variation parameters are immutable.
+
+    All operations return a mutated copy of the parameters.
+
+    """
+
+    def __init__(self, initial=()):
+        self.parameters = set(initial)
+
+    def __eq__(self, other):
+        return self.parameters == other.parameters
+
+    def __iter__(self):
+        return iter(self.parameters)
+
+    def replace(self, old, new):
+        """Replace a (possibly) existing parameter with a new one.
+
+        If the old parameter doesn't exist it will be ignored, the new will be
+        added in any case.
+
+        The old parameter can be given with a globbing symbol (*) to match
+        multiple parameters to replace at once.
+
+        """
+        parameters = set()
+        parameters.add(new)
+
+        remove = '^%s$' % old.replace('*', '.*')
+        remove = re.compile(old)
+        for p in self.parameters:
+            if remove.match(p):
+                continue
+            parameters.add(p)
+
+        return VariationParameters(parameters)

@@ -14,6 +14,22 @@ grok.View.application = property(fget=application)
 
 # Provide re-exports of public API
 
-from asm.cms.location import Variation
-from asm.cms.form import Form, EditForm, AddForm
-from asm.cms.interfaces import IRetailSkin, ICMSSkin, IVariationFactory
+import zope.deferredimport
+
+zope.deferredimport.define(
+    Variation='asm.cms.location:Variation',
+    Actions='asm.cms.location:Actions',
+
+    Form='asm.cms.form:Form',
+    EditForm='asm.cms.form:EditForm',
+    AddForm='asm.cms.form:AddForm',
+
+    Page='asm.cms.retail:Page',
+
+    IRetailSkin='asm.cms.interfaces:IRetailSkin',
+    ICMSSkin='asm.cms.interfaces:ICMSSkin',
+    IVariationFactory='asm.cms.interfaces:IVariationFactory',
+    IVariation='asm.cms.interfaces:IVariation',
+    IInitialVariationParameters='asm.cms.interfaces:IInitialVariationParameters',
+
+    ActionView='asm.cms.cms:ActionView')

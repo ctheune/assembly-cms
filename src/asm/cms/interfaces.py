@@ -42,23 +42,14 @@ class IVariation(zope.interface.Interface):
         """Copy all content from another variation of the same kind."""
 
 
-class IInitialVariationCreated(zope.interface.Interface):
-    """A new location was created and also an initial variation.
-
-    The initial variation can (at this point) be annotated at this point with
-    variation parameters.
+class IInitialVariationParameters(zope.interface.Interface):
+    """Describes a set of parameters that should be set on initial variations
+    of a location.
 
     """
 
-    variation = zope.interface.Attribute('The variation that was created')
-
-
-class InitialVariationCreated(object):
-
-    zope.interface.implements(IInitialVariationCreated)
-
-    def __init__(self, variation):
-        self.variation = variation
+    def __call__():
+        """Return a set of parameters to be used for initial variations."""
 
 
 class IPage(zope.interface.Interface):

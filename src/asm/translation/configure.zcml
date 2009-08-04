@@ -10,4 +10,10 @@
     provides="asm.cms.interfaces.IVariationSelector"
     />
 
+  <utility
+    component=".translation.select_initial_language"
+    provides="asm.cms.IInitialVariationParameters"
+    name="translation"
+    />
+
 </configure>

@@ -6,7 +6,6 @@ import asm.cms
 import asm.contact.interfaces
 import grok
 import zope.interface
-import zope.schema
 
 
 class Contact(asm.cms.Edition):

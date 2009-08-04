@@ -17,5 +17,4 @@ setup(name='asm.workflow',
                         'zope.deferredimport',
                         'asm.cms',
                         'zope.component',
-                        'zope.event',
-                        'zope.interface'])
+                        'zope.event'])

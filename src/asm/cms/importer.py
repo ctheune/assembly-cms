@@ -8,6 +8,7 @@
 import asm.cms
 import asm.cms.cms
 import asm.workflow
+import base64
 import bn
 import grok
 import lxml.etree
@@ -35,26 +36,33 @@ class Import(asm.cms.Form):
 
     @grok.action(u'Import')
     def do_import(self, data):
-        etree = lxml.etree.fromstring(data)
-        for page in etree.iterfind('page'):
-            page_ob = self.get_page(page.get('path'))
-            content = page.text
-            # XXX the base path of the original site should be written in the
-            # original output instead of knowing the structure in here ...
-            content = fix_relative_links(
-                content, zope.traversing.api.getPath(page_ob))
-            edition = page_ob.editions.next()
-            edition.content = content
-            asm.workflow.publish(edition)
+        export = lxml.etree.fromstring(data)
+        self.base_path = export.get('base')
+        for node in export:
+            page = self.get_page(node.get('path'), node.tag)
+            getattr(self, 'import_%s' % node.tag)(page, node)
 
-    def get_page(self, path):
+    def import_htmlpage(self, page, node):
+        content = node.text
+        content = fix_relative_links(
+            content, self.base_path+'/'+node.get('path'))
+        edition = page.editions.next()
+        edition.content = content
+        asm.workflow.publish(edition)
+
+    def import_asset(self, page, node):
+        edition = page.editions.next()
+        edition.content = base64.decodestring(node.text)
+        asm.workflow.publish(edition)
+
+    def get_page(self, path, type_):
         path = path.split('/')
         current = self.context
         while path:
             name = path.pop(0)
             if name not in current:
                 page = asm.cms.page.Page()
-                page.type = 'htmlpage'
+                page.type = type_
                 current[name] = page
             current = current.get(name)
         return current

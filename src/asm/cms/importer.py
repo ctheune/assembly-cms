@@ -1,12 +1,13 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-# XXX This module has knowledge about the assembly site. it shouldn't. I also
-# think as this has knowledge about workflow, it should become its own
-# extension.
+# XXX This module has knowledge about CMS extensions but it shouldn't. I think
+# it should become its own extension and/or provide a mechanism for extensions
+# to support imports.
 
 import asm.cms
 import asm.cms.cms
+import asm.cms.edition
 import asm.workflow
 import base64
 import bn
@@ -38,34 +39,45 @@ class Import(asm.cms.Form):
     def do_import(self, data):
         export = lxml.etree.fromstring(data)
         self.base_path = export.get('base')
-        for node in export:
-            page = self.get_page(node.get('path'), node.tag)
-            getattr(self, 'import_%s' % node.tag)(page, node)
+        for page_node in export:
+            page = self.get_page(page_node.get('path'), page_node.tag)
 
-    def import_htmlpage(self, page, node):
-        content = node.text
+            for edition_node in page_node:
+                assert edition_node.tag == 'edition'
+                parameters = set(edition_node.get('parameters').split())
+                parameters = asm.cms.edition.EditionParameters(parameters)
+                edition = page.getEdition(parameters, create=True)
+                getattr(self, 'import_%s' % page.type)(edition, edition_node)
+
+
+    def import_htmlpage(self, edition, node):
+        content = base64.decodestring(node.text)
         content = fix_relative_links(
-            content, self.base_path+'/'+node.get('path'))
-        edition = page.editions.next()
+            content, self.base_path+'/'+node.getparent().get('path'))
         edition.content = content
-        asm.workflow.publish(edition)
 
-    def import_asset(self, page, node):
-        edition = page.editions.next()
+    def import_asset(self, edition, node):
         edition.content = base64.decodestring(node.text)
-        asm.workflow.publish(edition)
 
     def get_page(self, path, type_):
         path = path.split('/')
         current = self.context
+        if path == ['']:
+            # Ugly hack to support importing content on the site page.
+            return current
         while path:
             name = path.pop(0)
             if name not in current:
                 page = asm.cms.page.Page()
                 page.type = type_
                 current[name] = page
+                # We're importing: remove any initial variations and only use
+                # content from import.
+                for edition in page.editions:
+                    del page[edition.__name__]
             current = current.get(name)
         return current
+
 
 def fix_relative_links(document, current_path):
     # XXX Hrgh. Why is there no obvious simple way to do this?

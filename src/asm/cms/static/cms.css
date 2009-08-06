@@ -1,0 +1,18 @@
+* {
+    font-family: "Helvetica", "Lucida Sans", Arial, sans-serif;
+}
+
+.selected {
+    font-weight:bold;
+}
+
+#cms-ui {
+    width: 200px;
+    float:left;
+    padding-right:1em;
+    margin-right: 1em;
+}
+
+#content {
+    float:left;
+}

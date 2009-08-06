@@ -1,18 +1,10 @@
 <html>
     <head>
         <title>CMS</title>
-        <style>
-            * { font-family: "Helvetica", "Lucida Sans", Arial, sans-serif; }
-            .selected {font-weight:bold;}
-            #cms-ui { width: 200px; float:left;
-                      padding-right:1em; margin-right: 1em;}
-
-            #content {float:left;}
-        </style>
+        <link rel="stylesheet" tal:attributes="href view/static/cms.css" type="text/css" />
     </head>
 
     <body>
-
         <div id="cms-ui">
             <fieldset>
                 <legend>Navigation</legend>

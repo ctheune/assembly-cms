@@ -106,3 +106,9 @@ class PageEditions(grok.Viewlet):
     grok.viewletmanager(Editions)
     grok.context(zope.interface.Interface)
     grok.template('editions')
+
+
+class TinyMCELinkBrowsers(grok.View):
+
+    grok.name('tinymce-linkbrowser')
+    grok.template('tinymce-linkbrowser')

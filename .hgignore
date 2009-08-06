@@ -1,4 +1,7 @@
 .installed.cfg
+ID
+tags
+TAGS
 parts
 .swp
 .pyc

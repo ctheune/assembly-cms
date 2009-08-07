@@ -1,1 +1,1 @@
-<li><a href="delete">Delete edition</a></li>
+<li><a tal:attributes="href python:view.url(context, 'delete')">Delete edition</a></li>

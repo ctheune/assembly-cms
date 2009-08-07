@@ -9,7 +9,7 @@ The Assembly CMS
 >>> b.open('http://localhost/')
 >>> b.getControl('Name your new app').value = 'summer09'
 >>> b.getControl('Create').click()
->>> b.open('http://localhost/++skin++cms/summer09')
+>>> b.open('http://localhost/++skin++cms/summer09/@@edit')
 >>> print b.contents
 <html> ...
     <title>CMS</title>
@@ -24,7 +24,9 @@ The Assembly CMS
     class="selected">testpage</a>
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
+XXX This should be reachable through the UI, but isn't.
+
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
 >>> b.getControl('Content').value = 'lots of meaningful text'
 >>> b.getControl('Save').click()
 
@@ -34,18 +36,18 @@ The Assembly CMS
 lots of meaningful text
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
 >>> b.getLink('Delete edition').click()
 >>> b.open('http://localhost/++skin++retail/summer09/testpage')
 Traceback (most recent call last):
 httperror_seek_wrapper: HTTP Error 404: Not Found
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage')
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/@@edit')
 >>> b.getLink('Delete page').click()
 >>> 'testpage' not in b.contents
 True
 
->>> b.open('http://localhost/++skin++cms/summer09/')
+>>> b.open('http://localhost/++skin++cms/summer09/@@edit')
 >>> b.getLink('Add sub-page').click()
 >>> b.getControl('Name').value = 'testasset'
 >>> b.getControl(name='form.type').displayValue = ['asset']
@@ -55,7 +57,7 @@ True
     class="selected">testasset</a>
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-')
+>>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')
 >>> b.getControl('File').add_file(cStringIO.StringIO('Test file contents'), 'text/plain', 'test.txt')
 >>> b.getControl('Save').click()
 

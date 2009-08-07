@@ -1,13 +1,9 @@
 <html>
     <head>
-        <script>
-            var global_base_uri = document.baseURI;
-            alert(global_base_uri);
-        </script>
         <title>CMS</title>
         <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/cms.css" type="text/css" />
 
-        <base tal:attributes="href string:${context/@@base}/asdf"/>
+        <base tal:attributes="href string:${context/@@base}"/>
 
     </head>
 

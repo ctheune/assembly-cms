@@ -111,9 +111,23 @@ class CMSIndex(grok.View):
 
     def render(self):
         # XXX Implement a strategy to choose which one will be shown.
+        try:
+            edition = self.context.editions.next()
+        except StopIteration:
+            edition = asm.cms.edition.NullEdition()
+            edition.__parent__ = self.context
+            edition.__name__ = ''
         return zope.component.getMultiAdapter(
-            (self.context.editions.next(), self.request), name='index')()
+            (edition, self.request), name='index')()
 
+
+# The following two views are needed to support visual editing of editions
+# which have their own URL, nested a level within a page. As all relative URLs
+# are constructed assuming they start from a page, we need to provide the
+# means to establish a stable base URL.
+
+# XXX The trailing slash is arguable. It might be right because all of our
+# pages behave like folders anyway.
 
 class PageBase(grok.View):
 
@@ -121,7 +135,7 @@ class PageBase(grok.View):
     grok.name('base')
 
     def render(self):
-        return self.url(self.context)
+        return self.url(self.context) + '/'
 
 
 class EditionBase(grok.View):
@@ -130,4 +144,4 @@ class EditionBase(grok.View):
     grok.context(asm.cms.interfaces.IEdition)
 
     def render(self):
-        return self.url(self.context.page)
+        return self.url(self.context.page) + '/'

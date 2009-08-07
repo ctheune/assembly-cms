@@ -1,6 +1,6 @@
 <li tal:repeat="edition context/editions"
     tal:attributes="class python:edition is context and 'selected' or ' '">
-    <a tal:attributes="href python:view.url(edition)">
+    <a tal:attributes="href python:view.url(edition, '@@edit')">
         <span tal:repeat="var edition/parameters"
               tal:content="var"
               i18n:translate=""/>

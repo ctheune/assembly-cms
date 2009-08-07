@@ -4,9 +4,9 @@
 import asm.cms.edition
 import asm.cms.form
 import asm.cms.interfaces
+import asm.cms.tinymce
 import grok
 import megrok.pagelet
-import zope.html.widget
 import zope.interface
 
 
@@ -34,4 +34,4 @@ class CMSIndex(asm.cms.form.EditForm):
     grok.name('index')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IHTMLPage)
-    form_fields['content'].custom_widget = zope.html.widget.FckeditorWidget
+    form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget

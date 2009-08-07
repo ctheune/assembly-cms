@@ -72,6 +72,5 @@ class IRetailSkin(grok.IDefaultBrowserLayer):
 
 class IEditionSelector(zope.interface.Interface):
 
-    def __call__(self):
-        """Return a set of edition arguments to use for looking up an
-        edition."""
+    preferred = zope.interface.Attribute('A list of preferred editions.')
+    acceptable = zope.interface.Attribute('A list of acceptable editions')

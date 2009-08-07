@@ -2,6 +2,10 @@
 The Assembly CMS
 ================
 
+Note, these tests are mainly smoke tests to make sure that at least the core
+isn't totally broken. If you like, there are issues in the tracker about
+extending and cleaning up the tests.
+
 >>> import cStringIO
 >>> from zope.testbrowser.testing import Browser
 >>> b = Browser()

@@ -24,7 +24,7 @@ class RetailTraverser(grok.Traverser):
     """Retail traversers try to map URLs to page *editions* when the URL would
     normally point to a page.
 
-    They also hide the editions' real URLs and point them to the pages' URLs.
+    We also hide the editions' real URLs and point them to the pages' URLs.
 
     """
 
@@ -42,15 +42,33 @@ class RetailTraverser(grok.Traverser):
         subpage = page.get(name)
         if not asm.cms.interfaces.IPage.providedBy(subpage):
             return
-        parameters = set()
-        for args in zope.component.subscribers(
-            (self.request,), asm.cms.interfaces.IEditionSelector):
-            parameters.update(args)
-        parameters = asm.cms.edition.EditionParameters(parameters)
-        try:
-            return subpage.getEdition(parameters)
-        except KeyError:
+        # XXX This code should probably refactored out of here.
+        # We start out with all editions being acceptable.
+        editions = dict((x, 0) for x in subpage.editions)
+        for selector in zope.component.subscribers(
+            (subpage, self.request,), asm.cms.interfaces.IEditionSelector):
+            # Clean out all editions which are neither preferred nor accepted
+            # by the current selector
+            selected = set()
+            selected.update(selector.preferred)
+            selected.update(selector.acceptable)
+            for edition in list(editions.keys()):
+                if edition not in selected:
+                    del editions[edition]
+
+            for edition in selector.preferred:
+                editions.setdefault(edition, 0)
+                editions[edition] += 1
+            for edition in selector.acceptable:
+                editions.setdefault(edition, 0)
+
+        if not editions:
+            # XXX Put in NullEdition here?
             return subpage
+
+        editions = editions.items()
+        editions.sort(key=lambda x:x[1], reverse=True)
+        return editions[0][0]
 
     def get_context(self):
         return self.context

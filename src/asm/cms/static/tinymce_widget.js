@@ -11,6 +11,11 @@ tinyMCE.init({
 
     file_browser_callback: 'asmcmsFileBrowser',
 
+    document_base_url: document.baseURI,
+
+    width: 600,
+    height: 800,
+
     gecko_spellcheck : true
 });
 

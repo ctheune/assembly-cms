@@ -91,16 +91,43 @@ class RetailIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.IRetailSkin)
     grok.context(asm.cms.interfaces.IPage)
-    grok.name('index')
-
-    def render(self):
-        self.request.response.setStatus(404)
-        return 'This page is not available.'
+    grok.name('edit')
+    grok.template('index')
 
 
-class CMSIndex(megrok.pagelet.Pagelet):
+class CMSEdit(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.context(asm.cms.interfaces.IPage)
+    grok.name('edit')
+    grok.template('index')
+
+
+class CMSIndex(grok.View):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.context(asm.cms.interfaces.IPage)
     grok.name('index')
-    grok.template('index')
+
+    def render(self):
+        # XXX Implement a strategy to choose which one will be shown.
+        return zope.component.getMultiAdapter(
+            (self.context.editions.next(), self.request), name='index')()
+
+
+class PageBase(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+    grok.name('base')
+
+    def render(self):
+        return self.url(self.context)
+
+
+class EditionBase(grok.View):
+
+    grok.name('base')
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def render(self):
+        return self.url(self.context.page)

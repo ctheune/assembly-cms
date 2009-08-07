@@ -15,6 +15,13 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('templates/layout.pt')
 
 
+class LayoutHelper(grok.View):
+    grok.context(zope.interface.Interface)
+
+    def render(self):
+        return ''
+
+
 class Navtree(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)

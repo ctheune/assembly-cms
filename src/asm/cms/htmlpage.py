@@ -21,17 +21,13 @@ class HTMLPage(asm.cms.edition.Edition):
         self.content = other.content
 
 
-class RetailIndex(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.interfaces.IRetailSkin)
-    grok.name('index')
-    grok.template('index')
+class Index(megrok.pagelet.Pagelet):
+    pass
 
 
-class CMSIndex(asm.cms.form.EditForm):
+class Edit(asm.cms.form.EditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IHTMLPage)
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget

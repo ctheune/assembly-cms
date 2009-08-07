@@ -1,7 +1,10 @@
 <html>
     <head>
         <title>CMS</title>
-        <link rel="stylesheet" tal:attributes="href view/static/cms.css" type="text/css" />
+        <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/cms.css" type="text/css" />
+
+        <base tal:attributes="href string:${context/@@base}"/>
+
     </head>
 
     <body>

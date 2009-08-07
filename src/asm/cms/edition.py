@@ -4,6 +4,7 @@
 import BTrees.OOBTree
 import asm.cms.interfaces
 import grok
+import megrok.pagelet
 import re
 import zope.interface
 
@@ -22,6 +23,23 @@ class Edition(grok.Model):
     @property
     def page(self):
         return self.__parent__
+
+
+grok.context(Edition)
+
+
+class NullEdition(Edition):
+    pass
+
+
+class NullIndex(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.ICMSSkin)
+    grok.name('index')
+    grok.context(NullEdition)
+
+    def render(self):
+        return 'No edition available.'
 
 
 class EditionParameters(object):

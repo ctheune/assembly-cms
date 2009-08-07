@@ -26,9 +26,20 @@ def select_initial_parameters():
     return set([WORKFLOW_DRAFT])
 
 
-@zope.component.adapter(asm.cms.interfaces.IRetailSkin)
-def select_retail_edition(request):
-    return set([WORKFLOW_PUBLIC])
+class RetailEditionSelector(object):
+
+    zope.interface.implements(asm.cms.IEditionSelector)
+    zope.component.adapts(
+        asm.cms.IPage,
+        asm.cms.interfaces.IRetailSkin)
+
+    acceptable = ()
+
+    def __init__(self, page, request):
+        self.preferred = []
+        for edition in page.editions:
+            if WORKFLOW_PUBLIC in edition.parameters:
+                self.preferred.append(edition)
 
 
 class PublishMenuItem(grok.Viewlet):

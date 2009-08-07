@@ -33,8 +33,3 @@
         </span>
     </div>
 </form>
-
-<tal:extra_content
-condition="view/extra_content"
-define="extra_content view/extra_content"
-replace="structure context/?extra_content" />

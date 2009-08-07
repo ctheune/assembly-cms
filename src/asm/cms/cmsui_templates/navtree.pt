@@ -3,7 +3,7 @@
 <ul>
 <metal:block define-macro="inner">
     <li tal:repeat="item items">
-        <a tal:attributes="href python:view.url(item['page']);
+        <a tal:attributes="href python:view.url(item['page'], '@@edit');
                            class python:view.page is item['page'] and 'selected' or ' '"
            tal:content="item/page/__name__"></a>
         <tal:block define="items item/subpages">

@@ -91,16 +91,57 @@ class RetailIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.IRetailSkin)
     grok.context(asm.cms.interfaces.IPage)
-    grok.name('index')
-
-    def render(self):
-        self.request.response.setStatus(404)
-        return 'This page is not available.'
+    grok.name('edit')
+    grok.template('index')
 
 
-class CMSIndex(megrok.pagelet.Pagelet):
+class CMSEdit(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.context(asm.cms.interfaces.IPage)
+    grok.name('edit')
+    grok.template('index')
+
+
+class CMSIndex(grok.View):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.context(asm.cms.interfaces.IPage)
     grok.name('index')
-    grok.template('index')
+
+    def render(self):
+        # XXX Implement a strategy to choose which one will be shown.
+        try:
+            edition = self.context.editions.next()
+        except StopIteration:
+            edition = asm.cms.edition.NullEdition()
+            edition.__parent__ = self.context
+            edition.__name__ = ''
+        return zope.component.getMultiAdapter(
+            (edition, self.request), name='index')()
+
+
+# The following two views are needed to support visual editing of editions
+# which have their own URL, nested a level within a page. As all relative URLs
+# are constructed assuming they start from a page, we need to provide the
+# means to establish a stable base URL.
+
+# XXX The trailing slash is arguable. It might be right because all of our
+# pages behave like folders anyway.
+
+class PageBase(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+    grok.name('base')
+
+    def render(self):
+        return self.url(self.context) + '/'
+
+
+class EditionBase(grok.View):
+
+    grok.name('base')
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def render(self):
+        return self.url(self.context.page) + '/'

@@ -16,7 +16,6 @@ class Form(megrok.pagelet.component.FormPageletMixin, grok.Form):
     grok.baseclass()
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
-    extra_content = None
 
 
 class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
@@ -24,7 +23,6 @@ class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
     grok.baseclass()
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
-    extra_content = None
 
     # Needs to be set by the child class
     factory = None
@@ -36,7 +34,7 @@ class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.applyData(obj, **data)
         self.add(obj)
-        self.redirect(self.url(self.target))
+        self.redirect(self.url(self.target, '@@edit'))
 
     def add(self, obj):
         name = self.chooseName(obj)
@@ -60,16 +58,11 @@ class EditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
     grok.baseclass()
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
-    extra_content = None
-    redirect_to_parent = False
 
     @grok.action("Save")
     def handle_edit_action(self, **data):
         super(EditForm, self).handle_edit_action.success(data)
-        if not self.errors:
-            self.flash(self.status)
-            if self.redirect_to_parent:
-                target = zope.traversing.api.getParent(self.context)
-            else:
-                target = self.context
-            self.redirect(self.url(target))
+        if self.errors:
+            return
+        self.flash(self.status)
+        self.redirect(self.url(self.context, 'edit'))

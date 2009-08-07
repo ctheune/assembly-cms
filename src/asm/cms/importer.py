@@ -1,14 +1,9 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-# XXX This module has knowledge about CMS extensions but it shouldn't. I think
-# it should become its own extension and/or provide a mechanism for extensions
-# to support imports.
-
 import asm.cms
 import asm.cms.cms
 import asm.cms.edition
-import asm.workflow
 import base64
 import bn
 import grok
@@ -95,7 +90,8 @@ def fix_relative_links(document, current_path):
         if src and src.startswith('/'):
             img.set('src', bn.relpath(src, current_path))
 
-    result = lxml.etree.tostring(document, pretty_print=True)
+    result = lxml.etree.tostring(document.xpath('//stupidcontainerwrappercafebabe')[0],
+                                 pretty_print=True)
     result = result.replace('<stupidcontainerwrappercafebabe>', '')
     result = result.replace('</stupidcontainerwrappercafebabe>', '')
     return result.strip()

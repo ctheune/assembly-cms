@@ -19,18 +19,18 @@ class Asset(asm.cms.edition.Edition):
         self.content = other.content
 
 
-class RetailIndex(grok.View):
+class Edit(asm.cms.form.EditForm):
 
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.name('edit')
+
+    form_fields = grok.AutoFields(asm.cms.interfaces.IAsset)
+
+
+class Index(grok.View):
+
+    grok.layer(grok.IDefaultBrowserLayer)
     grok.name('index')
 
     def render(self):
         return self.context.content
-
-
-class CMSIndex(asm.cms.form.EditForm):
-
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
-
-    form_fields = grok.AutoFields(asm.cms.interfaces.IAsset)

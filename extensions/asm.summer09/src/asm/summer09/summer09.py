@@ -10,3 +10,12 @@ class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
     grok.layer(ISummer09)
     megrok.pagelet.template('layout.pt')
+
+
+class LayoutHelper(grok.View):
+    grok.context(zope.interface.Interface)
+
+    # A helper class to get access to the static directory in this module from
+    # the layout.
+    def render(self):
+        return ''

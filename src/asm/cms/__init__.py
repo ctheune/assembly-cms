@@ -30,7 +30,9 @@ zope.deferredimport.define(
 
     IRetailSkin='asm.cms.interfaces:IRetailSkin',
     ICMSSkin='asm.cms.interfaces:ICMSSkin',
+    IPage='asm.cms.interfaces:IPage',
     IEditionFactory='asm.cms.interfaces:IEditionFactory',
     IEdition='asm.cms.interfaces:IEdition',
+    IEditionSelector='asm.cms.interfaces:IEditionSelector',
     IInitialEditionParameters='asm.cms.interfaces:IInitialEditionParameters',
     )

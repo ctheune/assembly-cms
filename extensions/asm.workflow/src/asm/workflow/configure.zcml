@@ -6,7 +6,7 @@
   <grok:grok package="." />
 
   <subscriber
-    factory=".workflow.select_retail_edition"
+    factory=".workflow.RetailEditionSelector"
     provides="asm.cms.interfaces.IEditionSelector"
     />
 

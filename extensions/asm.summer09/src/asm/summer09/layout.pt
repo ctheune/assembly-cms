@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title></title>
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
+    </head>
+
+    <body>
+        foo
+        <div tal:replace="structure context/@@messages"></div>
+
+        <div tal:replace="structure view/render">
+        </div>
+    </body>
+</html>

@@ -103,7 +103,7 @@ a {
 
 #header {
     background:#333;
-    color:#fff;
+    color:#999;
     height:20px;
     padding:10px 20px;
 }
@@ -111,13 +111,9 @@ a {
 #header h1 {
     font-size:1.5em;
     margin:0;
-    color:#fff;
+    color:#999;
     width:500px;
     float:left;
-}
-
-#header h1 span {
-    color:#999;
 }
 
 #container {
@@ -129,7 +125,7 @@ a {
 }
 
 #content {
-    
+    width:600px;
 }
 
 #footer {
@@ -185,9 +181,33 @@ a {
     padding:3px 0;
 }
 
+.menu-item .menu-content li li {
+    margin:0 0 0 8px;
+}
+
 .menu-item {
     margin:10px 0;
     font-size:1.2em;
+}
+
+#search {
+    float:right;
+}
+#search input {
+    padding:2px;
+    margin:0;
+}
+
+#search form {
+    margin:0;
+}
+
+#header ul {
+    list-style:none;
+}
+
+#header a {
+    color:#fff;
 }
 
 

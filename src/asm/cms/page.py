@@ -124,9 +124,10 @@ class CMSIndex(grok.View):
 # which have their own URL, nested a level within a page. As all relative URLs
 # are constructed assuming they start from a page, we need to provide the
 # means to establish a stable base URL.
-
-# XXX The trailing slash is arguable. It might be right because all of our
-# pages behave like folders anyway.
+#
+# Note that as pages in the CMS always can act as folders we add a trailing
+# slash to their URL when using them as a base: images contained in the page
+# will be linked to without mentioning the name of the page explicitly.
 
 class PageBase(grok.View):
 

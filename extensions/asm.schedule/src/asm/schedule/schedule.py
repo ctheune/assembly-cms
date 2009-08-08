@@ -107,14 +107,13 @@ def publish_schedule(event):
         except KeyError:
             pass
         else:
-            if (public._workflow_publication_date ==
-                event.public._workflow_publication_date):
+            if (public.modified == event.public.modified):
                 # The public version is up to date, so we ignore it.
                 continue
 
         draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
         draft = page.getEdition(draft)
-        asm.workflow.publish(draft, event.public._workflow_publication_date)
+        asm.workflow.publish(draft, event.public.modified)
 
 
 def extract_date(date):

@@ -158,3 +158,31 @@ def annotate_modification_date(obj, event):
 @grok.subscribe(Edition, grok.ObjectAddedEvent)
 def annotate_creation_date(obj, event):
     obj.created = datetime.datetime.now(pytz.UTC)
+
+
+def select_edition(page, request):
+    editions = dict((x, 0) for x in page.editions)
+    for selector in zope.component.subscribers(
+            (page, request), asm.cms.interfaces.IEditionSelector):
+        # Clean out all editions which are neither preferred nor accepted
+        # by the current selector
+        selected = set()
+        selected.update(selector.preferred)
+        selected.update(selector.acceptable)
+        for edition in list(editions.keys()):
+            if edition not in selected:
+                del editions[edition]
+
+        for edition in selector.preferred:
+            editions.setdefault(edition, 0)
+            editions[edition] += 1
+        for edition in selector.acceptable:
+            editions.setdefault(edition, 0)
+
+    if not editions:
+        # XXX Put in NullEdition here?
+        return page
+
+    editions = editions.items()
+    editions.sort(key=lambda x:x[1], reverse=True)
+    return editions[0][0]

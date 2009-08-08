@@ -10,6 +10,11 @@
     provides="asm.cms.interfaces.IEditionSelector"
     />
 
+  <subscriber
+    factory=".workflow.CMSEditionSelector"
+    provides="asm.cms.interfaces.IEditionSelector"
+    />
+
   <utility
     component=".workflow.select_initial_parameters"
     provides="asm.cms.IInitialEditionParameters"

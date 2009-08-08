@@ -25,8 +25,7 @@ zope.deferredimport.define(
     EditForm='asm.cms.form:EditForm',
     AddForm='asm.cms.form:AddForm',
 
-    # XXX Rename! This is a name clash with page.Page
-    Page='asm.cms.retail:Page',
+    Pagelet='asm.cms.retail:Pagelet',
 
     IRetailSkin='asm.cms.interfaces:IRetailSkin',
     ICMSSkin='asm.cms.interfaces:ICMSSkin',

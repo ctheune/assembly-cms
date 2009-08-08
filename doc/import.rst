@@ -13,7 +13,12 @@ The format is XML with the following structure, given as an example::
 <?xml version="1.0">
 <import base="/previous/prefix/path">
   <page path="path/after/prefix">
-    <edition parameters="lang:en workflow:public">
+    <edition parameters="lang:en workflow:public"
+             title="A fine piece of content"
+             tags="news bigscreen"
+             created="ISO date in UTC"
+             modified="ISO date in UTC"
+             >
     ...content encoded in base64...
     </edition>
     <edition parameters="lang:fi workflow:draft">

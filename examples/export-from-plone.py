@@ -1,4 +1,5 @@
 import base64
+import cgi
 
 type_map = {
     'Document': 'htmlpage',
@@ -18,7 +19,11 @@ def export_data(item, language, workflow):
         cdata = edition.CookedBody(stx_level=2)
     elif edition.portal_type in ['File', 'Image']:
         cdata = edition.get_data()
-    print '<edition parameters="lang:%s workflow:%s">' % (lang, workflow)
+    print '<edition parameters="lang:%s workflow:%s"' % (lang, workflow)
+    print '         title="%s"' % cgi.escape(edition.Title())
+    print '         tags="%s"' % cgi.escape(' '.join(edition.Subject()))
+    print '         created="%s"' % edition.CreationDate()
+    print '         modified="%s">' % edition.ModificationDate()
     print '<![CDATA[%s]]>' % base64.encodestring(cdata)
     print '</edition>'
     return printed

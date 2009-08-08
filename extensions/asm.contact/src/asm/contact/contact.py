@@ -22,7 +22,6 @@ class Contact(asm.cms.Edition):
 class Edit(asm.cms.form.EditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
 
     form_fields = grok.AutoFields(asm.contact.interfaces.IContactForm)
 

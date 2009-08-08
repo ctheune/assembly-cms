@@ -7,7 +7,7 @@ import grok
 import megrok.pagelet
 import re
 import zope.interface
-
+import datetime
 
 class Edition(grok.Model):
 
@@ -16,9 +16,14 @@ class Edition(grok.Model):
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
+        self.date_created = datetime.datetime.now()
+        self.date_modified = self.date_created
 
     def editions(self):
         return self.__parent__.editions
+
+    title = u''
+    tags = u''
 
     @property
     def page(self):
@@ -54,6 +59,8 @@ class EditionParameters(object):
         self.parameters = set(initial)
 
     def __eq__(self, other):
+        if not other:
+            return False
         return self.parameters == other.parameters
 
     def __iter__(self):

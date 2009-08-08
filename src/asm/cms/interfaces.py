@@ -37,6 +37,10 @@ class IPage(zope.interface.Interface):
 class IEdition(zope.interface.Interface):
 
     parameters = zope.schema.TextLine(title=u'Edition parameters')
+    title = zope.schema.TextLine(title=u'Title')
+    tags = zope.schema.TextLine(title=u'Tags')
+    date_created = zope.schema.Datetime(title=u'Date created')
+    date_modified = zope.schema.Datetime(title=u'Date modified')
 
     def copyFrom(other):
         """Copy all content from another edition of the same kind."""

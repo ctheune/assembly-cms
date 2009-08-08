@@ -32,6 +32,7 @@ XXX This should be reachable through the UI, but isn't.
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
 >>> b.getControl('Content').value = 'lots of meaningful text'
+>>> #b.handleErrors = False
 >>> b.getControl('Save').click()
 
 >>> b.open('http://localhost/++skin++retail/summer09/testpage')
@@ -76,6 +77,7 @@ True
 
 >>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')
 >>> b.getControl('File').add_file(cStringIO.StringIO('Test file contents'), 'text/plain', 'test.txt')
+>>> b.getControl('Title').value = 'Test Asset'
 >>> b.getControl('Save').click()
 
 >>> b.open('http://localhost/++skin++retail/summer09/testasset/')

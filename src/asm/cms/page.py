@@ -110,7 +110,6 @@ class CMSIndex(grok.View):
     grok.name('index')
 
     def render(self):
-        # XXX Implement a strategy to choose which one will be shown.
         try:
             edition = self.context.editions.next()
         except StopIteration:

@@ -163,7 +163,7 @@ def annotate_creation_date(obj, event):
 def select_edition(page, request):
     editions = dict((x, 0) for x in page.editions)
     for selector in zope.component.subscribers(
-            (page, request), asm.cms.interfaces.IEditionSelector):
+        (page, request), asm.cms.interfaces.IEditionSelector):
         # Clean out all editions which are neither preferred nor accepted
         # by the current selector
         selected = set()
@@ -180,8 +180,10 @@ def select_edition(page, request):
             editions.setdefault(edition, 0)
 
     if not editions:
-        # XXX Put in NullEdition here?
-        return page
+        null = NullEdition()
+        null.__parent__ = page
+        null.__name__ = u''
+        return null
 
     editions = editions.items()
     editions.sort(key=lambda x:x[1], reverse=True)

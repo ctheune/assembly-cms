@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <script language="JavaScript">
+            var FileBrowserDialogue = {
+                init : function () {
+                    alert('foo');
+                    // Here goes your code for setting your custom things onLoad.
+                },
+                mySubmit : function () {
+                    // Here goes your code to insert the retrieved URL value into the original dialogue window.
+                    // For example code see below.
+                }
+            }
+            tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
+        </script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td><a tal:attributes="href python:view.url(context.__parent__,
+                        '@@tinymce-linkbrowser')">.. (<span
+                            tal:content="context/__parent__/__name__"/>)</a>
+                </td>
+            </tr>
+            <tr>
+                <td><a tal:attributes="href python:view.url(context,
+                        '@@tinymce-linkbrowser')">. (<span
+                            tal:content="context/__name__"/>)</a>
+                </td>
+            </tr>
+            <tr tal:repeat="page context/subpages">
+                <td><a tal:attributes="href python:view.url(page,
+                        '@@tinymce-linkbrowser')" tal:content="page/__name__"/>
+                </td>
+            </tr>
+    </body>
+</html>

@@ -47,19 +47,10 @@
                 
             </div> <!-- admin-menu -->
     
-            <div id="content" class="column">
+            <div id="content">
                 <div tal:replace="structure context/@@messages"></div>
     
                 <tal:block replace="structure view/render"></tal:block>
-            </div>
-            
-            <div id="controls" class="column">
-                <div id="menu-editions" class="menu-item">
-                    <div class="menu-head">Editions</div>
-                    <ul class="menu-content">
-                        <tal:block replace="structure provider:editions"/>
-                    </ul>
-                </div>
             </div>
                 
         </div>

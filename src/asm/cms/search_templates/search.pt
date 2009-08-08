@@ -1,9 +1,11 @@
 <h1>Search results</h1>
 
-<ul>
-    <li tal:repeat="result view/results">
-        <a tal:attributes="href python:view.url(result, '@@edit')"
-            tal:content="result/title">
-        </a>
-    </li>
-</ul>
+<div id="search-results">
+    <ul>
+        <li tal:repeat="result view/results">
+            <a tal:attributes="href python:view.url(result, '@@edit')"
+                tal:content="result/title">
+            </a>
+        </li>
+    </ul>
+</div>

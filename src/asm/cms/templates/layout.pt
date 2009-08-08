@@ -31,6 +31,14 @@
                 </ul>
             </fieldset>
 
+            <fieldset>
+                <legend>Search</legend>
+
+                <form tal:attributes="action
+                    string:${view/application_url}/search">
+                    <input type="text" name="q"/>
+                </form>
+            </fieldset>
         </div>
 
         <div id="content">

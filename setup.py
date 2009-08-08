@@ -32,5 +32,6 @@ setup(name='asm.cms',
                         'BareNecessities',
                         'hurry.zoperesource',
                         'hurry.tinymce',
+                        'hurry.query',
                         ],
       )

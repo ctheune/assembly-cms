@@ -81,7 +81,7 @@ class Import(asm.cms.Form):
 
 
 def fix_relative_links(document, current_path):
-    # XXX Hrgh. Why is there no obvious simple way to do this?
+    # Hrgh. Why is there no obvious simple way to do this?
     parser = lxml.etree.HTMLParser()
     document = (
         '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %

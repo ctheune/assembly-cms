@@ -34,10 +34,21 @@ following data:
 Retail behaviour
 ----------------
 
-The Zope publisher will select an edition to publish based on the request as
-it was post-processed by plug-ins which establish a set of required tags.
+The Zope publisher will select an edition to publish based on the page and the request.
 
-XXX Describe fall-back mechanism here. 
+Extensions can register IEditionSelector implementations which will determine
+preferred, acceptable, or unacceptable editions.
+
+Merging them works like this:
+
+1. start with all editions available at 0 points
+2. go through all IEditionSelectors for the current page and request
+    2.1. if a selector doesn't choose an edition as acceptable or preferred:
+      eliminate it
+    2.2. if a selector chooses an edition as preferred and it hasn't been
+      eliminated yet, add a point
+3. all remaining editions are sorted by their points, the first is returned
+4. if all editions were eliminated, return a NullEdition
 
 
 CMS extensions

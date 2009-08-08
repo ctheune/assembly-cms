@@ -1,4 +1,5 @@
 import base64
+import cgi
 
 type_map = {
     'Document': 'htmlpage',
@@ -6,7 +7,7 @@ type_map = {
     'File': 'asset',
 }
 
-print '<?xml version="1.0"?>'
+print '<?xml version="1.0"? encoding="utf-8">'
 print '<import base="%s">' % container.portal_url.getPortalObject().absolute_url_path()
 
 objects = list(container.portal_catalog(portal_type='Document'))
@@ -18,7 +19,11 @@ def export_data(item, language, workflow):
         cdata = edition.CookedBody(stx_level=2)
     elif edition.portal_type in ['File', 'Image']:
         cdata = edition.get_data()
-    print '<edition parameters="lang:%s workflow:%s">' % (lang, workflow)
+    print '<edition parameters="lang:%s workflow:%s"' % (lang, workflow)
+    print '         title="%s"' % cgi.escape(edition.Title())
+    print '         tags="%s"' % cgi.escape(' '.join(edition.Subject()))
+    print '         created="%s"' % edition.CreationDate()
+    print '         modified="%s">' % edition.ModificationDate()
     print '<![CDATA[%s]]>' % base64.encodestring(cdata)
     print '</edition>'
     return printed

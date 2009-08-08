@@ -64,7 +64,7 @@ caption {background:#eee;}
 label {font-weight:bold;}
 fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
 legend {font-weight:bold;font-size:1.2em;}
-input[type=text], input[type=password], input.text, input.title, textarea, select {background-color:#fff;border:1px solid #bbb;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {background-color:#fff;border:1px solid #ccc; padding:5px;}
 input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {border-color:#666;}
 input[type=text], input[type=password], input.text, input.title, textarea, select {margin:0.5em 0;}
 input.text, input.title {width:300px;padding:5px;}
@@ -117,16 +117,13 @@ a {
 }
 
 #container {
-    padding:15px 20px;
+    padding:20px 20px;
 }
 
 #user-info {
     float:right;
 }
 
-#content {
-    width:600px;
-}
 
 #footer {
     background:#333;
@@ -143,6 +140,8 @@ a {
 #content {
     float:left;
     margin-right:20px;
+    min-width:600px;
+    max-width:800px;
 }
 
 #controls {
@@ -151,7 +150,7 @@ a {
 }
 
 .column {
-
+    float:left;
 }
 
 .column ul {
@@ -165,9 +164,9 @@ a {
 }
 
 .menu-item .menu-head {
-    background:#aaa;
-    color:#fff;
-    padding:5px;
+    background:#ccc;
+    color:#666;
+    padding:5px 10px 4px 10px;
     font-weight:bold;
 }
 
@@ -186,7 +185,7 @@ a {
 }
 
 .menu-item {
-    margin:10px 0;
+    margin:0 0 20px 0;
     font-size:1.2em;
 }
 
@@ -210,6 +209,33 @@ a {
     color:#fff;
 }
 
+.widget input.textType {
+    font-size:1.6em; width:100%;
+    font-family:Georgia;
+    margin:0 0 10px 0;
+}
+
+.field span {
+    color:#666;
+}
+
+h1 {
+    font-family:Arial, Helvetica, sans-serif;
+    letter-spacing:-1px;
+    margin:0 0 10px 0;
+    color:#666;
+    font-size:2.5em;
+    font-style:italic;
+}
+
+#search-results {
+    background:#fff;
+    padding:10px 15px;
+}
+
+#search-results li {
+    margin:10px 0;
+}
 
 /* clearfix */
 .clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}

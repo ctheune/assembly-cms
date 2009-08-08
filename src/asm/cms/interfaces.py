@@ -74,3 +74,9 @@ class IEditionSelector(zope.interface.Interface):
 
     preferred = zope.interface.Attribute('A list of preferred editions.')
     acceptable = zope.interface.Attribute('A list of acceptable editions')
+
+
+class ISearchableText(zope.interface.Interface):
+
+    body = zope.interface.Attribute(
+        "A unicode string containing text for indexing.")

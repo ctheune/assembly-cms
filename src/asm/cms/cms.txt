@@ -40,6 +40,19 @@ XXX This should be reachable through the UI, but isn't.
 lots of meaningful text
 ...
 
+>>> b.open('http://localhost/++skin++cms/summer09/search?q=meaningful')
+>>> print b.contents
+<html>
+...
+ <h1>Search results</h1>
+ <ul>
+     <li>
+         <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">testpage -
+             edition-</a>
+     </li>
+ </ul>
+...
+
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
 >>> b.getLink('Delete edition').click()
 >>> b.open('http://localhost/++skin++retail/summer09/testpage')
@@ -68,6 +81,5 @@ True
 >>> b.open('http://localhost/++skin++retail/summer09/testasset/')
 >>> print b.contents
 Test file contents
-
 
 

@@ -85,7 +85,7 @@ def fix_relative_links(document, current_path):
     parser = lxml.etree.HTMLParser()
     document = (
         '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        document)
+        document.decode('utf-8'))
     document = lxml.etree.fromstring(document, parser)
     for a in document.xpath('//a'):
         href = a.get('href')

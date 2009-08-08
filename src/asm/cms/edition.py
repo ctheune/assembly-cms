@@ -3,15 +3,22 @@
 
 import BTrees.OOBTree
 import asm.cms.interfaces
+import datetime
 import grok
 import megrok.pagelet
+import pytz
 import re
 import zope.interface
-import datetime
+
 
 class Edition(grok.Model):
 
     zope.interface.implements(asm.cms.interfaces.IEdition)
+
+    created = None
+    modified = None
+    tags = None
+    title = u''
 
     def __init__(self):
         super(Edition, self).__init__()
@@ -22,12 +29,16 @@ class Edition(grok.Model):
     def editions(self):
         return self.__parent__.editions
 
-    title = u''
-    tags = u''
-
     @property
     def page(self):
         return self.__parent__
+
+    def copyFrom(self, other):
+        self.created = other.created
+        self.modified = other.modified
+        self.tags = other.tags
+        self.title = other.title
+        zope.event.notify(grok.ObjectModifiedEvent(self))
 
 
 grok.context(Edition)
@@ -137,3 +148,13 @@ class TinyMCELinkBrowsers(grok.View):
 
     grok.name('tinymce-linkbrowser')
     grok.template('tinymce-linkbrowser')
+
+
+@grok.subscribe(asm.cms.interfaces.IEdition, grok.IObjectModifiedEvent)
+def annotate_modification_date(obj, event):
+    obj.modified = datetime.datetime.now(pytz.UTC)
+
+
+@grok.subscribe(Edition, grok.ObjectAddedEvent)
+def annotate_creation_date(obj, event):
+    obj.created = datetime.datetime.now(pytz.UTC)

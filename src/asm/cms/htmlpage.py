@@ -18,8 +18,8 @@ class HTMLPage(asm.cms.edition.Edition):
     content = u''
 
     def copyFrom(self, other):
-        # NB. This will magically update self.title as well.
         self.content = other.content
+        super(HTMLPage, self).copyFrom(other)
 
 
 class Index(megrok.pagelet.Pagelet):
@@ -31,7 +31,7 @@ class Edit(asm.cms.form.EditForm):
     grok.layer(asm.cms.interfaces.ICMSSkin)
 
     form_fields = grok.AutoFields(HTMLPage).select(
-        'title', 'tags', 'content')
+        'title', 'tags', 'created', 'modified', 'content')
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
 
@@ -40,4 +40,4 @@ class TextIndexing(grok.Adapter):
     zope.interface.implements(asm.cms.interfaces.ISearchableText)
 
     def __init__(self, page):
-        self.body = page.content
+        self.body = page.content + ' ' + page.title

@@ -16,8 +16,7 @@ def publish(draft, publication_date=None):
     public = draft.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
     public = draft.page.getEdition(public, create=True)
     public.copyFrom(draft)
-    # XXX Sticking the publication date on a protected arg is icky
-    public._workflow_publication_date = (
+    public.modified = (
         publication_date or datetime.datetime.now())
     zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
 

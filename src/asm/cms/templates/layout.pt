@@ -13,7 +13,11 @@
 
             <h1><span>AssemblyCMS /</span>
                 <a tal:content="view/application/__name__"
-                   tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a></h1>
+                   tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
+            <a class="visit-site" href="#">visit site</a>
+            </h1>
+            
+            
             
             <div id="search">
                 <form tal:attributes="action
@@ -30,6 +34,12 @@
         
         <div id="container" class="clearfix">
             <div id="admin-menu" class="column">
+                <div id="menu-actions" class="menu-item">
+                    <div class="menu-head">Actions</div>
+                    <ul class="menu-content">
+                        <tal:block replace="structure provider:actions"/>
+                    </ul>
+                </div>
                 
                 <div id="menu-navigation" class="menu-item">
                     <div class="menu-head">Navigation</div>
@@ -38,12 +48,7 @@
                     </div>
                 </div>
     
-                <div id="menu-actions" class="menu-item">
-                    <div class="menu-head">Actions</div>
-                    <ul class="menu-content">
-                        <tal:block replace="structure provider:actions"/>
-                    </ul>
-                </div>
+
                 
             </div> <!-- admin-menu -->
     

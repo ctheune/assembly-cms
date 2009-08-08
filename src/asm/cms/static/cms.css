@@ -138,8 +138,7 @@ a {
 }
 
 #content {
-    float:left;
-    margin-right:20px;
+    margin-left:220px;
 }
 
 #controls {
@@ -187,6 +186,10 @@ a {
     font-size:1.2em;
 }
 
+.menu-item .selected {
+    background:#f2f4c4;
+}
+
 #search {
     float:right;
 }
@@ -222,8 +225,7 @@ h1 {
     letter-spacing:-1px;
     margin:0 0 10px 0;
     color:#666;
-    font-size:2.5em;
-    font-style:italic;
+    font-size:2.0em;
 }
 
 #search-results {
@@ -231,19 +233,96 @@ h1 {
     padding:10px 15px;
 }
 
+#search-results ul {
+    padding:0;
+    margin:0;
+}
+
 #search-results li {
     margin:10px 0;
+    list-style:none;
+}
+
+.error-notice {
+    margin:0;
 }
 
 #page-edit {
-    margin-right:15px;
+    min-width:500px;
+    max-width:800px;
+    float:none;
+    margin-right:220px;
 }
 
 #page-sidebar {
     float:right;
+    width:180px;
+    padding:20px;
+    margin-top:20px;
 }
 
-#actionsView {
+#page-sidebar h3 {
+    margin:10px 0 0 0;
+    padding:10px 0;
+    border-top:1px solid #ccc;
+    color:#333;
+    font-size:1.3em;
+}
+
+.actionButtons {
+    margin:5px 0;
+}
+
+.actionButtons input {
+    display:block;
+    width:160px;
+}
+
+.sb-item ul {
+    margin:0;
+    padding:0;
+}
+
+.sb-item {
+    margin:0 0 15px 0;  
+}
+
+.button {
+    -moz-border-radius:11px;
+    -moz-box-sizing:content-box;    
+    border:1px solid #ccc;
+    cursor:pointer; 
+    font-size:1.0em;
+    line-height:16px;
+    padding:3px 8px;
+    text-decoration:none;
+    background:white;
+    font-weight:bold;
+}
+
+.message {
+    background-color:#FFFFE0;
+    border:1px solid #E6DB55;
+    color:#333;
+    padding:3px 10px;
+    list-style:none;
+    margin:0 0 15px 0;
+}
+
+#header a.visit-site {
+    -moz-border-radius:3px;
+    display:inline-block;
+    background:#666;
+    color:#333;
+    font-size:12px;
+    padding:3px;
+    margin-left:10px;
+    font-style:normal;
+    letter-spacing:0;
+}
+
+#header a.visit-site:hover {
+    background:#ccc;
 }
 
 /* clearfix */

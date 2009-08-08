@@ -1,4 +1,4 @@
-<ul class="errors" tal:condition="view/errors">
+<ul class="message" tal:condition="view/errors">
     <li tal:repeat="error view/error_views">
     <span tal:replace="structure error">error type</span>
     </li>
@@ -6,6 +6,34 @@
 
 <form action="." tal:attributes="action request/URL" method="post"
     class="edit-form" enctype="multipart/form-data">
+       <div id="page-sidebar" class="column">
+        <!-- XXX This should become a generic viewlet manager, to avoid specific
+        code here in the form template. -->
+        <div class="sb-item">
+            <h3>Editions</h3>
+            <ul>
+                <tal:block replace="structure provider:editions"/>
+            </ul>
+        </div>
+        
+        <div class="sb-item">
+            <h3>Meta</h3>
+                <tal:block tal:repeat="widget view/side_widgets">
+                    <div metal:use-macro="template/macros/fields"/>
+                </tal:block>
+        </div>
+
+        <div id="actionsView" class="sb-item">
+            <h3>Publishing</h3>
+                <span class="actionButtons" tal:condition="view/availableActions">
+                    <input tal:repeat="action view/actions"
+                    tal:replace="structure action/render"
+                    />
+                </span>
+        </div>
+
+
+    </div>
     <div id="page-edit" class="column">
         <h1>Edit Page</h1>
 
@@ -30,31 +58,5 @@
         </tal:block>
     </div>
 
-    <div id="page-sidebar" class="column">
-        <!-- XXX This should become a generic viewlet manager, to avoid specific
-        code here in the form template. -->
-        <div id="menu-editions" class="menu-item">
-            <div class="menu-head">Editions</div>
-            <ul class="menu-content">
-                <tal:block replace="structure provider:editions"/>
-            </ul>
-        </div>
-
-        <div id="actionsView" class="menu-item">
-            <div class="menu-head">Actions</div>
-            <div class="menu-content">
-                <span class="actionButtons" tal:condition="view/availableActions">
-                    <input tal:repeat="action view/actions"
-                    tal:replace="structure action/render"
-                    />
-                </span>
-            </div>
-        </div>
-
-        <div class="side-fields">
-        <tal:block tal:repeat="widget view/side_widgets">
-            <div metal:use-macro="template/macros/fields"/>
-        </tal:block>
-        </div>
-    </div>
+ 
 </form>

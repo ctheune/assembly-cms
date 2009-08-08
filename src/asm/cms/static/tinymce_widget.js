@@ -19,7 +19,7 @@ tinyMCE.init({
 
     document_base_url: document.baseURI,
 
-    width: 600,
+    width: "100%",
     height: 800,
 
     gecko_spellcheck : true

@@ -8,3 +8,4 @@ import grok
 class CMS(grok.Application, asm.cms.page.Page):
 
     type = 'htmlpage'
+

@@ -6,20 +6,10 @@
         </li>
     </ul>
     
-    <div id="controls" class="column">
-            <div id="menu-editions" class="menu-item">
-                <div class="menu-head">Editions</div>
-                <ul class="menu-content">
-                    <tal:block replace="structure provider:editions"/>
-                </ul>
-            </div>
-    </div>
-          
-<div id="page-edit" class="column">
-    <h1>Edit Page</h1>
-    <form action="." tal:attributes="action request/URL" method="post"
-        class="edit-form" enctype="multipart/form-data">
-    
+<form action="." tal:attributes="action request/URL" method="post"
+    class="edit-form" enctype="multipart/form-data">
+    <div id="page-edit" class="column">
+        <h1>Edit Page</h1>
         <div class="field" tal:repeat="widget view/widgets">
             <label tal:attributes="for widget/name;
                 class python:widget.required and 'required' or ''">
@@ -37,13 +27,30 @@
                 <input type="text" />
             </div>
         </div>
-  
-            <div id="actionsView">
+    </div>
+    
+    <div id="page-sidebar" class="column">
+    
+            <div id="menu-editions" class="menu-item">
+                <div class="menu-head">Editions</div>
+                <ul class="menu-content">
+                    <tal:block replace="structure provider:editions"/>
+                </ul>
+            </div>
+
+        
+        <div id="actionsView" class="menu-item">
+            <div class="menu-head">Actions</div>
+            <div class="menu-content">
                 <span class="actionButtons" tal:condition="view/availableActions">
                     <input tal:repeat="action view/actions"
                     tal:replace="structure action/render"
                     />
+                    <!-- ph --><input type="submit" class="button" value="Preview" name="form.actions.preview" id="form.actions.preview"/>
+                    <!--- ph --><input type="submit" class="button" value="Publish" name="form.actions.publish" id="form.actions.publish"/>
                 </span>
             </div>
+        </div>
+        
+    </div>
 </form>
-</div>

@@ -140,8 +140,6 @@ a {
 #content {
     float:left;
     margin-right:20px;
-    min-width:600px;
-    max-width:800px;
 }
 
 #controls {
@@ -235,6 +233,17 @@ h1 {
 
 #search-results li {
     margin:10px 0;
+}
+
+#page-edit {
+    margin-right:15px;
+}
+
+#page-sidebar {
+    float:right;
+}
+
+#actionsView {
 }
 
 /* clearfix */

@@ -128,9 +128,9 @@ class Actions(grok.Viewlet):
     grok.context(Edition)
 
 
-# XXX The following viewlet setup is a bit annoying: we register a viewlet for
-# displaying all editions when looking at a page and when looking at a
-# specific edition. The code is basically the same each time (we actually
+# Issue #59: The following viewlet setup is a bit annoying: we register a
+# viewlet for displaying all editions when looking at a page and when looking
+# at a specific edition. The code is basically the same each time (we actually
 # re-use the template), but the amount of registration necessary is just bad.
 
 class Editions(grok.ViewletManager):

@@ -8,44 +8,67 @@
     </head>
 
     <body>
-        <div id="cms-ui">
-            <fieldset>
-                <legend>Navigation</legend>
 
-                <tal:block replace="structure context/@@navtree"/>
-            </fieldset>
+        <div id="header">
+            <h1><span>AssemblyCMS /</span> summer09</h1>
+            <div id="user-info">
+                logout welcome karri saarinen
+            </div>
 
-            <fieldset>
-                <legend>Actions</legend>
-
-                <ul>
-                    <tal:block replace="structure provider:actions"/>
-                </ul>
-            </fieldset>
-
-            <fieldset>
-                <legend>Editions</legend>
-
-                <ul>
-                    <tal:block replace="structure provider:editions"/>
-                </ul>
-            </fieldset>
-
-            <fieldset>
-                <legend>Search</legend>
-
-                <form tal:attributes="action
-                    string:${view/application_url}/search">
-                    <input type="text" name="q"/>
-                </form>
-            </fieldset>
         </div>
-
-        <div id="content">
-            <div tal:replace="structure context/@@messages"></div>
-
-            <tal:block replace="structure view/render"></tal:block>
+        <div id="container" class="clearfix">
+        
+            <div id="admin-menu" class="column">
+                
+                <div id="menu-navigation" class="menu-item">
+                    <div class="menu-head">Navigation</div>
+                    <div class="menu-content">
+                        <tal:block replace="structure context/@@navtree"/>
+                    </div>
+                </div>
+    
+                <div id="menu-actions" class="menu-item">
+                    <div class="menu-head">Actions</div>
+                    <div class="menu-content">
+                        <ul>
+                            <tal:block replace="structure provider:actions"/>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="menu-actions" class="menu-item">
+                    <div class="menu-head">Search</div>
+                        <div class="menu-content">
+                        <form tal:attributes="action
+                            string:${view/application_url}/search">
+                            <input type="text" name="q"/>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+    
+            <div id="content" class="column">
+                <div tal:replace="structure context/@@messages"></div>
+    
+                <tal:block replace="structure view/render"></tal:block>
+            </div>
+            
+            <div id="controls" class="column">
+                <div id="menu-editions" class="menu-item">
+                    <div class="menu-head">Editions</div>
+                    <div class="menu-content">
+                        <ul>
+                            <tal:block replace="structure provider:editions"/>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        
+            
         </div>
-
+        <div id="footer">
+            <p>AssemblyCMS</p>
+        </div>
     </body>
 </html>

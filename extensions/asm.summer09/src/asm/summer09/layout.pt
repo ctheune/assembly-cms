@@ -2,13 +2,248 @@
     <head>
         <title></title>
         <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
+
+        <script tal:attributes="src context/@@layouthelper/static/jss/prototype.js" type="text/javascript"></script>
+        <script tal:attributes="src context/@@layouthelper/static/jss/scriptaculous.js" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+var target;
+var cookieName='ASSEMBLYsummer09siteguite';
+function startClock() {
+  target = document.getElementById('clock').getAttribute('alt');
+  setTimeout('updateClock()',3000);
+}
+function updateClock() {
+  var now = new Date();
+  var diff = Math.floor((target-now)/1000);
+  if (diff < 0) { diff=0; }
+  document.getElementById('clock_days').innerHTML=Math.floor(diff/86400);
+  diff=diff%86400;
+  document.getElementById('clock_hours').innerHTML=Math.floor(diff/3600);
+  diff=diff%3600;
+  document.getElementById('clock_minutes').innerHTML=Math.floor(diff/60);
+  if (diff > 0) { setTimeout('updateClock()',60000); }
+}
+function openguide() {
+  new Effect.BlindDown('sguide-content');
+  Element.toggle('sguide-bottom-show');
+  Element.toggle('sguide-bottom-hide');
+  return false;
+}
+function closeguide() {
+  new Effect.BlindUp('sguide-content');
+  Element.toggle('sguide-bottom-show');
+  Element.toggle('sguide-bottom-hide');
+  createCookie(cookieName,'seen',300);
+  return false;
+}
+function autocloseguide() {
+  var cookie = readCookie(cookieName);
+  if (cookie==null) {
+    closeguide();
+  }
+}
+var newsRotation=true;
+var currentNews;
+function doStartupStuff() {
+  var cookie = readCookie(cookieName);
+  if (cookie==null) {
+    openguide();
+    setTimeout('autocloseguide()',10000);
+  }
+  currentNews="news-id1";  
+  setTimeout('rotateNews()',10000);
+}
+function createCookie(name,value,days)
+{
+  if (days)
+  {
+    var date = new Date();
+    date.setTime(date.getTime()+(days*24*60*60*1000));
+    var expires = "; expires="+date.toGMTString();
+  }
+  else var expires = "";
+  document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name)
+{
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0;i < ca.length;i++)
+  {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) { return c.substring(nameEQ.length,c.length); }
+  }
+  return null;
+}
+function eraseCookie(name)
+{
+  createCookie(name,"",-1);
+}
+function switch_news(div) {
+    var old = currentNews;
+    if (old == div) { return false; }
+    if (!document.getElementById(div)) { return false; }
+    var elem=document.getElementById(div+'-nav');
+    if (!Element.hasClassName(elem,"active")) {
+        Element.addClassName(elem,"active");
+    }
+    document.getElementById(div).style.display="block";
+    document.getElementById(old).style.display="none";
+    Element.removeClassName(document.getElementById(old+'-nav'),"active");
+    currentNews=div;
+    newsRotation=false;
+    return false;
+}
+function switch_news_next() {
+    var old = currentNews;
+    var num = old.substring(7) * 1;
+    num +=1;
+    if (!document.getElementById('news-id'+num)) { num=1; }
+    switch_news('news-id'+num);
+    return false;
+}
+function switch_news_prev() {
+    var old = currentNews;
+    var num = old.substring(7) * 1;
+    num -=1;
+    if (num==0) {
+        num+=1;
+        while(document.getElementById('news-id'+num)) { num+=1; }
+        num-=1;
+    }
+    switch_news('news-id'+num);
+    return false;
+}
+function rotateNews() {
+    if (newsRotation) {
+        switch_news_next();
+        newsRotation=true;
+        setTimeout('rotateNews()',7000);
+    }
+}
+function stopNews() {
+    newsRotation=false;
+}
+</script>
+
+
     </head>
 
-    <body>
-        foo
+    <body onLoad="doStartupStuff();">
+    <div id="main">
+      <div id="header">
+      <a id="home" href="http://www.assembly.org"></a>
+      <div id="banner-top" class="banner">
+        <a href="http://tickets.assembly.org/">
+          <img tal:attributes="src context/@@layouthelper/static/images/banner-eng.gif" alt="Buy Tickets"/>
+        </a>
+      </div>
+      <div id="button-top-2" class="banner">
+        <!--XXX<a href="http://alive.assembly.org"><img tal:attributes="src string:$portal_url/images/button-alive.gif" alt="Assembly Alive" /></a>-->
+      </div>
+      <div id="button-top-1" class="banner">
+        <a href="http://www.assemblytv.org"><img tal:attributes="src context/@@layouthelper/static/images/button-asmtv.gif" alt="AssemblyTV" /></a>
+      </div>
+      </div>
+      <div id="subheader">
+        <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
+        <div><form action="search"><p><input type="text" style="width: 10em;" name="SearchableText" /><input type="submit" class="submit" value="Search" i18n:attributes="value label_search;" /></p></form>
+
+      <!--XXX<a class="language-english" tal:attributes="href python:here.getLanguageURL('en')">In English</a> | <a class="language-finnish" tal:attributes="href python:here.getLanguageURL('fi')">suomeksi</a></div>-->
+        </div>
+      </div>
+
+      <div id="container">
+
+        <div id="leftbar" class="column">
+          <div tal:replace="structure context/@@navtree"/>
+      <!--XXX<metal:portlet use-macro="here/portlet_navigation/macros/portlet"/>
+      <metal:portlet use-macro="here/portlet_sponsors/macros/portlet"/>
+      <metal:portlet use-macro="here/portlet_game_tournaments/macros/portlet"/>-->
+        </div>
+
+      <div id="right-container">
+        <!--XXX<metal:block define-slot="content">-->
+        <div id="content-column">
+          <div id="content-padding">
+            <div tal:replace="structure view/render"/>
+          </div>
+        <metal:macro metal:define-macro="content">
+                    <a name="documentContent"></a>
+
+                    <metal:header metal:define-slot="header" tal:content="nothing">
+                      Visual Header
+                    </metal:header>
+
+                    <metal:bodytext metal:define-slot="main" tal:content="nothing">
+      </metal:bodytext>
+
+        </metal:macro></div>
+        <!--XXX</metal:block>-->
+      </div>
+
+      <div id="rightbar">
+
+        <!--XXX<metal:portlet use-macro="here/portlet_main_sponsors/macros/portlet"/>
+        <metal:portlet use-macro="here/portlet_news/macros/portlet"/>
+        <metal:portlet use-macro="here/portlet_events/macros/portlet"/>
+        <metal:portlet use-macro="here/portlet_forums2/macros/portlet"/>-->
+      </div>
+        <div style="clear:both;"></div>
+      </div>
+
+
+    <div id="siteguide">
+
+      <div id="sguide-content" style="display:none;">
+      <div id="sguide-content-padding">
+<!--XXX<tal:repeat tal:repeat="obj here/fillSiteGuide">
+<div tal:define="firstsection repeat/obj/start" tal:attributes="class python:test(firstsection,'sguide-section section-first','sguide-section')">
+<a href="#" tal:define="real_obj obj/getObject" tal:attributes="href real_obj/absolute_url">
+<h4 tal:content="obj/Title">Title</h4>
+<p tal:content="obj/Description" /></a>
+</div>
+</tal:repeat>-->
+      </div></div>
+
+      <div id="sguide-bottom-show">
+        <div class="sguide-text" i18n:domain="asm" i18n:translate="siteguide_open">Key information - Quick links</div></div>
+      <div id="sguide-bottom-hide" style="display:none;">
+        <div class="sguide-text" i18n:domain="asm" i18n:translate="siteguide_close">Hide siteguide</div></div>
+    </div></div>
+    <div id="footer">
+                              <div id="footer-links"><a href="/summer09/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">feedback</a> | <a href="/summer09/asm/asmorg/privacy" i18n:domain="asm" i18n:attributes="href" i18n:translate="">privacy</a> |  <a href="/summer09/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">contact</a> | <span>Copyright &copy; <a href="/summer09/asm/asmorg">Assembly Organizing</a>, 2009</span></div>
+    </div>
+    <div id="nav-top"><div id="nav-top-container">
+      <ul i18n:domain="asm">
+        <li><a href="http://www.assembly.org/winter08/" i18n:translate="">Previous events</a></li>
+        <li><a href="http://www.assembly.org/summer09/" class="active">ASM Summer</a></li>
+        <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
+        <li><a href="http://alive.assembly.org/">Alive</a></li>
+        <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>
+      </ul>
+    </div></div>
+    <div style="display:none;">paged rendered by <span tal:replace="request/SERVER_NAME"/></div>
+
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? 
+"https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + 
+"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7109758-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+
         <div tal:replace="structure context/@@messages"></div>
 
-        <div tal:replace="structure view/render">
-        </div>
     </body>
 </html>

@@ -28,8 +28,6 @@ extending and cleaning up the tests.
     class="selected">testpage</a>
 ...
 
-XXX This should be reachable through the UI, but isn't.
-
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
 >>> b.getControl('Title').value = 'A meaningful document'
 >>> b.getControl('Content').value = 'lots of meaningful text'

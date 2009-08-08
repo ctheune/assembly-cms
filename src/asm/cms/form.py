@@ -11,18 +11,38 @@ import zope.lifecycleevent
 import zope.traversing.api
 
 
-class Form(megrok.pagelet.component.FormPageletMixin, grok.Form):
+class CMSForm(object):
 
-    grok.baseclass()
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
+    @property
+    def side_widgets(self):
+        for w in self.widgets:
+            if getattr(w, 'location') == 'side':
+                yield w
 
-class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
+    @property
+    def main_widgets(self):
+        for w in self.widgets:
+            if getattr(w, 'location') != 'side':
+                yield w
+
+    def setUpWidgets(self, ignore_request=False):
+        super(CMSForm, self).setUpWidgets(ignore_request)
+        for widget in self.widgets:
+            setattr(widget, 'location',
+                    getattr(self.form_fields[widget.context.__name__], 'location', None))
+
+
+class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
 
     grok.baseclass()
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
+
+
+class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.AddForm):
+
+    grok.baseclass()
 
     # Needs to be set by the child class
     factory = None
@@ -52,12 +72,9 @@ class AddForm(megrok.pagelet.component.FormPageletMixin, grok.AddForm):
         return grok.AutoFields(self.factory)
 
 
-
-class EditForm(megrok.pagelet.component.FormPageletMixin, grok.EditForm):
+class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.EditForm):
 
     grok.baseclass()
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
     @grok.action("Save")
     def handle_edit_action(self, **data):

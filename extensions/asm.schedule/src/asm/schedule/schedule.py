@@ -120,7 +120,7 @@ def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
 
-class Index(asm.cms.Page):
+class Index(asm.cms.Pagelet):
 
     def events(self):
         events = []

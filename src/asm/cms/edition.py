@@ -128,9 +128,9 @@ class Actions(grok.Viewlet):
     grok.context(Edition)
 
 
-# XXX The following viewlet setup is a bit annoying: we register a viewlet for
-# displaying all editions when looking at a page and when looking at a
-# specific edition. The code is basically the same each time (we actually
+# Issue #59: The following viewlet setup is a bit annoying: we register a
+# viewlet for displaying all editions when looking at a page and when looking
+# at a specific edition. The code is basically the same each time (we actually
 # re-use the template), but the amount of registration necessary is just bad.
 
 class Editions(grok.ViewletManager):
@@ -158,3 +158,31 @@ def annotate_modification_date(obj, event):
 @grok.subscribe(Edition, grok.ObjectAddedEvent)
 def annotate_creation_date(obj, event):
     obj.created = datetime.datetime.now(pytz.UTC)
+
+
+def select_edition(page, request):
+    editions = dict((x, 0) for x in page.editions)
+    for selector in zope.component.subscribers(
+        (page, request), asm.cms.interfaces.IEditionSelector):
+        # Clean out all editions which are neither preferred nor accepted
+        # by the current selector
+        selected = set()
+        selected.update(selector.preferred)
+        selected.update(selector.acceptable)
+        for edition in list(editions.keys()):
+            if edition not in selected:
+                del editions[edition]
+
+        for edition in selector.preferred:
+            if edition in editions:
+                editions[edition] += 1
+
+    if not editions:
+        null = NullEdition()
+        null.__parent__ = page
+        null.__name__ = u''
+        return null
+
+    editions = editions.items()
+    editions.sort(key=lambda x:x[1], reverse=True)
+    return editions[0][0]

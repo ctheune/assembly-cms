@@ -33,6 +33,9 @@ class Edit(asm.cms.form.EditForm):
     form_fields = grok.AutoFields(HTMLPage).select(
         'title', 'tags', 'created', 'modified', 'content')
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
+    form_fields['tags'].location = 'side'
+    form_fields['created'].location = 'side'
+    form_fields['modified'].location = 'side'
 
 
 class TextIndexing(grok.Adapter):

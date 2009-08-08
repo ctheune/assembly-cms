@@ -31,8 +31,8 @@ extending and cleaning up the tests.
 XXX This should be reachable through the UI, but isn't.
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
+>>> b.getControl('Title').value = 'A meaningful document'
 >>> b.getControl('Content').value = 'lots of meaningful text'
->>> #b.handleErrors = False
 >>> b.getControl('Save').click()
 
 >>> b.open('http://localhost/++skin++retail/summer09/testpage')
@@ -48,8 +48,7 @@ lots of meaningful text
  <h1>Search results</h1>
  <ul>
      <li>
-         <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">testpage -
-             edition-</a>
+         <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">A meaningful document</a>
      </li>
  </ul>
 ...

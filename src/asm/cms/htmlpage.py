@@ -31,3 +31,11 @@ class Edit(asm.cms.form.EditForm):
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IHTMLPage)
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
+
+
+class TextIndexing(grok.Adapter):
+
+    zope.interface.implements(asm.cms.interfaces.ISearchableText)
+
+    def __init__(self, page):
+        self.body = page.content

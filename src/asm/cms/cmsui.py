@@ -38,7 +38,9 @@ class Navtree(grok.View):
         # Add parents
         current = self.page
         while asm.cms.interfaces.IPage.providedBy(current):
-            new_tree = {'page': current, 'subpages': []}
+            new_tree = {
+                'page': asm.cms.edition.select_edition(current, self.request),
+                'subpages': []}
             if tree is not None:
                 new_tree['subpages'].append(tree)
             tree = new_tree
@@ -46,7 +48,9 @@ class Navtree(grok.View):
             for child in current.subpages:
                 if child in [x['page'] for x in tree['subpages']]:
                     continue
-                tree['subpages'].append({'page': child, 'subpages': []})
+                tree['subpages'].append({
+                    'page': asm.cms.edition.select_edition(child, self.request),
+                    'subpages': []})
             current = current.__parent__
 
         tree = [tree]
@@ -55,7 +59,7 @@ class Navtree(grok.View):
 
 
 def sort_tree(tree):
-    tree.sort(key=lambda x:x['page'].__name__)
+    tree.sort(key=lambda x:x['page'].page.__name__)
     for x in tree:
         sort_tree(x['subpages'])
 

@@ -25,6 +25,21 @@ def select_initial_parameters():
     return set([WORKFLOW_DRAFT])
 
 
+class CMSEditionSelector(object):
+
+    zope.interface.implements(asm.cms.IEditionSelector)
+    zope.component.adapts(asm.cms.IPage, asm.cms.ICMSSkin)
+
+    def __init__(self, page, request):
+        self.preferred = []
+        self.acceptable = []
+        for edition in page.editions:
+            if WORKFLOW_PUBLIC in edition.parameters:
+                self.preferred.append(edition)
+            else:
+                self.acceptable.append(edition)
+
+
 class RetailEditionSelector(object):
 
     zope.interface.implements(asm.cms.IEditionSelector)

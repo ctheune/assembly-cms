@@ -6,9 +6,11 @@ import asm.cms.cms
 import asm.cms.edition
 import base64
 import bn
+import datetime
 import grok
 import lxml.etree
 import os.path
+import pytz
 import zope.interface
 import zope.schema
 import zope.traversing.api
@@ -43,7 +45,11 @@ class Import(asm.cms.Form):
                 parameters = asm.cms.edition.EditionParameters(parameters)
                 edition = page.getEdition(parameters, create=True)
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
-
+                edition.title = edition_node.get('title')
+                edition.tags = edition_node.get('tags')
+                edition.modified = extract_date(edition_node.get('modified'))
+                edition.created = extract_date(edition_node.get('created'))
+                zope.event.notify(grok.ObjectModifiedEvent(edition))
 
     def import_htmlpage(self, edition, node):
         content = base64.decodestring(node.text)
@@ -58,7 +64,7 @@ class Import(asm.cms.Form):
         path = path.split('/')
         current = self.context
         if path == ['']:
-            # Ugly hack to support importing content on the site page.
+            # Ugly hack to support importing content on the root page.
             return current
         while path:
             name = path.pop(0)
@@ -75,11 +81,11 @@ class Import(asm.cms.Form):
 
 
 def fix_relative_links(document, current_path):
-    # XXX Hrgh. Why is there no obvious simple way to do this?
+    # Hrgh. Why is there no obvious simple way to do this?
     parser = lxml.etree.HTMLParser()
     document = (
         '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        document)
+        document.decode('utf-8'))
     document = lxml.etree.fromstring(document, parser)
     for a in document.xpath('//a'):
         href = a.get('href')
@@ -95,3 +101,10 @@ def fix_relative_links(document, current_path):
     result = result.replace('<stupidcontainerwrappercafebabe>', '')
     result = result.replace('</stupidcontainerwrappercafebabe>', '')
     return result.strip()
+
+
+def extract_date(str):
+    if not str:
+        return datetime.datetime.now(pytz.UTC)
+    date = datetime.datetime.strptime(str, '%Y-%m-%d %H:%M:%S')
+    return date.replace(tzinfo=pytz.UTC)

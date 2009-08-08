@@ -3,8 +3,7 @@
 <ul>
     <li tal:repeat="result view/results">
         <a tal:attributes="href python:view.url(result, '@@edit')"
-            tal:content="string:${result/page/__name__} -
-            ${result/__name__}">
+            tal:content="result/title">
         </a>
     </li>
 </ul>

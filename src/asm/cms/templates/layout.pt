@@ -10,19 +10,21 @@
     <body>
 
         <div id="header">
-        
-            <h1>AssemblyCMS / <a href="#">Assembly Summer 2009</a></h1>
+
+            <h1><span>AssemblyCMS /</span>
+                <a tal:content="view/application/__name__"
+                   tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a></h1>
+            
             <div id="search">
                 <form tal:attributes="action
                       string:${view/application_url}/search">
                 <input type="text" name="q"/>
                 </form>
             </div>
-            
+                
             <ul id="user-info">
                 <li><a href="#">Logout</a> (<a href="#">username</a>)</li>
             </ul>
-
 
         </div>
         

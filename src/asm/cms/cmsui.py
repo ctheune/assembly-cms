@@ -51,7 +51,7 @@ class Navtree(grok.View):
 
         tree = [tree]
         sort_tree(tree)
-        return tree
+        return tree[0]['subpages']
 
 
 def sort_tree(tree):

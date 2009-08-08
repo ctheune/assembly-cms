@@ -2,14 +2,16 @@ tinyMCE.init({
     mode: 'specific_textareas',
     editor_selector: 'mceEditor',
 
-    plugins : 'inlinepopups',
+    plugins : 'inlinepopups,fullscreen,table',
 
     theme: 'advanced',
     theme_advanced_toolbar_location : 'top',
     theme_advanced_toolbar_align : 'left',
-    theme_advanced_buttons1: "bold,italic,strikethrough,justifyleft,justifycenter,justifyright,formatselect,bullist,numlist,link,unlink,image,table",
+    theme_advanced_buttons1: "formatselect,|,bold,italic,strikethrough,|,justifyleft,justifycenter,justifyright,|,bullist,numlist,table,|,link,unlink,image,|,code,fullscreen",
     theme_advanced_buttons2: "",
     theme_advanced_buttons3: "",
+
+    theme_advanced_blockformats: "p,h2,h3,blockquote,code",
 
     dialog_type : 'modal',
 

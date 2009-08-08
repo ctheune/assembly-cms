@@ -10,14 +10,23 @@
     <body>
 
         <div id="header">
-            <h1><span>AssemblyCMS /</span> summer09</h1>
-            <div id="user-info">
-                logout welcome karri saarinen
+        
+            <h1>AssemblyCMS / <a href="#">Assembly Summer 2009</a></h1>
+            <div id="search">
+                <form tal:attributes="action
+                      string:${view/application_url}/search">
+                <input type="text" name="q"/>
+                </form>
             </div>
+            
+            <ul id="user-info">
+                <li><a href="#">Logout</a> (<a href="#">username</a>)</li>
+            </ul>
+
 
         </div>
-        <div id="container" class="clearfix">
         
+        <div id="container" class="clearfix">
             <div id="admin-menu" class="column">
                 
                 <div id="menu-navigation" class="menu-item">
@@ -29,24 +38,12 @@
     
                 <div id="menu-actions" class="menu-item">
                     <div class="menu-head">Actions</div>
-                    <div class="menu-content">
-                        <ul>
-                            <tal:block replace="structure provider:actions"/>
-                        </ul>
-                    </div>
+                    <ul class="menu-content">
+                        <tal:block replace="structure provider:actions"/>
+                    </ul>
                 </div>
                 
-                <div id="menu-actions" class="menu-item">
-                    <div class="menu-head">Search</div>
-                        <div class="menu-content">
-                        <form tal:attributes="action
-                            string:${view/application_url}/search">
-                            <input type="text" name="q"/>
-                        </form>
-                    </div>
-                </div>
-                
-            </div>
+            </div> <!-- admin-menu -->
     
             <div id="content" class="column">
                 <div tal:replace="structure context/@@messages"></div>
@@ -57,15 +54,12 @@
             <div id="controls" class="column">
                 <div id="menu-editions" class="menu-item">
                     <div class="menu-head">Editions</div>
-                    <div class="menu-content">
-                        <ul>
-                            <tal:block replace="structure provider:editions"/>
-                        </ul>
-                    </div>
+                    <ul class="menu-content">
+                        <tal:block replace="structure provider:editions"/>
+                    </ul>
                 </div>
             </div>
-        
-            
+                
         </div>
         <div id="footer">
             <p>AssemblyCMS</p>

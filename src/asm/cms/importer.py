@@ -39,10 +39,15 @@ class Import(asm.cms.Form):
 
             for edition_node in page_node:
                 assert edition_node.tag == 'edition'
+                print page_node.get('path'), edition_node.get('parameters')
                 parameters = set(edition_node.get('parameters').split())
                 parameters = asm.cms.edition.EditionParameters(parameters)
                 edition = page.getEdition(parameters, create=True)
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
+                edition.title = edition_node.get('title')
+                edition.tags = edition_node.get('tags')
+                zope.event.notify(grok.ObjectModifiedEvent(edition))
+                # XXX created, modified
 
 
     def import_htmlpage(self, edition, node):
@@ -58,7 +63,7 @@ class Import(asm.cms.Form):
         path = path.split('/')
         current = self.context
         if path == ['']:
-            # Ugly hack to support importing content on the site page.
+            # Ugly hack to support importing content on the root page.
             return current
         while path:
             name = path.pop(0)

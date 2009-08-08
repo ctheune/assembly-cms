@@ -7,7 +7,7 @@ import asm.cms.edition
 import grok
 import zope.interface
 
-
+# Asset contains binary data, eg. image
 class Asset(asm.cms.edition.Edition):
 
     zope.interface.implements(asm.cms.interfaces.IAsset)
@@ -17,6 +17,7 @@ class Asset(asm.cms.edition.Edition):
 
     def copyFrom(self, other):
         self.content = other.content
+        self.title = other.title
 
 
 class Edit(asm.cms.form.EditForm):
@@ -24,7 +25,10 @@ class Edit(asm.cms.form.EditForm):
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.name('edit')
 
-    form_fields = grok.AutoFields(asm.cms.interfaces.IAsset)
+    form_fields = reduce(
+        lambda x,y: x.omit(y),
+        ['parameters','tags','date_created','date_modified'],
+        grok.AutoFields(Asset))
 
 
 class Index(grok.View):

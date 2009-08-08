@@ -174,10 +174,8 @@ def select_edition(page, request):
                 del editions[edition]
 
         for edition in selector.preferred:
-            editions.setdefault(edition, 0)
-            editions[edition] += 1
-        for edition in selector.acceptable:
-            editions.setdefault(edition, 0)
+            if edition in editions:
+                editions[edition] += 1
 
     if not editions:
         null = NullEdition()

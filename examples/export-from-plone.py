@@ -7,7 +7,7 @@ type_map = {
     'File': 'asset',
 }
 
-print '<?xml version="1.0"?>'
+print '<?xml version="1.0"? encoding="utf-8">'
 print '<import base="%s">' % container.portal_url.getPortalObject().absolute_url_path()
 
 objects = list(container.portal_catalog(portal_type='Document'))

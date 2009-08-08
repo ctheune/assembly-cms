@@ -39,7 +39,6 @@ class Import(asm.cms.Form):
 
             for edition_node in page_node:
                 assert edition_node.tag == 'edition'
-                print page_node.get('path'), edition_node.get('parameters')
                 parameters = set(edition_node.get('parameters').split())
                 parameters = asm.cms.edition.EditionParameters(parameters)
                 edition = page.getEdition(parameters, create=True)

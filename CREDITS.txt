@@ -1,0 +1,23 @@
+CREDITS
+=======
+
+* Karri Saarinen (enra, design)
+
+* Tarmo Toikkanen (tarmot, software development)
+
+* Atte Timmonen (atus, software development)
+
+* Toni Timmonen (ToniT, pairing)
+
+* Jussi Judin (Barro, idea bouncing)
+
+* Christian Theune (Theuni, software development)
+
+Thank you
+---------
+
+* The Zope 3 and grok developers, who provided the mountain for Grok to stand
+  pon.
+
+* Assembly for the facilities at the various events and for allowing to open
+  source the Assembly CMS.

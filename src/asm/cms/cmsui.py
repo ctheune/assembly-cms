@@ -46,10 +46,11 @@ class Navtree(grok.View):
             tree = new_tree
             # Add direct children
             for child in current.subpages:
-                if child in [x['page'] for x in tree['subpages']]:
+                child_edition = asm.cms.edition.select_edition(child, self.request)
+                if child_edition in [x['page'] for x in tree['subpages']]:
                     continue
                 tree['subpages'].append({
-                    'page': asm.cms.edition.select_edition(child, self.request),
+                    'page': child_edition,
                     'subpages': []})
             current = current.__parent__
 

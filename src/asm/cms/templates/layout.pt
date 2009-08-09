@@ -16,22 +16,20 @@
                    tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
             <a class="visit-site" href="#">visit site</a>
             </h1>
-            
-            
-            
+
             <div id="search">
                 <form tal:attributes="action
                       string:${view/application_url}/search">
                 <input type="text" name="q"/>
                 </form>
             </div>
-                
+
             <ul id="user-info">
                 <li><a href="#">Logout</a> (<a href="#">username</a>)</li>
             </ul>
 
         </div>
-        
+
         <div id="container" class="clearfix">
             <div id="admin-menu" class="column">
                 <div id="menu-actions" class="menu-item">
@@ -40,24 +38,24 @@
                         <tal:block replace="structure provider:actions"/>
                     </ul>
                 </div>
-                
+
                 <div id="menu-navigation" class="menu-item">
                     <div class="menu-head">Navigation</div>
                     <div class="menu-content">
                         <tal:block replace="structure context/@@navtree"/>
                     </div>
                 </div>
-    
 
-                
+
+
             </div> <!-- admin-menu -->
-    
+
             <div id="content">
                 <div tal:replace="structure context/@@messages"></div>
-    
+
                 <tal:block replace="structure view/render"></tal:block>
             </div>
-                
+
         </div>
         <div id="footer">
             <p>AssemblyCMS</p>

@@ -81,10 +81,10 @@ class Delete(grok.View):
         self.redirect(self.url(self.target))
 
 
-class Actions(grok.Viewlet):
+class PageActions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.Actions)
-    grok.context(asm.cms.interfaces.IPage)
+    grok.context(asm.cms.interfaces.IEdition)
 
 
 class RetailIndex(megrok.pagelet.Pagelet):

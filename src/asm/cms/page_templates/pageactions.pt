@@ -1,0 +1,2 @@
+<li><a tal:attributes="href python:view.url(context.page, '@@addpage')">Add sub-page</a></li>
+<li><a tal:attributes="href python:view.url(context.page, '@@delete')">Delete page</a></li>

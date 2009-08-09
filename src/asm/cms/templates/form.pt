@@ -6,32 +6,35 @@
 
 <form action="." tal:attributes="action request/URL" method="post"
     class="edit-form" enctype="multipart/form-data">
-       <div id="page-sidebar" class="column">
-        <!-- XXX This should become a generic viewlet manager, to avoid specific
-        code here in the form template. -->
+    <div id="page-sidebar" class="column">
+        <!-- XXX This must become a generic viewlet manager, to avoid specific
+        code here in the form template. It currently probably breaks the
+        contact form application -->
         <div class="sb-item">
             <h3>Editions</h3>
             <ul>
                 <tal:block replace="structure provider:editions"/>
             </ul>
         </div>
-        
+
         <div id="actionsView" class="sb-item">
             <span class="actionButtons" tal:condition="view/availableActions">
                 <input tal:repeat="action view/actions"
                 tal:replace="structure action/render"
                 />
             </span>
-        </div>        
-        
+        </div> 
+
         <div class="sb-item">
             <h3>Meta</h3>
-                <tal:block tal:repeat="widget view/side_widgets">
-                    <div metal:use-macro="template/macros/fields"/>
-                </tal:block>
+            <tal:block tal:repeat="widget view/side_widgets">
+            <div metal:use-macro="template/macros/fields">
+            </div>
+            </tal:block>
         </div>
 
     </div>
+
     <div id="page-edit" class="column">
         <h1>Edit Page</h1>
 
@@ -43,7 +46,8 @@
             </label>
 
             <p class="description" tal:content="widget/context/description"
-            tal:condition="widget/context/description"/>
+            tal:condition="widget/context/description">
+            </p>
 
             <div class="error" tal:condition="widget/error">
                 <span tal:replace="structure widget/error">error</span>
@@ -55,6 +59,4 @@
         </div>
         </tal:block>
     </div>
-
- 
 </form>

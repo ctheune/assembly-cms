@@ -25,7 +25,7 @@ extending and cleaning up the tests.
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected">testpage</a>
+    class="selected">no title</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
@@ -44,11 +44,13 @@ lots of meaningful text
 <html>
 ...
  <h1>Search results</h1>
- <ul>
-     <li>
-         <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">A meaningful document</a>
-     </li>
- </ul>
+ <div id="search-results">
+     <ul>
+         <li>
+             <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">A meaningful document</a>
+         </li>
+     </ul>
+ </div>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
@@ -69,7 +71,7 @@ True
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected">testasset</a>
+    class="selected">no title</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')

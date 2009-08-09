@@ -65,7 +65,7 @@ class AddPage(asm.cms.form.AddForm):
     def add(self, obj):
         name = self.chooseName(obj)
         self.context[name] = obj
-        self.target = obj
+        self.target = asm.cms.edition.select_edition(obj, self.request)
 
 
 class Delete(grok.View):
@@ -85,6 +85,13 @@ class PageActions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.Actions)
     grok.context(asm.cms.interfaces.IEdition)
+
+
+class Actions(grok.Viewlet):
+    # XXX We need to repeat ourselves here: page actions are actions for pages
+    # shown on editions. Actions are those shown on pages themselves
+    grok.viewletmanager(asm.cms.cmsui.Actions)
+    grok.context(asm.cms.interfaces.IPage)
 
 
 class RetailIndex(megrok.pagelet.Pagelet):

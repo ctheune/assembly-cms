@@ -49,7 +49,6 @@ class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.AddForm):
 
     @grok.action("Add")
     def createAndAdd(self, **data):
-        self.target = self.context
         obj = self.create(**data)
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.applyData(obj, **data)

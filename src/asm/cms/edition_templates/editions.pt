@@ -1,5 +1,6 @@
 <li tal:repeat="edition context/editions"
-    tal:attributes="class python:edition is context and 'selected' or ' '">
+    tal:attributes="class python:edition is context and 'selected' or ' '"
+    i18n:domain="asm.cms">
     <a tal:attributes="href python:view.url(edition, '@@edit')">
         <span tal:repeat="var edition/parameters"
               tal:content="var"

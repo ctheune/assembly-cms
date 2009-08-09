@@ -101,6 +101,10 @@ a {
     font-weight:bold;
 }
 
+.no-title {
+    font-style: italic;
+}
+
 #header {
     background:#333;
     color:#999;

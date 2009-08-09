@@ -25,7 +25,7 @@ extending and cleaning up the tests.
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected">&lt;no title&gt;</a>
+    class="selected no-title">&lt;no title&gt;</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
@@ -71,7 +71,7 @@ True
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected">&lt;no title&gt;</a>
+    class="selected no-title">&lt;no title&gt;</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')

@@ -4,7 +4,7 @@
 <metal:block define-macro="inner">
     <li tal:repeat="item items">
         <a tal:attributes="href python:view.url(item['page'], '@@edit');
-                           class python:view.context is item['page'] and 'selected' or ' '"
+                           class python:(view.context is item['page'] and 'selected ' or ' ') + (not item['page'].title and 'no-title' or ' ')"
            tal:content="python:item['page'].title or u'<no title>'"></a>
         <tal:block define="items item/subpages">
             <ul tal:condition="items">

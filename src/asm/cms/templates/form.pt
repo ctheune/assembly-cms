@@ -16,22 +16,20 @@
             </ul>
         </div>
         
+        <div id="actionsView" class="sb-item">
+            <span class="actionButtons" tal:condition="view/availableActions">
+                <input tal:repeat="action view/actions"
+                tal:replace="structure action/render"
+                />
+            </span>
+        </div>        
+        
         <div class="sb-item">
             <h3>Meta</h3>
                 <tal:block tal:repeat="widget view/side_widgets">
                     <div metal:use-macro="template/macros/fields"/>
                 </tal:block>
         </div>
-
-        <div id="actionsView" class="sb-item">
-            <h3>Publishing</h3>
-                <span class="actionButtons" tal:condition="view/availableActions">
-                    <input tal:repeat="action view/actions"
-                    tal:replace="structure action/render"
-                    />
-                </span>
-        </div>
-
 
     </div>
     <div id="page-edit" class="column">

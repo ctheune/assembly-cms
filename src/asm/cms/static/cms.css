@@ -207,6 +207,17 @@ a {
     margin:0;
 }
 
+#search-results>ul>li>a {
+    font-weight:bold;
+}
+
+div.preview {
+    color:#555;
+}
+span.match {
+    background-color:lightyellow;
+}
+
 #header ul {
     list-style:none;
 }

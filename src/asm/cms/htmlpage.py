@@ -6,6 +6,7 @@ import asm.cms.form
 import asm.cms.interfaces
 import asm.cms.tinymce
 import grok
+import lxml
 import megrok.pagelet
 import zope.interface
 
@@ -44,3 +45,18 @@ class TextIndexing(grok.Adapter):
 
     def __init__(self, page):
         self.body = page.content + ' ' + page.title
+
+
+class Preview(grok.View):
+
+    def update(self, q):
+        self.keyword = q
+
+    def render(self):
+        tree = lxml.etree.fromstring('<stupidcafebabe>%s</stupidcafebabe>' %
+                                     self.context.content)
+        text = ''.join(tree.itertext())
+        focus = text.find(self.keyword)
+        text = text[focus-50:focus+50]
+        text = text.replace(self.keyword, '<span class="match">%s</span>' % self.keyword)
+        return text

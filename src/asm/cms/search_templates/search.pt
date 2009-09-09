@@ -6,7 +6,8 @@
             <a tal:attributes="href python:view.url(result, '@@edit')"
                 tal:content="result/title">
             </a>
-            (<span tal:content="python:' '.join(sorted(result.parameters))"/>)
+            (<tal:block tal:repeat="tag python:sorted(result.parameters)"
+              ><span tal:content="tag"/> </tal:block>)
 
             <div class="preview" tal:content="structure result/@@preview"/>
         </li>

@@ -48,7 +48,7 @@ lots of meaningful text
      <ul>
          <li>
              <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">A meaningful document</a>
-             (<span></span>)
+             ()
              <div class="preview">lots of <span class="match">meaningful</span> text</div>
          </li>
      </ul>

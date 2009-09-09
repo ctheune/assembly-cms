@@ -73,6 +73,8 @@ class Delete(grok.View):
     grok.context(asm.cms.interfaces.IPage)
 
     def update(self):
+        if isinstance(self.context, asm.cms.cms.CMS):
+            raise TypeError("Can not delete CMS instances.")
         page = self.context
         self.target = page.__parent__
         del page.__parent__[page.__name__]

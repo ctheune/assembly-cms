@@ -145,12 +145,6 @@ class PageEditions(grok.Viewlet):
     grok.template('editions')
 
 
-class TinyMCELinkBrowsers(grok.View):
-
-    grok.name('tinymce-linkbrowser')
-    grok.template('tinymce-linkbrowser')
-
-
 @grok.subscribe(asm.cms.interfaces.IEdition, grok.IObjectModifiedEvent)
 def annotate_modification_date(obj, event):
     obj.modified = datetime.datetime.now(pytz.UTC)
@@ -187,3 +181,8 @@ def select_edition(page, request):
     editions = editions.items()
     editions.sort(key=lambda x:x[1], reverse=True)
     return editions[0][0]
+
+
+class ImagePicker(grok.View):
+    grok.context(Edition)
+    grok.name('image-picker')

@@ -38,3 +38,8 @@ class Index(grok.View):
 
     def render(self):
         return self.context.content
+
+
+class ImagePicker(grok.View):
+    grok.context(Asset)
+    grok.name('image-picker')

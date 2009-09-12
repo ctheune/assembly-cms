@@ -4,6 +4,7 @@ tags
 TAGS
 parts
 .swp
+.swo
 .pyc
 bin
 develop-eggs

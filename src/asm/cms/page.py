@@ -87,6 +87,7 @@ class PageActions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.Actions)
     grok.context(asm.cms.interfaces.IEdition)
+    grok.template('actions')
 
 
 class Actions(grok.Viewlet):

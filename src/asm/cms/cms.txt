@@ -6,7 +6,6 @@ Note, these tests are mainly smoke tests to make sure that at least the core
 isn't totally broken. If you like, there are issues in the tracker about
 extending and cleaning up the tests.
 
->>> import cStringIO
 >>> from zope.testbrowser.testing import Browser
 >>> b = Browser()
 >>> b.addHeader('Authorization', 'Basic mgr:mgrpw')
@@ -87,6 +86,7 @@ True
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')
+>>> import cStringIO
 >>> b.getControl('File').add_file(cStringIO.StringIO('Test file contents'), 'text/plain', 'test.txt')
 >>> b.getControl('Title').value = 'Test Asset'
 >>> b.getControl('Save').click()

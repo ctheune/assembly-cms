@@ -29,9 +29,13 @@ tinyMCE.init({
 function asmcmsFileBrowser(field_name, url, type, win) {
 
     tinyMCE.activeEditor.windowManager.open({
-        url: window.location + '/@@tinymce-linkbrowser',
+        // XXX The ../ means we know that /edition/@@edit is the current base
+        url: window.location + '/../../@@tinymce-imagebrowser',
+        width:400,
+        height:400,
         inline: "yes",
-
-    });
+    }, {window: win,
+        input: field_name}
+    );
     return false;
 }

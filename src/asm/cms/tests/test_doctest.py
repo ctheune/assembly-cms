@@ -11,4 +11,7 @@ def test_suite():
     t = FunctionalDocFileSuite('cms.txt', package='asm.cms')
     t.layer = asm.cms.testing.TestLayer
     suite.addTest(t)
+    t = FunctionalDocFileSuite('linkbrowser.txt', package='asm.cms')
+    t.layer = asm.cms.testing.TestLayer
+    suite.addTest(t)
     return suite

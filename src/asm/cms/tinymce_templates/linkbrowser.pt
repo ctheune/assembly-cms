@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <script language="JavaScript">
+            function insertImage(a) {
+                var win = tinyMCEPopup.getWindowArg('window');
+                var input = tinyMCEPopup.getWindowArg('input')
+                input = win.document.getElementById(input);
+                input.value = a.href;
+                tinyMCEPopup.close();
+            }
+        </script>
+    <body>
+        <a tal:attributes="href
+            string:${context/__parent__/@@absolute_url}/@@tinymce-imagebrowser">..</a><br/>
+
+        <div tal:repeat="edition view/pages">
+            <span tal:replace="structure edition/@@image-picker"/>
+        </div>
+    </body>
+</html>

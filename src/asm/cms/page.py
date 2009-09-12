@@ -109,6 +109,7 @@ class CMSEdit(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
     grok.name('edit')
     grok.template('index')
 
@@ -116,6 +117,7 @@ class CMSEdit(megrok.pagelet.Pagelet):
 class CMSIndex(grok.View):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
     grok.context(asm.cms.interfaces.IPage)
     grok.name('index')
 

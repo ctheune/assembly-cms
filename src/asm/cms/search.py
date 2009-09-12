@@ -22,6 +22,7 @@ class Search(megrok.pagelet.Pagelet):
 
     grok.context(asm.cms.cms.CMS)
     grok.layer(asm.cms.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
     def update(self):
         q = self.request.form.get('q', '')

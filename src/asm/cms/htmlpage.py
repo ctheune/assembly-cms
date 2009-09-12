@@ -24,12 +24,21 @@ class HTMLPage(asm.cms.edition.Edition):
 
 
 class Index(megrok.pagelet.Pagelet):
-    pass
+    grok.layer(asm.cms.interfaces.IRetailSkin)
+
+
+class CMSIndex(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.name('index')
+    grok.template('index')
+    grok.require('asm.cms.EditContent')
 
 
 class Edit(asm.cms.form.EditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
     form_fields = grok.AutoFields(HTMLPage).select(
         'title', 'tags', 'created', 'modified', 'content')

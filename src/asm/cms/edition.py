@@ -51,6 +51,7 @@ class NullEdition(Edition):
 class NullIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.ICMSSkin)
+    grok.require('asm.cms.EditContent')
     grok.name('index')
     grok.context(NullEdition)
 

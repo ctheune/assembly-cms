@@ -19,6 +19,16 @@ extending and cleaning up the tests.
     <title>CMS</title>
 ...
 
+The CMS itself is a page, but it can't be deleted:
+
+>>> b.getLink('Delete page')
+Traceback (most recent call last):
+LinkNotFoundError
+>>> b.open('http://localhost/++skin++cms/summer09/@@delete')
+Traceback (most recent call last):
+httperror_seek_wrapper: HTTP Error 500: Internal Server Error
+
+>>> b.open('http://localhost/++skin++cms/summer09/@@edit')
 >>> b.getLink('Add sub-page').click()
 >>> b.getControl('Name').value = 'testpage'
 >>> b.getControl(name='form.type').displayValue = ['htmlpage']

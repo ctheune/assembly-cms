@@ -8,11 +8,19 @@ import megrok.pagelet
 import zope.interface
 
 
+class EditContent(grok.Permission):
+    grok.name('asm.cms.EditContent')
+
+
 class Layout(megrok.pagelet.Layout):
+
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)
 
     megrok.pagelet.template('templates/layout.pt')
+
+    def __call__(self):
+        raise zope.security.interfaces.Unauthorized()
 
 
 class LayoutHelper(grok.View):
@@ -25,6 +33,7 @@ class LayoutHelper(grok.View):
 class Navtree(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
     @property
     def page(self):
@@ -68,6 +77,7 @@ def sort_tree(tree):
 
 
 class ActionView(grok.View):
+
     grok.baseclass()
     grok.layer(asm.cms.interfaces.ICMSSkin)
 

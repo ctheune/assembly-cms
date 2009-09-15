@@ -11,8 +11,6 @@
     </head>
 
     <body>
-        <div tal:replace="structure context/@@messages"></div>
-
         <h1 tal:content="context/title"/>
 
         <div tal:replace="structure view/render">

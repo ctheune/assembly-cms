@@ -17,7 +17,7 @@ class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)
 
-    megrok.pagelet.template('templates/layout.pt')
+    megrok.pagelet.template('templates/cms.pt')
 
     def __call__(self):
         raise zope.security.interfaces.Unauthorized()

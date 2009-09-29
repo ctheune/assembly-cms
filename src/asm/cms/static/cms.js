@@ -1,4 +1,9 @@
 $(document).ready(function(){
+  $(document).keydown(function(e) {
+        if (e.which == 27) {
+            $("#navigation-wrapper").hide();
+        }});
+
   $("#menu-navigation-handle").click(function () {
     $("#navigation-wrapper").show();
   });

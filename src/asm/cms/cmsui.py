@@ -41,33 +41,36 @@ class Navtree(grok.View):
             return self.context.__parent__
         return self.context
 
-    def tree(self):
-        tree = None
-
-        # Add parents
-        current = self.page
-        while asm.cms.interfaces.IPage.providedBy(current):
-            new_tree = {
-                'page': asm.cms.edition.select_edition(current, self.request),
+    def _create_subtree(self, root):
+        tree = {'page': asm.cms.edition.select_edition(root, self.request),
                 'subpages': []}
-            if tree is not None:
-                new_tree['subpages'].append(tree)
-            tree = new_tree
-            # Add direct children
-            for child in current.subpages:
-                if child.type == 'asset':
-                    continue
-                child_edition = asm.cms.edition.select_edition(child, self.request)
-                if child_edition in [x['page'] for x in tree['subpages']]:
-                    continue
-                tree['subpages'].append({
-                    'page': child_edition,
-                    'subpages': []})
-            current = current.__parent__
+        for child in root.subpages:
+            if child.type == 'asset':
+                continue
+            if not len(list(child.subpages)):
+                continue
+            tree['subpages'].append(self._create_subtree(child))
+        return tree
 
-        tree = [tree]
+    def tree(self):
+        # Find root
+        current = self.page
+        while True:
+            parent = current.__parent__
+            if not asm.cms.interfaces.IPage.providedBy(parent):
+                root = current
+                break
+            current = parent
+
+        tree = [self._create_subtree(root)]
         sort_tree(tree)
-        return tree[0]['subpages']
+        return tree
+
+
+class NavDetails(grok.View):
+    grok.context(zope.interface.Interface)
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
 
 def sort_tree(tree):

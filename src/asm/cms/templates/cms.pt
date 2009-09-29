@@ -2,19 +2,28 @@
     <head>
         <title>CMS</title>
 
+        <!-- jQuery inclusions -->
+        <script type="text/javascript" tal:attributes="src
+            context/@@layouthelper/static/jquery.js"></script>
+        <script type="text/javascript" tal:attributes="src
+            context/@@layouthelper/static/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css"
+          tal:attributes="href context/@@layouthelper/static/jquery-ui.css" />
+
+        <!-- CMS-specific inclusions -->
+        <script type="text/javascript" tal:attributes="src
+            context/@@layouthelper/static/cms.js"></script>
         <link rel="stylesheet" type="text/css"
           tal:attributes="href context/@@layouthelper/static/cms.css" />
+
         <link rel="shortcut icon" type="image/vnd.microsoft.icon"
           tal:attributes="href context/@@layouthelper/static/favicon.ico" />
 
         <base tal:attributes="href string:${context/@@base}"/>
-
     </head>
 
     <body>
-
         <div id="header">
-
             <h1><span>AssemblyCMS /</span>
                 <a tal:content="view/application/__name__"
                    tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
@@ -31,27 +40,35 @@
             <ul id="user-info">
                 <li><a href="#">Logout</a> (<a href="#">username</a>)</li>
             </ul>
+        </div>
 
+        <div id="navigation-wrapper">
+            <div id="navigation-background">
+            </div>
+            <div id="navigation" class="menu-item">
+                <div class="menu-head">Navigation</div>
+                <div class="menu-content" id="navigation-tree">
+                    <tal:block replace="structure context/@@navtree"/>
+                </div>
+                <div class="menu-content" id="navigation-details">
+                    <div tal:replace="structure context/@@navdetails"/>
+                </div>
+            </div>
+            <div class="clear"></div>
         </div>
 
         <div id="container" class="clearfix">
             <div id="admin-menu" class="column">
+                <div id="menu-navigation" class="menu-item">
+                    <div class="menu-head" id="menu-navigation-handle">Navigation</div>
+                </div>
+
                 <div id="menu-actions" class="menu-item">
                     <div class="menu-head">Actions</div>
                     <ul class="menu-content">
                         <tal:block replace="structure provider:actions"/>
                     </ul>
                 </div>
-
-                <div id="menu-navigation" class="menu-item">
-                    <div class="menu-head">Navigation</div>
-                    <div class="menu-content">
-                        <tal:block replace="structure context/@@navtree"/>
-                    </div>
-                </div>
-
-
-
             </div> <!-- admin-menu -->
 
             <div id="content">

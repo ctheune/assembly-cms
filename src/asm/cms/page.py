@@ -11,7 +11,7 @@ import zope.app.form.browser.source
 import zope.interface
 
 
-class Page(grok.Container):
+class Page(grok.OrderedContainer):
 
     zope.interface.implements(asm.cms.interfaces.IPage)
 

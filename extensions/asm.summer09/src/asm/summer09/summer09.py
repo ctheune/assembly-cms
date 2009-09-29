@@ -53,7 +53,7 @@ class LayoutHelper(grok.View):
                   message = '<span id="clock">%s %s</span>' % (', '.join(messageParts), showString)
               else:
                   pass
-                  #message=context.translate(showString,domain="asm")
+                  message = "foo"
               return message
 
       # This should never get returned...

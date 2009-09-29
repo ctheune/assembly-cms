@@ -243,7 +243,6 @@ pageTracker._trackPageview();
 } catch(err) {}</script>
 
 
-        <div tal:replace="structure context/@@messages"></div>
 
     </body>
 </html>

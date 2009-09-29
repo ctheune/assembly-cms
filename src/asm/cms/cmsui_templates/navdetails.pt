@@ -1,0 +1,20 @@
+<h1 tal:content="context/title|context/__name__"/>
+
+<form>
+<table>
+    <thead>
+        <tr>
+            <th>Page</th>
+            <th>Last change</th>
+            <th>Size</th>
+        </tr>
+    </thead>
+    <tbody id="sortable">
+        <tr class="ui-state-default" tal:condition="context/page|nothing" tal:repeat="page context/page/subpages">
+             <td><span class="ui-icon ui-icon-document"></span> <span tal:content="page/__name__"/></td>
+             <td>2008-08-08 14:34</td> <!-- XXX -->
+             <td>14.4 kB</td> <!-- XXX -->
+        </tr>
+    </tbody>
+</table>
+</form>

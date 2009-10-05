@@ -1,4 +1,5 @@
 .installed.cfg
+buildout.cfg
 ID
 tags
 TAGS

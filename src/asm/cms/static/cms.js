@@ -14,7 +14,8 @@ $(document).ready(function(){
 
 
 function update_order(event, ui) {
-    alert($("#subpages").action);
+    //alert($("#subpages").attr('action'));
+    //alert($("#subpages").elements);
 }
 
 function hide_navigation(){

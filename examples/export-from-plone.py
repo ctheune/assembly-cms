@@ -1,3 +1,11 @@
+# This script can be used as a normal "Script (Python)" in ZMI.
+# However, the following security changes have to be made to your Zope server:
+#
+# from AccessControl import allow_module
+# allow_module('base64')
+# allow_module('cgi')
+
+
 import base64
 import cgi
 
@@ -7,12 +15,14 @@ type_map = {
     'File': 'asset',
 }
 
-print '<?xml version="1.0"? encoding="utf-8">'
-print '<import base="%s">' % container.portal_url.getPortalObject().absolute_url_path()
+print '<?xml version="1.0" encoding="utf-8"?>'
+print '<import base="%s">' % (
+    container.portal_url.getPortalObject().absolute_url_path())
 
 objects = list(container.portal_catalog(portal_type='Document'))
 objects.extend(container.portal_catalog(portal_type='Image'))
 objects.extend(container.portal_catalog(portal_type='File'))
+
 
 def export_data(item, language, workflow):
     if edition.portal_type == 'Document':
@@ -38,7 +48,8 @@ for object in objects:
     for lang in object.getTranslationLanguages():
         edition = object.getTranslation(lang)
         print export_data(edition, lang, 'draft')
-        status = context.portal_workflow.getInfoFor(edition, 'review_state', '');
+        status = context.portal_workflow.getInfoFor(
+            edition, 'review_state', '')
         if status == 'published':
             print export_data(edition, lang, 'public')
     print '</%s>' % page_type

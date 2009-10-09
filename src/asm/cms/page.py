@@ -52,6 +52,7 @@ class AddPage(asm.cms.form.AddForm):
 
     grok.context(asm.cms.interfaces.IPage)
 
+    label = u'Add page'
     form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
     form_fields['type'].custom_widget = (
         lambda field, request: zope.app.form.browser.source.SourceRadioWidget(
@@ -148,7 +149,6 @@ class CMSIndex(grok.View):
 # Note that as pages in the CMS always can act as folders we add a trailing
 # slash to their URL when using them as a base: images contained in the page
 # will be linked to without mentioning the name of the page explicitly.
-
 class PageBase(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)

@@ -26,7 +26,9 @@ class EditionFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
 
 class IPage(zope.interface.Interface):
 
-    __name__ = zope.schema.TextLine(title=u'Name')
+    __name__ = zope.schema.TextLine(
+        title=u'Name',
+        description=u'The name of the page will be used in the URL.')
     subpages = zope.interface.Attribute('All pages below this one.')
 
     type = zope.schema.Choice(
@@ -39,8 +41,11 @@ class IEdition(zope.interface.Interface):
     parameters = zope.schema.TextLine(title=u'Edition parameters')
     title = zope.schema.TextLine(title=u'Title')
     tags = zope.schema.TextLine(title=u'Tags', required=False)
+
     created = zope.schema.Datetime(title=u'Created', readonly=True)
     modified = zope.schema.Datetime(title=u'Modified', readonly=True)
+
+    size = zope.schema.Int(title=u'Size', readonly=True)
 
     def copyFrom(other):
         """Copy all content from another edition of the same kind."""

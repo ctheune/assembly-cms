@@ -6,6 +6,7 @@ import asm.cms.interfaces
 import grok
 import megrok.pagelet
 import zope.interface
+import datetime
 
 
 class EditContent(grok.Permission):
@@ -96,6 +97,7 @@ class ActionView(grok.View):
 
 
 class Actions(grok.ViewletManager):
+
     grok.name('actions')
     grok.context(zope.interface.Interface)
 
@@ -106,3 +108,34 @@ def edition_url(edition, request):
     return zope.component.getMultiAdapter(
         (edition.__parent__, request),
         zope.traversing.browser.interfaces.IAbsoluteURL)
+
+
+class DateFormat(grok.View):
+
+    grok.context(datetime.datetime)
+    grok.name('format')
+
+    def render(self):
+        # XXX L10N or simple 'XXX time ago'
+        return self.context.strftime('%d.%m.%Y %H:%M')
+
+
+class BytesFormat(grok.View):
+
+    grok.context(int)
+
+    units = ['Bytes', 'KiB', 'MiB', 'GiB']
+
+    def render(self):
+        size = float(self.context)
+        units = self.units[:]
+        unit = units.pop(0)
+
+        while size >= (1024/2) and units:
+            size = size / 1024
+            unit = units.pop(0)
+
+        size = '%.1f' % size
+        size = size.replace('.0', '')
+
+        return '%s %s' % (size, unit)

@@ -20,6 +20,8 @@ class Edition(grok.Model):
     tags = None
     title = u''
 
+    size = 0
+
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
@@ -133,8 +135,8 @@ class Actions(grok.Viewlet):
 # viewlet for displaying all editions when looking at a page and when looking
 # at a specific edition. The code is basically the same each time (we actually
 # re-use the template), but the amount of registration necessary is just bad.
-
 class Editions(grok.ViewletManager):
+
     grok.name('editions')
     grok.context(zope.interface.Interface)
 
@@ -179,10 +181,25 @@ def select_edition(page, request):
         return null
 
     editions = editions.items()
-    editions.sort(key=lambda x:x[1], reverse=True)
+    editions.sort(key=lambda x: x[1], reverse=True)
     return editions[0][0]
 
 
 class ImagePicker(grok.View):
     grok.context(Edition)
     grok.name('image-picker')
+
+
+class UpdateOrder(grok.View):
+
+    def update(self, order):
+        # The ordered container wants us to establish a total order. We need
+        # to add the editions (or any missing key)
+        # in the order, otherwise it will fail.
+        for key in self.context.page:
+            if key not in order:
+                order.append(key)
+        self.context.page.updateOrder(order)
+
+    def render(self):
+        return '()'

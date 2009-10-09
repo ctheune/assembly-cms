@@ -22,6 +22,10 @@ class HTMLPage(asm.cms.edition.Edition):
         self.content = other.content
         super(HTMLPage, self).copyFrom(other)
 
+    @property
+    def size(self):
+        return len(self.content)
+
 
 class Index(megrok.pagelet.Pagelet):
     grok.layer(asm.cms.interfaces.IRetailSkin)

@@ -13,10 +13,9 @@ $(document).ready(function(){
   $("#sortable").sortable({update: update_order});
 });
 
-
 function update_order(event, ui) {
-    //alert($("#subpages").attr('action'));
-    //alert($("#subpages").elements);
+    var params = jQuery.param($("#subpages input"));
+    jQuery.get($("#subpages").attr('action'), params, null, 'json');
 }
 
 function hide_navigation() {

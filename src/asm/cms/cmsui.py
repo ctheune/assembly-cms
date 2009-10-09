@@ -66,15 +66,22 @@ class Navtree(grok.View):
         sort_tree(tree)
         return tree
 
+    def css_classes(self, *classes):
+        return ' '.join(filter(None, classes))
+
 
 class NavDetails(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
+    def pages(self):
+        for page in self.context.page.subpages:
+            yield asm.cms.edition.select_edition(page, self.request)
+
 
 def sort_tree(tree):
-    tree.sort(key=lambda x:x['page'].page.__name__)
+    tree.sort(key=lambda x: x['page'].page.__name__)
     for x in tree:
         sort_tree(x['subpages'])
 

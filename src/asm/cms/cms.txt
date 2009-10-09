@@ -15,7 +15,7 @@ extending and cleaning up the tests.
 >>> b.open('http://localhost/++skin++cms/summer09/@@edit')
 >>> print b.contents
 <html> ...
-    <title>CMS</title>
+    <title>CMS &ndash; </title>
 ...
 
 The CMS itself is a page, but it can't be deleted:
@@ -34,7 +34,7 @@ httperror_seek_wrapper: HTTP Error 500: Internal Server Error
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected no-title">&lt;no title&gt;</a>
+    class="no-title">summer09</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
@@ -82,7 +82,7 @@ True
 >>> b.getControl('Add').click()
 >>> print b.contents
 <html> ...
-    class="selected no-title">&lt;no title&gt;</a>
+    class="no-title">summer09</a>
 ...
 
 >>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')

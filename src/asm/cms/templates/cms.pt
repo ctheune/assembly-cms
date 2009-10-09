@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>CMS</title>
+        <title>CMS &ndash; <span tal:replace="context/title|nothing"/></title>
 
         <!-- jQuery inclusions -->
         <script type="text/javascript" tal:attributes="src

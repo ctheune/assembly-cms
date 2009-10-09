@@ -10,11 +10,13 @@
             </tr>
         </thead>
         <tbody id="sortable">
-            <tr class="ui-state-default" tal:condition="context/page|nothing" tal:repeat="page context/page/subpages">
+            <tr class="ui-state-default" tal:condition="context/page|nothing"
+                tal:repeat="page view/pages">
                 <td>
                     <input type="hidden" name="order" tal:attributes="value page/__name__"/>
                     <span class="ui-icon ui-icon-document"></span>
-                    <span tal:content="page/__name__"></span>
+                    <a tal:attributes="href python:view.url(page, '@@edit')" 
+                       tal:content="python:page.title or page.page.__name__"></a>
                 </td>
                 <td>9999-99-99 00:00</td> <!-- XXX -->
                 <td>0.9 KiB</td> <!-- XXX -->

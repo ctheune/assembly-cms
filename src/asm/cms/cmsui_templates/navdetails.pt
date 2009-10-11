@@ -1,6 +1,3 @@
-<a tal:attributes="href python:view.url(context, '@@edit')"><img
-    tal:attributes="src static/icons/pencil.png"/></a>
-
 <h1 tal:content="context/title|context/__name__"></h1>
 
 <form id="subpages" tal:attributes="action python:view.url(context, 'updateorder')">

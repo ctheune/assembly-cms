@@ -69,6 +69,7 @@ class IHTMLPage(zope.interface.Interface):
 class IAsset(zope.interface.Interface):
 
     content = zope.schema.Bytes(title=u'File')
+    content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
 
 
 class ICMSSkin(grok.IDefaultBrowserLayer):

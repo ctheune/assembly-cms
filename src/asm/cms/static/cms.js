@@ -11,6 +11,8 @@ $(document).ready(function(){
 
   // Folder sorting
   $("#sortable").sortable({update: update_order});
+
+  $("#navigation-tree a").click(show_subpages);
 });
 
 function update_order(event, ui) {
@@ -31,3 +33,12 @@ function show_navigation() {
 }
 
 toggle_navigation = show_navigation;
+
+
+function show_subpages(e) {
+    $.get($(this).attr('href')+'/@@navdetails',
+          function(data) {
+              $('#navigation-details').html(data); 
+          });
+    return false;
+};

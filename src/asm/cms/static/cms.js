@@ -36,9 +36,14 @@ toggle_navigation = show_navigation;
 
 
 function show_subpages(e) {
+    if ($(this).hasClass('selected')) {
+        window.location = $(this).attr('href')+'/@@edit';
+    };
     $.get($(this).attr('href')+'/@@navdetails',
           function(data) {
               $('#navigation-details').html(data); 
           });
+    $('#navigation-tree .selected').removeClass('selected');
+    $(this).addClass('selected');
     return false;
 };

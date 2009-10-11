@@ -3,10 +3,10 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import datetime
 import grok
 import megrok.pagelet
 import zope.interface
-import datetime
 
 
 class EditContent(grok.Permission):
@@ -139,3 +139,11 @@ class BytesFormat(grok.View):
         size = size.replace('.0', '')
 
         return '%s %s' % (size, unit)
+
+
+class NoneFormat(grok.View):
+    grok.name('format')
+    grok.context(None.__class__)
+
+    def render(self):
+        return ''

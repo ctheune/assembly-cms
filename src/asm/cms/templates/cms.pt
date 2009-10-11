@@ -27,7 +27,8 @@
             <h1><span>AssemblyCMS /</span>
                 <a tal:content="view/application/__name__"
                    tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
-            <a class="visit-site" href="#">visit site</a>
+               <a class="visit-site"
+                    tal:attributes="href python:view.url(context.page, '@@preview')">preview</a>
             </h1>
 
             <div id="search">

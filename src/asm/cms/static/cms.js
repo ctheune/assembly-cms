@@ -9,8 +9,11 @@ $(document).ready(function(){
   $("#menu-navigation-handle").click(show_navigation);
   $("#navigation-wrapper .menu-head").click(hide_navigation);
 
+  $(".visit-site").click(show_preview);
+
   // Folder sorting
   $("#sortable").sortable({update: update_order});
+
 });
 
 function update_order(event, ui) {
@@ -31,3 +34,9 @@ function show_navigation() {
 }
 
 toggle_navigation = show_navigation;
+
+function show_preview() {
+    w = window.open($('.visit-site').attr('href'));
+    w.setInterval(function(){alert('asdf');}, 200);
+    return false;
+};

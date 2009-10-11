@@ -57,29 +57,28 @@ This asset will be displayed, as it is an asset.
 <html>
 ...
     <body>
-        <a href="http://localhost/++skin++cms/@@tinymce-imagebrowser">..</a><br />
-        <div>
+        <ul>
+            <li>
+                <a href="http://localhost/++skin++cms/@@tinymce-linkbrowser">..</a>
+            </li>
+            <li>
 <BLANKLINE>
+                <a onclick="insertURL(this)"
+                   href="http://localhost/++skin++cms/summer09/testpage"><img
+    src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>
+            </li>
+            <li>
+                <a href="http://localhost/++skin++cms/summer09/testpage2/@@tinymce-linkbrowser">A test page 2</a>
+                <a onclick="insertURL(this)"
+                   href="http://localhost/++skin++cms/summer09/testpage2"><img
+    src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>
+            </li>
+            <li>
 <BLANKLINE>
-        </div>
-<BLANKLINE>
-        <div>
-            <div style="width:75px; height:75px; background-color:#DDD;
-    overflow:invisible;margin:1em; float:left;">
-    <a href="http://localhost/++skin++cms/summer09/testpage2/@@tinymce-imagebrowser">A test page 2</a>
-</div>
-<BLANKLINE>
-        </div>
-        <div>
-            <div style="width:75px; height:75px; margin:1em; float:left;">
-    <a onclick="insertImage(this)" style="border:none;"
-       href="http://localhost/++skin++cms/summer09/testasset"><img
-    style="border:none;" width="75" height="75"
-    src="http://localhost/++skin++cms/summer09/testasset"
-    title="" /></a>
-</div>
-<BLANKLINE>
-        </div>
+                <a onclick="insertURL(this)"
+                   href="http://localhost/++skin++cms/summer09/testasset"><img
+    src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>
+            </li>
+        </ul>
     </body>
-</head></html>
-<BLANKLINE>
+</html>

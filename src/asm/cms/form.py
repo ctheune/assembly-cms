@@ -76,9 +76,13 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.EditForm
 
     grok.baseclass()
 
+    def post_process(self):
+        pass
+
     @grok.action("Save")
     def handle_edit_action(self, **data):
         super(EditForm, self).handle_edit_action.success(data)
+        self.post_process()
         if self.errors:
             return
         self.flash(self.status)

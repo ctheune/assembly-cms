@@ -12,7 +12,8 @@ widget = hurry.resource.ResourceInclusion(widget_lib, 'tinymce_widget.js',
                                  depends=[hurry.tinymce.tinymce],
                                  bottom=True)
 
-popup = hurry.resource.ResourceInclusion(hurry.tinymce.tinymce_lib, 'tiny_mce_popup.js')
+popup = hurry.resource.ResourceInclusion(
+    hurry.tinymce.tinymce_lib, 'tiny_mce_popup.js')
 
 
 class TinyMCEWidget(zope.app.form.browser.textwidgets.TextAreaWidget):

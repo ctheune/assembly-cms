@@ -39,3 +39,14 @@ class TinyMCELinkBrowser(grok.View):
         # Return a set of editions representing the pages
         for page in self.context.subpages:
             yield asm.cms.edition.select_edition(page, self.request)
+
+    def breadcrumbs(self):
+        result = []
+        current = self.context
+        while True:
+            result.append(
+                asm.cms.edition.select_edition(current, self.request))
+            if current is self.application:
+                break
+            current = current.__parent__
+        return sorted(result, reverse=True)

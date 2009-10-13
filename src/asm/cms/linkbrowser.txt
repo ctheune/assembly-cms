@@ -57,12 +57,15 @@ This asset will be displayed, as it is an asset.
 <html>
 ...
     <body>
+        <div class="breadcrumbs">
+<BLANKLINE>
+                <span></span>
+<BLANKLINE>
+<BLANKLINE>
+        </div>
         <ul>
             <li>
-                <a href="http://localhost/++skin++cms/@@tinymce-linkbrowser">..</a>
-            </li>
-            <li>
-<BLANKLINE>
+                testpage
                 <a onclick="insertURL(this)"
                    href="http://localhost/++skin++cms/summer09/testpage"><img
     src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>
@@ -74,7 +77,7 @@ This asset will be displayed, as it is an asset.
     src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>
             </li>
             <li>
-<BLANKLINE>
+                testasset
                 <a onclick="insertURL(this)"
                    href="http://localhost/++skin++cms/summer09/testasset"><img
     src="http://localhost/++skin++cms/summer09/@@/asm.cms/icons/link_add.png" /></a>

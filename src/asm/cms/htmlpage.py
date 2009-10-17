@@ -60,7 +60,7 @@ class TextIndexing(grok.Adapter):
         self.body = page.content + ' ' + page.title
 
 
-class Preview(grok.View):
+class SearchPreview(grok.View):
 
     def update(self, q):
         self.keyword = q
@@ -71,5 +71,6 @@ class Preview(grok.View):
         text = ''.join(tree.itertext())
         focus = text.find(self.keyword)
         text = text[focus-50:focus+50]
-        text = text.replace(self.keyword, '<span class="match">%s</span>' % self.keyword)
+        text = text.replace(
+            self.keyword, '<span class="match">%s</span>' % self.keyword)
         return text

@@ -12,3 +12,9 @@ import zope.publisher.interfaces.browser
 class CMS(grok.Application, asm.cms.page.Page):
 
     type = 'htmlpage'
+
+
+class PreviewWindow(grok.View):
+
+    grok.name('preview-window')
+    grok.template('preview-window')

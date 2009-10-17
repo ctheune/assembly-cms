@@ -173,8 +173,8 @@ class Preview(grok.View):
     def render(self):
         skin = zope.component.getUtility(
             zope.publisher.interfaces.browser.IBrowserSkinType, 'summer09')
-        zope.publisher.browser.applySkin(self.request, skin)
         edition = asm.cms.edition.select_edition(self.context, self.request)
+        zope.publisher.browser.applySkin(self.request, skin)
         return zope.component.getMultiAdapter(
             (edition, self.request), zope.interface.Interface,
             name='index')()

@@ -4,8 +4,8 @@
 import asm.cms
 import asm.cms.cms
 import asm.cms.edition
+import asm.cms.htmlpage
 import base64
-import bn
 import datetime
 import grok
 import lxml.etree
@@ -53,7 +53,7 @@ class Import(asm.cms.Form):
 
     def import_htmlpage(self, edition, node):
         content = base64.decodestring(node.text)
-        content = fix_relative_links(
+        asm.cms.htmlpage.fix_relative_links(
             content, self.base_path+'/'+node.getparent().get('path'))
         edition.content = content
 
@@ -78,29 +78,6 @@ class Import(asm.cms.Form):
                     del page[edition.__name__]
             current = current.get(name)
         return current
-
-
-def fix_relative_links(document, current_path):
-    # Hrgh. Why is there no obvious simple way to do this?
-    parser = lxml.etree.HTMLParser()
-    document = (
-        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        document.decode('utf-8'))
-    document = lxml.etree.fromstring(document, parser)
-    for a in document.xpath('//a'):
-        href = a.get('href')
-        if href and href.startswith('/'):
-            a.set('href', bn.relpath(href, current_path))
-    for img in document.xpath('//img'):
-        src = img.get('src')
-        if src and src.startswith('/'):
-            img.set('src', bn.relpath(src, current_path))
-
-    result = lxml.etree.tostring(document.xpath('//stupidcontainerwrappercafebabe')[0],
-                                 pretty_print=True)
-    result = result.replace('<stupidcontainerwrappercafebabe>', '')
-    result = result.replace('</stupidcontainerwrappercafebabe>', '')
-    return result.strip()
 
 
 def extract_date(str):

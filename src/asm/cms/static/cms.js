@@ -8,15 +8,13 @@ $(document).ready(function(){
 
   $("#menu-navigation-handle").click(show_navigation);
   $("#navigation-wrapper .menu-head").click(hide_navigation);
-
-  $(".visit-site").click(show_preview);
+  $("#navigation-tree a").click(show_subpages);
 
   // Folder sorting
   $("#sortable").sortable({update: update_order});
 
+  $(".visit-site").click(show_preview);
   window.preview_location = $('link[rel="preview"]').attr('href');
-  console.log('preview location', window.preview_location);
-
 });
 
 function update_order(event, ui) {
@@ -40,5 +38,18 @@ toggle_navigation = show_navigation;
 
 function show_preview() {
     w = window.open($('link[rel="root"]').attr('href')+'/@@preview-window');
+    return false;
+};
+
+function show_subpages(e) {
+    if ($(this).hasClass('selected')) {
+        window.location = $(this).attr('href')+'/@@edit';
+    };
+    $.get($(this).attr('href')+'/@@navdetails',
+          function(data) {
+              $('#navigation-details').html(data); 
+          });
+    $('#navigation-tree .selected').removeClass('selected');
+    $(this).addClass('selected');
     return false;
 };

@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import unittest
-from asm.cms.importer import fix_relative_links
+from asm.cms.htmlpage import fix_relative_links
 
 
 class ImportTests(unittest.TestCase):

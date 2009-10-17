@@ -5,8 +5,9 @@ import asm.cms.edition
 import asm.cms.form
 import asm.cms.interfaces
 import asm.cms.tinymce
+import bn
 import grok
-import lxml
+import lxml.etree
 import megrok.pagelet
 import zope.interface
 
@@ -51,6 +52,10 @@ class Edit(asm.cms.form.EditForm):
     form_fields['created'].location = 'side'
     form_fields['modified'].location = 'side'
 
+    def post_process(self):
+        self.content = fix_relative_links(
+            self.context.content, self.url(self.context))
+
 
 class TextIndexing(grok.Adapter):
 
@@ -74,3 +79,27 @@ class SearchPreview(grok.View):
         text = text.replace(
             self.keyword, '<span class="match">%s</span>' % self.keyword)
         return text
+
+
+def fix_relative_links(document, current_path):
+    # Hrgh. Why is there no obvious simple way to do this?
+    parser = lxml.etree.HTMLParser()
+    document = (
+        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
+        document.decode('utf-8'))
+    document = lxml.etree.fromstring(document, parser)
+    for a in document.xpath('//a'):
+        href = a.get('href')
+        if href and href.startswith('/'):
+            a.set('href', bn.relpath(href, current_path))
+    for img in document.xpath('//img'):
+        src = img.get('src')
+        if src and src.startswith('/'):
+            img.set('src', bn.relpath(src, current_path))
+
+    result = lxml.etree.tostring(
+        document.xpath('//stupidcontainerwrappercafebabe')[0],
+        pretty_print=True)
+    result = result.replace('<stupidcontainerwrappercafebabe>', '')
+    result = result.replace('</stupidcontainerwrappercafebabe>', '')
+    return result.strip()

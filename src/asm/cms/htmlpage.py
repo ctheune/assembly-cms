@@ -71,8 +71,11 @@ class SearchPreview(grok.View):
         self.keyword = q
 
     def render(self):
-        tree = lxml.etree.fromstring('<stupidcafebabe>%s</stupidcafebabe>' %
-                                     self.context.content)
+        try:
+            tree = lxml.etree.fromstring(
+                '<stupidcafebabe>%s</stupidcafebabe>' % self.context.content)
+        except Exception:
+            return ''
         text = ''.join(tree.itertext())
         focus = text.find(self.keyword)
         text = text[focus-50:focus+50]

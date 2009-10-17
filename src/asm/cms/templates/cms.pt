@@ -17,7 +17,15 @@
           tal:attributes="href context/@@layouthelper/static/cms.css" />
 
         <link rel="shortcut icon" type="image/vnd.microsoft.icon"
-          tal:attributes="href context/@@layouthelper/static/favicon.ico" />
+            tal:attributes="href context/@@layouthelper/static/favicon.ico" />
+
+        <tal:block condition="context/page|nothing">
+            <link rel="preview" tal:attributes="href python:view.url(context.page, '@@preview')"/>
+        </tal:block>
+        <tal:block condition="not:context/page|nothing">
+            <link rel="preview" tal:attributes="href python:view.url(context, '@@preview')"/>
+        </tal:block>
+        <link rel="root" tal:attributes="href view/application_url"/>
 
         <base tal:attributes="href string:${context/@@base}"/>
     </head>
@@ -27,8 +35,7 @@
             <h1><span>AssemblyCMS /</span>
                 <a tal:content="view/application/__name__"
                    tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
-               <a class="visit-site"
-                    tal:attributes="href python:view.url(context.page, '@@preview')">preview</a>
+               <a class="visit-site" href="#">preview</a>
             </h1>
 
             <div id="search">

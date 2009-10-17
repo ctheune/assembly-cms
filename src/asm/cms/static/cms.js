@@ -14,6 +14,9 @@ $(document).ready(function(){
   // Folder sorting
   $("#sortable").sortable({update: update_order});
 
+  window.preview_location = $('link[rel="preview"]').attr('href');
+  console.log('preview location', window.preview_location);
+
 });
 
 function update_order(event, ui) {
@@ -36,7 +39,6 @@ function show_navigation() {
 toggle_navigation = show_navigation;
 
 function show_preview() {
-    w = window.open($('.visit-site').attr('href'));
-    w.setInterval(function(){alert('asdf');}, 200);
+    w = window.open($('link[rel="root"]').attr('href')+'/@@preview-window');
     return false;
 };

@@ -1,0 +1,53 @@
+<html>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #preview {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .title {
+            position: absolute;
+            top: 3em;
+            right: 3em;
+            padding: 0.5em;
+            width:100px;
+            height:100px;
+            background-image: url(@@/asm.cms/images/preview-badge.png);
+        }
+    </style>
+    <script type="text/javascript" tal:attributes="src
+        context/@@layouthelper/static/jquery.js"></script>
+    <script>
+        function followParent() {
+            console.log('updating preview');
+            var parent = window.opener;
+            if (parent == null) {
+                console.log('no parent found, rescheduling');
+                setTimeout(followParent, 1000);
+                return;
+            }
+            console.log('parent found');
+            if (parent.preview_seen == true || parent.preview_location == null) {
+                console.log('parent did not change, rescheduling')
+                setTimeout(followParent, 1000);
+                return;
+            }
+
+            console.log('parent changed to ' + parent.preview_location + ' following');
+            document.getElementById('preview').src = parent.preview_location;
+            parent.preview_seen = true;
+        setTimeout(followParent, 1000);
+        }
+        setTimeout(followParent, 1000);
+    </script>
+    <body>
+        <iframe id="preview">
+        </iframe>
+        <div class="title"></div>
+    </body>
+</html>

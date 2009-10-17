@@ -9,7 +9,7 @@
             (<tal:block tal:repeat="tag python:sorted(result.parameters)"
               ><span tal:content="tag"/> </tal:block>)
 
-            <div class="preview" tal:content="structure result/@@preview"/>
+            <div class="preview" tal:content="structure result/@@searchpreview"/>
         </li>
     </ul>
 </div>

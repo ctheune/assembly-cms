@@ -63,6 +63,8 @@ class Index(grok.View):
     def render(self):
         self.request.response.setHeader(
             'Content-Type', self.context.content_type)
+        self.request.response.setHeader(
+            'Content-Length', len(self.context.content))
         return self.context.content
 
 

@@ -13,3 +13,4 @@ egg-info
 eggs
 .DS_Store
 .orig
+python/

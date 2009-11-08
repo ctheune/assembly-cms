@@ -90,3 +90,21 @@ class ISearchableText(zope.interface.Interface):
 
     body = zope.interface.Attribute(
         "A unicode string containing text for indexing.")
+
+
+class IReplaceSupport(zope.interface.Interface):
+
+    def search(term):
+        """Searches for the given term and returns IReplaceOccurence
+        objects."""
+        pass
+
+
+class IReplaceOccurence(zope.interface.Interface):
+
+    preview = zope.interface.Attribute(
+        'Return preview text that shows the occurence in context and'
+        'highlights it with a span tag.')
+
+    def replace(target):
+        """Replace this occurence in the original text with the target."""

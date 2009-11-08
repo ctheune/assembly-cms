@@ -1,0 +1,30 @@
+<h1>Search and replace</h1>
+
+<form tal:attributes="action string:${view/application_url}/@@replacepreview"
+    method="POST">
+    <input type="text" name="search" />
+    <span style="padding-left:1em; padding-right:1em;">&#x27f6;</span>
+    <input type="text" name="replace" />
+
+    <input type="submit" name="form.actions.search" value="Search" />
+</form>
+
+
+<h2>About Assembly <span style="font-size:80%; color:grey;">(3 of 14)</span></h2>
+
+<div>
+    <p>Replace this occurence?</p>
+
+    <input type="button" value="Yes"/>
+    <input type="button" value="All on this page"/>
+    <input type="button" value="On all pages"/>
+    <input type="button" value="Go to next occurence"/>
+    <input type="button" value="Go to next page"/>
+    <input type="button" value="Cancel"/>
+
+</div>
+
+<script type="text/javascript">
+
+
+</script>

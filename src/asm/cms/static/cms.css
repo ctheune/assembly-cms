@@ -218,6 +218,11 @@ span.match {
     background-color:lightyellow;
 }
 
+span.discreet {
+    color:#666;
+    font-size:65%;
+}
+
 #header ul {
     list-style:none;
 }
@@ -417,4 +422,14 @@ h1 {
 /* jQuery fixes */
 .ui-icon {
     display: inline-block;
+}
+
+/* Search and replace */
+.search-and-replace h3 {
+    margin-bottom:0.5em;
+}
+
+.search-and-replace ul {
+    list-style-type: none;
+    margin-left: 0;
 }

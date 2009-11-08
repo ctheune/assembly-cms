@@ -106,5 +106,8 @@ class IReplaceOccurence(zope.interface.Interface):
         'Return preview text that shows the occurence in context and'
         'highlights it with a span tag.')
 
+    id = zope.interface.Attribute(
+        'Return a string ID that can be used to identify this occurence again later')
+
     def replace(target):
         """Replace this occurence in the original text with the target."""

@@ -1,30 +1,26 @@
 <h1>Search and replace</h1>
 
 <form tal:attributes="action string:${view/application_url}/@@replace"
-    method="POST">
-    Search: <input type="text" name="search" disabled="disabled"
-                tal:attributes="value request/search"/>
-    Replace: <input type="text" name="replace" disabled="disabled"
-                tal:attributes="value request/replace"/>
+    method="POST" class="search-and-replace">
+    <input type="hidden" name="search" tal:attributes="value request/search"/>
+    <input type="hidden" name="replace" tal:attributes="value request/replace"/>
+
+    Search: <input type="text" disabled="disabled" tal:attributes="value request/search"/>
+    Replace: <input type="text" disabled="disabled" tal:attributes="value request/replace"/>
     <input type="submit" name="form.actions.replace" value="Replace" />
 
-    <table>
-        <tal:block repeat="result view/results">
-        <tr>
-            <td rowspan="2" style="width: 1em;"><input type="checkbox"/></td>
-            <td>
-                <a tal:attributes="href python:view.url(result, '@@edit')"
-                    tal:content="result/title">
-                </a>
-                (<tal:block tal:repeat="tag python:sorted(result.parameters)"
-                  ><span tal:content="tag"/> </tal:block>)
-              (<span tal:replace="python:view.predict_matches(result)"/> occurences)
-         </td>
-        </tr>
-        <tr>
-            <td class="preview"
-                tal:content="structure result/@@searchpreview"/>
-        </tr>
-        </tal:block>
-    </table>
+    <tal:block repeat="result view/results">
+
+    <h3><span tal:content="result/edition/title"/>
+            <span class="discreet">(<tal:block tal:repeat="tag python:sorted(result['edition'].parameters)"
+                ><span tal:replace="tag"/> </tal:block>)</span></h3>
+
+    <ul>
+        <li tal:repeat="occurence result/occurences">
+            <input type="checkbox" tal:attributes="value occurence/id"
+            name="occurences" checked="checked"/>
+            <span tal:content="structure occurence/preview"/>
+        </li>
+    </ul>
+    </tal:block>
 </form>

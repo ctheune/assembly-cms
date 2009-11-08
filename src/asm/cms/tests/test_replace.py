@@ -1,9 +1,11 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
 import asm.cms.htmlpage
 import asm.cms.replace
+import asm.cms.testing
+import transaction
+import unittest
 
 
 class TestReplace(unittest.TestCase):
@@ -107,5 +109,25 @@ class TestReplace(unittest.TestCase):
                           o1.preview)
 
 
+class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(ReplaceSelenium, self).setUp()
+        r = self.getRootFolder()
+        r['cms'] = asm.cms.cms.CMS()
+        transaction.commit()
+
+    def test_simple_replace(self):
+        s = self.selenium
+        s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
+        s.clickAndWait('link=Search and replace')
+        s.type('name=search', 'foo')
+        s.type('name=replace', 'bar')
+        s.clickAndWait('name=form.actions.search')
+
+
 def test_suite():
-    return unittest.makeSuite(TestReplace)
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(TestReplace))
+    suite.addTest(unittest.makeSuite(ReplaceSelenium))
+    return suite

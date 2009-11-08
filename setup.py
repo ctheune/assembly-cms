@@ -33,5 +33,4 @@ setup(name='asm.cms',
                         'hurry.zoperesource',
                         'hurry.tinymce',
                         'hurry.query',
-                        ],
-      )
+                        'gocept.selenium'])

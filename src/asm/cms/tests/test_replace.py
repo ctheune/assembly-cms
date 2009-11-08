@@ -81,6 +81,19 @@ class TestReplace(unittest.TestCase):
         self.assertEquals(u'foosyrupbarmaplebaz',
                           self.page.content)
 
+    def test_replace_multiple_attributes_occurences_different_order(self):
+        self.page.title = u'fooasdfbarasdfbaz'
+        self.page.content = u'fooasdfbarasdfbaz'
+        o1, o2, o3, o4 = self.replace.search('asdf')
+        o3.replace('syrup')
+        o1.replace('lingonberry')
+        o4.replace('maple')
+        o2.replace('pancake')
+        self.assertEquals(u'foolingonberrybarpancakebaz',
+                          self.page.title)
+        self.assertEquals(u'foosyrupbarmaplebaz',
+                          self.page.content)
+
 
 def test_suite():
     return unittest.makeSuite(TestReplace)

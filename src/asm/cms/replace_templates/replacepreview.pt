@@ -5,8 +5,9 @@
     <input type="hidden" name="search" tal:attributes="value request/search"/>
     <input type="hidden" name="replace" tal:attributes="value request/replace"/>
 
-    Search: <input type="text" disabled="disabled" tal:attributes="value request/search"/>
-    Replace: <input type="text" disabled="disabled" tal:attributes="value request/replace"/>
+    <input type="text" disabled="disabled" tal:attributes="value request/search"/>
+    <span style="padding-left:1em; padding-right:1em;">&#x27f6;</span>
+    <input type="text" disabled="disabled" tal:attributes="value request/replace"/>
     <input type="submit" name="form.actions.replace" value="Replace" />
 
     <tal:block repeat="result view/results">

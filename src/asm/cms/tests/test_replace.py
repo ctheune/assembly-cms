@@ -10,7 +10,7 @@ class TestReplace(unittest.TestCase):
 
     def setUp(self):
         self.page = asm.cms.htmlpage.HTMLPage()
-        self.replace = asm.cms.replace.Replace(self.page)
+        self.replace = asm.cms.replace.HTMLReplace(self.page)
 
     def test_find_no_occurences(self):
         occurences = list(self.replace.search('asdf'))
@@ -93,6 +93,18 @@ class TestReplace(unittest.TestCase):
                           self.page.title)
         self.assertEquals(u'foosyrupbarmaplebaz',
                           self.page.content)
+
+    def test_preview(self):
+        self.page.content = u"""The object providing the existing interface is
+        passed to the Adapter in <br/> the constructor, and is stored in an
+        attribute named context. The source code for the grok.Adapter base
+        class is simply:"""
+        o1, = self.replace.search('constructor')
+        self.assertEquals(u'ace is\n        '
+                          'passed to the Adapter in &lt;br/&gt; the '
+                          '<span class="match">constructor</span>, and '
+                          'is stored in an\n        attribute named cont',
+                          o1.preview)
 
 
 def test_suite():

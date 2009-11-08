@@ -1,0 +1,1 @@
+<li><a tal:attributes="href string:${view/application_url}/@@searchandreplace">Search and replace</a></li>

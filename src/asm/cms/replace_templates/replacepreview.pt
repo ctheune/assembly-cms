@@ -1,0 +1,30 @@
+<h1>Search and replace</h1>
+
+<form tal:attributes="action string:${view/application_url}/@@replace"
+    method="POST">
+    Search: <input type="text" name="search" disabled="disabled"
+                tal:attributes="value request/search"/>
+    Replace: <input type="text" name="replace" disabled="disabled"
+                tal:attributes="value request/replace"/>
+    <input type="submit" name="form.actions.replace" value="Replace" />
+
+    <table>
+        <tal:block repeat="result view/results">
+        <tr>
+            <td rowspan="2" style="width: 1em;"><input type="checkbox"/></td>
+            <td>
+                <a tal:attributes="href python:view.url(result, '@@edit')"
+                    tal:content="result/title">
+                </a>
+                (<tal:block tal:repeat="tag python:sorted(result.parameters)"
+                  ><span tal:content="tag"/> </tal:block>)
+              (<span tal:replace="python:view.predict_matches(result)"/> occurences)
+         </td>
+        </tr>
+        <tr>
+            <td class="preview"
+                tal:content="structure result/@@searchpreview"/>
+        </tr>
+        </tal:block>
+    </table>
+</form>

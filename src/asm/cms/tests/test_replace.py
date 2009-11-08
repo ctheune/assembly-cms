@@ -34,13 +34,13 @@ class TestReplace(unittest.TestCase):
 
     def test_replace_occurence_content(self):
         self.page.content = u'fooasdfbar'
-        occurence = self.replace.search('asdf').next()
+        occurence, = self.replace.search('asdf')
         occurence.replace('lingonberry')
         self.assertEquals('foolingonberrybar', self.page.content)
 
     def test_replace_occurence_title(self):
         self.page.title = u'fooasdfbar'
-        occurence = self.replace.search('asdf').next()
+        occurence, = self.replace.search('asdf')
         occurence.replace('lingonberry')
         self.assertEquals('foolingonberrybar', self.page.title)
 
@@ -66,6 +66,19 @@ class TestReplace(unittest.TestCase):
         o2.replace('lingonberry')
         o1.replace('pancake')
         self.assertEquals(u'foopancakebarlingonberrybaz',
+                          self.page.content)
+
+    def test_replace_multiple_occurences_multiple_attributes(self):
+        self.page.title = u'fooasdfbarasdfbaz'
+        self.page.content = u'fooasdfbarasdfbaz'
+        o1, o2, o3, o4 = self.replace.search('asdf')
+        o1.replace('lingonberry')
+        o2.replace('pancake')
+        o3.replace('syrup')
+        o4.replace('maple')
+        self.assertEquals(u'foolingonberrybarpancakebaz',
+                          self.page.title)
+        self.assertEquals(u'foosyrupbarmaplebaz',
                           self.page.content)
 
 

@@ -34,13 +34,15 @@ class Occurences(object):
         occurence.group = self
         self.entries.append(occurence)
 
-    def rebase(self, offset, delta):
-        """Rebase the offset of all occurences after <offset> by <delta>
+    def rebase(self, occurence, delta):
+        """Rebase the offset of all occurences after occurence by <delta>
         characters."""
-        for occurence in self.entries:
-            if occurence.offset <= offset:
+        for candidate in self.entries:
+            if candidate.attribute != occurence.attribute:
                 continue
-            occurence.offset += delta
+            if candidate.offset <= occurence.offset:
+                continue
+            candidate.offset += delta
 
     def __len__(self):
         return len(self.entries)
@@ -62,7 +64,7 @@ class Occurence(object):
         content = (content[:self.offset] + target +
                    content[self.offset+len(self.term):])
         setattr(self.page, self.attribute, content)
-        self.group.rebase(self.offset, len(target) - len(self.term))
+        self.group.rebase(self, len(target) - len(self.term))
 
 
 class SearchAndReplace(megrok.pagelet.Pagelet):

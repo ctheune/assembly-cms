@@ -16,7 +16,7 @@ class TestReplace(unittest.TestCase):
         occurences = list(self.replace.search('asdf'))
         self.assertEqual([], occurences)
 
-    def test_find_occurences_body(self):
+    def test_find_occurences_content(self):
         self.page.content = u'fooasdfbar'
         occurences = list(self.replace.search('asdf'))
         self.assertEqual(1, len(occurences))
@@ -26,13 +26,13 @@ class TestReplace(unittest.TestCase):
         occurences = list(self.replace.search('asdf'))
         self.assertEqual(1, len(occurences))
 
-    def test_find_occurences_title_and_body(self):
+    def test_find_occurences_title_and_content(self):
         self.page.title = u'fooasdfbar'
         self.page.content = u'fooasdfbar'
         occurences = list(self.replace.search('asdf'))
         self.assertEqual(2, len(occurences))
 
-    def test_replace_occurence_body(self):
+    def test_replace_occurence_content(self):
         self.page.content = u'fooasdfbar'
         occurence = self.replace.search('asdf').next()
         occurence.replace('lingonberry')
@@ -43,6 +43,14 @@ class TestReplace(unittest.TestCase):
         occurence = self.replace.search('asdf').next()
         occurence.replace('lingonberry')
         self.assertEquals('foolingonberrybar', self.page.title)
+
+    def test_replace_occurence_title_and_content(self):
+        self.page.title = u'fooasdfbar'
+        self.page.content = u'fooasdfbar'
+        for i, o in enumerate(self.replace.search('asdf')):
+            o.replace('lingonberry%s' % i)
+        self.assertEquals('foolingonberry0bar', self.page.title)
+        self.assertEquals('foolingonberry1bar', self.page.content)
 
 
 def test_suite():

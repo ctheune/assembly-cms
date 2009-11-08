@@ -1,15 +1,21 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import cgi
 import grok
 import megrok.pagelet
 import asm.cms
+import asm.cms.interfaces
 import asm.cms.cms
 import zope.interface
 import hurry.query.query
 
 
-class Replace(object):
+class HTMLReplace(grok.Adapter):
+    """Search and replace support for HTML pages."""
+
+    grok.context(asm.cms.interfaces.IHTMLPage)
+    grok.implements(asm.cms.interfaces.IReplaceSupport)
 
     def __init__(self, context):
         self.context = context
@@ -26,6 +32,8 @@ class Replace(object):
 
 
 class Occurences(object):
+    """A helper class to allow multiple occurences to work on the same
+    object and attributes."""
 
     def __init__(self):
         self.entries = []
@@ -52,6 +60,10 @@ class Occurences(object):
 
 
 class Occurence(object):
+    """An occurence of for search and replace of a term within an HTML
+    page."""
+
+    grok.implements(asm.cms.interfaces.IReplaceOccurence)
 
     def __init__(self, page, attribute, offset, term):
         self.page = page
@@ -65,6 +77,15 @@ class Occurence(object):
                    content[self.offset+len(self.term):])
         setattr(self.page, self.attribute, content)
         self.group.rebase(self, len(target) - len(self.term))
+
+    @property
+    def preview(self):
+        content = getattr(self.page, self.attribute)
+        start = content[self.offset-50:self.offset]
+        end = content[self.offset+len(self.term):self.offset+len(self.term)+50]
+        return (cgi.escape(start) +
+                '<span class="match">' + cgi.escape(self.term) + '</span>' +
+                cgi.escape(end))
 
 
 class SearchAndReplace(megrok.pagelet.Pagelet):

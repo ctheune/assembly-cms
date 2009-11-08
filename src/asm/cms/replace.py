@@ -15,11 +15,38 @@ class Replace(object):
         self.context = context
 
     def search(self, term):
+        occurences = Occurences()
         for attribute in ['title', 'content']:
             offset = getattr(self.context, attribute).find(term)
             while offset != -1:
-                yield Occurence(self.context, attribute, offset, term)
+                o = Occurence(self.context, attribute, offset, term)
+                occurences.add(o)
                 offset = getattr(self.context, attribute).find(term, offset+1)
+        return occurences
+
+
+class Occurences(object):
+
+    def __init__(self):
+        self.entries = []
+
+    def add(self, occurence):
+        occurence.group = self
+        self.entries.append(occurence)
+
+    def rebase(self, offset, delta):
+        """Rebase the offset of all occurences after <offset> by <delta>
+        characters."""
+        for occurence in self.entries:
+            if occurence.offset <= offset:
+                continue
+            occurence.offset += delta
+
+    def __len__(self):
+        return len(self.entries)
+
+    def __iter__(self):
+        return iter(self.entries)
 
 
 class Occurence(object):
@@ -35,6 +62,7 @@ class Occurence(object):
         content = (content[:self.offset] + target +
                    content[self.offset+len(self.term):])
         setattr(self.page, self.attribute, content)
+        self.group.rebase(self.offset, len(target) - len(self.term))
 
 
 class SearchAndReplace(megrok.pagelet.Pagelet):

@@ -52,6 +52,22 @@ class TestReplace(unittest.TestCase):
         self.assertEquals('foolingonberry0bar', self.page.title)
         self.assertEquals('foolingonberry1bar', self.page.content)
 
+    def test_replace_multiple_occurences_straight(self):
+        self.page.content = u'fooasdfbarasdfbaz'
+        o1, o2 = self.replace.search('asdf')
+        o1.replace('lingonberry')
+        o2.replace('pancake')
+        self.assertEquals(u'foolingonberrybarpancakebaz',
+                          self.page.content)
+
+    def test_replace_multiple_occurences_different_order(self):
+        self.page.content = u'fooasdfbarasdfbaz'
+        o1, o2 = self.replace.search('asdf')
+        o2.replace('lingonberry')
+        o1.replace('pancake')
+        self.assertEquals(u'foopancakebarlingonberrybaz',
+                          self.page.content)
+
 
 def test_suite():
     return unittest.makeSuite(TestReplace)

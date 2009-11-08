@@ -18,8 +18,23 @@ class Replace(object):
         for attribute in ['title', 'content']:
             offset = getattr(self.context, attribute).find(term)
             while offset != -1:
-                yield True
+                yield Occurence(self.context, attribute, offset, term)
                 offset = getattr(self.context, attribute).find(term, offset+1)
+
+
+class Occurence(object):
+
+    def __init__(self, page, attribute, offset, term):
+        self.page = page
+        self.attribute = attribute
+        self.offset = offset
+        self.term = term
+
+    def replace(self, target):
+        content = getattr(self.page, self.attribute)
+        content = (content[:self.offset] + target +
+                   content[self.offset+len(self.term):])
+        setattr(self.page, self.attribute, content)
 
 
 class SearchAndReplace(megrok.pagelet.Pagelet):

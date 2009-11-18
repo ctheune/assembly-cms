@@ -7,7 +7,7 @@ $(document).ready(function(){
         }});
 
   $("#menu-navigation-handle").click(show_navigation);
-  $("#navigation-wrapper .menu-head").click(hide_navigation);
+  $("#navigation-background").click(hide_navigation);
   $("#navigation-tree a").click(show_subpages);
 
   // Folder sorting

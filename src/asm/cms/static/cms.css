@@ -363,6 +363,9 @@ h1 {
     bottom:0;
     left:0;
     right:0;
+    /* XXX Why do we need this? Otherwise some images and checkboxes shine
+     * through. */
+    z-index: 1;
 }
 
 #navigation-background {

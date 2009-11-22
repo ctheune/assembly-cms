@@ -2,7 +2,7 @@ tinyMCE.init({
     mode: 'specific_textareas',
     editor_selector: 'mceEditor',
 
-    plugins : 'advlink,inlinepopups,fullscreen,table',
+    plugins : 'advlink,inlinepopups,fullscreen,table,contextmenu',
 
     theme: 'advanced',
     theme_advanced_toolbar_location : 'top',

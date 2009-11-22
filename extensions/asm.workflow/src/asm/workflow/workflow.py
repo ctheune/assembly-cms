@@ -4,6 +4,7 @@
 import asm.cms.interfaces
 import datetime
 import grok
+import pytz
 import zope.component
 import zope.event
 
@@ -17,8 +18,10 @@ def publish(draft, publication_date=None):
     public = draft.page.getEdition(public, create=True)
     public.copyFrom(draft)
     public.modified = (
-        publication_date or datetime.datetime.now())
+        publication_date or datetime.datetime.now(tzinfo=pytz.UTC))
     zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
+    del draft.__parent__[draft.__name__]
+    return public
 
 
 def select_initial_parameters():
@@ -61,12 +64,48 @@ class PublishMenuItem(grok.Viewlet):
     grok.context(asm.cms.IEdition)
 
 
+class WorkflowStatusNote(grok.Viewlet):
+    grok.viewletmanager(asm.cms.Notes)
+    grok.context(asm.cms.IEdition)
+
+    def update(self):
+        try:
+            public = self.context.parameters.replace(
+                WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
+            public = self.context.page.getEdition(public, create=False)
+        except KeyError:
+            public = None
+
+        try:
+            draft = self.context.parameters.replace(
+                WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+            draft = self.context.page.getEdition(draft, create=False)
+        except KeyError:
+            draft = None
+
+        if self.context is public:
+            self.this_name = 'public'
+            self.other_name = 'draft'
+        else:
+            self.this_name = 'draft'
+            self.other_name = 'public'
+
+        if None in [draft, public]:
+            self.other_is_changed = False
+        else:
+            if draft == self.context:
+                other = public
+            else:
+                other = draft
+            self.other_is_changed = other.modified > self.context.modified
+
+
 class Publish(asm.cms.ActionView):
 
     grok.context(asm.cms.IEdition)
 
     def update(self):
-        publish(self.context)
+        self.context = publish(self.context)
         self.flash(u"Published draft.")
 
 
@@ -83,7 +122,8 @@ class Revert(asm.cms.ActionView):
 
     def update(self):
         page = self.context.page
-        public = self.context.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
+        public = self.context.parameters.replace(
+            WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
         try:
             public = page.getEdition(public)
         except KeyError:

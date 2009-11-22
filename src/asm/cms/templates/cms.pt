@@ -82,6 +82,8 @@
             <div id="content">
                 <div tal:replace="structure context/@@messages"></div>
 
+                <tal:block replace="structure provider:notes"/>
+
                 <tal:block replace="structure view/render"></tal:block>
             </div>
 

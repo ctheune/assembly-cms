@@ -43,7 +43,7 @@ class IEdition(zope.interface.Interface):
     tags = zope.schema.TextLine(title=u'Tags', required=False)
 
     created = zope.schema.Datetime(title=u'Created', readonly=True)
-    modified = zope.schema.Datetime(title=u'Modified', readonly=True)
+    modified = zope.schema.Datetime(title=u'Last change', readonly=True)
 
     size = zope.schema.Int(title=u'Size', readonly=True)
 
@@ -107,7 +107,8 @@ class IReplaceOccurence(zope.interface.Interface):
         'highlights it with a span tag.')
 
     id = zope.interface.Attribute(
-        'Return a string ID that can be used to identify this occurence again later')
+        'Return a string ID that can be used to identify this'
+        'occurence again later')
 
     def replace(target):
         """Replace this occurence in the original text with the target."""

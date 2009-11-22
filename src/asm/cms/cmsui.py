@@ -102,6 +102,12 @@ class Actions(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class Notes(grok.ViewletManager):
+
+    grok.name('notes')
+    grok.context(zope.interface.Interface)
+
+
 @grok.adapter(asm.cms.interfaces.IEdition, asm.cms.interfaces.IRetailSkin)
 @grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
 def edition_url(edition, request):
@@ -131,7 +137,7 @@ class BytesFormat(grok.View):
         units = self.units[:]
         unit = units.pop(0)
 
-        while size >= (1024/2) and units:
+        while size >= (1024 / 2) and units:
             size = size / 1024
             unit = units.pop(0)
 

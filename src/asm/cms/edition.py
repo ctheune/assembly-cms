@@ -25,8 +25,6 @@ class Edition(grok.Model):
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
-        self.date_created = datetime.datetime.now()
-        self.date_modified = self.date_created
 
     def editions(self):
         return self.__parent__.editions
@@ -41,6 +39,9 @@ class Edition(grok.Model):
         self.tags = other.tags
         self.title = other.title
         zope.event.notify(grok.ObjectModifiedEvent(self))
+        # Workaround: if we copyFrom we also want to take over the
+        # modification date as we didn't change anything, yet.
+        self.modified = other.modified
 
 
 grok.context(Edition)
@@ -135,6 +136,8 @@ class Actions(grok.Viewlet):
 # viewlet for displaying all editions when looking at a page and when looking
 # at a specific edition. The code is basically the same each time (we actually
 # re-use the template), but the amount of registration necessary is just bad.
+
+
 class Editions(grok.ViewletManager):
 
     grok.name('editions')
@@ -154,7 +157,7 @@ def annotate_modification_date(obj, event):
 
 @grok.subscribe(Edition, grok.ObjectAddedEvent)
 def annotate_creation_date(obj, event):
-    obj.created = datetime.datetime.now(pytz.UTC)
+    obj.created = obj.modified = datetime.datetime.now(pytz.UTC)
 
 
 def select_edition(page, request):

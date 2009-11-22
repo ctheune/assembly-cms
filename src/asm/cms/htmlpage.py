@@ -46,10 +46,9 @@ class Edit(asm.cms.form.EditForm):
     grok.require('asm.cms.EditContent')
 
     form_fields = grok.AutoFields(HTMLPage).select(
-        'title', 'tags', 'created', 'modified', 'content')
+        'title', 'tags', 'modified', 'content')
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
     form_fields['tags'].location = 'side'
-    form_fields['created'].location = 'side'
     form_fields['modified'].location = 'side'
 
     def post_process(self):
@@ -78,7 +77,7 @@ class SearchPreview(grok.View):
             return ''
         text = ''.join(tree.itertext())
         focus = text.find(self.keyword)
-        text = text[focus-50:focus+50]
+        text = text[focus - 50:focus + 50]
         text = text.replace(
             self.keyword, '<span class="match">%s</span>' % self.keyword)
         return text

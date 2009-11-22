@@ -1,5 +1,5 @@
-# Make this a Python package
 import grok
+
 
 def application(self):
     obj = self.context
@@ -20,6 +20,7 @@ zope.deferredimport.define(
 
     Actions='asm.cms.cmsui:Actions',
     ActionView='asm.cms.cmsui:ActionView',
+    Notes='asm.cms.cmsui:Notes',
 
     Form='asm.cms.form:Form',
     EditForm='asm.cms.form:EditForm',

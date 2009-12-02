@@ -33,7 +33,7 @@ class LayoutHelper(grok.View):
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
-        now = datetime.datetime.now(tzinfo=pytz.UTC)
+        now = datetime.datetime.now()
 
         for (limitString, doCountDown, showString) in times:
             limit = None

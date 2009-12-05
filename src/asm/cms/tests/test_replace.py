@@ -1,18 +1,28 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import asm.cms.cms
 import asm.cms.htmlpage
 import asm.cms.replace
 import asm.cms.testing
 import transaction
 import unittest
+import zope.app.component.hooks
 
 
-class TestReplace(unittest.TestCase):
+class TestReplace(asm.cms.testing.FunctionalTestCase):
 
     def setUp(self):
-        self.page = asm.cms.htmlpage.HTMLPage()
+        super(TestReplace, self).setUp()
+        self.root = self.getRootFolder()
+        self.root['cms'] = asm.cms.cms.CMS()
+        zope.app.component.hooks.setSite(self.root['cms'])
+        self.root['cms']['page'] = self.page = asm.cms.htmlpage.HTMLPage()
         self.replace = asm.cms.replace.HTMLReplace(self.page)
+
+    def tearDown(self):
+        zope.app.component.hooks.setSite(None)
+        super(TestReplace, self).tearDown()
 
     def test_find_no_occurences(self):
         occurences = list(self.replace.search('asdf'))

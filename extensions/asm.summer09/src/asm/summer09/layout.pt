@@ -38,12 +38,7 @@ function closeguide() {
   createCookie(cookieName,'seen',300);
   return false;
 }
-function autocloseguide() {
-  var cookie = readCookie(cookieName);
-  if (cookie==null) {
-    closeguide();
-  }
-}
+
 var newsRotation=true;
 var currentNews;
 function doStartupStuff() {
@@ -136,19 +131,10 @@ function stopNews() {
     <body onLoad="doStartupStuff();">
     <div id="main">
       <div id="header">
-      <a id="home" href="http://www.assembly.org"></a>
-      <div id="banner-top" class="banner">
-        <a href="http://tickets.assembly.org/">
-          <img tal:attributes="src context/@@layouthelper/static/images/banner-eng.gif" alt="Buy Tickets"/>
-        </a>
+        <h1 id="home"><a title="Assembly Winter" href="http://www.assembly.org">Assembly Winter 2010, 22.-24.1.2010, Kaapelitehdas, Helsinki</a></h1>
+        <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Buy Tickets Now!</a>
       </div>
-      <div id="button-top-2" class="banner">
-        <!--XXX<a href="http://alive.assembly.org"><img tal:attributes="src string:$portal_url/images/button-alive.gif" alt="Assembly Alive" /></a>-->
-      </div>
-      <div id="button-top-1" class="banner">
-        <a href="http://www.assemblytv.org"><img tal:attributes="src context/@@layouthelper/static/images/button-asmtv.gif" alt="AssemblyTV" /></a>
-      </div>
-      </div>
+      
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
         <div><form action="search"><p><input type="text" style="width: 10em;" name="SearchableText" /><input type="submit" class="submit" value="Search" i18n:attributes="value label_search;" /></p></form>
@@ -197,33 +183,20 @@ function stopNews() {
       </div>
 
 
-    <div id="siteguide">
-
-      <div id="sguide-content" style="display:none;">
-      <div id="sguide-content-padding">
-<!--XXX<tal:repeat tal:repeat="obj here/fillSiteGuide">
-<div tal:define="firstsection repeat/obj/start" tal:attributes="class python:test(firstsection,'sguide-section section-first','sguide-section')">
-<a href="#" tal:define="real_obj obj/getObject" tal:attributes="href real_obj/absolute_url">
-<h4 tal:content="obj/Title">Title</h4>
-<p tal:content="obj/Description" /></a>
 </div>
-</tal:repeat>-->
-      </div></div>
-
-      <div id="sguide-bottom-show">
-        <div class="sguide-text" i18n:domain="asm" i18n:translate="siteguide_open">Key information - Quick links</div></div>
-      <div id="sguide-bottom-hide" style="display:none;">
-        <div class="sguide-text" i18n:domain="asm" i18n:translate="siteguide_close">Hide siteguide</div></div>
-    </div></div>
     <div id="footer">
-                              <div id="footer-links"><a href="/summer09/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">feedback</a> | <a href="/summer09/asm/asmorg/privacy" i18n:domain="asm" i18n:attributes="href" i18n:translate="">privacy</a> |  <a href="/summer09/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">contact</a> | <span>Copyright &copy; <a href="/summer09/asm/asmorg">Assembly Organizing</a>, 2009</span></div>
+        <p id="footer-links"><a href="/winter10/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">feedback</a> |
+        <a href="/winter10/asm/asmorg/privacy" i18n:domain="asm" i18n:attributes="href" i18n:translate="">privacy</a> |
+        <a href="/winter10/asm/contact" i18n:domain="asm" i18n:attributes="href" i18n:translate="">contact</a> |
+        <br />Copyright &copy; <a href="/summer10/asm/asmorg">Assembly Organizing</a>, 2009-2010</p>
     </div>
     <div id="nav-top"><div id="nav-top-container">
       <ul i18n:domain="asm">
-        <li><a href="http://www.assembly.org/winter08/" i18n:translate="">Previous events</a></li>
-        <li><a href="http://www.assembly.org/summer09/" class="active">ASM Summer</a></li>
+        <li><a href="http://www.assembly.org/winter09/" i18n:translate="">Winter'09</a></li>
+        <li><a href="http://www.assembly.org/summer09/" class="active">Summer'09</a></li>
+        <li><a href="http://forum.assembly.org/">Forums</a></li>
         <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
-        <li><a href="http://alive.assembly.org/">Alive</a></li>
+        
         <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>
       </ul>
     </div></div>
@@ -241,7 +214,6 @@ try {
 var pageTracker = _gat._getTracker("UA-7109758-1");
 pageTracker._trackPageview();
 } catch(err) {}</script>
-
 
 
     </body>

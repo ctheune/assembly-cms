@@ -69,6 +69,31 @@ class AddPage(asm.cms.form.AddForm):
         self.target = asm.cms.edition.select_edition(obj, self.request)
 
 
+class ChangePageType(asm.cms.form.EditForm):
+    """Changes the type of a page.
+
+    Removes current editions but leaves sub-pages intact.
+
+    """
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    label = u'Change page type'
+    form_fields = grok.AutoFields(asm.cms.interfaces.IPage).select('type')
+    form_fields['type'].custom_widget = (
+        lambda field, request: zope.app.form.browser.source.SourceRadioWidget(
+                field, field.source, request))
+
+    @grok.action('Change')
+    def change(self, type):
+        for edition in self.context.editions:
+            del edition.__parent__[edition.__name__]
+        self.context.type = type
+        asm.cms.edition.add_initial_edition(self.context)
+        self.flash(u'Page type changed to %s.' % type)
+        self.redirect(self.url(list(self.context.editions)[0], '@@edit'))
+
+
 class Delete(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
@@ -149,6 +174,8 @@ class CMSIndex(grok.View):
 # Note that as pages in the CMS always can act as folders we add a trailing
 # slash to their URL when using them as a base: images contained in the page
 # will be linked to without mentioning the name of the page explicitly.
+
+
 class PageBase(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)

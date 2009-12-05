@@ -74,3 +74,29 @@ class LayoutHelper(grok.View):
 class Navtree(asm.cms.cmsui.Navtree):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
+
+
+class Homepage(asm.cms.Pagelet):
+    grok.context(asm.cms.homepage.Homepage)
+    grok.name('index')
+
+    def news(self, tag):
+        news_edition = asm.cms.edition.select_edition(
+            self.context.page['news2'], self.request)
+        for item in news_edition.list():
+            edition = asm.cms.edition.select_edition(
+                item, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            if not edition.has_tag(tag):
+                continue
+            yield edition
+
+    def featured(self):
+        return self.news('featured')
+
+    def big_news(self):
+        return list(self.news('frontpage'))[:4]
+
+    def small_news(self):
+        return list(self.news('frontpage'))[4:12]

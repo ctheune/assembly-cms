@@ -11,6 +11,11 @@ TestLayer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'TestLayer', allow_teardown=False)
 
 
+class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
+
+    layer = TestLayer
+
+
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = gocept.selenium.ztk.Layer(TestLayer)

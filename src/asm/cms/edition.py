@@ -43,6 +43,12 @@ class Edition(grok.Model):
         # modification date as we didn't change anything, yet.
         self.modified = other.modified
 
+    def has_tag(self, tag):
+        if not self.tags:
+            return False
+        tags = self.tags.split(' ')
+        return tag in tags
+
 
 grok.context(Edition)
 
@@ -105,7 +111,7 @@ class EditionParameters(object):
 
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
-def add_initial_edition(page, event):
+def add_initial_edition(page, event=None):
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
             asm.cms.interfaces.IInitialEditionParameters):

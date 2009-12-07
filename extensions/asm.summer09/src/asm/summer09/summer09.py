@@ -28,8 +28,8 @@ class LayoutHelper(grok.View):
 
         # time ( YYYY-MM-DDThh:ss:mmTZD or None), boolean for countdown,
         # string to show
-        times = (('06.08.2009 12:00', True, "until ASSEMBLY!"),
-                 ('09.08.2009 18:00', True, "of ASSEMBLY left to enjoy!"),
+        times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
+                 ('24.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
@@ -41,7 +41,8 @@ class LayoutHelper(grok.View):
                 limit = datetime.datetime.strptime(limitString, format)
             if (not limit) or now < limit:
                 if doCountDown:
-                    diff = (limit - now).seconds
+                    diff = limit - now
+                    diff = (diff.days * 24 * 60 * 60) + diff.seconds
                     countdown = ""
                     units = (('years', 31536000), ('months', 2592000),
                              ('days', 86400), ('hours', 3600),
@@ -57,8 +58,7 @@ class LayoutHelper(grok.View):
                     message = '<span id="clock">%s %s</span>' % (
                         ', '.join(messageParts), showString)
                 else:
-                    pass
-                    message = "foo"
+                    message = showString
                 return message
 
         # This should never get returned...
@@ -134,3 +134,7 @@ class Homepage(asm.cms.Pagelet):
 
     def small_news(self):
         return list(self.news('frontpage'))[4:12]
+
+
+class Search(asm.cms.search.Search):
+    grok.layer(ISummer09)

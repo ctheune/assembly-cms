@@ -75,6 +75,40 @@ class Navtree(asm.cms.cmsui.Navtree):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
 
+    def update(self):
+        self.active = []
+        current = self.context.page
+        while current:
+            self.active.append(current)
+            current = current.__parent__
+
+    def _create_subtree(self, root, levels):
+        if levels < 0:
+            return
+        if root.type in ['asset']:
+            return
+        edition = asm.cms.edition.select_edition(root, self.request)
+        if edition.has_tag('hide-navigation'):
+            return
+        if isinstance(edition, asm.cms.edition.NullEdition):
+            return
+        tree = {'page': edition,
+                'active': False,
+                'subpages': []}
+        if root in self.active:
+            tree['active'] = True
+            for child in root.subpages:
+                sub_tree = self._create_subtree(child, levels-1)
+                if sub_tree:
+                    tree['subpages'].append(sub_tree)
+        return tree
+
+    def tree(self):
+        root = self.application
+
+        tree = self._create_subtree(root, 3)
+        return tree['subpages']
+
 
 class Homepage(asm.cms.Pagelet):
     grok.context(asm.cms.homepage.Homepage)

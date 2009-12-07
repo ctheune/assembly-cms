@@ -134,10 +134,14 @@ function stopNews() {
         <h1 id="home"><a title="Assembly Winter" href="http://www.assembly.org">Assembly Winter 2010, 22.-24.1.2010, Kaapelitehdas, Helsinki</a></h1>
         <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Buy Tickets Now!</a>
       </div>
-      
+
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
-        <div><form action="search"><p><input type="text" style="width: 10em;" name="SearchableText" /><input type="submit" class="submit" value="Search" i18n:attributes="value label_search;" /></p></form>
+        <div><!-- XXX <form tal:attributes="action
+                string:${view/application_url}/search"><p><input type="text"
+                style="width: 10em;" name="q" /><input type="submit"
+                class="submit" value="Search" i18n:attributes="value
+                label_search;" /></p></form> -->
 
       <!--XXX<a class="language-english" tal:attributes="href python:here.getLanguageURL('en')">In English</a> | <a class="language-finnish" tal:attributes="href python:here.getLanguageURL('fi')">suomeksi</a></div>-->
         </div>

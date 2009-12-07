@@ -134,7 +134,3 @@ class Homepage(asm.cms.Pagelet):
 
     def small_news(self):
         return list(self.news('frontpage'))[4:12]
-
-
-class Search(asm.cms.search.Search):
-    grok.layer(ISummer09)

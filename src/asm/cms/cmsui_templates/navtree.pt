@@ -1,5 +1,4 @@
 <tal:block define="items view/tree">
-
 <ul>
 <metal:block define-macro="inner">
     <li tal:repeat="item items">

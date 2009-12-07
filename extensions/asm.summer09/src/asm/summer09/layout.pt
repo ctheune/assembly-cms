@@ -196,12 +196,10 @@ function stopNews() {
         <li><a href="http://www.assembly.org/summer09/" class="active">Summer'09</a></li>
         <li><a href="http://forum.assembly.org/">Forums</a></li>
         <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
-        
+
         <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>
       </ul>
     </div></div>
-    <div style="display:none;">paged rendered by <span tal:replace="request/SERVER_NAME"/></div>
-
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? 

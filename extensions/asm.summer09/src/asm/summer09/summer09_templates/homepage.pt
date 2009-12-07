@@ -1,0 +1,40 @@
+<div id="news-featured">
+    <div class="news-box">
+        <div class="news-box-inside">
+            <tal:loop tal:repeat="featured view/featured">
+            <div class="newsitem"
+                 tal:define="first repeat/featured/start"
+                 tal:attributes="id string:news-id${repeat/featured/number};
+                                 style python:first and ' ' or 'display:none'">
+                <img src="http://www.assembly.org/summer09/images/news-general.jpg"
+                     class="news-image" />
+                <div class="news-padding" tal:define="headingIsLink string:1">
+                    <h2><a tal:attributes="href python:view.url(featured)" tal:content="featured/title"></a></h2>
+                    <span class="readmore-button"><a href="#" tal:attributes="href python:view.url(featured)"><span i18n:domain="asm" i18n:translate="readmore">read more</span></a></span><br />
+                </div>
+            </div>
+            </tal:loop>
+        </div>
+    </div>
+</div>
+
+<div class="content-news">
+    <tal:block tal:repeat="item view/big_news">
+    <div class="content-news-item">
+        <h2>
+            <a href="#" tal:content="item/title" tal:attributes="href python:view.url(item)">
+                News item
+            </a>
+        </h2>
+    </div>
+    <hr/>
+    </tal:block>
+
+    <ul class="news-smaller">
+        <li tal:repeat="item view/small_news"><a tal:attributes="href python:view.url(item)">
+            <span class="date" tal:content="python:item.created"/>
+            <span tal:replace="item/title">Do YOU want to win a 3000 euro DreamPC?</span></a>
+        </li>
+    </ul>
+    <span class="readmore-button"><a href="#" i18n:domain="asm" i18n:translate="archive" tal:attributes="href python:view.url(context, 'news')">Archive</a></span>
+</div>

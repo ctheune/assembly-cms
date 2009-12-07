@@ -1,0 +1,8 @@
+<h1 tal:content="context/title"></h1>
+
+<tal:block repeat="item view/list">
+<h2 tal:content="item/title"></h2>
+
+<div tal:content="structure item/content">
+</div>
+</tal:block>

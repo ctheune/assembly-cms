@@ -18,7 +18,7 @@ def publish(draft, publication_date=None):
     public = draft.page.getEdition(public, create=True)
     public.copyFrom(draft)
     public.modified = (
-        publication_date or datetime.datetime.now(tzinfo=pytz.UTC))
+        publication_date or datetime.datetime.now(tz=pytz.UTC))
     zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
     del draft.__parent__[draft.__name__]
     return public

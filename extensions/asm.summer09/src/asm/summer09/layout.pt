@@ -164,14 +164,14 @@ function eraseCookie(name)
             </div>
             
             <div class="sidebar-box">
-            <h4>News</h4>
-            <ul>
-                <li><a href="#">Asus desktop image competition results </a>08.17.2009</li>
-                <li><a href="#">Videos & Photos </a>08.17.2009</li>
-                <li><a href="#">Answer our survey - win tickets! </a>08.17.2009</li>
-                <li><a href="#">Results</a> 08.17.2009</li>
-                <li><a href="#">Fast graphics previews released</a> 08.17.2009</li>
-            </ul>
+                <h4>News</h4>
+                <ul>
+                    <li><a href="#">Asus desktop image competition results </a>08.17.2009</li>
+                    <li><a href="#">Videos & Photos </a>08.17.2009</li>
+                    <li><a href="#">Answer our survey - win tickets! </a>08.17.2009</li>
+                    <li><a href="#">Results</a> 08.17.2009</li>
+                    <li><a href="#">Fast graphics previews released</a> 08.17.2009</li>
+                </ul>
 
             </div>
             
@@ -197,10 +197,7 @@ function eraseCookie(name)
                     </p>
                 </div>
             </div>
-            
-
-
-            
+         
         </div>
         
     </div>

@@ -1,13 +1,8 @@
-
-/* ----- style.css ----- */
-@media screen {
-/* http://www.assembly.org/summer09/portal_css/style.css?original=1 */
-/* */
 h1, h2, h3, h4, h5 {color:#333; border:0; font-family:"Trebuched MS", Verdana, Arial; font-weight:bold;}
 a, a:link {color:#2d778e;}
 a:visited {color:#21484e;}
-a:hover {text-decoration:underline; color:#e70101;}
-h2 a, h2 a:link, h2 a:visited {text-decoration:none; color:#333;}
+a:hover {text-decoration:none; color:#e70101;}
+h2 a, h2 a:link, h2 a:visited {text-decoration:none; color:#2d778e;;}
 h1 {font-size:2em; border-bottom:1px solid #ccc; }
 h2 {font-size:1.5em;}
 h3 {font-size:1.3em;}
@@ -57,8 +52,8 @@ height:177px;
 #subheader {
 background:url("images/subheader-bg.gif") no-repeat;
 color:#585858;
-height:36px;
-padding:14px 20px 0 20px;
+height:33px;
+padding:15px 20px 0 20px;
 font-weight:bold;
 font-size:1em;
 }
@@ -93,10 +88,12 @@ padding:20px 0 0 0;
 margin:0 auto 20px auto;
 width:994px;
 }
-#subheader form {display:inline; margin:-1px 0 0 0;}
-#subheader input {margin:0 0 0 5px; padding-left:20px; background:url("images/search-bg.gif") no-repeat; border-color:#ccc; color:#555;}
-#subheader .submit {background:#4aa7c4; color:white; padding-left:5px; border:0; font-size:12px; padding:2px 5px;}
-#subheader div {float:right; position:relative; display:inline; margin-top:-1px;}
+#subheader form {display:inline; margin:0 0 0 0;}
+#subheader input {margin:0 0 0 5px; padding-left:20px; background:url("images/search-bg.gif") no-repeat; border:1px solid #ccc; color:#555;}
+#subheader .submit {background:#4aa7c4; color:white; padding-left:5px; border:0; font-size:12px; padding:2px 5px; -moz-border-radius:3px; -webkit-border-radius:3px;}
+#subheader #search {float:right; position:relative; display:inline; margin:-3px 0 0 10px;}
+#subheader #language {float:right;}
+#subheader #language a {margin:0 5px 0 0; padding:0 5px; text-decoration:none;}
 #subheader span {float:left; padding-top:2px;}
 #subheader p {margin:0; display:inline;}
 #subheader a:visited, #subheader a:link {color:black; text-decoration:none;}
@@ -174,6 +171,9 @@ margin:5px 0;
 background: url("images/bg-box-light-top2.gif") 0 0 no-repeat;
 padding:10px 5px 1px 5px;
 }
+
+.box-light img {border:0;}
+
 #boxes {background:url("images/bg-box-row.gif") no-repeat #fefefe; margin:0 -10px -10px -10px; padding-bottom:10px;}
 #boxes .box-row {clear:both; padding-top:1px; border-top:2px solid white;}
 #boxes .box-row div {
@@ -222,43 +222,101 @@ display:block;
 color:#9db615;
 }
 /* */
-#news-featured {font-size:1.1em;}
+
+.sidebar-box {
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    border:1px solid #ddd;
+    margin:10px 4px 10px 3px;
+    padding:5px;
+}
+
+.sidebar-box h4 {
+    color:white;
+    background:#222;
+    padding:3px 10px;
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+}
+
+.sidebar-box a {text-decoration:none;font-weight:bold;}
+
+.sidebar-box ul {
+    color:#999;
+    list-style:none;
+    margin:3px 0;
+    padding:0 5px 5px 5px;
+
+}
+
+.sidebar-box li {
+    margin:6px 0;
+    border-bottom:1px dotted #ddd;
+    padding:3px 0;
+}
+
+#news-featured {
+    font-size:1.1em;
+    padding:0;
+    margin:5px 0;
+    background:#000;
+    border:2px solid rgba(0,0,0,0.7);
+    -moz-border-radius:6px;
+    -webkit-border-radius:6px;
+    height:300px;
+    color:#fff;
+    overflow:hidden;
+    background:top center no-repeat;
+    
+}
+
+#news-featured h2 {color:white;}
 #news-featured .news-image {height:100px; margin:28px 0 20px 6px; display:block;}
-#news-featured {padding:0; margin-top:10px;}
-#news-featured .news-padding {padding:0 10px 15px 10px;}
-#news-featured #news-navigation-next {float:right;}
+
+#news-featured .news-padding {
+    padding:0 10px 0 10px;
+    height:74px;
+    overflow:hidden;
+    margin-bottom:10px;
+    
+}
+
+#news-overlay {
+    background:#000;
+    color:white;
+    background-color: rgba(0,0,0,0.7);
+    margin-top:190px;
+    height:100px;
+    padding:5px 5px;
+}
+
+#news-featured a {color:#fff; text-decoration:none;}
+
+#news-featured p {margin:0; display:inline; font-size:14px;}
+
 #news-featured #news-navigation a {
-background:url("images/news-button-bg-passive.gif") no-repeat;
-color:#111;
-float:left;
-margin:23px 1px 3px 1px;
-width:10px;
-height:12px;
-text-decoration:none;
-padding:0 3px 1px 3px;
-font-size:9px;
-font-weight:bold;
+    color:#fff;
+    margin:0 3px 3px 3px;
+    text-decoration:none;
+    padding:0 4px 1px 4px;
+    font-size:9px;
+    font-weight:bold;
+    float:right;
 }
-#news-featured #news-navigation a:hover, #news-featured #news-navigation a.active {background:url("images/news-button-bg-active.gif") no-repeat;}
-#news-featured #news-navigation {padding:2px 10px 0 10px; margin:2px 1px; clear:both;}
-.news-box {
-background: url("images/news-bg.gif") 0 100% no-repeat;
-margin:5px 0 0 0;
-padding-bottom:50px;
-}
-.news-box .news-box-inside {
-background: url("images/news-bg.gif") 0 0 no-repeat;
-padding:5px 5px 2px 5px;
-}
+
+#news-featured #news-navigation a:hover, #news-featured #news-navigation a.active {background:#fff; color:#000;}
+#news-featured #news-navigation {height:15px;}
+
 .content-news {
-margin:0 10px;
-padding:5px 10px 25px 10px;
+margin:0 5px;
+padding:5px 0 25px 0;
 }
-.content-news-item h2 {color:#828282; font-weight:normal;}
-.news-smaller {font-size:1em; list-style-type:none; margin:0; padding:10px 0 0 0; font-weight:bold;}
-.news-smaller li {margin-bottom:10px;}
-.news-smaller li a {text-decoration:none; color:#333;}
-.news-smaller a:hover, .content-news-item a:hover {text-decoration:underline; color:#e70101;}
+.content-news span {color:#aaa; font-size:10px; padding-left:10px;}
+
+.content-news ul {margin:0; padding:0; list-style:none;}
+
+.content-news li {border-bottom:1px dotted #ccc;}
+
 /* */
 #nav-top {
 font-size:12px;
@@ -307,22 +365,6 @@ text-decoration:underline;;
 }
 
 
-.readmore-button {
-font-size:0.8em;
-display:block;
-background:url("images/readmore-button-bg-right.gif") center right no-repeat;
-clear:both;
-padding:5px 5px 5px 0;
-float:right;
-}
-.readmore-button a {
-padding:5px 8px 5px 20px;
-display:block;
-color:#222;
-background: url("images/readmore-button-bg-left.gif") center left no-repeat;
-text-decoration:none;
-}
-.readmore-button a:hover {text-decoration:underline;}
 /* */
 div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
 .portletItemDetails {text-align:left; border-bottom:1px dotted #c6c6c6; color:#9e9e9e; padding:2px 0;}
@@ -340,5 +382,6 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
 * html li.nav-level1 {padding-top:20px;}
 * html li.active {padding-bottom:0; height:20px;}
 
-}
+.clearfix:after, #container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+.clearfix, #container {display:block;}
 

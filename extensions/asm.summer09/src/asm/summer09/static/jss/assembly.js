@@ -45,3 +45,23 @@ $(function() {
     } 
     doRotateTabs(); 
 }); 
+
+// Count-down
+var target;
+function startClock() {
+    target = document.getElementById('clock').getAttribute('alt');
+    setTimeout('updateClock()',3000);
+}
+
+function updateClock() {
+  var now = new Date();
+  var diff = Math.floor((target-now)/1000);
+  if (diff < 0) { diff=0; }
+  document.getElementById('clock_days').innerHTML=Math.floor(diff/86400);
+  diff = diff % 86400;
+  document.getElementById('clock_hours').innerHTML=Math.floor(diff/3600);
+  diff = diff % 3600;
+  document.getElementById('clock_minutes').innerHTML=Math.floor(diff/60);
+  if (diff > 0) { setTimeout('updateClock()', 60000); }
+}
+

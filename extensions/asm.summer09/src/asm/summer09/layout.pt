@@ -68,8 +68,7 @@ function eraseCookie(name)
         <div id="subheader">
             <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
             <div>
-                
-                <div id="search"><form action="search"><p><input type="text" style="width: 10em;" name="SearchableText" /><input type="submit" class="submit" value="Search" i18n:attributes="value label_search;" /></p></form></div>
+                <!--<div id="search"><form action="search"><p><input type="text" style="width: 10em;" name="SearchableText" /><input type="submit" class="submit" value="Search" i18n:attributes="value label_search;" /></p></form></div>-->
                 <div id="language"><a class="language-english" href="#">In English</a> <a href="#" class="language-finnish">suomeksi</a></div>
             <!--XXX<a class="language-english" tal:attributes="href python:here.getLanguageURL('en')">In English</a> | <a class="language-finnish" tal:attributes="href python:here.getLanguageURL('fi')">suomeksi</a></div>-->
             </div>

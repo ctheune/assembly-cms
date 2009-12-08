@@ -1,16 +1,17 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import cgi
-import hashlib
-import grok
-import time
-import megrok.pagelet
 import asm.cms
-import asm.cms.interfaces
 import asm.cms.cms
-import zope.interface
+import asm.cms.interfaces
+import cgi
+import grok
+import hashlib
 import hurry.query.query
+import megrok.pagelet
+import time
+import urllib
+import zope.interface
 
 
 class HTMLReplace(grok.Adapter):
@@ -21,15 +22,20 @@ class HTMLReplace(grok.Adapter):
 
     def __init__(self, context):
         self.context = context
+        ids = zope.component.getUtility(
+            zope.app.intid.interfaces.IIntIds)
+        self.context_id = ids.getId(self.context)
 
     def search(self, term):
         occurences = Occurences()
         for attribute in ['title', 'content']:
             offset = getattr(self.context, attribute).find(term)
             while offset != -1:
-                o = Occurence(self.context, attribute, offset, term)
+                o = Occurence(self.context, self.context_id,
+                              attribute, offset, term)
                 occurences.add(o)
-                offset = getattr(self.context, attribute).find(term, offset+1)
+                offset = getattr(self.context, attribute).find(
+                    term, offset + 1)
         return occurences
 
 
@@ -67,16 +73,21 @@ class Occurence(object):
 
     grok.implements(asm.cms.interfaces.IReplaceOccurence)
 
-    def __init__(self, page, attribute, offset, term):
+    def __init__(self, page, page_id, attribute, offset, term):
         self.page = page
+        self.page_id = page_id
         self.attribute = attribute
         self.offset = offset
         self.term = term
 
+        # Only compute the ID initially. Due to rebase behaviour we have to
+        # keep the same ID for later replaces that still refer to the old IDs.
+        self.set_id()
+
     def replace(self, target):
         content = getattr(self.page, self.attribute)
         content = (content[:self.offset] + target +
-                   content[self.offset+len(self.term):])
+                   content[self.offset + len(self.term):])
         setattr(self.page, self.attribute, content)
         self.group.rebase(self, len(target) - len(self.term))
         zope.event.notify(grok.ObjectModifiedEvent(self.page))
@@ -85,18 +96,17 @@ class Occurence(object):
     def preview(self):
         content = getattr(self.page, self.attribute)
         start = content[max(self.offset-50, 0):self.offset]
-        end = content[self.offset+len(self.term):self.offset+len(self.term)+50]
+        end = content[self.offset + len(self.term):
+                      self.offset + len(self.term) + 50]
         return (cgi.escape(start) +
                 '<span class="match">' + cgi.escape(self.term) + '</span>' +
                 cgi.escape(end))
 
-    @property
-    def id(self):
+    def set_id(self):
         content = getattr(self.page, self.attribute).encode('utf-8')
         content_hash = hashlib.sha1().hexdigest()[:10]
-        ids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
-        id = ids.getId(self.page)
-        return '%s-%s-%s-%s' % (id, content_hash, self.offset, self.term)
+        self.id = '%s-%s-%s-%s' % (self.page_id, content_hash, self.offset,
+                                   urllib.quote(self.term.encode('base64')))
 
 
 class SearchAndReplace(megrok.pagelet.Pagelet):

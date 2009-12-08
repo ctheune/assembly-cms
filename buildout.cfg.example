@@ -1,2 +1,5 @@
 [buildout]
 extends = profiles/buildout.cfg
+
+[app]
+admin-password = changeme

@@ -134,3 +134,16 @@ class Homepage(asm.cms.Pagelet):
 
     def small_news(self):
         return list(self.news('frontpage'))[4:12]
+
+
+class SelectLanguage(grok.View):
+
+    grok.context(zope.interface.Interface)
+    grok.name('select-language')
+    grok.layer(ISummer09)
+
+    def update(self, lang):
+        self.request.response.setCookie('asm.translation.lang', lang, path='/')
+
+    def render(self):
+        self.redirect(self.url(self.context))

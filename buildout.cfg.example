@@ -2,4 +2,4 @@
 extends = profiles/buildout.cfg
 
 [app]
-admin-password = changeme
+admin-password = admin

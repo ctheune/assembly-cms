@@ -281,11 +281,15 @@ color:#9db615;
     
 }
 
-#news-overlay {
+#news-featured .newsitem {
+    margin:0;
+    padding:190px 0 0 0;
+    }
+
+#news-featured .news-overlay {
     background:#000;
     color:white;
     background-color: rgba(0,0,0,0.7);
-    margin-top:190px;
     height:100px;
     padding:5px 5px;
 }
@@ -302,10 +306,11 @@ color:#9db615;
     font-size:9px;
     font-weight:bold;
     float:right;
+
 }
 
 #news-featured #news-navigation a:hover, #news-featured #news-navigation a.active {background:#fff; color:#000;}
-#news-featured #news-navigation {height:15px;}
+#news-featured #news-navigation {height:15px;    margin-top:-20px;}
 
 .content-news {
 margin:0 5px;

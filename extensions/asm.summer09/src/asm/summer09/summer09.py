@@ -28,8 +28,8 @@ class LayoutHelper(grok.View):
 
         # time ( YYYY-MM-DDThh:ss:mmTZD or None), boolean for countdown,
         # string to show
-        times = (('06.08.2009 12:00', True, "until ASSEMBLY!"),
-                 ('09.08.2009 18:00', True, "of ASSEMBLY left to enjoy!"),
+        times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
+                 ('24.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
@@ -41,7 +41,8 @@ class LayoutHelper(grok.View):
                 limit = datetime.datetime.strptime(limitString, format)
             if (not limit) or now < limit:
                 if doCountDown:
-                    diff = (limit - now).seconds
+                    diff = limit - now
+                    diff = (diff.days * 24 * 60 * 60) + diff.seconds
                     countdown = ""
                     units = (('years', 31536000), ('months', 2592000),
                              ('days', 86400), ('hours', 3600),
@@ -57,8 +58,7 @@ class LayoutHelper(grok.View):
                     message = '<span id="clock">%s %s</span>' % (
                         ', '.join(messageParts), showString)
                 else:
-                    pass
-                    message = "foo"
+                    message = showString
                 return message
 
         # This should never get returned...
@@ -74,6 +74,40 @@ class LayoutHelper(grok.View):
 class Navtree(asm.cms.cmsui.Navtree):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
+
+    def update(self):
+        self.active = []
+        current = self.context.page
+        while current:
+            self.active.append(current)
+            current = current.__parent__
+
+    def _create_subtree(self, root, levels):
+        if levels < 0:
+            return
+        if root.type in ['asset']:
+            return
+        edition = asm.cms.edition.select_edition(root, self.request)
+        if edition.has_tag('hide-navigation'):
+            return
+        if isinstance(edition, asm.cms.edition.NullEdition):
+            return
+        tree = {'page': edition,
+                'active': False,
+                'subpages': []}
+        if root in self.active:
+            tree['active'] = True
+            for child in root.subpages:
+                sub_tree = self._create_subtree(child, levels-1)
+                if sub_tree:
+                    tree['subpages'].append(sub_tree)
+        return tree
+
+    def tree(self):
+        root = self.application
+
+        tree = self._create_subtree(root, 3)
+        return tree['subpages']
 
 
 class Homepage(asm.cms.Pagelet):

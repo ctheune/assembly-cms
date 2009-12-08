@@ -2,7 +2,8 @@
 
   <ul id="navigation">
   <metal:block define-macro="inner">
-      <li tal:repeat="item items">
+      <li tal:repeat="item items"
+          tal:attributes="class python:item['active'] and 'active' or ' '">
           <a tal:attributes="href python:view.url(item['page']);
                              class python:view.page is item['page'] and 'selected' or ' '"
              tal:content="item/page/title"></a>

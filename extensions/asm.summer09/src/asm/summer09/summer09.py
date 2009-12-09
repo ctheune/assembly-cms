@@ -93,14 +93,17 @@ class Navtree(asm.cms.cmsui.Navtree):
         if isinstance(edition, asm.cms.edition.NullEdition):
             return
         tree = {'page': edition,
-                'active': False,
+                'class': set(),
                 'subpages': []}
         if root in self.active:
-            tree['active'] = True
+            tree['class'].add('active')
             for child in root.subpages:
                 sub_tree = self._create_subtree(child, levels-1)
                 if sub_tree:
                     tree['subpages'].append(sub_tree)
+        if 'active' in tree['class'] and not tree['subpages']:
+            tree['class'].add('has_no_children')
+        tree['class'] = ' '.join(tree['class'])
         return tree
 
     def tree(self):

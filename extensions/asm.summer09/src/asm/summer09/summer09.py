@@ -129,11 +129,8 @@ class Homepage(asm.cms.Pagelet):
     def featured(self):
         return self.news('featured')
 
-    def big_news(self):
-        return list(self.news('frontpage'))[:4]
-
-    def small_news(self):
-        return list(self.news('frontpage'))[4:12]
+    def frontpage(self):
+        return list(self.news('frontpage'))[:12]
 
 
 class SelectLanguage(grok.View):

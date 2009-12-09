@@ -1,40 +1,33 @@
-<div id="news-featured">
-    <div class="news-box">
-        <div class="news-box-inside">
-            <tal:loop tal:repeat="featured view/featured">
-            <div class="newsitem"
-                 tal:define="first repeat/featured/start"
-                 tal:attributes="id string:news-id${repeat/featured/number};
-                                 style python:first and ' ' or 'display:none'">
-                <img src="http://www.assembly.org/summer09/images/news-general.jpg"
-                     class="news-image" />
-                <div class="news-padding" tal:define="headingIsLink string:1">
-                    <h2><a tal:attributes="href python:view.url(featured)" tal:content="featured/title"></a></h2>
-                    <span class="readmore-button"><a href="#" tal:attributes="href python:view.url(featured)"><span i18n:domain="asm" i18n:translate="readmore">read more</span></a></span><br />
-                </div>
+<div id="news-featured" tal:define="featured view/featured">
+
+    <div class="newsitem" id="news-id1"
+        style="background-image: url(http://assembly.galleria.fi/kuvat/Assembly%20Summer%202009/Tuomas%20Siitonen/IMG_2311-Edit%20copy.jpg/full)"
+        tal:repeat="item featured"
+        tal:attributes="id string:news-id${repeat/item/number}">
+        <div class="news-overlay">
+            <div class="news-padding">
+                <h2><a tal:attributes="href python:view.url(item)" tal:content="item/title">Videos &amp; Photos</a></h2>
+                <p tal:condition="nothing"><a tal:attributes="href python:view.url(item)">Want to catch the feeling of ASSEMBLY Summer 2009? Check out our photo and video archives!</a></p>
             </div>
-            </tal:loop>
         </div>
+    </div>
+
+    <div id="news-navigation" class="tabs">
+        <a href=""
+            tal:repeat="item featured"
+            tal:attributes="id string:news-id${repeat/item/number}-nav">&bull;</a>
     </div>
 </div>
 
 <div class="content-news">
-    <tal:block tal:repeat="item view/big_news">
-    <div class="content-news-item">
-        <h2>
-            <a href="#" tal:content="item/title" tal:attributes="href python:view.url(item)">
-                News item
-            </a>
-        </h2>
-    </div>
-    <hr/>
-    </tal:block>
-
-    <ul class="news-smaller">
-        <li tal:repeat="item view/small_news"><a tal:attributes="href python:view.url(item)">
-            <span class="date" tal:content="python:item.created"/>
-            <span tal:replace="item/title">Do YOU want to win a 3000 euro DreamPC?</span></a>
+    <ul>
+        <li tal:repeat="item view/frontpage">
+          <h2><a tal:attributes="href python:view.url(item)"
+                 tal:content="item/title">Asus desktop image competition
+                 results</a> <span
+                 tal:content="python:item.modified.strftime('%d.%m.%Y')">11.12.2009</span></h2>
+            <p tal:condition="nothing">Here are the results for ASUS desktop background wallpaper competition, the winner and four runner ups.</p>
         </li>
     </ul>
-    <span class="readmore-button"><a href="#" i18n:domain="asm" i18n:translate="archive" tal:attributes="href python:view.url(context, 'news')">Archive</a></span>
+    <p><a tal:attributes="href string:${view/application_url}/news2">Archive</a></p>
 </div>

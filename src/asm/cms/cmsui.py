@@ -46,8 +46,6 @@ class Navtree(grok.View):
         tree = {'page': asm.cms.edition.select_edition(root, self.request),
                 'subpages': []}
         for child in root.subpages:
-            if child.type == 'asset':
-                continue
             if not len(list(child.subpages)):
                 continue
             tree['subpages'].append(self._create_subtree(child))
@@ -76,8 +74,12 @@ class NavDetails(grok.View):
     grok.require('asm.cms.EditContent')
 
     def pages(self):
-        for page in self.context.page.subpages:
-            yield asm.cms.edition.select_edition(page, self.request)
+        if not asm.cms.interfaces.IPage.providedBy(self.context):
+            page = self.context.page
+        else:
+            page = self.context
+        for subpage in page.subpages:
+            yield asm.cms.edition.select_edition(subpage, self.request)
 
 
 class ActionView(grok.View):

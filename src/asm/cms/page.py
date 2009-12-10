@@ -106,7 +106,7 @@ class Delete(grok.View):
         del page.__parent__[page.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target))
+        self.redirect(self.url(self.target, '@@edit'))
 
 
 class PageActions(grok.Viewlet):

@@ -133,7 +133,7 @@ class Delete(grok.View):
         del page[self.context.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target))
+        self.redirect(self.url(self.target, '@@edit'))
 
 
 class Actions(grok.Viewlet):

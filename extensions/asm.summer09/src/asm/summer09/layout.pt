@@ -20,8 +20,8 @@
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
         <div>
           <div id="language">
-            <a class="language-english" href="@@select-language?lang=en">In English</a>
-            <a class="language-finnish" href="@@select-language?lang=fi">suomeksi</a>
+            <a class="language-english" tal:attributes="href string:${context/@@absolute_url}/@@select-language?lang=en">In English</a>
+            <a class="language-finnish" tal:attributes="href string:${context/@@absolute_url}/@@select-language?lang=fi">suomeksi</a>
           </div>
         </div>
       </div>

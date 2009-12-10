@@ -1,4 +1,4 @@
-<div id="news-featured" tal:define="featured view/featured">
+<div id="news-featured" tal:define="featured python:list(view.featured())">
 
     <div class="newsitem" id="news-id1"
         style=""

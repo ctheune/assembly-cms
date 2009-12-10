@@ -24,7 +24,7 @@ class LayoutHelper(grok.View):
 
     def news(self):
         news_edition = asm.cms.edition.select_edition(
-            self.context.page['news2'], self.request)
+            self.context.page['news'], self.request)
         for i, item in enumerate(news_edition.list()):
             edition = asm.cms.edition.select_edition(
                 item, self.request)
@@ -126,7 +126,7 @@ class Homepage(asm.cms.Pagelet):
 
     def news(self, tag):
         news_edition = asm.cms.edition.select_edition(
-            self.context.page['news2'], self.request)
+            self.context.page['news'], self.request)
         for item in news_edition.list():
             edition = asm.cms.edition.select_edition(
                 item, self.request)

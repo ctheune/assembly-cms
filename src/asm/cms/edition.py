@@ -38,6 +38,10 @@ class Edition(grok.Model):
         self.modified = other.modified
         self.tags = other.tags
         self.title = other.title
+        for schema in zope.component.subscribers(
+                (self,), asm.cms.interfaces.IAdditionalSchema):
+            schema(self).copyFrom(schema(other))
+
         zope.event.notify(grok.ObjectModifiedEvent(self))
         # Workaround: if we copyFrom we also want to take over the
         # modification date as we didn't change anything, yet.

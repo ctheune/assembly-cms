@@ -22,12 +22,19 @@ class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISummer09)
 
-    def generateCountdown(dummy):
-        #request = container.REQUEST
-        #RESPONSE =  request.RESPONSE
+    def news(self):
+        news_edition = asm.cms.edition.select_edition(
+            self.context.page['news2'], self.request)
+        for i, item in enumerate(news_edition.list()):
+            edition = asm.cms.edition.select_edition(
+                item, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+            if i == 4:
+                break
 
-        # time ( YYYY-MM-DDThh:ss:mmTZD or None), boolean for countdown,
-        # string to show
+    def generateCountdown(self):
         times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
                  ('24.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
@@ -127,7 +134,13 @@ class Homepage(asm.cms.Pagelet):
                 continue
             if not edition.has_tag(tag):
                 continue
-            yield edition
+            result = dict(edition=edition,
+                          news=asm.cms.news.INewsFields(edition))
+            if result['news'].image:
+                result['teaser_url'] = self.url(edition.page['teaser-image'])
+            else:
+                result['teaser_url'] = ''
+            yield result
 
     def featured(self):
         return self.news('featured')

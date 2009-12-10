@@ -30,12 +30,30 @@ class NewsFolder(asm.cms.Edition):
                     yield page
 
 
+class ITeaser(zope.interface.Interface):
+
+    teaser = zope.schema.TextLine(title=u'Teaser text')
+
+
+class TeaserAnnotation(grok.Annotation):
+    grok.implements(ITeaser)
+    grok.context(asm.cms.interfaces.IEdition)
+
+    teaser = u''
+
+
 class Edit(asm.cms.EditForm):
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
         'title', 'tags', 'modified')
     form_fields['tags'].location = 'side'
     form_fields['modified'].location = 'side'
+
+
+@grok.subscribe(asm.cms.htmlpage.HTMLPage)
+@grok.implementer(asm.cms.interfaces.IAdditionalSchema)
+def add_teaser(page):
+    return ITeaser
 
 
 class Index(asm.cms.Pagelet):

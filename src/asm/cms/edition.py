@@ -13,7 +13,7 @@ import zope.interface
 
 class Edition(grok.Model):
 
-    zope.interface.implements(asm.cms.interfaces.IEdition)
+    grok.implements(asm.cms.interfaces.IEdition)
 
     created = None
     modified = None

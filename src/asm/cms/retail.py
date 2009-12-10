@@ -64,3 +64,22 @@ class EditionTraverse(RetailTraverser):
 
     def get_context(self):
         return self.context.page
+
+
+@grok.adapter(asm.cms.interfaces.IEdition, asm.cms.interfaces.IRetailSkin)
+@grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
+def edition_url(edition, request):
+    return zope.component.getMultiAdapter(
+        (edition.__parent__, request),
+        zope.traversing.browser.interfaces.IAbsoluteURL)
+
+
+@grok.subscribe(zope.publisher.interfaces.http.IHTTPVirtualHostChangedEvent)
+def fix_virtual_host(event):
+    if not asm.cms.IRetailSkin.providedBy(event.request):
+        return
+    root = event.request.getVirtualHostRoot()
+    if asm.cms.interfaces.IEdition.providedBy(root):
+        # XXX This is extremely hacky but the APIs don't allow me to do
+        # better.
+        event.request._vh_root = root.__parent__

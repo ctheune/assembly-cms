@@ -17,4 +17,10 @@
   <utility component=".news.NewsFolder" name="news"/>
   <utility component=".homepage.Homepage" name="homepage"/>
 
+  <subscriber
+    factory=".news.add_teaser"
+    for="asm.cms.htmlpage.HTMLPage"
+    provides="asm.cms.interfaces.IAdditionalSchema"
+    />
+
 </configure>

@@ -33,7 +33,8 @@ class CMSForm(object):
         super(CMSForm, self).setUpWidgets(ignore_request)
         for widget in self.widgets:
             setattr(widget, 'location',
-                    getattr(self.form_fields[widget.context.__name__], 'location', None))
+                    getattr(self.form_fields[widget.context.__name__],
+                            'location', None))
 
 
 class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
@@ -41,7 +42,8 @@ class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
     grok.baseclass()
 
 
-class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.AddForm):
+class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
+              grok.AddForm):
 
     grok.baseclass()
 
@@ -72,7 +74,8 @@ class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.AddForm):
         return grok.AutoFields(self.factory)
 
 
-class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.EditForm):
+class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
+               grok.EditForm):
 
     grok.baseclass()
 
@@ -87,3 +90,19 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.EditForm
             return
         self.flash(self.status)
         self.redirect(self.url(self.context, 'edit'))
+
+
+class EditionEditForm(EditForm):
+
+    grok.baseclass()
+
+    @property
+    def form_fields(self):
+        fields = self.main_fields
+        for schema in zope.component.subscribers(
+                (self.context,),
+                asm.cms.interfaces.IAdditionalSchema):
+            fields += grok.AutoFields(schema)
+        fields['tags'].location = 'side'
+        fields['modified'].location = 'side'
+        return fields

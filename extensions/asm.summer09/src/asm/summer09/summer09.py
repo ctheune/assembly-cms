@@ -23,16 +23,17 @@ class LayoutHelper(grok.View):
     grok.layer(ISummer09)
 
     def news(self):
+        result = []
         news_edition = asm.cms.edition.select_edition(
             self.application['news'], self.request)
-        for i, item in enumerate(news_edition.list()):
+        for item in news_edition.list():
             edition = asm.cms.edition.select_edition(
                 item, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
-            yield edition
-            if i == 4:
-                break
+            result.append(edition)
+        result.sort(key=lambda x: x.modified, reverse=True)
+        return result[:5]
 
     def generateCountdown(self):
         times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
@@ -143,10 +144,14 @@ class Homepage(asm.cms.Pagelet):
             yield result
 
     def featured(self):
-        return self.news('featured')
+        return sorted(self.news('featured'),
+                      key=lambda x: x['edition'].modified,
+                      reverse=True)
 
     def frontpage(self):
-        return list(self.news('frontpage'))[:12]
+        return list(sorted(self.news('frontpage'),
+                           key=lambda x: x['edition'].modified,
+                           reverse=True))[:12]
 
 
 class SelectLanguage(grok.View):

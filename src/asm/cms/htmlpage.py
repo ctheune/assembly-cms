@@ -5,6 +5,7 @@ import asm.cms.edition
 import asm.cms.form
 import asm.cms.interfaces
 import asm.cms.tinymce
+import asm.cms.utils
 import bn
 import grok
 import lxml.etree
@@ -82,24 +83,10 @@ class SearchPreview(grok.View):
 
 
 def fix_relative_links(document, current_path):
-    # Hrgh. Why is there no obvious simple way to do this?
-    parser = lxml.etree.HTMLParser()
-    document = (
-        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        document.decode('utf-8'))
-    document = lxml.etree.fromstring(document, parser)
-    for a in document.xpath('//a'):
-        href = a.get('href')
-        if href and href.startswith('/'):
-            a.set('href', bn.relpath(href, current_path))
-    for img in document.xpath('//img'):
-        src = img.get('src')
-        if src and src.startswith('/'):
-            img.set('src', bn.relpath(src, current_path))
 
-    result = lxml.etree.tostring(
-        document.xpath('//stupidcontainerwrappercafebabe')[0],
-        pretty_print=True)
-    result = result.replace('<stupidcontainerwrappercafebabe>', '')
-    result = result.replace('</stupidcontainerwrappercafebabe>', '')
-    return result.strip()
+    def fix_relative(url):
+        if not url.startswith('/'):
+            return
+        return bn.relpath(url, current_path)
+
+    return asm.cms.utils.rewrite_urls(document, fix_relative)

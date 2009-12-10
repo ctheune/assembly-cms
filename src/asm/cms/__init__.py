@@ -1,5 +1,5 @@
+import asm.cms.utils
 import grok
-import lxml.etree
 
 
 def application(self):
@@ -14,35 +14,17 @@ grok.View.application = property(fget=application)
 
 
 def resolve_relative_urls(self, content, source):
-    # Hrgh. Why is there no obvious simple way to do this?
-    parser = lxml.etree.HTMLParser()
-    document = (
-        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        content)
-    document = lxml.etree.fromstring(document, parser)
     base = self.url(source)
-    for a in document.xpath('//a'):
-        href = a.get('href')
-        if href and not (href.startswith('http:') or
-                         href.startswith('/') or
-                         href.startswith('#') or
-                         href.startswith('?')):
-            a.set('href', base + '/' + href)
-    for img in document.xpath('//img'):
-        src = img.get('src')
-        if src and not (src.startswith('http:') or
-                        src.startswith('/') or
-                        src.startswith('#') or
-                        src.startswith('?')):
-            img.set('src', base + '/' + src)
 
-    result = lxml.etree.tostring(
-        document.xpath('//stupidcontainerwrappercafebabe')[0],
-        pretty_print=True)
-    result = result.replace('<stupidcontainerwrappercafebabe>', '')
-    result = result.replace('</stupidcontainerwrappercafebabe>', '')
-    return result.strip()
+    def resolve(url):
+        if (url.startswith('http:') or
+            url.startswith('/') or
+            url.startswith('#') or
+            url.startswith('?')):
+            return
+        return base + '/' + url
 
+    return asm.cms.utils.rewrite_urls(content, resolve)
 
 grok.View.resolve_relative_urls = resolve_relative_urls
 

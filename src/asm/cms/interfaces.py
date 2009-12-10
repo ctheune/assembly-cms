@@ -112,3 +112,8 @@ class IReplaceOccurence(zope.interface.Interface):
 
     def replace(target):
         """Replace this occurence in the original text with the target."""
+
+
+class IAdditionalSchema(zope.interface.Interface):
+    """Provides an additional schema to transparently extend
+    edition objects."""

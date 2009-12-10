@@ -40,16 +40,14 @@ class CMSIndex(megrok.pagelet.Pagelet):
     grok.require('asm.cms.EditContent')
 
 
-class Edit(asm.cms.form.EditForm):
+class Edit(asm.cms.form.EditionEditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
-    form_fields = grok.AutoFields(HTMLPage).select(
+    main_fields = grok.AutoFields(HTMLPage).select(
         'title', 'tags', 'modified', 'content')
-    form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
-    form_fields['tags'].location = 'side'
-    form_fields['modified'].location = 'side'
+    main_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
     def post_process(self):
         self.content = fix_relative_links(

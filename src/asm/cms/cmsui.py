@@ -101,14 +101,6 @@ class Notes(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
-@grok.adapter(asm.cms.interfaces.IEdition, asm.cms.interfaces.IRetailSkin)
-@grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
-def edition_url(edition, request):
-    return zope.component.getMultiAdapter(
-        (edition.__parent__, request),
-        zope.traversing.browser.interfaces.IAbsoluteURL)
-
-
 class DateFormat(grok.View):
 
     grok.context(datetime.datetime)

@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody id="sortable">
-            <tr class="ui-state-default" tal:condition="context/page|nothing"
+            <tr class="ui-state-default"
                 tal:repeat="edition view/pages">
                 <td>
                     <input type="hidden" name="order" tal:attributes="value edition/page/__name__"/>

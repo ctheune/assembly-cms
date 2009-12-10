@@ -8,8 +8,7 @@ import zope.interface
 
 
 class NewsFolder(asm.cms.Edition):
-    """A news folder aggregates other pages into a listing ordered by
-    modification date.
+    """A news folder aggregates other pages into a listing.
     """
 
     zope.interface.classProvides(asm.cms.IEditionFactory)

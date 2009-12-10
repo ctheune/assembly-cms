@@ -15,7 +15,7 @@ a.readmore {color:#6e8f10; font-weight:bold; text-decoration:none; float:right; 
 a.readmore:hover {text-decoration:underline; color:#e70101;}
 p.subtitle {font-weight:bold; font-size:0.9em; margin:0;}
 span.date {color:#6e8f10;}
-#content-column h1 {margin:20px 0 5px 0; padding:0;}
+#content-column h1 {margin:0px 0 5px 0; padding:0;}
 #content-column h2 {margin:10px 0 5px 0; padding:0;}
 #footer-links {margin:30px 0 0 20px; color:#efefef; text-align:center;}
 #footer-links a {color:white; text-decoration:none; font-weight:bold;}

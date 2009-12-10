@@ -17,6 +17,15 @@
   <utility component=".news.NewsFolder" name="news"/>
   <utility component=".homepage.Homepage" name="homepage"/>
 
+  <browser:view
+      layer=".interfaces.IRetailSkin"
+      name=""
+      class="zope.app.publisher.browser.resources.Resources"
+      for=".interfaces.IEdition"
+      permission="zope.Public"
+      allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
+      />
+
   <subscriber
     factory=".news.add_teaser"
     for="asm.cms.htmlpage.HTMLPage"

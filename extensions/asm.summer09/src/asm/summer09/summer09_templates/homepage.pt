@@ -33,5 +33,5 @@
             <p tal:content="item/news/teaser">Here are the results for ASUS desktop background wallpaper competition, the winner and four runner ups.</p>
         </li>
     </ul>
-    <p><a tal:attributes="href string:${view/application_url}/news2">Archive</a></p>
+    <p><a tal:attributes="href string:${view/application_url}/news">Archive</a></p>
 </div>

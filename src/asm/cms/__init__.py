@@ -1,3 +1,4 @@
+import asm.cms.utils
 import grok
 
 
@@ -10,6 +11,22 @@ def application(self):
     raise ValueError("No application found.")
 
 grok.View.application = property(fget=application)
+
+
+def resolve_relative_urls(self, content, source):
+    base = self.url(source)
+
+    def resolve(url):
+        if (url.startswith('http:') or
+            url.startswith('/') or
+            url.startswith('#') or
+            url.startswith('?')):
+            return
+        return base + '/' + url
+
+    return asm.cms.utils.rewrite_urls(content, resolve)
+
+grok.View.resolve_relative_urls = resolve_relative_urls
 
 # Provide re-exports of public API
 

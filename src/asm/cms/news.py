@@ -33,7 +33,7 @@ class NewsFolder(asm.cms.Edition):
 class INewsFields(zope.interface.Interface):
 
     teaser = zope.schema.TextLine(title=u'Teaser text')
-    image = zope.schema.Bytes(title=u'File')
+    image = zope.schema.Bytes(title=u'File', required=False)
 
 
 class TeaserAnnotation(grok.Annotation,
@@ -49,6 +49,8 @@ class TeaserAnnotation(grok.Annotation,
         self.image = other.image
 
     def set_image(self, value):
+        if value is None:
+            return
         edition = self.__parent__
         if not 'teaser-image' in edition.page:
             image = asm.cms.page.Page()

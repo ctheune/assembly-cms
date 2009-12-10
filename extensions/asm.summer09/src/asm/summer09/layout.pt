@@ -20,8 +20,8 @@
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
         <div>
           <div id="language">
-            <a class="language-english" href="@@select-language?lang=en">In English</a>
-            <a class="language-finnish" href="@@select-language?lang=fi">suomeksi</a>
+            <a class="language-english" tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English</a>
+            <a class="language-finnish" tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi</a>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@
               <h4>News</h4>
               <ul>
                 <li tal:repeat="item context/@@layouthelper/news">
-                <a tal:attributes="href item/@@absolute_url"
+                <a tal:attributes="href python:view.url(item)"
                   tal:content="item/title">Asus desktop image competition results </a>
                 <span tal:replace="python:item.modified.strftime('%m.%d.%Y')"/></li>
               </ul>

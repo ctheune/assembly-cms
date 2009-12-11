@@ -17,11 +17,10 @@ def resolve_relative_urls(self, content, source):
     base = self.url(source)
 
     def resolve(url):
-        if (url.startswith('http:') or
-            url.startswith('/') or
-            url.startswith('#') or
-            url.startswith('?')):
-            return
+        for prefix in ['http:', 'ftp:', 'https:', 'mailto:', 'irc:', '/', '?',
+                       '#']:
+            if url.startswith(prefix):
+                return
         return base + '/' + url
 
     return asm.cms.utils.rewrite_urls(content, resolve)

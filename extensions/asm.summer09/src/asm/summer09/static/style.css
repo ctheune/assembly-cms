@@ -15,7 +15,7 @@ a.readmore {color:#6e8f10; font-weight:bold; text-decoration:none; float:right; 
 a.readmore:hover {text-decoration:underline; color:#e70101;}
 p.subtitle {font-weight:bold; font-size:0.9em; margin:0;}
 span.date {color:#6e8f10;}
-#content-column h1 {margin:20px 0 5px 0; padding:0;}
+#content-column h1 {margin:0px 0 5px 0; padding:0;}
 #content-column h2 {margin:10px 0 5px 0; padding:0;}
 #footer-links {margin:30px 0 0 20px; color:#efefef; text-align:center;}
 #footer-links a {color:white; text-decoration:none; font-weight:bold;}
@@ -33,6 +33,7 @@ img {border:0;}
 .sponsors {text-align:center;}
 .sponsors h4 {margin:0 4px 10px 0;}
 .sponsors a {text-decoration:none; color:#333;}
+
 body {
 background:url("images/site-bg.jpg") #030a13 center top no-repeat;
 padding:0 0 0 0;
@@ -114,18 +115,20 @@ p {margin:0 0 1.5em 0;}
 #navigation {padding:0 0 0 0; margin:0 5px 20px 0; list-style-type:none; list-style-position: outside; font-weight:bold; overflow:hidden;}
 #navigation a {color:black;text-decoration:none;}
 #navigation a:hover {color:black;}
-#navigation li a:before {content:url("images/bullet-arrows.gif"); margin-right:5px;}
-#navigation li {
+#navigation li a:before, ul#navigation li.has_no_children a:before {content:url("images/bullet-arrows.gif"); margin-right:5px;}
+#navigation li, ul#navigation li.has_no_children {
 background: url("images/nav-bg-bottom.gif") 0 100% no-repeat;
 margin:0 0 0 0;
 padding:0 0 5px 0;
 display:block;
+color:black;
 }
-#navigation a {
+#navigation a, ul#navigation li.has_no_children a {
 background: url("images/nav-bg-top.gif") 0 0 no-repeat;
 margin:0;
 padding:5px 0 0 10px;
 display:block;
+color:black;
 }
 #navigation .active {padding:0;}
 #navigation .active a {background-image:url("images/w8-nav-sub-bg-top.gif"); color:white;padding:2px 0 12px 20px;}
@@ -383,8 +386,8 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
 * html #news-featured .news-image {}
 * html #nav-top-end {margin-left:-3px;} /* */
 * html #nav-top-inside {margin-left:3px;} /* */
-* html li.nav-level1 {margin-top:-20px;}
-* html li.nav-level1 {padding-top:20px;}
+* html li-level1 {margin-top:-20px;}
+* html li.-level1 {padding-top:20px;}
 * html li.active {padding-bottom:0; height:20px;}
 
 .clearfix:after, #container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}

@@ -113,7 +113,7 @@
                 <li tal:repeat="item context/@@layouthelper/news">
                 <a tal:attributes="href python:view.url(item)"
                   tal:content="item/title">Asus desktop image competition results </a>
-                <span tal:replace="python:item.modified.strftime('%m.%d.%Y')"/></li>
+                <span tal:replace="python:item.modified.strftime('%d.%m.%Y')"/></li>
               </ul>
             </div> <!-- sidebar news -->
 

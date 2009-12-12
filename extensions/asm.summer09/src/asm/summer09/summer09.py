@@ -84,13 +84,13 @@ class Navtree(asm.cms.cmsui.Navtree):
     grok.context(zope.interface.Interface)
 
     def update(self):
-        self.active = []
+        self.active = set()
         current = self.context.page
         while current:
-            self.active.append(current)
+            self.active.add(current)
             current = current.__parent__
 
-    def _create_subtree(self, root, levels):
+    def _create_subtree(self, root, levels, output):
         if levels < 0:
             return
         if root.type in ['asset']:
@@ -114,11 +114,11 @@ class Navtree(asm.cms.cmsui.Navtree):
         tree['class'] = ' '.join(tree['class'])
         return tree
 
-    def tree(self):
+    def render(self):
         root = self.application
-
-        tree = self._create_subtree(root, 3)
-        return tree['subpages']
+        output = StringIO.StringIO()
+        self._create_subtree(root, 3, output)
+        return output.getvalue()
 
 
 class Homepage(asm.cms.Pagelet):

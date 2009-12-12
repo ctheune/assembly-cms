@@ -6,10 +6,20 @@ def application(self):
     obj = self.context
     while obj is not None:
         if isinstance(obj, grok.Application):
+            self.__dict__['application'] = obj
             return obj
         obj = obj.__parent__
     raise ValueError("No application found.")
 
+
+def application_url(self):
+    url = old_application_url(self)
+    self.application_url = lambda: url
+    return url
+
+
+old_application_url = grok.View.application_url
+grok.View.application_url = application_url
 grok.View.application = property(fget=application)
 
 

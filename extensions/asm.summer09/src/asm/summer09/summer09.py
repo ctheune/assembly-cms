@@ -15,7 +15,7 @@ class ISummer09(asm.cms.IRetailSkin):
 class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
     grok.layer(ISummer09)
-    megrok.pagelet.template('layout.pt')
+    megrok.pagelet.template('layout.cpt')
 
 
 class LayoutHelper(grok.View):
@@ -90,7 +90,7 @@ class Navtree(asm.cms.cmsui.Navtree):
             self.active.add(current)
             current = current.__parent__
 
-    def _create_subtree(self, root, levels, output):
+    def _create_subtree(self, root, levels):
         if levels < 0:
             return
         if root.type in ['asset']:
@@ -114,11 +114,9 @@ class Navtree(asm.cms.cmsui.Navtree):
         tree['class'] = ' '.join(tree['class'])
         return tree
 
-    def render(self):
+    def tree(self):
         root = self.application
-        output = StringIO.StringIO()
-        self._create_subtree(root, 3, output)
-        return output.getvalue()
+        return self._create_subtree(root, 3)['subpages']
 
 
 class Homepage(asm.cms.Pagelet):

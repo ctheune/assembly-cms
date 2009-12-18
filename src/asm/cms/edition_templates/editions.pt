@@ -1,4 +1,4 @@
-<li tal:repeat="edition python:sorted(context.editions(), key=lambda
+<li tal:repeat="edition python:sorted(context.editions, key=lambda
 x:sorted(x.parameters))"
     tal:attributes="class python:edition is context and 'selected' or ' '"
     i18n:domain="asm.cms">

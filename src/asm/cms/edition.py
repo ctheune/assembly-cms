@@ -26,6 +26,7 @@ class Edition(grok.Model):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
 
+    @property
     def editions(self):
         return self.__parent__.editions
 

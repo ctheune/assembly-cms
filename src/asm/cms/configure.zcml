@@ -3,9 +3,18 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="asm.cms">
 
+  <include package="z3c.template" file="meta.zcml"/>
+  <include package="z3c.macro" file="meta.zcml"/>
+  <include package="z3c.pagelet" file="meta.zcml"/>
+  <include package="z3c.zrtresource" file="meta.zcml"/>
+
   <include package="grok" />
+  <include package="megrok.chameleon" />
 
   <includeDependencies package="." />
+
+  <include package="z3c.pagelet" />
+
   <grok:grok package="." />
 
   <include package=".generations" />

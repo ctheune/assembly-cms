@@ -1,9 +1,11 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
+import asm.cms.cms
 import asm.cms.utils
 import grok
+import unittest
+import zope.publisher.browser
 
 
 class UtilityTests(unittest.TestCase):
@@ -67,8 +69,53 @@ class ViewApplicationTests(unittest.TestCase):
             self.application, asm.cms.application(self.view))
 
 
+class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):
+
+    def test_resolve(self):
+        root = self.getRootFolder()
+        root['cms'] = asm.cms.cms.CMS()
+        request = zope.publisher.browser.TestRequest()
+        view = grok.View(root['cms'], request)
+        r = lambda x: view.resolve_relative_urls(x, root['cms'])
+
+        self.assertEquals(
+            '<a href="http://127.0.0.1/cms/"/>',
+            r('<a href="."/>'))
+        self.assertEquals(
+            '<a href="http://127.0.0.1/cms/x/y"/>',
+            r('<a href="x/y"/>'))
+        self.assertEquals(
+            '<a href="http://127.0.0.1/x/y"/>',
+            r('<a href="../x/y"/>'))
+        self.assertEquals(
+            '<a href="/foo/bar"/>',
+            r('<a href="/foo/bar"/>'))
+        self.assertEquals(
+            '<a href="http://asdf"/>',
+            r('<a href="http://asdf"/>'))
+        self.assertEquals(
+            '<a href="ftp://asdf"/>',
+            r('<a href="ftp://asdf"/>'))
+        self.assertEquals(
+            '<a href="https://asdf"/>',
+            r('<a href="https://asdf"/>'))
+        self.assertEquals(
+            '<a href="mailto://asdf"/>',
+            r('<a href="mailto://asdf"/>'))
+        self.assertEquals(
+            '<a href="irc://asdf"/>',
+            r('<a href="irc://asdf"/>'))
+        self.assertEquals(
+            '<a href="?asdf"/>',
+            r('<a href="?asdf"/>'))
+        self.assertEquals(
+            '<a href="#asdf"/>',
+            r('<a href="#asdf"/>'))
+
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(UtilityTests))
     suite.addTest(unittest.makeSuite(ViewApplicationTests))
+    suite.addTest(unittest.makeSuite(ViewResolveURLsTests))
     return suite

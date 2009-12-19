@@ -3,6 +3,7 @@
 
 import unittest
 import asm.cms.utils
+import grok
 
 
 class UtilityTests(unittest.TestCase):
@@ -36,5 +37,38 @@ class UtilityTests(unittest.TestCase):
                 lambda x: 'test'))
 
 
+class ViewApplicationTests(unittest.TestCase):
+
+    def setUp(self):
+
+        class View(object):
+            pass
+        self.view = View()
+
+        class Contained(object):
+            __parent__ = None
+        self.contained = Contained()
+        self.application = grok.Application()
+
+    def test_context_no_parent(self):
+        self.view.context = self.contained
+        self.assertRaises(
+            ValueError, asm.cms.application, self.view)
+
+    def test_context_is_app(self):
+        self.view.context = self.application
+        self.assertEquals(
+            self.application, asm.cms.application(self.view))
+
+    def test_context_parent_is_app(self):
+        self.view.context = self.contained
+        self.view.context.__parent__ = self.application
+        self.assertEquals(
+            self.application, asm.cms.application(self.view))
+
+
 def test_suite():
-    return unittest.makeSuite(UtilityTests)
+    suite = unittest.TestSuite()
+    suite.addTest(unittest.makeSuite(UtilityTests))
+    suite.addTest(unittest.makeSuite(ViewApplicationTests))
+    return suite

@@ -95,14 +95,14 @@
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
               <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="JimmsPCStore" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=9f538bac7b5852279d2f750269b70dc8"/>
+              <a href="http://www.jimmspc.fi" rel="nofollow">
+                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter10/sponsors/logo/jimmspc-150"/>
               </a>
               </p>
 
 
                 <p>
-                <a tal:attributes="href string:${view/application_url}/sponsors">
+                <a href="http://www.elisa.fi" rel="nofollow">
                   <img class="banner" alt="Elisa" src="http://www.assembly.org/winter10/sponsors/logo/elisa"/>
                 </a>
                 </p>

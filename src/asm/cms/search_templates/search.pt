@@ -3,7 +3,7 @@
 <div id="search-results">
     <ul>
         <li tal:repeat="result view/results">
-            <a tal:attributes="href python:view.url(result, '@@edit')"
+            <a tal:attributes="href python:view.url(result)"
                 tal:content="result/title">
             </a>
             (<tal:block tal:repeat="tag python:sorted(result.parameters)"

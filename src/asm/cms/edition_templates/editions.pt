@@ -1,8 +1,7 @@
 <li tal:repeat="edition python:sorted(context.editions, key=lambda
 x:sorted(x.parameters))"
-    tal:attributes="class python:edition is context and 'selected' or ' '"
-    i18n:domain="asm.cms">
-    <a tal:attributes="href python:view.url(edition, '@@edit')">
+    tal:attributes="class python:edition is context and 'selected' or ' '">
+    <a tal:attributes="href python:view.url(edition)">
         <span tal:repeat="var python:sorted(edition.parameters)"
               tal:content="var"
               i18n:translate=""/>

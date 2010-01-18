@@ -20,7 +20,7 @@ tinyMCE.init({
     document_base_url: document.baseURI,
 
     width: "100%",
-    height: 800,
+    height: 400,
 
     gecko_spellcheck : true
 });
@@ -29,7 +29,7 @@ tinyMCE.init({
 function asmcmsFileBrowser(field_name, url, type, win) {
 
     tinyMCE.activeEditor.windowManager.open({
-        // XXX The ../ means we know that /edition/@@edit is the current base
+        // XXX The ../ means we know that /edition is the current base
         url: window.location + '/../../@@tinymce-linkbrowser',
         width:400,
         height:400,

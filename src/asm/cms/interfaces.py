@@ -24,6 +24,12 @@ class EditionFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
         return item
 
 
+class IExtensionPrefixes(zope.interface.Interface):
+
+    prefixes = zope.interface.Attribute(
+        'A set of prefixes defined by an extension')
+
+
 class IPage(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(
@@ -39,7 +45,7 @@ class IPage(zope.interface.Interface):
 class IEdition(zope.interface.Interface):
 
     parameters = zope.schema.TextLine(title=u'Edition parameters')
-    title = zope.schema.TextLine(title=u'Title')
+    title = zope.schema.TextLine(title=u'')
     tags = zope.schema.TextLine(title=u'Tags', required=False)
 
     created = zope.schema.Datetime(title=u'Created', readonly=True)
@@ -63,12 +69,12 @@ class IInitialEditionParameters(zope.interface.Interface):
 
 class IHTMLPage(zope.interface.Interface):
 
-    content = zope.schema.Text(title=u'Content')
+    content = zope.schema.Text(title=u'')
 
 
 class IAsset(zope.interface.Interface):
 
-    content = zope.schema.Bytes(title=u'File')
+    content = zope.schema.Bytes(title=u'File', required=False)
     content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
 
 

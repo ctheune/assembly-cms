@@ -13,6 +13,13 @@ WORKFLOW_PUBLIC = 'workflow:public'
 WORKFLOW_DRAFT = 'workflow:draft'
 
 
+class Prefixes(object):
+
+    zope.interface.implements(asm.cms.interfaces.IExtensionPrefixes)
+
+    prefixes = set(['workflow'])
+
+
 def publish(draft, publication_date=None):
     public = draft.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
     public = draft.page.getEdition(public, create=True)

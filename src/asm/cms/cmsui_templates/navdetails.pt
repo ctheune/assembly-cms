@@ -1,5 +1,3 @@
-<h1 tal:content="context/title|context/__name__"></h1>
-
 <form id="subpages" tal:attributes="action python:view.url(context, 'updateorder')">
     <table>
         <thead>
@@ -15,7 +13,7 @@
                 <td>
                     <input type="hidden" name="order" tal:attributes="value edition/page/__name__"/>
                     <span class="ui-icon ui-icon-document"></span>
-                    <a tal:attributes="href python:view.url(edition, '@@edit')" 
+                    <a tal:attributes="href python:view.url(edition)" 
                        tal:content="python:edition.title or edition.page.__name__"></a>
                 </td>
                 <td tal:content="edition/modified/@@format">9999-99-99 00:00</td>

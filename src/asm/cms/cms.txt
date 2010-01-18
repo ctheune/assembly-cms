@@ -12,7 +12,7 @@ extending and cleaning up the tests.
 >>> b.open('http://localhost/')
 >>> b.getControl('Name your new app').value = 'summer09'
 >>> b.getControl('Create').click()
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 >>> print b.contents
 <html> ...
     <title>CMS &ndash; </title>
@@ -27,7 +27,7 @@ LinkNotFoundError
 Traceback (most recent call last):
 httperror_seek_wrapper: HTTP Error 500: Internal Server Error
 
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 >>> b.getLink('Add sub-page').click()
 >>> print b.contents
 <html>
@@ -50,7 +50,7 @@ httperror_seek_wrapper: HTTP Error 500: Internal Server Error
     class="no-title">summer09</a>
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
 >>> b.getControl('Title').value = 'A meaningful document'
 >>> b.getControl('Content').value = 'lots of meaningful text'
 >>> b.getControl('Save').click()
@@ -69,7 +69,7 @@ lots of meaningful text
  <div id="search-results">
      <ul>
          <li>
-             <a href="http://localhost/++skin++cms/summer09/testpage/edition-/@@edit">A meaningful document</a>
+             <a href="http://localhost/++skin++cms/summer09/testpage/edition-">A meaningful document</a>
              ()
              <div class="preview">lots of <span class="match">meaningful</span> text</div>
          </li>
@@ -77,18 +77,18 @@ lots of meaningful text
  </div>
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09/testpage/edition-')
 >>> b.getLink('Delete edition').click()
 >>> b.open('http://localhost/++skin++retail/summer09/testpage')
 Traceback (most recent call last):
 httperror_seek_wrapper: HTTP Error 404: Not Found
 
->>> b.open('http://localhost/++skin++cms/summer09/testpage/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09/testpage')
 >>> b.getLink('Delete page').click()
 >>> 'testpage' not in b.contents
 True
 
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 >>> b.getLink('Add sub-page').click()
 >>> b.getControl('Name').value = 'testasset'
 >>> b.getControl(name='form.type').displayValue = ['asset']
@@ -98,7 +98,7 @@ True
     class="no-title">summer09</a>
 ...
 
->>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09/testasset/edition-')
 >>> import cStringIO
 >>> b.getControl('File').add_file(cStringIO.StringIO('Test file contents'), 'text/plain', 'test.txt')
 >>> b.getControl('Title').value = 'Test Asset'
@@ -129,7 +129,7 @@ Test file contents
                     <input type="hidden" name="order"
                            value="testasset" />
                     <span class="ui-icon ui-icon-document"></span>
-                    <a href="http://localhost/++skin++cms/summer09/testasset/edition-/@@edit">Test Asset</a>
+                    <a href="http://localhost/++skin++cms/summer09/testasset/edition-">Test Asset</a>
                 </td>
                 <td>...</td>
                 <td>18 Bytes</td>

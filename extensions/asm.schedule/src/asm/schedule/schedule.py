@@ -62,12 +62,13 @@ class Edit(asm.cms.Form):
         fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
                   'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
                   'sumtask', 'class_', 'url', 'title_en', 'title_fi',
-                  'location_en', 'location_fi', 'location_url', 'outline_level') 
+                  'location_en', 'location_fi', 'location_url',
+                  'outline_level')
         reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
         for row in reader:
             if row['public'] != 'Yes':
                 continue
-            for schedule, lang in [(finnish, 'fi',) (english, 'en')]:
+            for schedule, lang in [(finnish, 'fi'), (english, 'en')]:
                 event = Event()
                 event.start = extract_date(row['start_date'])
                 event.end = extract_date(row['finish_date'])
@@ -89,13 +90,13 @@ def publish_schedule(event):
     if not isinstance(event.draft, Schedule):
         return
 
-    page = self.context.page
+    page = event.draft.page
 
     # We do not know which language the user published because we will be
     # triggered by publishing the other version too. Thus we have to check
     # both possible languages and stop an infinite recursion.
     for lang in ['fi', 'en']:
-        public_p = (self.context.parameters.
+        public_p = (event.draft.parameters.
                   replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC).
                   replace('lang:*', 'lang:%s' % lang))
 
@@ -103,7 +104,7 @@ def publish_schedule(event):
         # version exists yet, or the publication date is not the one of the
         # publication that triggered us.
         try:
-            public = page.getEdition(public)
+            public = page.getEdition(public_p)
         except KeyError:
             pass
         else:
@@ -111,8 +112,8 @@ def publish_schedule(event):
                 # The public version is up to date, so we ignore it.
                 continue
 
-        draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
-        draft = page.getEdition(draft)
+        draft = page.getEdition(public_p.replace(WORKFLOW_PUBLIC,
+                                                 WORKFLOW_DRAFT))
         asm.workflow.publish(draft, event.public.modified)
 
 
@@ -125,7 +126,8 @@ class Index(asm.cms.Pagelet):
     def events(self):
         events = []
         current = dict(date=None)
-        for event in sorted(self.context.events.values(), key=lambda x:x.start):
+        for event in sorted(self.context.events.values(),
+                            key=lambda x: x.start):
             if event.start.date() != current['date']:
                 if current['date']:
                     events.append(current)
@@ -134,8 +136,8 @@ class Index(asm.cms.Pagelet):
         return events
 
     def format_date(self, date):
-        specials = {1 : 'st', 2 : 'nd', 3 : 'rd', 21: 'st',
+        specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',
                     22: 'nd', 23: 'rd', 31: 'st'}
-        day = '%s%s' % (date.day, specials.get(date.day, 'th')) 
+        day = '%s%s' % (date.day, specials.get(date.day, 'th'))
         return '%s %s of %s %s' % (date.strftime('%A'), day,
                                    date.strftime('%B'), date.strftime('%Y'))

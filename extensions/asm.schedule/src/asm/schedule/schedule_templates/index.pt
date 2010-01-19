@@ -21,7 +21,7 @@
           <td class="schedule-time"><span
                   tal:content="python:event.start.strftime('%H:%M')">12:00</span>&nbsp;&ndash;&nbsp;<span
                   tal:content="python:event.start.strftime('%H:%M')">12:00</span>
-              <span tal:content="event/major"/></td> 
+          </td>
           <td><a tal:attributes="href event/url" tal:content="event/title">ASSEMBLY Summer 2009 alkaa!</a></td>
           <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>
       </tr>

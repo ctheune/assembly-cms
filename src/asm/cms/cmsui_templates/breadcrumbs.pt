@@ -1,0 +1,14 @@
+<div class="section">
+    <tal:block repeat="edition context/@@layouthelper/breadcrumbs">
+        <tal:block condition="not:repeat/edition/end">
+            <a tal:attributes="href python:view.url(edition)"
+               tal:content="edition/title"/>
+            &ndash;
+        </tal:block>
+        <tal:block condition="repeat/edition/end">
+            <a tal:attributes="href python:view.url(edition)"
+                class="selected"
+               tal:content="edition/title"/>
+        </tal:block>
+    </tal:block>
+</div>

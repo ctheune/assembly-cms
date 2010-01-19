@@ -1,3 +1,7 @@
+<div class="section">
+    <h2 tal:content="view/label|default">Edit page</h2>
+</div>
+
 <ul class="message" tal:condition="view/errors">
     <li tal:repeat="error view/error_views">
     <span tal:replace="structure error">error type</span>
@@ -8,7 +12,6 @@
     class="edit-form" enctype="multipart/form-data">
 
     <div id="page-edit" class="column">
-        <h2 tal:content="view/label|default">Edit page</h2>
 
         <tal:block tal:repeat="widget view/header_widgets">
         <div metal:use-macro="template/macros/fields"></div>
@@ -24,14 +27,6 @@
         <div metal:use-macro="template/macros/fields"></div>
         </tal:block>
 
-
-        <div id="actionsView">
-            <span class="actionButtons" tal:condition="view/availableActions">
-                <input tal:repeat="action view/actions"
-                tal:replace="structure action/render"
-                />
-            </span>
-        </div> 
     </div>
 </form>
 

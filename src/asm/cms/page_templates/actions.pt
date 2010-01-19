@@ -1,3 +1,8 @@
-<li><a tal:attributes="href python:view.url(viewlet.page, '@@addpage')">Add sub-page</a></li>
+<form tal:attributes="action python:view.url(viewlet.page, '@@addpage')">
+    <input type="submit" value="Add page" class="button"/>
+</form>
 <!-- XXX This is ugly and needs refactoring -->
-<li tal:condition="python:context.__parent__.__parent__ is not None"><a tal:attributes="href python:view.url(viewlet.page, '@@delete')">Delete page</a></li>
+<form tal:attributes="action python:view.url(viewlet.page, '@@delete')"
+      tal:condition="python:context.__parent__.__parent__ is not None">
+    <input type="submit" value="Delete page" class="button"/>
+</form>

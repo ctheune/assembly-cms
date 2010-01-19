@@ -39,58 +39,45 @@
 
     <body>
 
-        <div id="global-navigation">
-            <h1 tal:content="python:view.application.editions.next().title">summer09</h1>
-
-            <div class="buttons">
-                <a class="toggle-additional-widgets" href="#"><img tal:attributes="src resource/icons/zoom.png" title="Show details"/></a>
-                <a class="toggle-news-widgets" href="#"><img tal:attributes="src resource/icons/newspaper.png" title="Show news fields"/></a>
-                <a href="#"><img tal:attributes="src resource/icons/page_white_stack.png" title="Editions"/></a>
-                <a href="#" id="preview-handle"><img tal:attributes="src resource/icons/page_white_world.png" title="Preview"/></a>
-                <span style="width:25px; display:inline-block;"></span>
-                <a href="#" id="menu-navigation-handle"><img tal:attributes="src resource/icons/sitemap_color.png" title="Overview"/></a>
-                <a href="#" id="toggle-extended-menu"><img tal:attributes="src resource/icons/arrow_down.png" title="More actions"/></a>
-            </div>
-            <div style="clear:both"></div>
-            <div id="breadcrumbs">
-                <tal:block repeat="edition context/@@layouthelper/breadcrumbs">
-                    <a tal:attributes="href python:view.url(edition)"
-                       tal:content="edition/title"/>
-                    <span tal:condition="not:repeat/edition/end">&ndash;</span>
-                    <span tal:condition="repeat/edition/end"
-                          tal:content="edition/parameters/@@index"/>
-                </tal:block>
-            </div>
+        <div id="header">
+            <h1>Assembly Winter 2010</h1>
         </div>
 
-        <div id="global-navigation2">
+        <div id="pagecontainer">
+            <div id="page">
+                <div id="content">
+                    <div class="header-buttons">
+                        <input type="button" value="browse" class="open-navigation button"/>
+                    </div>
+                    <tal:block replace="structure provider:pageheader"/>
 
-            <div id="search">
-                <form tal:attributes="action
-                    string:${view/application_url}/search">
-                    <input type="text" name="q" value="Search ..."/>
-                </form>
-            </div>
-
-            <div style="clear:both;"></div>
-        </div>
-
-
-        <div id="container" class="clearfix">
-
-            <div id="content">
-                <div tal:replace="structure context/@@messages"></div>
-
-                <tal:block replace="structure provider:notes"/>
-
-                <tal:block replace="structure view/render"></tal:block>
-            </div>
-
-            <div id="navigation">
-                <div id="navigation-tree" tal:attributes="href string:${view/application_url}/@@tree">
+                    <tal:block replace="structure provider:notes"/>
+                    <tal:block replace="structure view/render"></tal:block>
+                </div>
+                <div id="navigation">
+                    <div class="header-buttons">
+                        <input type="button" value="back" class="close-navigation button"/>
+                    </div>
+                    <div class="section">
+                        <h2>Browse site</h2>
+                    </div>
+                    <div id="navigation-tree" tal:attributes="href string:${view/application_url}/@@tree">
+                    </div>
                 </div>
             </div>
 
+            <div id="actions">
+                <div id="search">
+                    <form tal:attributes="action
+                        string:${view/application_url}/search">
+                        <input type="text" name="q" value="Search ..."/>
+                    </form>
+                </div>
+                <ul>
+                    <li><a href="#" id="preview-handle">Preview</a></li>
+                    <tal:block replace="structure provider:actions"/> 
+                </ul>
+            </div>
         </div>
     </body>
 </html>

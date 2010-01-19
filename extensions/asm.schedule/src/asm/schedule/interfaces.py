@@ -5,4 +5,5 @@ import zope.schema
 
 class IScheduleUpload(zope.interface.Interface):
 
-    data = zope.schema.Bytes(title=u'Schedule in CSV format')
+    title = zope.schema.TextLine(title=u'Title')
+    data = zope.schema.Bytes(title=u'Schedule in CSV format', required=False)

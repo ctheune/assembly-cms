@@ -33,7 +33,22 @@ class Event(persistent.Persistent):
     """A single event - mostly a data bag."""
 
 
-class Edit(asm.cms.Form):
+class ScheduleUpload(grok.Adapter):
+    grok.context(Schedule)
+    grok.provides(asm.schedule.interfaces.IScheduleUpload)
+
+    def set_title(self, title):
+        self.context.title = title
+
+    def get_title(self):
+        return self.context.title
+
+    title = property(fset=set_title, fget=get_title)
+
+    data = None
+
+
+class Edit(asm.cms.EditForm):
     """Editing a schedule means uploading a CSV file (as produced by Jussi)
     and updating both language editions from that file.
 
@@ -46,7 +61,12 @@ class Edit(asm.cms.Form):
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
 
     @grok.action(u'Upload')
-    def upload(self, data):
+    def upload(self, data=None, title=None):
+        self.context.title = title
+
+        if not data:
+            self.flash('Saved changes.')
+            return
         page = self.context.page
 
         finnish = self.context.parameters.replace('lang:*', 'lang:fi')

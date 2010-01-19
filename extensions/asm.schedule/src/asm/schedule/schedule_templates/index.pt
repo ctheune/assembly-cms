@@ -1,22 +1,30 @@
 <p><strong>Select day:</strong><br />
 <tal:block repeat="day view/events">
-<a style="" tal:attributes="href string:#day-${repeat/day/index}" tal:content="python: day['date'].strftime('%A')">Thursday</a>  <tal:block condition="not:repeat/day/end">-</tal:block>
+  <a tal:attributes="href string:#day-${repeat/day/index}"
+     tal:content="python: day['date'].strftime('%A')">Thursday</a>
+ <tal:block condition="not:repeat/day/end">-</tal:block>
 </tal:block>
 </p>
 
+<p><strong>Select schedule details:</strong><br />
+<a href="?details=major">major events only</a> -
+<a href="?details=compo">compo-related events</a> - 
+<a href="?details=all">all events</a>
+</p>
+
 <tal:block repeat="day view/events">
+  <a tal:attributes="name string:day-${repeat/day/index}"></a>
+  <h2 tal:content="python:view.format_date(day['date'])"></h2>
+  <table>
+      <tr tal:repeat="event day/events"
+          tal:attributes="class python:repeat['event'].odd() and 'odd' or 'even'">
+          <td class="schedule-time"><span
+                  tal:content="python:event.start.strftime('%H:%M')">12:00</span>&nbsp;&ndash;&nbsp;<span
+                  tal:content="python:event.start.strftime('%H:%M')">12:00</span>
+              <span tal:content="event/major"/></td> 
+          <td><a tal:attributes="href event/url" tal:content="event/title">ASSEMBLY Summer 2009 alkaa!</a></td>
+          <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>
+      </tr>
 
-<a tal:attributes="name string:day-${repeat/day/index}" />
-<h2 tal:content="python:view.format_date(day['date'])"></h2>
-<table>
-    <tr tal:repeat="event day/events">
-        <td align="right" tal:content="python:event.start.strftime('%H:%M')">12:00</td> 
-        <td>-</td> 
-        <td align="left" tal:content="python:event.start.strftime('%H:%M')">12:00</td> 
-        <td><a tal:attributes="href event/url" tal:content="event/title">ASSEMBLY Summer 2009 alkaa!</a></td>
-        <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>
-    </tr>
-
-</table>
-
+  </table>
 </tal:block>

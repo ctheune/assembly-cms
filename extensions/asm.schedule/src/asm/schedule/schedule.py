@@ -65,6 +65,9 @@ class Edit(asm.cms.Form):
                   'location_en', 'location_fi', 'location_url',
                   'outline_level')
         reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
+        reader = iter(reader)
+        # Ignore first row
+        reader.next()
         for row in reader:
             if row['public'] != 'Yes':
                 continue
@@ -72,7 +75,7 @@ class Edit(asm.cms.Form):
                 event = Event()
                 event.start = extract_date(row['start_date'])
                 event.end = extract_date(row['finish_date'])
-                event.major = row['major'] == 'Yes'
+                event.major = (row['major'] == 'Yes')
                 event.class_ = row['class_'].decode('UTF-8')
                 event.url = row['url']
                 event.title = row['title_%s' % lang].decode('UTF-8')
@@ -123,8 +126,14 @@ def extract_date(date):
 
 class Index(asm.cms.Pagelet):
 
+    filters = dict(
+        major=lambda x: x.major,
+        all=lambda x: True,
+        compo=lambda x: x.class_.startswith('game_'))
+
     def events(self):
         events = []
+        filter = self.filters[self.request.get('details', 'all')]
         current = dict(date=None)
         for event in sorted(self.context.events.values(),
                             key=lambda x: x.start):
@@ -132,7 +141,10 @@ class Index(asm.cms.Pagelet):
                 if current['date']:
                     events.append(current)
                 current = dict(date=event.start.date(), events=[])
-            current['events'].append(event)
+            if filter(event):
+                current['events'].append(event)
+        if current['events']:
+            events.append(current)
         return events
 
     def format_date(self, date):

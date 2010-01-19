@@ -1,10 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="" lang=""> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>Assembly Winter 2010</title>
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
-    <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico">
-    <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico">
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+    <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
 
     <script tal:attributes="src context/@@layouthelper/static/jss/jquery.tools.min.js" type="text/javascript"></script>
     <script tal:attributes="src context/@@layouthelper/static/jss/assembly.js" type="text/javascript"></script>
@@ -33,17 +33,6 @@
           <div class="box-light sponsors">
             <div class="box-inside" >
               <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="JimmsPCStore" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=9f538bac7b5852279d2f750269b70dc8"/>
-              </a>
-              </p>
-
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Puolenkuunpelit" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=01e40b5dbd7b3c785f201f03adb213d5"/>
-              </a>
-              </p>
 
               <p>
               <a tal:attributes="href string:${view/application_url}/sponsors">
@@ -51,30 +40,42 @@
               </a>
               </p>
 
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="IBM" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=fc707ab302a71ac636cf691d667a10fe"/>
-              </a>
-              </p>
-                            
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Energy Gum" tal:attributes="src string:${view/application_url}/sponsors/logo/EnergyGumLogo.png"/>
-              </a>
-              </p>
-              
-             <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Activision"  tal:attributes="src string:${view/application_url}/sponsors/logo/activision"/>
-              </a>
-              </p>
-                            
-            <p>
+                 <p>
               <a tal:attributes="href string:${view/application_url}/sponsors">
                 <img class="banner" alt="Everyplay" tal:attributes="src string:${view/application_url}/sponsors/logo/everyplay"/>
               </a>
               </p>
-              
+        
+		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="Pelit" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=43cd06da89bf075dc4971ab878dd720e"/>
+              </a>
+              </p>
+        
+  		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="World Cyber Games" src="http://www.assembly.org/winter08/compos/wcg-150px"/>
+              </a>
+              </p>
+
+		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="Effi" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=d7a57c6bf5138b98105a946e42d659bd"/>
+              </a>
+              </p>
+
+		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="Gocept" tal:attributes="src string:${view/application_url}/sponsors/logo/gocept-medium"/>
+              </a>
+              </p>
+                 
+		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="Esko Otava" tal:attributes="src string:${view/application_url}/sponsors/logo/esko-otava-150"/>
+              </a>
+              </p>
+        
               
             </div>
           </div>
@@ -92,16 +93,17 @@
           <div id="rightbar">
             <div class="box-light sponsors">
               <div class="box-inside" >
-	        <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
-                <p>
-                <a href="http://www.samsung.com/fi/">
-                  <img class="banner" alt="Samsung" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=5741fb46d82ce1dd6fd347aded31d9ec">
-                </a>
-                </p>
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
+              <p>
+              <a href="http://www.jimmspc.fi" rel="nofollow">
+                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter10/sponsors/logo/jimmspc-150"/>
+              </a>
+              </p>
+
 
                 <p>
-                <a tal:attributes="href string:${view/application_url}/sponsors">
-                  <img class="banner" alt="Saunalahti" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=5bfde880e9874a713868ec221bb7844d">
+                <a href="http://www.elisa.fi" rel="nofollow">
+                  <img class="banner" alt="Elisa" src="http://www.assembly.org/winter10/sponsors/logo/elisa"/>
                 </a>
                 </p>
               </div>
@@ -119,16 +121,11 @@
 
             <div class="box-light sponsors">
               <div class="box-inside" >
-	        <h4><a tal:attributes="href string:${view/application_url}/sponsors">Game Tournaments</a></h4>
-                <p>
-                <a tal:attributes="href string:${view/application_url}/compos">
-                  <img class="banner" alt="World Cyber Games" src="http://www.assembly.org/winter08/compos/wcg-150px">
-                </a>
-                </p>
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors">Game Tournaments</a></h4>
 
                 <p>
                 <a tal:attributes="href string:${view/application_url}/compos">
-                  <img class="banner" alt="Peliliiga" src="http://www.assembly.org/winter08/compos/peliliiga-150px">
+                  <img class="banner" alt="Peliliiga" src="http://www.assembly.org/winter08/compos/peliliiga-150px"/>
                 </a>
                 </p>
 

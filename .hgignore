@@ -4,6 +4,7 @@ var
 buildout.cfg
 ~
 ID
+etc/
 tags
 TAGS
 parts
@@ -17,3 +18,4 @@ eggs
 .DS_Store
 .orig
 python/
+var/

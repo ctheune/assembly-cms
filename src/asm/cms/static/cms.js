@@ -5,10 +5,8 @@ $(document).ready(function(){
             toggle_navigation();
         }});
 
-  $("#menu-navigation-handle").click(function() {toggle_navigation(); return false;});
-  $("#toggle-extended-menu").click(function() {
-    $('#global-navigation2').toggle();
-     return false;});
+  $(".open-navigation").click(show_navigation);
+  $(".close-navigation").click(hide_navigation);
 
   $("#navigation-tree a").click(show_subpages);
   $("#search input").one('click', init_search);
@@ -39,9 +37,6 @@ $(document).ready(function(){
                     tree.initialized = true; }},
     });
 
-  $('.toggle-additional-widgets').click(function() {
-        $('.additional-widgets').slideToggle();
-        return false; });
 });
 
 function init_search() {

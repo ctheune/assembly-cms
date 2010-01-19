@@ -70,6 +70,16 @@ class Tree(grok.View):
         return html
 
 
+class PageHeader(grok.ViewletManager):
+    grok.context(zope.interface.Interface)
+    grok.name('pageheader')
+
+
+class Breadcrumbs(grok.Viewlet):
+    grok.viewletmanager(PageHeader)
+    grok.context(asm.cms.interfaces.IEdition)
+
+
 class NavDetails(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(asm.cms.interfaces.ICMSSkin)

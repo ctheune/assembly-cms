@@ -48,6 +48,13 @@ class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
     grok.baseclass()
 
 
+class FormActions(grok.Viewlet):
+
+    grok.viewletmanager(asm.cms.Actions)
+    grok.view(CMSForm)
+    grok.context(zope.interface.Interface)
+
+
 class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
               grok.AddForm):
 

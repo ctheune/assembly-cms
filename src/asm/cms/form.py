@@ -18,15 +18,21 @@ class CMSForm(object):
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
     @property
-    def side_widgets(self):
+    def header_widgets(self):
         for w in self.widgets:
-            if getattr(w, 'location') == 'side':
+            if getattr(w, 'location') == 'header':
+                yield w
+
+    @property
+    def additional_widgets(self):
+        for w in self.widgets:
+            if getattr(w, 'location') == 'additional':
                 yield w
 
     @property
     def main_widgets(self):
         for w in self.widgets:
-            if getattr(w, 'location') != 'side':
+            if getattr(w, 'location') not in ['header', 'additional']:
                 yield w
 
     def setUpWidgets(self, ignore_request=False):
@@ -40,6 +46,13 @@ class CMSForm(object):
 class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
 
     grok.baseclass()
+
+
+class FormActions(grok.Viewlet):
+
+    grok.viewletmanager(asm.cms.Actions)
+    grok.view(CMSForm)
+    grok.context(zope.interface.Interface)
 
 
 class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
@@ -56,7 +69,7 @@ class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.applyData(obj, **data)
         self.add(obj)
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
     def add(self, obj):
         name = self.chooseName(obj)
@@ -89,7 +102,7 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
         if self.errors:
             return
         self.flash(self.status)
-        self.redirect(self.url(self.context, 'edit'))
+        self.redirect(self.url(self.context))
 
 
 class EditionEditForm(EditForm):
@@ -102,7 +115,11 @@ class EditionEditForm(EditForm):
         for schema in zope.component.subscribers(
                 (self.context,),
                 asm.cms.interfaces.IAdditionalSchema):
-            fields += grok.AutoFields(schema)
-        fields['tags'].location = 'side'
-        fields['modified'].location = 'side'
+            add_fields = list(grok.AutoFields(schema))
+            for field in add_fields:
+                field.location = 'additional'
+            fields += zope.formlib.form.FormFields(*add_fields)
+        fields['tags'].location = 'additional'
+        fields['modified'].location = 'additional'
+        fields['title'].location = 'header'
         return fields

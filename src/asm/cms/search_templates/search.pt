@@ -1,9 +1,11 @@
-<h1>Search results</h1>
+<div class="section">
+    <h2>Search results</h2>
+</div>
 
 <div id="search-results">
     <ul>
         <li tal:repeat="result view/results">
-            <a tal:attributes="href python:view.url(result, '@@edit')"
+            <a tal:attributes="href python:view.url(result)"
                 tal:content="result/title">
             </a>
             (<tal:block tal:repeat="tag python:sorted(result.parameters)"

@@ -1,14 +1,21 @@
-<html>
+<html tal:define="resource nocall:context/@@layouthelper/static">
     <head>
-        <title>CMS &ndash; <span tal:replace="context/title|nothing"/></title>
+        <title><span tal:replace="context/title|nothing"/></title>
 
         <!-- jQuery inclusions -->
         <script type="text/javascript" tal:attributes="src
-            context/@@layouthelper/static/jquery.js"></script>
+            resource/jquery.js"></script>
         <script type="text/javascript" tal:attributes="src
-            context/@@layouthelper/static/jquery-ui.js"></script>
+            resource/jquery-ui.js"></script>
         <link rel="stylesheet" type="text/css"
-          tal:attributes="href context/@@layouthelper/static/jquery-ui.css" />
+          tal:attributes="href resource/jquery-ui.css" />
+
+        <script type="text/javascript"
+          tal:attributes="src resource/jstree/lib/sarissa.js"></script>
+        <script type="text/javascript"
+          tal:attributes="src resource/jstree/jquery.tree.min.js"> </script>
+        <script type="text/javascript"
+          tal:attributes="src resource/jstree/plugins/jquery.tree.xml_nested.js"></script>
 
         <!-- CMS-specific inclusions -->
         <script type="text/javascript" tal:attributes="src
@@ -31,65 +38,46 @@
     </head>
 
     <body>
+
         <div id="header">
-            <h1><span>AssemblyCMS /</span>
-                <a tal:content="view/application/__name__"
-                   tal:attributes="href python:view.url(view.application, '@@edit')">summer09</a>
-               <a class="visit-site" href="#">preview</a>
-            </h1>
-
-            <div id="search">
-                <form tal:attributes="action
-                      string:${view/application_url}/search">
-                <input type="text" name="q"/>
-                </form>
-            </div>
-
-            <ul id="user-info">
-                <li><a href="#">Logout</a> (<a href="#">username</a>)</li>
-            </ul>
+            <h1>Assembly Winter 2010</h1>
         </div>
 
-        <div id="navigation-wrapper">
-            <div id="navigation-background">
-            </div>
-            <div id="navigation" class="menu-item">
-                <div class="menu-head">Navigation</div>
-                <div class="menu-content" id="navigation-tree">
-                    <tal:block replace="structure context/@@navtree"/>
+        <div id="pagecontainer">
+            <div id="page">
+                <div id="content">
+                    <div class="header-buttons">
+                        <input type="button" value="browse" class="open-navigation button"/>
+                    </div>
+                    <tal:block replace="structure provider:pageheader"/>
+
+                    <tal:block replace="structure provider:notes"/>
+                    <tal:block replace="structure view/render"></tal:block>
                 </div>
-                <div class="menu-content" id="navigation-details">
-                    <div tal:replace="structure context/@@navdetails"/>
+                <div id="navigation">
+                    <div class="header-buttons">
+                        <input type="button" value="back" class="close-navigation button"/>
+                    </div>
+                    <div class="section">
+                        <h2>Browse site</h2>
+                    </div>
+                    <div id="navigation-tree" tal:attributes="href string:${view/application_url}/@@tree">
+                    </div>
                 </div>
-            </div>
-            <div class="clear"></div>
-        </div>
-
-        <div id="container" class="clearfix">
-            <div id="admin-menu" class="column">
-                <div id="menu-navigation" class="menu-item">
-                    <div class="menu-head" id="menu-navigation-handle">Navigation</div>
-                </div>
-
-                <div id="menu-actions" class="menu-item">
-                    <div class="menu-head">Actions</div>
-                    <ul class="menu-content">
-                        <tal:block replace="structure provider:actions"/>
-                    </ul>
-                </div>
-            </div> <!-- admin-menu -->
-
-            <div id="content">
-                <div tal:replace="structure context/@@messages"></div>
-
-                <tal:block replace="structure provider:notes"/>
-
-                <tal:block replace="structure view/render"></tal:block>
             </div>
 
-        </div>
-        <div id="footer">
-            <p>AssemblyCMS</p>
+            <div id="actions">
+                <div id="search">
+                    <form tal:attributes="action
+                        string:${view/application_url}/search">
+                        <input type="text" name="q" value="Search ..."/>
+                    </form>
+                </div>
+                <ul>
+                    <li><a href="#" id="preview-handle">Preview</a></li>
+                    <tal:block replace="structure provider:actions"/> 
+                </ul>
+            </div>
         </div>
     </body>
 </html>

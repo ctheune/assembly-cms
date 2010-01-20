@@ -16,6 +16,10 @@ class Page(grok.OrderedContainer):
     zope.interface.implements(asm.cms.interfaces.IPage)
 
     @property
+    def page(self):
+        return self
+
+    @property
     def subpages(self):
         for obj in self.values():
             if asm.cms.interfaces.IPage.providedBy(obj):
@@ -91,7 +95,7 @@ class ChangePageType(asm.cms.form.EditForm):
         self.context.type = type
         asm.cms.edition.add_initial_edition(self.context)
         self.flash(u'Page type changed to %s.' % type)
-        self.redirect(self.url(list(self.context.editions)[0], '@@edit'))
+        self.redirect(self.url(list(self.context.editions)[0]))
 
 
 class Delete(grok.View):
@@ -106,7 +110,7 @@ class Delete(grok.View):
         del page.__parent__[page.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
 
 class PageActions(grok.Viewlet):
@@ -131,24 +135,7 @@ class Actions(grok.Viewlet):
         return self.context
 
 
-class RetailIndex(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.interfaces.IRetailSkin)
-    grok.context(asm.cms.interfaces.IPage)
-    grok.name('edit')
-    grok.template('index')
-
-
-class CMSEdit(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.context(asm.cms.interfaces.IPage)
-    grok.require('asm.cms.EditContent')
-    grok.name('edit')
-    grok.template('index')
-
-
-class CMSIndex(grok.View):
+class CMSIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
@@ -162,8 +149,7 @@ class CMSIndex(grok.View):
             edition = asm.cms.edition.NullEdition()
             edition.__parent__ = self.context
             edition.__name__ = ''
-        return zope.component.getMultiAdapter(
-            (edition, self.request), name='index')()
+        self.redirect(self.url(edition))
 
 
 # The following two views are needed to support visual editing of editions

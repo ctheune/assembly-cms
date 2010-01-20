@@ -13,7 +13,7 @@ Lets create a page and an asset:
 >>> b.open('http://localhost/')
 >>> b.getControl('Name your new app').value = 'summer09'
 >>> b.getControl('Create').click()
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 
 This page will not be displayed later, as it is a page but doesn't have any
 sub-pages.
@@ -27,7 +27,7 @@ sub-pages.
 
 This page *will* be displayed later, as it is a page and has sub-pages.
 
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 >>> b.getLink('Add sub-page').click()
 >>> b.getControl('Name').value = 'testpage2'
 >>> b.getControl(name='form.type').displayValue = ['htmlpage']
@@ -45,7 +45,7 @@ This page *will* be displayed later, as it is a page and has sub-pages.
 
 This asset will be displayed, as it is an asset.
 
->>> b.open('http://localhost/++skin++cms/summer09/@@edit')
+>>> b.open('http://localhost/++skin++cms/summer09')
 >>> b.getLink('Add sub-page').click()
 >>> b.getControl('Name').value = 'testasset'
 >>> b.getControl(name='form.type').displayValue = ['asset']

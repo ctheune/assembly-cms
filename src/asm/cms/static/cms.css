@@ -101,7 +101,7 @@ a {
 /* Page grid/layout */
 
 #header {
-    background-color: #666;
+    background-color: #000;
     width:100%;
     margin-bottom:1em;
     padding-left:4em;
@@ -111,6 +111,7 @@ a {
 
 #header h1 {
     color: white;
+    font-size:12pt;
     font-weight:bold;
 }
 
@@ -128,8 +129,7 @@ a {
     float:left;
     width:20em;
     margin:1em;
-    padding:1em;
-    padding-left:2em;
+    padding:0em 1em 1em 2em;
     margin-left:0;
     background-image: url(images/ui-bg-fade-black-grey-horizontal.png);
     background-repeat: repeat-y;
@@ -140,16 +140,15 @@ a {
     float:left;
     width:50em;
     margin:1em 0em 1em 4em;
-    padding:1em 2em;
+    padding:0em 1.5em 1em 1.5em;
 }
 
 /* Intra-page styles */
 #page .section {
-    background-color: #ddd;
-    margin:-1em -2em;
-    padding:1em 2em;
-    margin-bottom:1em;
+    margin:0em -1.5em 0em;
+    padding:1em 1.5em;
 }
+
 
 #page .section h2 {
     margin-bottom:0;
@@ -173,6 +172,22 @@ input.close-navigation, input.open-navigation {
     top:0.5em;
 }
 
+/* actions bar */
+#actions .extended {
+    display: none;
+}
+
+#actions h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-top:1em;
+    margin-bottom:0.5em;
+}
+
+#actions ul {
+    list-style-type:none;
+    margin-left:0;
+}
 
 /* other stuff */
 .selected {
@@ -189,7 +204,7 @@ span.match {
 
 span.discreet {
     color:#666;
-    font-size:65%;
+    font-size:80%;
 }
 
 .widget input.textType {
@@ -217,7 +232,11 @@ span.discreet {
     padding:3px 8px;
     text-decoration:none;
     background:white;
-    font-weight:bold;
+    font-weight:normal;
+}
+
+.button.selected {
+    background-color: wheat;
 }
 
 .button:hover {

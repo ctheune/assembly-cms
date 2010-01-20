@@ -67,44 +67,8 @@ class RetailEditionSelector(object):
 
 
 class PublishMenuItem(grok.Viewlet):
-    grok.viewletmanager(asm.cms.Actions)
+    grok.viewletmanager(asm.cms.PageActionGroups)
     grok.context(asm.cms.IEdition)
-
-
-class WorkflowStatusNote(grok.Viewlet):
-    grok.viewletmanager(asm.cms.Notes)
-    grok.context(asm.cms.IEdition)
-
-    def update(self):
-        try:
-            public = self.context.parameters.replace(
-                WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
-            public = self.context.page.getEdition(public, create=False)
-        except KeyError:
-            public = None
-
-        try:
-            draft = self.context.parameters.replace(
-                WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
-            draft = self.context.page.getEdition(draft, create=False)
-        except KeyError:
-            draft = None
-
-        if self.context is public:
-            self.this_name = 'public'
-            self.other_name = 'draft'
-        else:
-            self.this_name = 'draft'
-            self.other_name = 'public'
-
-        if None in [draft, public]:
-            self.other_is_changed = False
-        else:
-            if draft == self.context:
-                other = public
-            else:
-                other = draft
-            self.other_is_changed = other.modified > self.context.modified
 
 
 class Publish(asm.cms.ActionView):

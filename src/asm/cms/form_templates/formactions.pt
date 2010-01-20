@@ -1,7 +1,0 @@
-<div id="actionsView">
-    <span class="actionButtons" tal:condition="view/availableActions">
-        <input tal:repeat="action view/actions"
-        tal:replace="structure action/render"
-        />
-    </span>
-</div> 

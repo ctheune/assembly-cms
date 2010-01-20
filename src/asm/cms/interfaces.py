@@ -45,7 +45,7 @@ class IPage(zope.interface.Interface):
 class IEdition(zope.interface.Interface):
 
     parameters = zope.schema.TextLine(title=u'Edition parameters')
-    title = zope.schema.TextLine(title=u'')
+    title = zope.schema.TextLine(title=u'Title')
     tags = zope.schema.TextLine(title=u'Tags', required=False)
 
     created = zope.schema.Datetime(title=u'Created', readonly=True)
@@ -69,7 +69,7 @@ class IInitialEditionParameters(zope.interface.Interface):
 
 class IHTMLPage(zope.interface.Interface):
 
-    content = zope.schema.Text(title=u'')
+    content = zope.schema.Text(title=u'Page content')
 
 
 class IAsset(zope.interface.Interface):

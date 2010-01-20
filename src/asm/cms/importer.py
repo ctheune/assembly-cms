@@ -18,7 +18,7 @@ import zope.traversing.api
 
 class ImportActions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.cmsui.Actions)
+    grok.viewletmanager(asm.cms.cmsui.ExtendedPageActions)
     grok.context(asm.cms.cms.CMS)
 
 
@@ -54,7 +54,7 @@ class Import(asm.cms.Form):
     def import_htmlpage(self, edition, node):
         content = base64.decodestring(node.text)
         asm.cms.htmlpage.fix_relative_links(
-            content, self.base_path+'/'+node.getparent().get('path'))
+            content, self.base_path + '/' + node.getparent().get('path'))
         edition.content = content
 
     def import_asset(self, edition, node):

@@ -151,9 +151,9 @@ class Delete(grok.View):
         self.redirect(self.url(self.target))
 
 
-class Actions(grok.Viewlet):
+class ExtendedPageActions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.Actions)
+    grok.viewletmanager(asm.cms.ExtendedPageActions)
     grok.context(Edition)
 
 

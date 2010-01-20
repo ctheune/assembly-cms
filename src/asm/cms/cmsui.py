@@ -103,15 +103,21 @@ class ActionView(grok.View):
         self.redirect(self.url(self.context))
 
 
-class Actions(grok.ViewletManager):
+class MainPageActions(grok.ViewletManager):
 
-    grok.name('actions')
+    grok.name('main-page-actions')
     grok.context(zope.interface.Interface)
 
 
-class Notes(grok.ViewletManager):
+class ExtendedPageActions(grok.ViewletManager):
 
-    grok.name('notes')
+    grok.name('extended-page-actions')
+    grok.context(zope.interface.Interface)
+
+
+class PageActionGroups(grok.ViewletManager):
+
+    grok.name('page-action-groups')
     grok.context(zope.interface.Interface)
 
 

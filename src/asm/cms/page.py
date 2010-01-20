@@ -113,26 +113,14 @@ class Delete(grok.View):
         self.redirect(self.url(self.target))
 
 
-class PageActions(grok.Viewlet):
+class Actions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.cmsui.Actions)
+    grok.viewletmanager(asm.cms.cmsui.MainPageActions)
     grok.context(asm.cms.interfaces.IEdition)
-    grok.template('actions')
 
     @property
     def page(self):
         return self.context.page
-
-
-class Actions(grok.Viewlet):
-    # XXX We need to repeat ourselves here: page actions are actions for pages
-    # shown on editions. Actions are those shown on pages themselves
-    grok.viewletmanager(asm.cms.cmsui.Actions)
-    grok.context(asm.cms.interfaces.IPage)
-
-    @property
-    def page(self):
-        return self.context
 
 
 class CMSIndex(megrok.pagelet.Pagelet):

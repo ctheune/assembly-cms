@@ -40,7 +40,7 @@ class Edit(asm.cms.form.EditionEditForm):
     grok.require('asm.cms.EditContent')
 
     main_fields = grok.AutoFields(HTMLPage).select(
-        'title', 'tags', 'modified', 'content')
+        'title', 'content')
     main_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
     def post_process(self):

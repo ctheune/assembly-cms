@@ -1,4 +1,4 @@
-<div class="section">
+<div class="section breadcrumbs">
     <tal:block repeat="edition context/@@layouthelper/breadcrumbs">
         <tal:block condition="not:repeat/edition/end">
             <a tal:attributes="href python:view.url(edition)"

@@ -48,13 +48,6 @@ class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
     grok.baseclass()
 
 
-class FormActions(grok.Viewlet):
-
-    grok.viewletmanager(asm.cms.Actions)
-    grok.view(CMSForm)
-    grok.context(zope.interface.Interface)
-
-
 class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
               grok.AddForm):
 
@@ -110,6 +103,10 @@ class EditionEditForm(EditForm):
     grok.baseclass()
 
     @property
+    def label(self):
+        return u'Edit %s' % self.context.page.type
+
+    @property
     def form_fields(self):
         fields = self.main_fields
         for schema in zope.component.subscribers(
@@ -119,7 +116,5 @@ class EditionEditForm(EditForm):
             for field in add_fields:
                 field.location = 'additional'
             fields += zope.formlib.form.FormFields(*add_fields)
-        fields['tags'].location = 'additional'
-        fields['modified'].location = 'additional'
         fields['title'].location = 'header'
         return fields

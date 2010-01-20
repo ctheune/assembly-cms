@@ -1,3 +1,10 @@
-<li tal:condition="python:'workflow:draft' in context.parameters"><a
-    tal:attributes="href python:view.url(context, 'publish')">Publish</a></li>
-<li><a tal:attributes="href python:view.url(context, 'revert')">Revert draft</a></li>
+<div class="section">
+    <h3>Publication</h3>
+
+    <ul>
+        <li><button class="button selected">Draft</button> <span class="discreet">(has changes)</span></li>
+        <li><button class="button">Public</button></li>
+        <li><input type="button" value="Publish draft" class="button"/></li>
+        <li><button class="button">more actions &#x25be;</button></li>
+    </ul>
+</div>

@@ -46,18 +46,10 @@
         <div id="pagecontainer">
             <div id="page">
                 <div id="content">
-                    <div class="header-buttons">
-                        <input type="button" value="browse" class="open-navigation button"/>
-                    </div>
                     <tal:block replace="structure provider:pageheader"/>
-
-                    <tal:block replace="structure provider:notes"/>
                     <tal:block replace="structure view/render"></tal:block>
                 </div>
                 <div id="navigation">
-                    <div class="header-buttons">
-                        <input type="button" value="back" class="close-navigation button"/>
-                    </div>
                     <div class="section">
                         <h2>Browse site</h2>
                     </div>
@@ -67,16 +59,20 @@
             </div>
 
             <div id="actions">
-                <div id="search">
-                    <form tal:attributes="action
-                        string:${view/application_url}/search">
-                        <input type="text" name="q" value="Search ..."/>
-                    </form>
+                <input type="text" name="q" value="Search ..."/>
+                <div class="section">
+                    <ul>
+                        <li><input type="button" value="Browse"
+                        class="button"/></li>
+                    </ul>
                 </div>
-                <ul>
-                    <li><a href="#" id="preview-handle">Preview</a></li>
-                    <tal:block replace="structure provider:actions"/> 
-                </ul>
+
+                <tal:block replace="structure provider:main-page-actions"/>
+                <div class="extended">
+                    <tal:block replace="structure provider:extended-page-actions"/>
+                </div>
+
+                <tal:block replace="structure provider:page-action-groups"/>
             </div>
         </div>
     </body>

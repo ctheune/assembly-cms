@@ -33,17 +33,10 @@ class Index(megrok.pagelet.Pagelet):
     grok.layer(asm.cms.interfaces.IRetailSkin)
 
 
-class CMSIndex(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
-    grok.template('index')
-    grok.require('asm.cms.EditContent')
-
-
 class Edit(asm.cms.form.EditionEditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.name('index')
     grok.require('asm.cms.EditContent')
 
     main_fields = grok.AutoFields(HTMLPage).select(

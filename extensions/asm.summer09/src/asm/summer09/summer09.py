@@ -79,7 +79,7 @@ class LayoutHelper(grok.View):
         return ''
 
 
-class Navtree(asm.cms.cmsui.Navtree):
+class Navtree(object):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
 

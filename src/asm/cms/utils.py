@@ -21,7 +21,7 @@ def rewrite_urls(content, visitor):
                                  ('//img', 'src')]:
         for element in document.xpath(locator):
             old = element.get(attribute)
-            if not old:
+            if old is None:
                 continue
             new = visitor(old)
             element.set(attribute, new if new is not None else old)

@@ -1,4 +1,6 @@
 .installed.cfg
+etc
+var
 buildout.cfg
 ~
 ID

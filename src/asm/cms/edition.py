@@ -114,6 +114,20 @@ class EditionParameters(object):
 
         return EditionParameters(parameters)
 
+    def by_prefix(self, prefix):
+        prefix = prefix + ':'
+        for parameter in self:
+            if parameter.startswith(prefix):
+                yield parameter[len(prefix):]
+
+
+class DisplayParameters(grok.View):
+    grok.context(EditionParameters)
+    grok.name('index')
+
+    def render(self):
+        return '(English, Draft)'
+
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
@@ -134,7 +148,7 @@ class Delete(grok.View):
         del page[self.context.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
 
 class Actions(grok.Viewlet):

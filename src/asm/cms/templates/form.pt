@@ -1,3 +1,7 @@
+<div class="section">
+    <h2 tal:content="view/label|default">Edit page</h2>
+</div>
+
 <ul class="message" tal:condition="view/errors">
     <li tal:repeat="error view/error_views">
     <span tal:replace="structure error">error type</span>
@@ -6,57 +10,44 @@
 
 <form action="." tal:attributes="action request/URL" method="post"
     class="edit-form" enctype="multipart/form-data">
-    <div id="page-sidebar" class="column">
-        <!-- XXX This must become a generic viewlet manager, to avoid specific
-        code here in the form template. It currently probably breaks the
-        contact form application -->
-        <div class="sb-item">
-            <h3>Editions</h3>
-            <ul>
-                <tal:block replace="structure provider:editions"/>
-            </ul>
-        </div>
 
-        <div id="actionsView" class="sb-item">
-            <span class="actionButtons" tal:condition="view/availableActions">
-                <input tal:repeat="action view/actions"
-                tal:replace="structure action/render"
-                />
-            </span>
-        </div> 
+    <div id="page-edit" class="column">
 
-        <div class="sb-item">
-            <h3>Meta</h3>
-            <tal:block tal:repeat="widget view/side_widgets">
-            <div metal:use-macro="template/macros/fields">
-            </div>
+        <tal:block tal:repeat="widget view/header_widgets">
+        <div metal:use-macro="template/macros/fields"></div>
+        </tal:block>
+
+        <div class="additional-widgets">
+            <tal:block tal:repeat="widget view/additional_widgets">
+            <div metal:use-macro="template/macros/fields"></div>
             </tal:block>
         </div>
 
-    </div>
-
-    <div id="page-edit" class="column">
-        <h1 tal:content="view/label|default">Edit page</h1>
-
         <tal:block tal:repeat="widget view/main_widgets">
-        <div class="field" metal:define-macro="fields">
-            <label tal:attributes="for widget/name;
-                class python:widget.required and 'required' or ''">
-                <span i18n:translate="" tal:content="widget/label">label</span>
-            </label>
-
-            <p class="description" tal:content="widget/context/description"
-            tal:condition="widget/context/description">
-            </p>
-
-            <div class="error" tal:condition="widget/error">
-                <span tal:replace="structure widget/error">error</span>
-            </div>
-
-            <div class="widget" tal:content="structure widget">
-                <input type="text" />
-            </div>
-        </div>
+        <div metal:use-macro="template/macros/fields"></div>
         </tal:block>
+
     </div>
 </form>
+
+<tal:block condition="nothing">
+    <!-- Define the macro for showing individual fields -->
+    <div class="field" metal:define-macro="fields">
+        <label tal:attributes="for widget/name;
+            class python:widget.required and 'required' or ''">
+            <span i18n:translate="" tal:content="widget/label">label</span>
+        </label>
+
+        <p class="description" tal:content="widget/context/description"
+        tal:condition="widget/context/description">
+        </p>
+
+        <div class="error" tal:condition="widget/error">
+            <span tal:replace="structure widget/error">error</span>
+        </div>
+
+        <div class="widget" tal:content="structure widget">
+            <input type="text" />
+        </div>
+    </div>
+</tal:block>

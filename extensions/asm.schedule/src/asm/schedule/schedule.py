@@ -9,6 +9,7 @@ import grok
 import persistent
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
+import asm.cms
 
 
 class Schedule(asm.cms.Edition):
@@ -18,6 +19,8 @@ class Schedule(asm.cms.Edition):
     """
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
+
+    public_csv = ""
 
     def __init__(self):
         super(Schedule, self).__init__()
@@ -86,11 +89,19 @@ class Edit(asm.cms.EditForm):
                   'outline_level')
         reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
         reader = iter(reader)
-        # Ignore first row
-        reader.next()
+
+        # Grab all the public events so that the raw data can be shown.
+        public_data = StringIO.StringIO()
+        writer = csv.DictWriter(public_data, fieldnames=fields, dialect=dialect)
+
+        # Ignore the first row
+        header = reader.next()
+        writer.writerow(header)
+
         for row in reader:
             if row['public'] != 'Yes':
                 continue
+            writer.writerow(row)
             for schedule, lang in [(finnish, 'fi'), (english, 'en')]:
                 event = Event()
                 event.start = extract_date(row['start_date'])
@@ -102,6 +113,8 @@ class Edit(asm.cms.EditForm):
                 event.location = row['location_%s' % lang].decode('UTF-8')
                 event.location_url = row['location_url']
                 schedule.events[int(row['id'])] = event
+
+        self.context.public_csv = public_data.getvalue()
 
         self.flash(u'Your schedule was imported successfully.')
 
@@ -173,3 +186,12 @@ class Index(asm.cms.Pagelet):
         day = '%s%s' % (date.day, specials.get(date.day, 'th'))
         return '%s %s of %s %s' % (date.strftime('%A'), day,
                                    date.strftime('%B'), date.strftime('%Y'))
+
+
+class Csv(grok.View):
+    grok.name('csv')
+    grok.context(Schedule)
+    grok.layer(asm.cms.interfaces.IRetailSkin)
+
+    def render(self):
+        return self.context.public_csv

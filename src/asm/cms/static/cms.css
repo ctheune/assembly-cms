@@ -125,9 +125,9 @@ a {
 }
 
 
-#actions {
+.actionbar {
     float:left;
-    width:20em;
+    width:15em;
     margin:1em;
     padding:0em 1em 1em 2em;
     margin-left:0;
@@ -173,27 +173,59 @@ input.close-navigation, input.open-navigation {
 }
 
 /* actions bar */
-#actions .extended {
-    display: none;
+#navigation-actions {
+    display:none;
 }
 
-#actions h3 {
+.actionbar .section {
+    background-color:white;
+    padding:1em;
+    margin-top:1em;
+}
+
+.actionbar .section h3 {
     font-size: 10pt;
     font-weight: bold;
-    margin-top:1em;
     margin-bottom:0.5em;
 }
 
-#actions ul {
+.actionbar .section h3 span {
+    float:right;
+    font-weight:normal;
+    margin-top:0.1em;
+}
+
+.actionbar .section h3 .ui-icon {
+    margin-top:0;
+}
+
+.actionbar ul {
     list-style-type:none;
     margin-left:0;
+    margin-bottom:0;
+    margin-right:0;
 }
 
+.actionbar .expandable .expand {
+    display: none;
+}
+
+.actionbar li.selected {
+    background-color: khaki;
+}
+
+.actionbar li {
+    padding:0.25em;
+}
+.actionbar .expandable h3 .open {
+    display: none;
+}
+
+.actionbar p.hint {
+    font-size: 8pt;
+    margin-bottom:0;
+}
 /* other stuff */
-.selected {
-    font-weight:bold;
-}
-
 div.preview {
     color:#555;
 }

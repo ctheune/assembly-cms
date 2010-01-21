@@ -1,10 +1,29 @@
-<div class="section">
-    <h3>Publication</h3>
+<div class="section expandable">
+    <h3>Version
+    <span class="closed ui-icon ui-icon-carat-1-s"></span>
+    <span class="closed hint" tal:content="viewlet/current_version">Draft</span>
+    <span class="open ui-icon ui-icon-carat-1-n"></span>
+    </h3>
+
+    <p class="hint closed" tal:condition="viewlet/hints" tal:content="viewlet/hints">Public version available. Draft is newer.</p>
+
+    <ul class="expand">
+        <li tal:repeat="version viewlet/list_versions"
+            tal:attributes="class version/class">
+            <a tal:attributes="href version/edition/@@absolute_url">
+                <span tal:replace="version/label"/>
+            </a>
+        </li>
+    </ul>
 
     <ul>
-        <li><button class="button selected">Draft</button> <span class="discreet">(has changes)</span></li>
-        <li><button class="button">Public</button></li>
-        <li><input type="button" value="Publish draft" class="button"/></li>
-        <li><button class="button">more actions &#x25be;</button></li>
+        <li tal:attributes="class python:'workflow:draft' in context.parameters and ' ' or 'expand'"><input type="button" value="Publish draft" class="button"/></li>
+        <li class="expand"><input type="button" value="Delete public version" class="button"/></li>
     </ul>
 </div>
+
+
+<!-- 
+  - make "publish draft" only visible by default if we're looking at the draft
+
+  -->

@@ -121,6 +121,12 @@ class PageActionGroups(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class NavigationActions(grok.ViewletManager):
+
+    grok.name('navigation-actions')
+    grok.context(zope.interface.Interface)
+
+
 class DateFormat(grok.View):
 
     grok.context(datetime.datetime)

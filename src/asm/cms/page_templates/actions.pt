@@ -1,9 +1,15 @@
-<div class="section">
-    <h3>Page</h3>
+<div class="section expandable">
+    <h3>Page
+        <span class="closed ui-icon ui-icon-carat-1-s"></span>
+        <span class="closed hint">more actions</span>
+        <span class="open ui-icon ui-icon-carat-1-n"></span>
+        <span class="open hint">less actions</span>
+    </h3>
     <ul>
         <li><input type="submit" value="Save" class="button"/></li>
-        <li><input type="submit" value="Preview" class="button"/></li>
-        <li><input type="submit" value="New" class="button"/></li>
-        <li><input type="submit" value="Delete" class="button"/></li>
+        <li><input type="submit" value="Preview" class="button open-preview"/></li>
+    </ul>
+    <ul class="expand">
+        <tal:block replace="structure provider:extended-page-actions"/>
     </ul>
 </div>

@@ -79,7 +79,7 @@ class LayoutHelper(grok.View):
         return ''
 
 
-class Navtree(object):
+class Navtree(grok.View):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
 
@@ -119,6 +119,15 @@ class Navtree(object):
 
         tree = self._create_subtree(root, 3)
         return tree['subpages']
+
+    @property
+    def page(self):
+        if asm.cms.interfaces.IEdition.providedBy(self.context):
+            return self.context.__parent__
+        return self.context
+
+    def css_classes(self, *classes):
+        return ' '.join(filter(None, classes))
 
 
 class Homepage(asm.cms.Pagelet):

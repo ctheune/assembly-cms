@@ -12,6 +12,9 @@ import zope.event
 WORKFLOW_PUBLIC = 'workflow:public'
 WORKFLOW_DRAFT = 'workflow:draft'
 
+WORKFLOW_LABELS = {WORKFLOW_PUBLIC: 'Public',
+                   WORKFLOW_DRAFT: 'Draft'}
+
 
 class Prefixes(object):
 
@@ -69,6 +72,47 @@ class RetailEditionSelector(object):
 class PublishMenuItem(grok.Viewlet):
     grok.viewletmanager(asm.cms.PageActionGroups)
     grok.context(asm.cms.IEdition)
+
+    def current_version(self):
+        for candidate in self.context.parameters:
+            if candidate.startswith('workflow:'):
+                return WORKFLOW_LABELS[candidate]
+
+    def hints(self):
+        hints = ''
+        public_p = self.context.parameters.replace(
+            'workflow:*', WORKFLOW_PUBLIC)
+        try:
+            public = self.context.page.getEdition(public_p)
+        except KeyError:
+            hints += 'No public version available. '
+        else:
+            draft = self.context.page.getEdition(
+                public_p.replace('workflow:*', WORKFLOW_DRAFT), create=True)
+
+            if draft is self.context:
+                hints += 'Public version available. '
+
+            if draft.modified > public.modified:
+                hints + 'Draft is newer.'
+
+        return hints
+
+    def list_versions(self):
+        for status in [WORKFLOW_DRAFT, WORKFLOW_PUBLIC]:
+            p = self.context.parameters.replace('workflow:*', status)
+            version = {}
+            version['class'] = ''
+            version['label'] = WORKFLOW_LABELS[status]
+            try:
+                version['edition'] = self.context.page.getEdition(p)
+            except KeyError:
+                continue
+
+            if version['edition'] is self.context:
+                version['class'] = 'selected'
+
+            yield version
 
 
 class Publish(asm.cms.ActionView):

@@ -40,6 +40,7 @@ zope.deferredimport.define(
     MainPageActions='asm.cms.cmsui:MainPageActions',
     ExtendedPageActions='asm.cms.cmsui:ExtendedPageActions',
     PageActionGroups='asm.cms.cmsui:PageActionGroups',
+    NavigationActions='asm.cms.cmsui:NavigationActions',
     ActionView='asm.cms.cmsui:ActionView',
 
     Form='asm.cms.form:Form',

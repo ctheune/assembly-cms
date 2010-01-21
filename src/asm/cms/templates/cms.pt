@@ -51,28 +51,40 @@
                 </div>
                 <div id="navigation">
                     <div class="section">
-                        <h2>Browse site</h2>
+                        <h2>Navigation</h2>
                     </div>
                     <div id="navigation-tree" tal:attributes="href string:${view/application_url}/@@tree">
                     </div>
                 </div>
             </div>
 
-            <div id="actions">
-                <input type="text" name="q" value="Search ..."/>
-                <div class="section">
-                    <ul>
-                        <li><input type="button" value="Browse"
-                        class="button"/></li>
-                    </ul>
-                </div>
+            <div id="actions" class="actionbar">
+                <ul>
+                    <li><button class="button toggle-navigation">Navigation</button></li>
+                </ul>
+                <input type="text" name="q" class="search" value="Search ..."/>
 
                 <tal:block replace="structure provider:main-page-actions"/>
-                <div class="extended">
-                    <tal:block replace="structure provider:extended-page-actions"/>
-                </div>
 
                 <tal:block replace="structure provider:page-action-groups"/>
+            </div>
+
+            <div id="navigation-actions" class="actionbar">
+                <ul>
+                    <li><button class="button toggle-navigation">Back to editor</button></li>
+                </ul>
+                <input type="text" name="q" class="search" value="Search ..."/>
+                <div class="section expandable">
+                    <h3>Tools
+                        <span class="closed ui-icon ui-icon-carat-1-s"></span>
+                        <span class="closed hint">more tools</span>
+                        <span class="open ui-icon ui-icon-carat-1-n"></span>
+                        <span class="open hint">less tools</span>
+                    </h3>
+                    <ul>
+                    <tal:block replace="structure provider:navigation-actions"/>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>

@@ -80,6 +80,12 @@
               <a tal:attributes="href string:${view/application_url}/sponsors">
                 <img class="banner" alt="Gamepro" tal:attributes="src string:${view/application_url}/sponsors/logo/gamepro"/>
               </a>
+	      </p>
+
+		<p>
+              <a tal:attributes="href string:${view/application_url}/sponsors">
+                <img class="banner" alt="Coolermaster" tal:attributes="src string:${view/application_url}/sponsors/logo/coolermaster"/>
+              </a>
               </p>
               
             </div>

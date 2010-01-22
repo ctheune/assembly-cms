@@ -121,23 +121,10 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 
 class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
 
-    def setUp(self):
-        super(ReplaceSelenium, self).setUp()
-        r = self.getRootFolder()
-        r['cms'] = asm.cms.cms.CMS()
-        transaction.commit()
-
     def test_simple_replace(self):
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.clickAndWait('link=Search and replace')
+        s.clickAndWait('button=Navigation')
         s.type('name=search', 'foo')
         s.type('name=replace', 'bar')
         s.clickAndWait('name=form.actions.search')
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestReplace))
-    suite.addTest(unittest.makeSuite(ReplaceSelenium))
-    return suite

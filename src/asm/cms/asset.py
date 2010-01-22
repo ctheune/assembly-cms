@@ -42,10 +42,10 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
                     asm.cms.magic.whatis(data), data.encode('base64')))
 
 
-class CMSIndex(asm.cms.form.EditionEditForm):
+class Edit(asm.cms.form.EditionEditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
+    grok.name('edit')
 
     main_fields = grok.AutoFields(Asset).select(
         'title', 'tags', 'modified', 'content')

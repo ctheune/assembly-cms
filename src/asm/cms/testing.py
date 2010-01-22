@@ -4,6 +4,8 @@
 import os.path
 import zope.app.testing.functional
 import gocept.selenium.ztk
+import asm.cms.cms
+import transaction
 
 
 TestLayer = zope.app.testing.functional.ZCMLLayer(
@@ -19,3 +21,9 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = gocept.selenium.ztk.Layer(TestLayer)
+
+    def setUp(self):
+        super(SeleniumTestCase, self).setUp()
+        r = self.getRootFolder()
+        r['cms'] = asm.cms.cms.CMS()
+        transaction.commit()

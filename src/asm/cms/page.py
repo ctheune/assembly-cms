@@ -127,6 +127,23 @@ class CMSIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
+    grok.context(asm.cms.interfaces.ICMS)
+    grok.name('index')
+
+    def render(self):
+        try:
+            edition = self.context.editions.next()
+        except StopIteration:
+            edition = asm.cms.edition.NullEdition()
+            edition.__parent__ = self.context
+            edition.__name__ = ''
+        self.redirect(self.url(edition, '@@edit'))
+
+
+class PageIndex(megrok.pagelet.Pagelet):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
     grok.context(asm.cms.interfaces.IPage)
     grok.name('index')
 

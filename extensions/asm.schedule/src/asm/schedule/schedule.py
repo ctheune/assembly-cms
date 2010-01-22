@@ -22,6 +22,8 @@ class Schedule(asm.cms.Edition):
 
     public_csv = ""
 
+    message = None
+
     def __init__(self):
         super(Schedule, self).__init__()
         self.events = BTrees.IOBTree.IOBTree()
@@ -48,6 +50,14 @@ class ScheduleUpload(grok.Adapter):
 
     title = property(fset=set_title, fget=get_title)
 
+    def get_message(self):
+        return self.context.message
+
+    def set_message(self, message):
+        self.context.message = message
+
+    message = property(get_message, set_message)
+
     data = None
 
 
@@ -62,10 +72,12 @@ class Edit(asm.cms.EditForm):
     """
 
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
+    form_fields['message'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
     @grok.action(u'Upload')
-    def upload(self, data=None, title=None):
+    def upload(self, data=None, title=None, message=None):
         self.context.title = title
+        self.context.message = message
 
         if not data:
             self.flash('Saved changes.')

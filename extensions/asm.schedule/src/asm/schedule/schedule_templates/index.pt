@@ -1,3 +1,5 @@
+<span tal:replace="structure context/message|nothing" />
+
 <p><strong>Select day:</strong><br />
 <tal:block repeat="day view/events">
   <a tal:attributes="href string:#day-${repeat/day/index}"

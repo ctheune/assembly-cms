@@ -11,6 +11,8 @@ import zope.publisher.interfaces.browser
 
 class CMS(grok.Application, asm.cms.page.Page):
 
+    zope.interface.implements(asm.cms.interfaces.ICMS)
+
     type = 'htmlpage'
 
 

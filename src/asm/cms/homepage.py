@@ -13,10 +13,9 @@ class Homepage(asm.cms.Edition):
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
 
-class CMSIndex(asm.cms.form.EditionEditForm):
+class Edit(asm.cms.form.EditionEditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.name('index')
     grok.require('asm.cms.EditContent')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(

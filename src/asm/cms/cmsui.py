@@ -58,7 +58,7 @@ class Tree(grok.View):
         html = '<item rel="%s" id="%s">\n' % (root.type,
                                                intids.getId(edition))
         html += '<content><name href="%s">%s</name></content>\n' % (
-            self.url(edition), cgi.escape(edition.title))
+            self.url(edition, '@@edit'), cgi.escape(edition.title))
         for sub in root.subpages:
             html += self._sub_projects(sub)
         html += "</item>\n"

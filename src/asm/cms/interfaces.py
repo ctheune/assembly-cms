@@ -42,6 +42,10 @@ class IPage(zope.interface.Interface):
         source=EditionFactorySource())
 
 
+class ICMS(IPage):
+    """A page that is the root CMS object."""
+
+
 class IEdition(zope.interface.Interface):
 
     parameters = zope.schema.TextLine(title=u'Edition parameters')

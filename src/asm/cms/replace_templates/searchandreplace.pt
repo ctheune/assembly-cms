@@ -1,4 +1,6 @@
-<h1>Search and replace</h1>
+<div class="section">
+    <h2>Search and replace</h2>
+</div>
 
 <form tal:attributes="action string:${view/application_url}/@@replacepreview"
     method="POST">
@@ -6,5 +8,5 @@
     <span style="padding-left:1em; padding-right:1em;">&#x27f6;</span>
     <input type="text" name="replace" />
 
-    <input type="submit" name="form.actions.search" value="Search" />
+    <input type="submit" class="button" name="form.actions.search" value="Search" />
 </form>

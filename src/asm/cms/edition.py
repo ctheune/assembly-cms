@@ -126,7 +126,10 @@ class DisplayParameters(grok.View):
     grok.name('index')
 
     def render(self):
-        return '(English, Draft)'
+        # XXX use better lookup mechanism for tag labels
+        tags = sorted(self.context)
+        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels)
+        return '(%s)' % ', '.join(labels.lookup(tag) for tag in tags)
 
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
@@ -231,3 +234,14 @@ class UpdateOrder(grok.View):
 
     def render(self):
         return '()'
+
+
+class EditionLabels(grok.GlobalUtility):
+
+    zope.interface.implements(asm.cms.interfaces.IEditionLabels)
+
+    def lookup(self, tag):
+        prefix = tag.split(':')[0]
+        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels,
+                                           name=prefix)
+        return labels.lookup(tag)

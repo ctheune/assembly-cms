@@ -16,6 +16,15 @@ WORKFLOW_LABELS = {WORKFLOW_PUBLIC: 'Public',
                    WORKFLOW_DRAFT: 'Draft'}
 
 
+class WorkflowLabels(grok.GlobalUtility):
+
+    zope.interface.implements(asm.cms.interfaces.IEditionLabels)
+    grok.name('workflow')
+
+    def lookup(self, tag):
+        return WORKFLOW_LABELS[tag]
+
+
 class Prefixes(object):
 
     zope.interface.implements(asm.cms.interfaces.IExtensionPrefixes)

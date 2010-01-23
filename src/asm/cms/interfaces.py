@@ -96,6 +96,12 @@ class IEditionSelector(zope.interface.Interface):
     acceptable = zope.interface.Attribute('A list of acceptable editions')
 
 
+class IEditionLabels(zope.interface.Interface):
+
+    def lookup(tag):
+        """Return a label for a tag."""
+
+
 class ISearchableText(zope.interface.Interface):
 
     body = zope.interface.Attribute(

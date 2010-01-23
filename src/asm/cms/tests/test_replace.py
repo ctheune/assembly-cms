@@ -130,6 +130,7 @@ class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
         s.click('css=#actions .toggle-navigation')
+        s.verifyNotVisible('css=#search-and-replace')
         s.click('css=#tools h3')
         s.clickAndWait('css=#search-and-replace')
         self.assertEquals(

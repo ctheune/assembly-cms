@@ -6,7 +6,6 @@
         <span class="open hint">less actions</span>
     </h3>
     <ul>
-        <li><input type="submit" value="Save" class="button"/></li>
         <li><input type="submit" value="Preview" class="button open-preview"/></li>
     </ul>
     <ul class="expand">

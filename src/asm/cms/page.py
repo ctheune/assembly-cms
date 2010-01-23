@@ -10,11 +10,16 @@ import grok
 import megrok.pagelet
 import zope.app.form.browser.source
 import zope.interface
+import zope.copypastemove.interfaces
 
 
 class Page(grok.OrderedContainer):
 
     zope.interface.implements(asm.cms.interfaces.IPage)
+
+    def __init__(self, type):
+        super(Page, self).__init__()
+        self.type = type
 
     @property
     def page(self):
@@ -58,8 +63,7 @@ class AddPage(grok.View):
     grok.context(asm.cms.interfaces.IPage)
 
     def update(self, title, type):
-        page = Page()
-        page.type = type
+        page = Page(type)
         name = asm.cms.utils.title_to_name(title)
         self.context[name] = page
         edition = page.editions.next()
@@ -202,6 +206,7 @@ class EditionBase(grok.View):
 
 
 class Preview(grok.View):
+
     grok.context(asm.cms.interfaces.IPage)
 
     def render(self):
@@ -212,3 +217,31 @@ class Preview(grok.View):
         return zope.component.getMultiAdapter(
             (edition, self.request), zope.interface.Interface,
             name='index')()
+
+
+class Arrange(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    def update(self, id, type):
+        iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        obj = iids.getObject(int(id)).__parent__
+        mover = zope.copypastemove.interfaces.IObjectMover(obj)
+
+        if type == 'inside':
+            mover.moveTo(self.context, obj.__name__)
+        elif type == 'before':
+            mover.moveTo(self.context.__parent__, obj.__name__)
+            keys = list(self.context.__parent__.keys())
+            keys.remove(obj.__name__)
+            keys.insert(keys.index(self.context.__name__), obj.__name__)
+            self.context.__parent__.updateOrder(keys)
+        elif type == 'after':
+            mover.moveTo(self.context.__parent__, obj.__name__)
+            keys = list(self.context.__parent__.keys())
+            keys.remove(obj.__name__)
+            keys.insert(keys.index(self.context.__name__) + 1, obj.__name__)
+            self.context.__parent__.updateOrder(keys)
+
+    def render(self):
+        pass

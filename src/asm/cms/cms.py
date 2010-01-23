@@ -14,7 +14,11 @@ class CMS(grok.Application, asm.cms.page.Page):
 
     zope.interface.implements(asm.cms.interfaces.ICMS)
 
+    # Keep this here to support old instances.
     type = 'htmlpage'
+
+    def __init__(self, type='htmlpage'):
+        super(CMS, self).__init__(type)
 
 
 @grok.subscribe(zope.app.intid.interfaces.IIntIds, grok.IObjectAddedEvent)

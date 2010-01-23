@@ -28,6 +28,12 @@ $(document).ready(function(){
                         }});},
                 ondblclk: function(node, tree) {
                     window.location = $('a', node).attr('href')+'/@@edit';
+                },
+                onmove: function(node, ref, type, tree, rb) {
+                    $.post($('a', ref).attr('href')+'/../@@arrange',
+                           {id: $(node).attr('id'),
+                            type: type},
+                            function() { tree.refresh(); });
                 }}
     });
 

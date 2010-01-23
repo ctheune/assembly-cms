@@ -225,21 +225,6 @@ class ImagePicker(grok.View):
     grok.name('image-picker')
 
 
-class UpdateOrder(grok.View):
-
-    def update(self, order):
-        # The ordered container wants us to establish a total order. We need
-        # to add the editions (or any missing key)
-        # in the order, otherwise it will fail.
-        for key in self.context.page:
-            if key not in order:
-                order.append(key)
-        self.context.page.updateOrder(order)
-
-    def render(self):
-        return '()'
-
-
 class EditionLabels(grok.GlobalUtility):
 
     zope.interface.implements(asm.cms.interfaces.IEditionLabels)

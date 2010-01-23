@@ -7,7 +7,7 @@ $(document).ready(function(){
 
   $(".toggle-navigation").click(function() {toggle_navigation();});
 
-  $("input.search").one('click', init_search);
+  $("input.clear-first-focus").one('click', clear_input);
 
   $(".open-preview").click(show_preview);
   window.preview_location = $('link[rel="preview"]').attr('href');
@@ -15,19 +15,19 @@ $(document).ready(function(){
   $("#navigation-tree").tree({
     ui: { theme_name: 'classic' },
     types: {
-     htmlpage: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white.png'}},
-     homepage: { icon:  { image: '/winter10/@@/asm.cms/icons/house.png'}},
-     news: { icon:  { image: '/winter10/@@/asm.cms/icons/newspaper.png'}},
-     asset: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_picture.png'}}},
+      htmlpage: { clickable: true, icon:  { image: '/winter10/@@/asm.cms/icons/page_white.png'}},
+      homepage: { icon:  { image: '/winter10/@@/asm.cms/icons/house.png'}},
+      news: { icon:  { image: '/winter10/@@/asm.cms/icons/newspaper.png'}},
+      asset: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_picture.png'}}},
     data: { type: 'xml_nested',
             opts: {url: $('#navigation-tree').attr('href')}},
     callback: { onload: function() {
                     var tree = $.tree.reference('#navigation-tree');
                     $("#navigation-tree li").each(function() {
-                        if ($('a', this).attr('href') == window.location) {
+                        if ($('a', this).attr('href')+'/@@edit' == window.location) {
                             tree.select_branch($(this));
                         }});
-                    tree.initialized = true; }},
+                    tree.initialized = true; },
     });
 
     $('.expandable h3').click(toggle_extended_options);
@@ -39,7 +39,10 @@ $(document).ready(function(){
 
 function add_page() {
     var t = $.tree.reference('#navigation-tree');
-    t.create();
+    var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
+    $.post(add_page_url, $(this).parent().serialize(),
+           function(data) { t.open_branch(t.selected); t.refresh(); });
+    return false;
 }
 
 function trigger_url_action() {
@@ -52,14 +55,9 @@ function toggle_extended_options() {
     $(this).parent().find('.closed').toggle();
 };
 
-function init_search() {
+function clear_input() {
     $(this).val('');
 };
-
-function update_order(event, ui) {
-    var params = jQuery.param($("#subpages input"));
-    jQuery.get($("#subpages").attr('action'), params, null, 'json');
-}
 
 function hide_navigation() {
     $("#navigation").hide();

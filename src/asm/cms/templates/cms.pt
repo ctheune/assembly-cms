@@ -1,30 +1,21 @@
 <html tal:define="resource nocall:context/@@layouthelper/static">
     <head>
-        <title><span tal:replace="context/title|nothing"/></title>
+        <title tal:content="context/title|nothing"/></title>
 
         <!-- jQuery inclusions -->
-        <script type="text/javascript" tal:attributes="src
-            resource/jquery-1.4.min.js"></script>
-        <script type="text/javascript" tal:attributes="src
-            resource/jquery-ui.js"></script>
-        <link rel="stylesheet" type="text/css"
-          tal:attributes="href resource/jquery-ui.css" />
+        <script type="text/javascript" tal:attributes="src resource/jquery-1.4.min.js"></script>
+        <script type="text/javascript" tal:attributes="src resource/jquery-ui.js"></script>
+        <link rel="stylesheet" type="text/css" tal:attributes="href resource/jquery-ui.css" />
 
-        <script type="text/javascript"
-          tal:attributes="src resource/jstree/lib/sarissa.js"></script>
-        <script type="text/javascript"
-          tal:attributes="src resource/jstree/jquery.tree.min.js"> </script>
-        <script type="text/javascript"
-          tal:attributes="src resource/jstree/plugins/jquery.tree.xml_nested.js"></script>
+        <script type="text/javascript" tal:attributes="src resource/jstree/lib/sarissa.js"></script>
+        <script type="text/javascript" tal:attributes="src resource/jstree/jquery.tree.min.js"> </script>
+        <script type="text/javascript" tal:attributes="src resource/jstree/plugins/jquery.tree.xml_nested.js"></script>
 
         <!-- CMS-specific inclusions -->
-        <script type="text/javascript" tal:attributes="src
-            context/@@layouthelper/static/cms.js"></script>
-        <link rel="stylesheet" type="text/css"
-          tal:attributes="href context/@@layouthelper/static/cms.css" />
+        <script type="text/javascript" tal:attributes="src context/@@layouthelper/static/cms.js"></script>
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/cms.css" />
 
-        <link rel="shortcut icon" type="image/vnd.microsoft.icon"
-            tal:attributes="href context/@@layouthelper/static/favicon.ico" />
+        <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico" />
 
         <tal:block condition="context/page|nothing">
             <link rel="preview" tal:attributes="href python:view.url(context.page, '@@preview')"/>
@@ -71,7 +62,7 @@
                 <ul>
                     <li><button class="button toggle-navigation">Navigation</button></li>
                 </ul>
-                <input type="text" name="q" class="search" value="Search ..."/>
+                <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
 
                 <tal:block replace="structure provider:main-page-actions"/>
 
@@ -82,7 +73,7 @@
                 <ul>
                     <li><button class="button toggle-navigation">Back to editor</button></li>
                 </ul>
-                <input type="text" name="q" class="search" value="Search ..."/>
+                <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
                     <h3>Tools

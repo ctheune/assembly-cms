@@ -3,6 +3,7 @@
 
 import asm.cms.cmsui
 import asm.cms.edition
+import asm.cms.utils
 import asm.cms.form
 import asm.cms.interfaces
 import grok
@@ -56,13 +57,16 @@ class AddPage(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
 
-    def update(self, title, type_):
+    def update(self, title, type):
         page = Page()
-        name = title_to_name(title)
-        self.context[name] = Page()
+        page.type = type
+        name = asm.cms.utils.title_to_name(title)
+        self.context[name] = page
+        edition = page.editions.next()
+        edition.title = title
 
     def render(self):
-        self.target = asm.cms.edition.select_edition(obj, self.request)
+        return ''
 
 
 class ChangePageType(asm.cms.form.EditForm):

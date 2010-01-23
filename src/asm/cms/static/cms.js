@@ -7,7 +7,6 @@ $(document).ready(function(){
 
   $(".toggle-navigation").click(function() {toggle_navigation();});
 
-  $("#navigation-tree a").click(show_subpages);
   $("input.search").one('click', init_search);
 
   $(".open-preview").click(show_preview);
@@ -22,9 +21,7 @@ $(document).ready(function(){
      asset: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_picture.png'}}},
     data: { type: 'xml_nested',
             opts: {url: $('#navigation-tree').attr('href')}},
-    callback: { onselect: function(node, tree) { if (!tree.initialized) { return; }
-                                                 window.location = $('a', node).attr('href'); },
-                onload: function() { 
+    callback: { onload: function() {
                     var tree = $.tree.reference('#navigation-tree');
                     $("#navigation-tree li").each(function() {
                         if ($('a', this).attr('href') == window.location) {
@@ -36,7 +33,14 @@ $(document).ready(function(){
     $('.expandable h3').click(toggle_extended_options);
 
     $('.url-action').click(trigger_url_action);
+    $('#add-page').click(add_page);
 });
+
+
+function add_page() {
+    var t = $.tree.reference('#navigation-tree');
+    t.create();
+}
 
 function trigger_url_action() {
     window.location = $(this).attr('href');
@@ -79,18 +83,5 @@ toggle_navigation = show_navigation;
 
 function show_preview() {
     w = window.open($('link[rel="root"]').attr('href')+'/@@preview-window');
-    return false;
-};
-
-function show_subpages(e) {
-    if ($(this).hasClass('selected')) {
-        window.location = $(this).attr('href');
-    };
-    $.get($(this).attr('href')+'/@@navdetails',
-          function(data) {
-              $('#navigation-details').html(data); 
-          });
-    $('#navigation-tree .selected').removeClass('selected');
-    $(this).addClass('selected');
     return false;
 };

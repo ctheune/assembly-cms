@@ -123,6 +123,12 @@ class Actions(grok.Viewlet):
         return self.context.page
 
 
+class NavigationActions(grok.Viewlet):
+
+    grok.viewletmanager(asm.cms.cmsui.NavigationActions)
+    grok.context(asm.cms.interfaces.IEdition)
+
+
 class CMSIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)

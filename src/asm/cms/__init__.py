@@ -1,5 +1,6 @@
 import asm.cms.utils
 import grok
+import urlparse
 
 
 def application(self):
@@ -14,15 +15,17 @@ grok.View.application = property(fget=application)
 
 
 def resolve_relative_urls(self, content, source):
-    base = self.url(source)
 
     def resolve(url):
         for prefix in ['http:', 'ftp:', 'https:', 'mailto:', 'irc:', '/', '?',
                        '#']:
             if url.startswith(prefix):
                 return
-        return base + '/' + url
+        return urlparse.urljoin(base, url)
 
+    # Always turn the source into a folder-like path element to avoid that
+    # pointing to '.' will resolve in the parent's index.
+    base = self.url(source) + '/'
     return asm.cms.utils.rewrite_urls(content, resolve)
 
 grok.View.resolve_relative_urls = resolve_relative_urls

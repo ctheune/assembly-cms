@@ -38,6 +38,17 @@ class UtilityTests(unittest.TestCase):
                 '<a/><img/>',
                 lambda x: 'test'))
 
+    def test_title_to_name(self):
+        self.assertEquals('asdf', asm.cms.utils.title_to_name('asdf'))
+        self.assertEquals('asdf', asm.cms.utils.title_to_name('ASDF'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf/bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf#bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf?bsdf'))
 
 class ViewApplicationTests(unittest.TestCase):
 

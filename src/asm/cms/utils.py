@@ -32,3 +32,10 @@ def rewrite_urls(content, visitor):
     result = result.replace('<stupidcontainerwrappercafebabe>', '')
     result = result.replace('</stupidcontainerwrappercafebabe>', '')
     return result.strip()
+
+
+def title_to_name(title):
+    title = title.lower()
+    for char in ' /#?':
+        title = title.replace(char, '-')
+    return title

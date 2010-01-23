@@ -130,6 +130,7 @@ class Publish(asm.cms.ActionView):
 
     def update(self):
         self.context = publish(self.context)
+        self.redirect(self.url(self.context, '@@edit'))
         self.flash(u"Published draft.")
 
 

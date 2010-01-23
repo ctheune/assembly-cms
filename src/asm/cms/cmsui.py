@@ -133,6 +133,12 @@ class NavigationActions(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class NavigationToolActions(grok.ViewletManager):
+
+    grok.name('navigation-tool-actions')
+    grok.context(zope.interface.Interface)
+
+
 class DateFormat(grok.View):
 
     grok.context(datetime.datetime)

@@ -186,5 +186,5 @@ class Replace(megrok.pagelet.Pagelet):
 class ReplaceActions(grok.Viewlet):
 
     grok.template('actions')
-    grok.viewletmanager(asm.cms.NavigationActions)
+    grok.viewletmanager(asm.cms.NavigationToolActions)
     grok.context(zope.interface.Interface)

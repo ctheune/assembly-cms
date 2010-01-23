@@ -4,7 +4,7 @@
 
         <!-- jQuery inclusions -->
         <script type="text/javascript" tal:attributes="src
-            resource/jquery.js"></script>
+            resource/jquery-1.4.min.js"></script>
         <script type="text/javascript" tal:attributes="src
             resource/jquery-ui.js"></script>
         <link rel="stylesheet" type="text/css"
@@ -83,6 +83,7 @@
                     <li><button class="button toggle-navigation">Back to editor</button></li>
                 </ul>
                 <input type="text" name="q" class="search" value="Search ..."/>
+                <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
                     <h3>Tools
                         <span class="closed ui-icon ui-icon-carat-1-s"></span>
@@ -91,7 +92,7 @@
                         <span class="open hint">less tools</span>
                     </h3>
                     <ul>
-                    <tal:block replace="structure provider:navigation-actions"/>
+                    <tal:block replace="structure provider:navigation-tool-actions"/>
                     </ul>
                 </div>
             </div>

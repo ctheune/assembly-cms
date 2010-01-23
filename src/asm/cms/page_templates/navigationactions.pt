@@ -1,0 +1,13 @@
+<div class="section expandable">
+    <h3>Add
+        <span class="closed ui-icon ui-icon-carat-1-s"></span>
+        <span class="open ui-icon ui-icon-carat-1-n"></span>
+    </h3>
+    <input type="text" value="Name ..."/>
+    <ul>
+        <li><input type="radio"/>asdf</li>
+        <li><input type="radio"/>bsdf</li>
+        <li class="expand"><input type="radio"/>csdf</li>
+    </ul>
+    <button class="button">Add</button>
+</div>

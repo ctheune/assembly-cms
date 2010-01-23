@@ -397,3 +397,78 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
 .schedule-time {
     width:8em;
 }
+
+#livestream {
+    background:url("images/asmtv-livestream.png") no-repeat;
+    display:block;
+    height:50px;
+    width:562px;
+    margin-left:-1px;
+    text-indent:-9999cm;
+}
+/* the overlayed element */
+div.overlay {
+	
+	/* growing background image */
+	
+	/* dimensions after the growing animation finishes  */
+	width:600px;
+	height:470px;		
+	
+	/* initially overlay is hidden */
+	display:none;
+	
+	/* some padding to layout nested elements nicely  */
+	padding:55px;
+}
+
+/* default close button positioned on upper right corner */
+div.overlay div.close {
+	background-image:url(http://static.flowplayer.org/tools/img/overlay/close.png);
+	position:absolute;
+	right:5px;
+	top:5px;
+	cursor:pointer;
+	height:35px;
+	width:35px;
+}
+
+
+/* black */
+div.overlay.black {
+	color:#fff;
+}
+
+/* petrol */
+div.overlay.petrol {
+
+	color:#fff;
+}
+
+div.black h2, div.petrol h2 {
+	color:#ddd;		
+}
+
+#overlay {
+	background: #000;
+	color:#efefef;
+	width:520px; height:440px; padding:40px; -moz-border-radius:5px; -webkit-border-radius:5px;
+}
+
+div.wrap {
+	height:250px;
+	width:420px;
+}
+
+#asmtv-promo {
+	background:url(asmtv-promo2.png) no-repeat;
+	width:581px;
+	height:67px;
+	padding-right:0px;
+}
+.overlaybutton {
+	width:65px;
+	height:50px;
+	float:right;
+	margin:10px 4px 0 6px;
+}

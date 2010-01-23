@@ -1,24 +1,59 @@
 
 // ASSEMBLY-overlay
-$(function() {
-	//$("div.ol").overlay({expose: '#000'});
-	
-	$("a[rel]").overlay({
-		expose: {
-		opacity: 0.7,
-		color: '#000'   
-	 },
-	onBeforeLoad: function() {
-		//find wrap
-		var wrap = this.getContent().find("div.wrap");
-		//load iframe
-		wrap.load(this.getTrigger().attr("href"));
-		//expose
-		//wrap.expose({api: true, color: '#000'}).load();
-		}
-		}
-	);	
+$(document).ready(function(){
+    
 });
+
+//$(function() {
+//// find wrap		
+//	$("#live.wrap #livestream").overlay({
+//
+//		expose: {
+//			opacity: 0.9,
+//			color: '#000'   
+//		},
+//		
+//		// load iframe
+//		onLoad: function() {
+//			var wrap = this.getContent().find("div.contentWrap");
+//			wrap.load(this.getTrigger().attr("href"));
+//		},
+//	
+//		onClose: function() {
+//			var wrap = this.getContent().find("div.contentWrap");
+//			wrap2.unload(); 
+//		} 
+//	});	
+//});
+
+$(document).ready(function(){
+    
+});
+
+$(function() {
+// find wrap		
+	$("#livestream").overlay({
+
+		expose: {
+			opacity: 0.9,
+			color: '#000'   
+		},
+		
+		// load iframe
+		onLoad: function() {
+			var wrap = this.getContent().find("div.wrap");
+			wrap.load(this.getTrigger().attr("href"));
+		},
+	
+		onClose: function() {
+			var wrap = this.getContent().find("div.wrap");
+			wrap2.unload(); 
+		} 
+	});	
+});
+
+
+
 
 
 // Rotate News

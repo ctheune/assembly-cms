@@ -1,3 +1,10 @@
+<div id="livewrap"><a href="/++skin++summer09/@@/asm.summer09/i_asmtv.html" id="livestream" rel="#overlay">AssemblyTV livestream - Watch now</a></div>
+<!-- render area-->
+<div class="overlay" id="overlay">
+	<div class="wrap"></div>
+	
+</div>
+
 <div id="news-featured" tal:define="featured python:list(view.featured())">
 
     <div class="newsitem" id="news-id1"

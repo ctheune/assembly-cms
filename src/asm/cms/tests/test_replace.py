@@ -122,9 +122,32 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
 
     def test_simple_replace(self):
+        cms = self.getRootFolder()['cms']
+        home = cms.editions.next()
+        home.title = 'testing homepage'
+        home.content = 'foobar'
+        transaction.commit()
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.clickAndWait('button=Navigation')
+        s.click('css=#actions .toggle-navigation')
+        s.click('css=#tools h3')
+        s.clickAndWait('css=#search-and-replace')
+        self.assertEquals(
+            'http://localhost:8087/++skin++cms/cms/@@searchandreplace',
+            s.getLocation())
         s.type('name=search', 'foo')
         s.type('name=replace', 'bar')
         s.clickAndWait('name=form.actions.search')
+
+        s.assertTextPresent('Found 1 occurences.')
+        s.assertTextPresent('testing homepage')
+        s.assertElementPresent('name=occurences')
+        s.clickAndWait('name=form.actions.replace')
+
+        s.assertTextPresent('Replaced 1 occurences.')
+        self.assertEquals(
+            'http://localhost:8087/++skin++cms/cms/searchandreplace',
+            s.getLocation())
+
+        transaction.begin()
+        self.assertEquals('barbar', home.content)

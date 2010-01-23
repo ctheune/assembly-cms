@@ -163,7 +163,10 @@ class Replace(megrok.pagelet.Pagelet):
         replace_cache = {}
 
         ids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
-        for occurence_id in self.request.form.get('occurences'):
+        occurences = self.request.form.get('occurences')
+        if isinstance(occurences, basestring):
+            occurences = [occurences]
+        for occurence_id in occurences:
             id, _, _, _ = occurence_id.split('-')
             if id not in replace_cache:
                 edition = ids.getObject(int(id))
@@ -177,9 +180,7 @@ class Replace(megrok.pagelet.Pagelet):
 
     def render(self):
         self.flash('Replaced %s occurences.' % self.replaced)
-        self.redirect(self.url(self.context, 'replacepreview',
-                               {'search': self.search,
-                                'replace': self.replace}))
+        self.redirect(self.url(self.context, 'searchandreplace'))
 
 
 class ReplaceActions(grok.Viewlet):

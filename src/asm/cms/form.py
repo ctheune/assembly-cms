@@ -95,7 +95,9 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
         if self.errors:
             return
         self.flash(self.status)
-        self.redirect(self.url(self.context))
+        self.redirect(self.url(self.context, '@@edit'))
+        # A hack to avoid rending inspite of redirect.
+        self.layout = lambda: ''
 
 
 class EditionEditForm(EditForm):

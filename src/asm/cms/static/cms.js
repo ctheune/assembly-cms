@@ -34,7 +34,13 @@ $(document).ready(function(){
     });
 
     $('.expandable h3').click(toggle_extended_options);
+
+    $('.url-action').click(trigger_url_action);
 });
+
+function trigger_url_action() {
+    window.location = $(this).attr('href');
+}
 
 function toggle_extended_options() {
     $(this).parent().find('.expand').slideToggle();

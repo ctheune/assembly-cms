@@ -1,6 +1,7 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import z3c.flashmessage.interfaces
 import cgi
 import asm.cms.edition
 import asm.cms.interfaces
@@ -38,6 +39,11 @@ class LayoutHelper(grok.View):
             pages.insert(0, asm.cms.edition.select_edition(page, self.request))
             page = page.__parent__
         return pages
+
+    def messages(self):
+        receiver = zope.component.getUtility(
+            z3c.flashmessage.interfaces.IMessageReceiver)
+        return receiver.receive()
 
 
 class Tree(grok.View):

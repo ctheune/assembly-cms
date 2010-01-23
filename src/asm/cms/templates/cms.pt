@@ -47,6 +47,15 @@
             <div id="page">
                 <div id="content">
                     <tal:block replace="structure provider:pageheader"/>
+                    <ul tal:define="messages context/@@layouthelper/messages"
+                        tal:condition="messages"
+                        class="messages section">
+                      <li
+                        tal:repeat="message messages"
+                        tal:attributes="class message/type"
+                        tal:content="message/message">Sauron will arrive soon!
+                      </li>
+                    </ul>
                     <tal:block replace="structure view/render"></tal:block>
                 </div>
                 <div id="navigation">
@@ -74,7 +83,7 @@
                     <li><button class="button toggle-navigation">Back to editor</button></li>
                 </ul>
                 <input type="text" name="q" class="search" value="Search ..."/>
-                <div class="section expandable">
+                <div class="section expandable" id="tools">
                     <h3>Tools
                         <span class="closed ui-icon ui-icon-carat-1-s"></span>
                         <span class="closed hint">more tools</span>

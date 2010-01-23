@@ -6,10 +6,12 @@
         </h3>
         <input type="text" name="title" class="clear-first-focus" value="Page title ..."/>
         <ul>
-            <li><input type="radio" name="type" value="htmlpage" checked="checked"/>Page</li>
-            <li><input type="radio" name="type" value="asset"/>Image/File</li>
-            <li class="expand"><input type="radio" name="type" value="news"/>News section</li>
+            <li tal:repeat="type viewlet/types"
+                tal:attributes="class python:type['factory'].factory_visible and ' ' or 'expand'">
+                <label> <input type="radio" name="type"
+                        tal:attributes="value type/name"/>
+                        <span tal:replace="type/title"/></label></li>
         </ul>
-        <button class="button" id="add-page">Add page</button>
+        <button class="button" id="add-page">Add</button>
     </form>
 </div>

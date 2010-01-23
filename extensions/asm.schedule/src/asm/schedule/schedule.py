@@ -19,6 +19,8 @@ class Schedule(asm.cms.Edition):
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
+    factory_title = u'Schedule'
+
     def __init__(self):
         super(Schedule, self).__init__()
         self.events = BTrees.IOBTree.IOBTree()

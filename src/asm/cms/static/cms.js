@@ -21,13 +21,14 @@ $(document).ready(function(){
       asset: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_picture.png'}}},
     data: { type: 'xml_nested',
             opts: {url: $('#navigation-tree').attr('href')}},
-    callback: { onload: function() {
-                    var tree = $.tree.reference('#navigation-tree');
+    callback: { onload: function(tree) {
                     $("#navigation-tree li").each(function() {
                         if ($('a', this).attr('href')+'/@@edit' == window.location) {
                             tree.select_branch($(this));
-                        }});
-                    tree.initialized = true; },
+                        }});},
+                ondblclk: function(node, tree) {
+                    window.location = $('a', node).attr('href')+'/@@edit';
+                }}
     });
 
     $('.expandable h3').click(toggle_extended_options);
@@ -41,7 +42,7 @@ function add_page() {
     var t = $.tree.reference('#navigation-tree');
     var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
     $.post(add_page_url, $(this).parent().serialize(),
-           function(data) { t.open_branch(t.selected); t.refresh(); });
+           function(data) { window.location = data; });
     return false;
 }
 

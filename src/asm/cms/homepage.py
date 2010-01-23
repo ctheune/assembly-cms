@@ -12,6 +12,8 @@ class Homepage(asm.cms.Edition):
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
+    factory_title = u'Homepage'
+
 
 class Edit(asm.cms.form.EditionEditForm):
 

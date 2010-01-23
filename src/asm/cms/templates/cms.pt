@@ -1,9 +1,9 @@
 <html tal:define="resource nocall:context/@@layouthelper/static">
     <head>
-        <title tal:content="context/title|nothing"/></title>
+        <title tal:content="context/title|nothing"></title>
 
         <!-- jQuery inclusions -->
-        <script type="text/javascript" tal:attributes="src resource/jquery-1.4.min.js"></script>
+        <script type="text/javascript" tal:attributes="src resource/jquery-1.3.min.js"></script>
         <script type="text/javascript" tal:attributes="src resource/jquery-ui.js"></script>
         <link rel="stylesheet" type="text/css" tal:attributes="href resource/jquery-ui.css" />
 

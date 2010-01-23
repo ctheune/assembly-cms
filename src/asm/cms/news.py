@@ -13,6 +13,8 @@ class NewsFolder(asm.cms.Edition):
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
+    factory_title = u'News section'
+
     def list(self, base=None):
         """Recursively list all news item pages.
 

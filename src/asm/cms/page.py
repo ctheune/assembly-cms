@@ -64,9 +64,10 @@ class AddPage(grok.View):
         self.context[name] = page
         edition = page.editions.next()
         edition.title = title
+        self.edition = edition
 
     def render(self):
-        return ''
+        return self.url(self.edition, '@@edit')
 
 
 class ChangePageType(asm.cms.form.EditForm):
@@ -100,7 +101,7 @@ class Delete(grok.View):
 
     def update(self):
         if isinstance(self.context, asm.cms.cms.CMS):
-            raise TypeError("Can not delete CMS instances.")
+            raise TypeError("Cannot delete CMS instances.")
         page = self.context
         self.target = page.__parent__
         del page.__parent__[page.__name__]
@@ -123,6 +124,19 @@ class NavigationActions(grok.Viewlet):
 
     grok.viewletmanager(asm.cms.cmsui.NavigationActions)
     grok.context(asm.cms.interfaces.IEdition)
+
+    def types(self):
+        # XXX. Meh. Can't we re-use the widget infrastructure here?
+        source = asm.cms.interfaces.EditionFactorySource()
+        result = []
+        for name in source.factory.getValues():
+            factory = zope.component.getUtility(
+                asm.cms.interfaces.IEditionFactory, name=name)
+            result.append(dict(name=name,
+                               factory=factory,
+                               title=source.factory.getTitle(name)))
+        result.sort(key=lambda x: x['factory'].factory_order)
+        return result
 
 
 class CMSIndex(megrok.pagelet.Pagelet):

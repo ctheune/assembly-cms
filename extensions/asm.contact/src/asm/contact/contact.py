@@ -13,6 +13,8 @@ class Contact(asm.cms.Edition):
     zope.interface.implements(asm.contact.interfaces.IContactForm)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
+    factory_title = u'Contact form'
+
     email = ''
 
     def copyFrom(self, other):

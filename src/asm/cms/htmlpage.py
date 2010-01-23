@@ -18,6 +18,10 @@ class HTMLPage(asm.cms.edition.Edition):
     zope.interface.implements(asm.cms.interfaces.IHTMLPage)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
+    factory_title = u'Page'
+    factory_visible = True
+    factory_order = 1
+
     content = u''
 
     def copyFrom(self, other):

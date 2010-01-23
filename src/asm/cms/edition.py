@@ -9,11 +9,15 @@ import megrok.pagelet
 import pytz
 import re
 import zope.interface
+import sys
 
 
 class Edition(grok.Model):
 
     grok.implements(asm.cms.interfaces.IEdition)
+
+    factory_visible = False
+    factory_order = sys.maxint
 
     created = None
     modified = None

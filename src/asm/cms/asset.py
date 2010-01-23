@@ -15,6 +15,10 @@ class Asset(asm.cms.edition.Edition):
     zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
+    factory_title = u'File/Image'
+    factory_order = 2
+    factory_visible = True
+
     content = ''
 
     def copyFrom(self, other):

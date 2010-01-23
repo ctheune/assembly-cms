@@ -1,6 +1,7 @@
 .installed.cfg
 etc
 var
+downloads
 buildout.cfg
 ~
 ID

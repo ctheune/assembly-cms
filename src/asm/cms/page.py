@@ -52,24 +52,16 @@ class Page(grok.OrderedContainer):
             asm.cms.interfaces.IEditionFactory, name=self.type)
 
 
-class AddPage(asm.cms.form.AddForm):
+class AddPage(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
 
-    label = u'Add page'
-    form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
-    form_fields['type'].custom_widget = (
-        lambda field, request: zope.app.form.browser.source.SourceRadioWidget(
-                field, field.source, request))
+    def update(self, title, type_):
+        page = Page()
+        name = title_to_name(title)
+        self.context[name] = Page()
 
-    factory = Page
-
-    def chooseName(self, obj):
-        return obj.__name__
-
-    def add(self, obj):
-        name = self.chooseName(obj)
-        self.context[name] = obj
+    def render(self):
         self.target = asm.cms.edition.select_edition(obj, self.request)
 
 

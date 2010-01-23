@@ -1,13 +1,15 @@
 <div class="section expandable">
-    <h3>Add
-        <span class="closed ui-icon ui-icon-carat-1-s"></span>
-        <span class="open ui-icon ui-icon-carat-1-n"></span>
-    </h3>
-    <input type="text" value="Name ..."/>
-    <ul>
-        <li><input type="radio"/>asdf</li>
-        <li><input type="radio"/>bsdf</li>
-        <li class="expand"><input type="radio"/>csdf</li>
-    </ul>
-    <button class="button">Add</button>
+    <form tal:attributes="action python:view.url(context.page, '@@add_page')">
+        <h3>Add
+            <span class="closed ui-icon ui-icon-carat-1-s"></span>
+            <span class="open ui-icon ui-icon-carat-1-n"></span>
+        </h3>
+        <input type="text" name="title" value="Page title ..."/>
+        <ul>
+            <li><input type="radio" name="type" value="htmlpage" checked="checked"/>Page</li>
+            <li><input type="radio" name="type" value="asset"/>Image/File</li>
+            <li class="expand"><input type="radio" name="type" value="news"/>News section</li>
+        </ul>
+        <button class="button">Add</button>
+    </form>
 </div>

@@ -52,7 +52,7 @@ class Edit(asm.cms.form.EditionEditForm):
     grok.name('edit')
 
     main_fields = grok.AutoFields(Asset).select(
-        'title', 'tags', 'modified', 'content')
+        'title', 'content')
     main_fields['content'].custom_widget = FileWithDisplayWidget
 
 

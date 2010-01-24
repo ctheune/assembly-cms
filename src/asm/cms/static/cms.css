@@ -156,6 +156,10 @@ a {
     margin-bottom:0;
 }
 
+#page form h3 {
+    background-color: #ddd;
+    padding:1em;
+}
 /* Navigation tree */
 #navigation {
     display: none;
@@ -191,13 +195,13 @@ input.close-navigation, input.open-navigation {
     margin-bottom:0.5em;
 }
 
-.actionbar .section h3 span {
+.expandable h3 span {
     float:right;
     font-weight:normal;
     margin-top:0.1em;
 }
 
-.actionbar .section h3 .ui-icon {
+.expandable .section h3 .ui-icon {
     margin-top:0;
 }
 
@@ -208,7 +212,10 @@ input.close-navigation, input.open-navigation {
     margin-right:0;
 }
 
-.actionbar .expandable .expand {
+.expandable .expand {
+    display: none;
+}
+.expandable h3 .open {
     display: none;
 }
 
@@ -219,9 +226,7 @@ input.close-navigation, input.open-navigation {
 .actionbar li {
     padding:0.25em;
 }
-.actionbar .expandable h3 .open {
-    display: none;
-}
+
 
 .actionbar p.hint {
     font-size: 8pt;

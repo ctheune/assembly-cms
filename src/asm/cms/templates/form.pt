@@ -9,19 +9,21 @@
 
     <div id="page-edit" class="column">
 
-        <tal:block tal:repeat="widget view/header_widgets">
-        <div metal:use-macro="template/macros/fields"></div>
-        </tal:block>
-
-        <div class="additional-widgets">
-            <tal:block tal:repeat="widget view/additional_widgets">
-            <div metal:use-macro="template/macros/fields"></div>
-            </tal:block>
-        </div>
-
         <tal:block tal:repeat="widget view/main_widgets">
         <div metal:use-macro="template/macros/fields"></div>
         </tal:block>
+
+        <div tal:repeat="group view/grouped_widgets" class="section expandable">
+            <h3><span tal:replace="group"/>
+                <span class="closed ui-icon ui-icon-carat-1-s"></span>
+                <span class="open ui-icon ui-icon-carat-1-n"></span>
+            </h3>
+            <div class="expand">
+                <tal:block tal:repeat="widget python:view.grouped_widgets[group]">
+                <div metal:use-macro="template/macros/fields"></div>
+                </tal:block>
+            </div>
+        </div>
 
         <div id="actionsView">
             <span class="actionButtons" tal:condition="view/availableActions">

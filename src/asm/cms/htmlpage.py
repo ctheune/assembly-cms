@@ -71,10 +71,17 @@ class SearchPreview(grok.View):
         except Exception:
             return ''
         text = ''.join(tree.itertext())
-        focus = text.find(self.keyword)
-        text = text[focus - 50:focus + 50]
-        text = text.replace(
-            self.keyword, '<span class="match">%s</span>' % self.keyword)
+
+        # Select limited amount of characters
+        focus = text.lower().find(self.keyword.lower())
+        text = text[max(focus - 50, 0):focus + 50]
+
+        # Insert highlighting. Recompute offset of focus with shorter text.
+        focus = text.lower().find(self.keyword.lower())
+        pre, keyword, post = (text[:focus],
+                              text[focus:focus + len(self.keyword)],
+                              text[focus + len(self.keyword):])
+        text = '%s<span class="match">%s</span>%s' % (pre, keyword, post)
         return text
 
 

@@ -25,6 +25,5 @@ def evolve(context):
                 try:
                     draft = obj.getEdition(draft_p)
                 except KeyError:
-                    print "creating draft for", obj.__name__
                     draft = obj.getEdition(draft_p, create=True)
                     draft.copyFrom(edition)

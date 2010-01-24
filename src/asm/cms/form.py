@@ -17,6 +17,10 @@ class CMSForm(object):
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
+    def __init__(self, context, request):
+        super(CMSForm, self).__init__(context, request)
+        self.group_info = {}
+
     def setUpWidgets(self, ignore_request=False):
         super(CMSForm, self).setUpWidgets(ignore_request)
         self.grouped_widgets = {}
@@ -99,13 +103,17 @@ class EditionEditForm(EditForm):
     @property
     def form_fields(self):
         fields = self.main_fields
-        fields += zope.formlib.form.FormFields(asm.cms.interfaces.IEdition).select('tags')
+        fields += zope.formlib.form.FormFields(
+            asm.cms.interfaces.IEdition).select('tags')
         fields['tags'].location = 'Tags'
+        self.group_info['Tags'] = self.context.tags
         for schema in zope.component.subscribers(
                 (self.context,),
                 asm.cms.interfaces.IAdditionalSchema):
+            self.group_info[schema.getTaggedValue('label')] = \
+                schema.queryTaggedValue('description', '')
             add_fields = list(grok.AutoFields(schema))
             for field in add_fields:
-                field.location = schema.__name__
+                field.location = schema.getTaggedValue('label')
             fields += zope.formlib.form.FormFields(*add_fields)
         return fields

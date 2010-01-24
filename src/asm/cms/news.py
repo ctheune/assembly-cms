@@ -33,8 +33,20 @@ class NewsFolder(asm.cms.Edition):
 
 class INewsFields(zope.interface.Interface):
 
-    teaser = zope.schema.TextLine(title=u'Teaser text')
-    image = zope.schema.Bytes(title=u'File', required=False)
+    zope.interface.taggedValue('label', u'News')
+    zope.interface.taggedValue(
+        'description', u'Write a teaser text and upload a teaser image.')
+
+    teaser = zope.schema.TextLine(
+        title=u'Teaser text',
+        description=u'The teaser text will be shown on the homepage and in '
+                    u'the news portlet. Only plain text is supported.')
+
+    image = zope.schema.Bytes(
+        title=u'Teaser image', required=False,
+        description=u'An image that can be displayed along this news item. '
+                    u'Please note that depending on the context the image '
+                    u'may be displayed in different styles.')
 
 
 class TeaserAnnotation(grok.Annotation,

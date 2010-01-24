@@ -43,7 +43,7 @@ class LayoutHelper(grok.View):
     def messages(self):
         receiver = zope.component.getUtility(
             z3c.flashmessage.interfaces.IMessageReceiver)
-        return receiver.receive()
+        return list(receiver.receive())
 
 
 class Tree(grok.View):

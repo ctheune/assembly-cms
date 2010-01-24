@@ -90,9 +90,7 @@ class Edit(asm.cms.EditForm):
     grok.context(NewsFolder)
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
-        'title', 'tags', 'modified')
-    form_fields['tags'].location = 'side'
-    form_fields['modified'].location = 'side'
+        'title')
 
 
 class Index(asm.cms.Pagelet):

@@ -1,4 +1,6 @@
-<h1>Search and replace</h1>
+<div class="section">
+    <h2>Search and replace</h2>
+</div>
 
 <form tal:attributes="action string:${view/application_url}/@@replace"
     method="POST" class="search-and-replace">
@@ -8,18 +10,17 @@
     <input type="text" disabled="disabled" tal:attributes="value request/search"/>
     <span style="padding-left:1em; padding-right:1em;">&#x27f6;</span>
     <input type="text" disabled="disabled" tal:attributes="value request/replace"/>
-    <input type="submit" name="form.actions.replace" value="Replace" />
+    <input type="submit" class="button" name="form.actions.replace" value="Replace" />
 
     <tal:block repeat="result view/results">
-
-    <h3><span tal:content="result/edition/title"/>
-            <span class="discreet">(<tal:block tal:repeat="tag python:sorted(result['edition'].parameters)"
-                ><span tal:replace="tag"/> </tal:block>)</span></h3>
+    <h3 class="section"><span tal:content="result/edition/title"/>
+            <span class="discreet"
+                tal:content="result/edition/parameters/@@index"></span></h3>
 
     <ul>
-        <li tal:repeat="occurence result/occurences">
+        <li tal:repeat="occurence result/occurences" style="margin-left:1.5em;">
             <input type="checkbox" tal:attributes="value occurence/id"
-            name="occurences" checked="checked"/>
+            name="occurences" checked="checked" style="margin-left:-1.5em;"/>
             <span tal:content="structure occurence/preview"/>
         </li>
     </ul>

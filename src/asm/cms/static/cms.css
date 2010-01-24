@@ -11,9 +11,8 @@ a img {border:none;}
 /* typography.css */
 body {font-size:75%;color:#222;background:#fff;font-family:"Helvetica Neue", Arial, Helvetica, sans-serif;}
 h1, h2, h3, h4, h5, h6 {font-weight:normal;color:#111;}
-h1 {font-size:3em;line-height:1;margin-bottom:0.5em;}
-h2 {font-size:2em;margin-bottom:0.75em;}
-h3 {font-size:1.5em;line-height:1;margin-bottom:1em;}
+h1 {font-size:2em;line-height:1;margin-bottom:0.5em;}
+h2, h3 {font-size:1em;margin-bottom:0.75em;font-weight:bold}
 h4 {font-size:1.2em;line-height:1.25;margin-bottom:1.25em;}
 h5 {font-size:1em;font-weight:bold;margin-bottom:1.5em;}
 h6 {font-size:1em;font-weight:bold;}
@@ -66,7 +65,7 @@ fieldset {padding:1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;}
 legend {font-weight:bold;font-size:1.2em;}
 input[type=text], input[type=password], input.text, input.title, textarea, select {background-color:#fff;border:1px solid #ccc; padding:5px;}
 input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {border-color:#666;}
-input[type=text], input[type=password], input.text, input.title, textarea, select {margin:0.5em 0;}
+input[type=text], input[type=password], input.text, input.title, textarea, select {margin:0;}
 input.text, input.title {width:300px;padding:5px;}
 input.title {font-size:1.5em;}
 textarea {width:390px;height:250px;padding:5px;}
@@ -84,9 +83,10 @@ form.inline p {margin-bottom:0;}
 /* ASSEMBLY CMS ADMIN STYLES */
 
 body {
-    background:#efefef;
     margin:0;
     padding:0;
+    overflow-y: scroll;
+    background-color: #eee;
 }
 
 * {
@@ -97,237 +97,198 @@ a {
     text-decoration: none;
 }
 
-.selected {
-    font-weight:bold;
-}
-
-.no-title {
-    font-style: italic;
-}
+/* Page grid/layout */
 
 #header {
-    background:#333;
-    color:#999;
-    height:20px;
-    padding:10px 20px;
+    background-color: #000;
+    width:100%;
+    margin-bottom:1em;
+    padding-left:4em;
+    padding-top:1em;
+    padding-bottom:0.5em;
 }
 
 #header h1 {
-    font-size:1.5em;
-    margin:0;
-    color:#999;
-    width:500px;
+    color: white;
+    font-size:12pt;
+    font-weight:bold;
+}
+
+#pagecontainer {
+    overflow: hidden;
+}
+
+#pagecontainer>div {
+    margin-bottom:-2000px;
+    padding-bottom:2100px;
+}
+
+
+.actionbar {
     float:left;
-    padding:2px 0;
+    width:15em;
+    margin:1em;
+    padding:0em 1em 1em 2em;
+    margin-left:0;
+    background-image: url(images/ui-bg-fade-black-grey-horizontal.png);
+    background-repeat: repeat-y;
 }
 
-#container {
-    padding:20px 20px;
-}
-
-#user-info {
-    float:right;
-}
-
-
-#footer {
-    background:#333;
-    padding:10px 15px;
-    color:white;
-}
-
-#admin-menu {
-    width: 200px;
+#page {
+    background-color: white;
     float:left;
-    margin-right:20px;
+    width:50em;
+    margin:1em 0em 1em 4em;
+    padding:0em 1.5em 1em 1.5em;
 }
 
-#content {
-    margin-left:220px;
+/* Intra-page styles */
+#page .section {
+    margin:0em -1.5em 0em;
+    padding:1em 1.5em;
 }
 
-#controls {
-    float:left;
-    width:150px;
+#page .section h2,  #page .section h3 {
+    margin-bottom:0;
 }
 
-.column {
-    float:left;
+#page ul {
+    margin-bottom:0;
 }
 
-.column ul {
-    list-style:none;
-    margin:0;
+#page form h3 {
+    background-color: #ddd;
+    padding:1em;
+}
+/* Navigation tree */
+#navigation {
+    display: none;
+}
+
+.header-buttons {
+    position:absolute;
+    width:50em;
     padding:0;
 }
 
-.column li {
+input.close-navigation, input.open-navigation {
+    position:absolute;
+    right:0em;
     margin:0;
+    top:0.5em;
 }
 
-.menu-item .menu-head {
-    background:#ccc;
-    color:#666;
-    padding:5px 10px 4px 10px;
-    font-weight:bold;
+/* actions bar */
+#navigation-actions {
+    display:none;
 }
 
-.menu-item .menu-content {
-    background:#fff;
-    padding:5px 10px;
-    border:1px solid #ccc;
+.actionbar .section {
+    background-color:white;
+    padding:1em;
+    margin-top:1em;
 }
 
-.menu-item .menu-content li {
-    padding:3px 0;
+.actionbar .section h3 {
+    font-size: 10pt;
+    font-weight: bold;
+    margin-bottom:0.5em;
 }
 
-.menu-item .menu-content li li {
-    margin:0 0 0 8px;
-}
-
-.menu-item {
-    margin:0 0 20px 0;
-    font-size:1.2em;
-}
-
-.menu-item .selected {
-    background:#f2f4c4;
-}
-
-#search {
+.expandable h3 span {
     float:right;
-}
-#search input {
-    padding:2px;
-    margin:0;
+    font-weight:normal;
+    margin-top:0.1em;
 }
 
-#search form {
-    margin:0;
+.expandable .section h3 .ui-icon {
+    margin-top:0;
 }
 
-#search-results>ul>li>a {
-    font-weight:bold;
+.actionbar ul {
+    list-style-type:none;
+    margin-left:0;
+    margin-bottom:0;
+    margin-right:0;
 }
 
+.expandable .expand {
+    display: none;
+}
+.expandable h3 .open {
+    display: none;
+}
+
+.actionbar li.selected {
+    background-color: yellow;
+}
+
+.actionbar li {
+    padding:0.25em;
+}
+
+
+.actionbar p.hint {
+    font-size: 8pt;
+    margin-bottom:0;
+}
+/* other stuff */
 div.preview {
     color:#555;
 }
+
 span.match {
-    background-color:lightyellow;
+    background-color:yellow;
 }
 
 span.discreet {
     color:#666;
-    font-size:65%;
-}
-
-#header ul {
-    list-style:none;
-}
-
-#header a {
-    color:#fff;
+    font-size:80%;
 }
 
 .widget input.textType {
     font-size:1.6em; width:100%;
     font-family:Georgia;
-    margin:0 0 10px 0;
+}
+
+.widget {
+    margin:0px 0px 10px 0px;
 }
 
 .field span {
     color:#666;
 }
 
-h1 {
-    font-family:Arial, Helvetica, sans-serif;
-    letter-spacing:-1px;
-    margin:0 0 10px 0;
-    color:#666;
-    font-size:2.0em;
-}
-
-#search-results {
-    background:#fff;
-    padding:10px 15px;
-}
-
-#search-results ul {
-    padding:0;
-    margin:0;
-}
-
-#search-results li {
-    margin:5px 0;
-    padding:5px;
-    list-style:none;
-    border-bottom:1px solid #ccc;
-}
-
 .error-notice {
     margin:0;
 }
 
-#page-edit {
-    min-width:500px;
-    max-width:800px;
-    float:none;
-    margin-right:220px;
-}
-
-#page-sidebar {
-    float:right;
-    width:180px;
-    padding:20px;
-    margin-top:20px;
-}
-
-#page-sidebar h3 {
-    margin:0 0 10px 0;
-    padding:0;
-    color:#333;
-    font-size:1.3em;
-}
-
-.actionButtons {
-    margin:5px 0;
-}
-
-.actionButtons input {
-    display:block;
-    width:160px;
-}
-
-.sb-item ul {
-    margin:0;
-    padding:0;
-}
-
-.sb-item {
-    margin:0 0 15px 0;
-    margin:10px 0 0 0;
-    padding:10px 0;
-    border-top:1px solid #ccc;
-}
-
 .button {
-    -moz-border-radius:11px;
-    -moz-box-sizing:content-box;
-    -webkit-border-radius:11px;
     border:1px solid #ccc;
-    cursor:pointer; 
+    cursor:pointer;
     font-size:1.0em;
     line-height:16px;
     padding:3px 8px;
     text-decoration:none;
     background:white;
-    font-weight:bold;
+    font-weight:normal;
+}
+
+.button.selected {
+    background-color: yellow;
 }
 
 .button:hover {
     border:1px solid #aaa;
+}
+
+ul.messages {
+    padding:0;
+    margin:0;
+}
+
+ul.messages li {
+    margin-bottom:0;
 }
 
 .message {
@@ -339,82 +300,14 @@ h1 {
     margin:0 0 15px 0;
 }
 
-#header a.visit-site {
-    -moz-border-radius:3px;
-    display:inline-block;
-    background:#666;
-    color:#333;
-    font-size:12px;
-    padding:3px;
-    margin-left:10px;
-    font-style:normal;
-    letter-spacing:0;
+
+.widget img {
+    margin-top:0.5em;
+    max-width: 49em;
 }
 
-#header a.visit-site:hover {
-    background:#ccc;
-}
-
-/* navigation */
-#navigation-wrapper {
-    display:none;
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-    /* XXX Why do we need this? Otherwise some images and checkboxes shine
-     * through. */
-    z-index: 1;
-}
-
-#navigation-background {
-    background-color:#000;
-    opacity:0.5;
-    position:absolute;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
-}
-
-#navigation {
-    position:absolute;
-    left:50px;
-    top:90px;
-    bottom:50px;
-    right:50px;
-    background-color:white;
-}
-
-#navigation-tree {
-    width:400px;
-    position:absolute;
-    bottom:0px;
-    top:2em;
-    overflow:auto;
-    border:none;
-}
-
-#navigation-tree ul {
-    list-style:none;
-    margin:0;
-    padding:0;
-}
-
-#navigation-tree ul ul li {
-    margin:0;
-    margin-left:2em;
-}
-
-#navigation-details {
-    position:absolute;
-    left:420px;
-    right:0px;
-    bottom:0px;
-    top:2em;
-    overflow:auto;
-    border:none;
+a.highlight {
+    background-color:yellow;
 }
 
 /* clearfix */
@@ -428,9 +321,6 @@ h1 {
 }
 
 /* Search and replace */
-.search-and-replace h3 {
-    margin-bottom:0.5em;
-}
 
 .search-and-replace ul {
     list-style-type: none;

@@ -1,3 +1,29 @@
-<li tal:condition="python:'workflow:draft' in context.parameters"><a
-    tal:attributes="href python:view.url(context, 'publish')">Publish</a></li>
-<li><a tal:attributes="href python:view.url(context, 'revert')">Revert draft</a></li>
+<div id="version" class="section expandable">
+    <h3>Version
+    <span class="closed ui-icon ui-icon-carat-1-s"></span>
+    <span class="closed hint" tal:content="viewlet/current_version">Draft</span>
+    <span class="open ui-icon ui-icon-carat-1-n"></span>
+    </h3>
+
+    <p class="hint closed" tal:condition="viewlet/hints" tal:content="viewlet/hints">Public version available. Draft is newer.</p>
+
+    <ul class="expand">
+        <li tal:repeat="version viewlet/list_versions"
+            tal:attributes="class version/class">
+            <a tal:attributes="href string:${version/edition/@@absolute_url}/@@edit">
+                <span tal:replace="version/label"/>
+            </a>
+        </li>
+    </ul>
+
+    <ul>
+        <li tal:attributes="class python:'workflow:draft' in context.parameters and ' ' or 'expand'"><form tal:attributes="action python:view.url(context, 'publish')" method="post"><input id="publish" type="submit" value="Publish draft" class="button"/></form></li>
+        <li class="expand"><input type="button" value="Delete public version" class="button"/></li>
+    </ul>
+</div>
+
+
+<!-- 
+  - make "publish draft" only visible by default if we're looking at the draft
+
+  -->

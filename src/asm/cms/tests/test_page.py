@@ -1,30 +1,46 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
-import asm.cms.page
 import asm.cms.edition
+import asm.cms.page
+import transaction
+import unittest
+import zope.app.component.hooks
+import zope.app.intid.interfaces
+import zope.component
 
 
-class EditionTests(unittest.TestCase):
+class PageTests(asm.cms.testing.FunctionalTestCase):
 
-    def test_updateOrder(self):
-        page = asm.cms.page.Page()
-        page['a'] = asm.cms.page.Page()
-        page['b'] = asm.cms.page.Page()
-        page['c'] = asm.cms.page.Page()
-        page['edition'] = edition = asm.cms.edition.Edition()
-        # The initial order is `as created`.
-        self.assertEquals(['a', 'b', 'c', 'edition'],
-                          page.keys())
-        update = asm.cms.edition.UpdateOrder(edition, None)
+    def setUp(self):
+        super(PageTests, self).setUp()
+        self.cms['a'] = asm.cms.page.Page('htmlpage')
+        self.cms['b'] = asm.cms.page.Page('htmlpage')
+        self.a = self.cms['a'].editions.next()
+        self.b = self.cms['b'].editions.next()
+        transaction.commit()
+        self.request = zope.publisher.browser.TestRequest()
+        self.intids = zope.component.getUtility(
+            zope.app.intid.interfaces.IIntIds)
 
-        # We order by stating a new order, all items left out are appended at
-        # the end.
-        update.update(['c', 'b', 'a'])
-        self.assertEquals(['c', 'b', 'a', 'edition'],
-                          page.keys())
+    def test_b_inside_a(self):
+        arrange = asm.cms.page.Arrange(self.b.page, self.request)
+        arrange.update(self.intids.getId(self.a), 'inside')
+        self.failUnless('a' in self.b.page)
+        self.failIf('a' in self.cms)
 
+    def test_b_before_a(self):
+        self.assertEquals(['edition-', 'a', 'b'],
+                          list(self.cms))
+        arrange = asm.cms.page.Arrange(self.a.page, self.request)
+        arrange.update(self.intids.getId(self.b), 'before')
+        self.assertEquals(['edition-', 'b', 'a'],
+                          list(self.cms))
 
-def test_suite():
-    return unittest.makeSuite(EditionTests)
+    def test_a_after_b(self):
+        self.assertEquals(['edition-', 'a', 'b'],
+                          list(self.cms))
+        arrange = asm.cms.page.Arrange(self.b.page, self.request)
+        arrange.update(self.intids.getId(self.a), 'after')
+        self.assertEquals(['edition-', 'b', 'a'],
+                          list(self.cms))

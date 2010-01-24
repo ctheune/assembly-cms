@@ -21,6 +21,7 @@ class Schedule(asm.cms.Edition):
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
     public_csv = ""
+    factory_title = u'Schedule'
 
     message = None
 

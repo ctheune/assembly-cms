@@ -4,6 +4,9 @@
 import os.path
 import zope.app.testing.functional
 import gocept.selenium.ztk
+import asm.cms.cms
+import transaction
+import zope.app.component.hooks
 
 
 TestLayer = zope.app.testing.functional.ZCMLLayer(
@@ -15,7 +18,26 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 
     layer = TestLayer
 
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        r = self.getRootFolder()
+        r['cms'] = self.cms = asm.cms.cms.CMS()
+        zope.app.component.hooks.setSite(self.cms)
+        transaction.commit()
+
+    def tearDown(self):
+        zope.app.component.hooks.setSite(None)
+        super(FunctionalTestCase, self).tearDown()
+
 
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 
     layer = gocept.selenium.ztk.Layer(TestLayer)
+
+    def setUp(self):
+        super(SeleniumTestCase, self).setUp()
+        r = self.getRootFolder()
+        r['cms'] = self.cms = asm.cms.cms.CMS()
+        transaction.commit()
+        self.selenium.open('http://mgr:mgrpw@%s/++skin++cms/cms' %
+                           self.selenium.server)

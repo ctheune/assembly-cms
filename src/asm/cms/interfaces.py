@@ -21,7 +21,15 @@ class EditionFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
                 zope.component.getUtilitiesFor(IEditionFactory)]
 
     def getTitle(self, item):
-        return item
+        factory = zope.component.getUtility(IEditionFactory, name=item)
+        # XXX the factory titles need to go to a reasonable place.
+        return getattr(factory, 'factory_title', item)
+
+
+class IExtensionPrefixes(zope.interface.Interface):
+
+    prefixes = zope.interface.Attribute(
+        'A set of prefixes defined by an extension')
 
 
 class IPage(zope.interface.Interface):
@@ -34,6 +42,10 @@ class IPage(zope.interface.Interface):
     type = zope.schema.Choice(
         title=u'Type',
         source=EditionFactorySource())
+
+
+class ICMS(IPage):
+    """A page that is the root CMS object."""
 
 
 class IEdition(zope.interface.Interface):
@@ -63,12 +75,12 @@ class IInitialEditionParameters(zope.interface.Interface):
 
 class IHTMLPage(zope.interface.Interface):
 
-    content = zope.schema.Text(title=u'Content')
+    content = zope.schema.Text(title=u'Page content')
 
 
 class IAsset(zope.interface.Interface):
 
-    content = zope.schema.Bytes(title=u'File')
+    content = zope.schema.Bytes(title=u'File', required=False)
     content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
 
 
@@ -84,6 +96,12 @@ class IEditionSelector(zope.interface.Interface):
 
     preferred = zope.interface.Attribute('A list of preferred editions.')
     acceptable = zope.interface.Attribute('A list of acceptable editions')
+
+
+class IEditionLabels(zope.interface.Interface):
+
+    def lookup(tag):
+        """Return a label for a tag."""
 
 
 class ISearchableText(zope.interface.Interface):

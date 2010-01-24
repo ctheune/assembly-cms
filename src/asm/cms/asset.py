@@ -15,6 +15,10 @@ class Asset(asm.cms.edition.Edition):
     zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
+    factory_title = u'File/Image'
+    factory_order = 2
+    factory_visible = True
+
     content = ''
 
     def copyFrom(self, other):
@@ -42,17 +46,14 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
                     asm.cms.magic.whatis(data), data.encode('base64')))
 
 
-class Edit(asm.cms.form.EditForm):
+class Edit(asm.cms.form.EditionEditForm):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.name('edit')
 
-    form_fields = grok.AutoFields(Asset).select(
-        'title', 'tags', 'created', 'modified', 'content')
-    form_fields['content'].custom_widget = FileWithDisplayWidget
-    form_fields['tags'].location = 'side'
-    form_fields['created'].location = 'side'
-    form_fields['modified'].location = 'side'
+    main_fields = grok.AutoFields(Asset).select(
+        'title', 'content')
+    main_fields['content'].custom_widget = FileWithDisplayWidget
 
 
 class Index(grok.View):

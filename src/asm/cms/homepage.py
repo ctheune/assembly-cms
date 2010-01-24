@@ -12,10 +12,13 @@ class Homepage(asm.cms.Edition):
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
+    factory_title = u'Homepage'
 
-class Edit(asm.cms.EditForm):
+
+class Edit(asm.cms.form.EditionEditForm):
+
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
-        'title', 'tags', 'modified')
-    form_fields['tags'].location = 'side'
-    form_fields['modified'].location = 'side'
+        'title')

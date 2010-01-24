@@ -38,6 +38,17 @@ class UtilityTests(unittest.TestCase):
                 '<a/><img/>',
                 lambda x: 'test'))
 
+    def test_title_to_name(self):
+        self.assertEquals('asdf', asm.cms.utils.title_to_name('asdf'))
+        self.assertEquals('asdf', asm.cms.utils.title_to_name('ASDF'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf/bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf#bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.title_to_name('asdf?bsdf'))
 
 class ViewApplicationTests(unittest.TestCase):
 
@@ -72,11 +83,9 @@ class ViewApplicationTests(unittest.TestCase):
 class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):
 
     def test_resolve(self):
-        root = self.getRootFolder()
-        root['cms'] = asm.cms.cms.CMS()
         request = zope.publisher.browser.TestRequest()
-        view = grok.View(root['cms'], request)
-        r = lambda x: view.resolve_relative_urls(x, root['cms'])
+        view = grok.View(self.cms, request)
+        r = lambda x: view.resolve_relative_urls(x, self.cms)
 
         self.assertEquals(
             '<a href="http://127.0.0.1/cms/"/>',

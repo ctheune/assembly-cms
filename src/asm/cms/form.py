@@ -17,24 +17,18 @@ class CMSForm(object):
     grok.layer(asm.cms.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
-    @property
-    def side_widgets(self):
-        for w in self.widgets:
-            if getattr(w, 'location') == 'side':
-                yield w
-
-    @property
-    def main_widgets(self):
-        for w in self.widgets:
-            if getattr(w, 'location') != 'side':
-                yield w
-
     def setUpWidgets(self, ignore_request=False):
         super(CMSForm, self).setUpWidgets(ignore_request)
+        self.grouped_widgets = {}
+        self.main_widgets = []
         for widget in self.widgets:
-            setattr(widget, 'location',
-                    getattr(self.form_fields[widget.context.__name__],
-                            'location', None))
+            group = getattr(self.form_fields[widget.context.__name__],
+                            'location', None)
+            if group is None:
+                self.main_widgets.append(widget)
+            else:
+                group = self.grouped_widgets.setdefault(group, [])
+                group.append(widget)
 
 
 class Form(CMSForm, megrok.pagelet.component.FormPageletMixin, grok.Form):
@@ -56,7 +50,7 @@ class AddForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(obj))
         self.applyData(obj, **data)
         self.add(obj)
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
     def add(self, obj):
         name = self.chooseName(obj)
@@ -89,7 +83,9 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
         if self.errors:
             return
         self.flash(self.status)
-        self.redirect(self.url(self.context, 'edit'))
+        self.redirect(self.url(self.context, '@@edit'))
+        # A hack to avoid rending inspite of redirect.
+        self.layout = lambda: ''
 
 
 class EditionEditForm(EditForm):
@@ -97,12 +93,19 @@ class EditionEditForm(EditForm):
     grok.baseclass()
 
     @property
+    def label(self):
+        return u'Edit %s' % self.context.page.type
+
+    @property
     def form_fields(self):
         fields = self.main_fields
+        fields += zope.formlib.form.FormFields(asm.cms.interfaces.IEdition).select('tags')
+        fields['tags'].location = 'Tags'
         for schema in zope.component.subscribers(
                 (self.context,),
                 asm.cms.interfaces.IAdditionalSchema):
-            fields += grok.AutoFields(schema)
-        fields['tags'].location = 'side'
-        fields['modified'].location = 'side'
+            add_fields = list(grok.AutoFields(schema))
+            for field in add_fields:
+                field.location = schema.__name__
+            fields += zope.formlib.form.FormFields(*add_fields)
         return fields

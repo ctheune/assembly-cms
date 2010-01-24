@@ -51,8 +51,8 @@
     </control>
     <control controlID="57" controlTypeID="com.balsamiq.mockups::Canvas" x="589" y="292" w="188" h="38" measuredW="100" measuredH="70" zOrder="11" locked="false" isInGroup="-1">
       <controlProperties>
-        <color>15132390</color>
         <borderStyle>none</borderStyle>
+        <color>15132390</color>
       </controlProperties>
     </control>
     <control controlID="58" controlTypeID="com.balsamiq.mockups::Label" x="593" y="297" w="-1" h="-1" measuredW="37" measuredH="25" zOrder="12" locked="false" isInGroup="-1">

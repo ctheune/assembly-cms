@@ -56,7 +56,7 @@ class CMSEditionSelector(object):
         self.preferred = []
         self.acceptable = []
         for edition in page.editions:
-            if WORKFLOW_PUBLIC in edition.parameters:
+            if WORKFLOW_DRAFT in edition.parameters:
                 self.preferred.append(edition)
             else:
                 self.acceptable.append(edition)

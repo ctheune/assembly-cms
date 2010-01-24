@@ -14,7 +14,3 @@ class ImportTests(unittest.TestCase):
             fix_relative_links('<a href="/assembly09/asm/about">asdf</a>'
                                '<a href="/assembly09/">bsdf</a>',
                                '/assembly09'))
-
-
-def test_suite():
-    return unittest.makeSuite(ImportTests)

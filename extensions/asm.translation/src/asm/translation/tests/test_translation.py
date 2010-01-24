@@ -1,4 +1,4 @@
-# Copyright (c) 2009 Assembly Organizing
+# Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import os.path
@@ -13,13 +13,15 @@ TestLayer = zope.app.testing.functional.ZCMLLayer(
     __name__, 'TestLayer', allow_teardown=False)
 
 
-class SeleniumTestCase(asm.cms.testing.SeleniumTestCase):
+class TranslationTests(asm.cms.testing.SeleniumTestCase):
 
     layer = gocept.selenium.ztk.Layer(TestLayer)
 
-    def testWorkflow(self):
+    def test_create_finnish_translation(self):
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.click('css=#version h3')
-        s.clickAndWait('css=#publish')
-        s.assertTextPresent('Published draft')
+        s.assertNotVisible('link=*Finnish*')
+        s.click('xpath=//h3[contains(text(), "Language")]')
+        s.assertVisible('link=*Finnish*')
+        s.clickAndWait('link=*Finnish*')
+        s.assertTextPresent('Translation created.')

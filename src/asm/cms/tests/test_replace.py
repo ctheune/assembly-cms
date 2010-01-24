@@ -14,10 +14,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestReplace, self).setUp()
-        self.root = self.getRootFolder()
-        self.root['cms'] = asm.cms.cms.CMS()
-        zope.app.component.hooks.setSite(self.root['cms'])
-        self.root['cms']['page'] = self.page = asm.cms.htmlpage.HTMLPage()
+        self.cms['page'] = self.page = asm.cms.htmlpage.HTMLPage()
         self.replace = asm.cms.replace.HTMLReplace(self.page)
 
     def tearDown(self):
@@ -122,8 +119,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
 
     def test_simple_replace(self):
-        cms = self.getRootFolder()['cms']
-        home = cms.editions.next()
+        home = self.cms.editions.next()
         home.title = 'testing homepage'
         home.content = 'foobar'
         transaction.commit()

@@ -33,8 +33,10 @@ $(document).ready(function(){
                     $.post($('a', ref).attr('href')+'/../@@arrange',
                            {id: $(node).attr('id'),
                             type: type},
-                            function() { tree.refresh(); });
-                }}
+                            function() { tree.refresh(); });},
+                },
+    rules: {drag_copy: false,
+            max_children: 1},
     });
 
     $('.expandable h3').click(toggle_extended_options);

@@ -18,13 +18,16 @@ import zope.traversing.api
 
 class ImportActions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.cmsui.ExtendedPageActions)
-    grok.context(asm.cms.cms.CMS)
+    grok.viewletmanager(asm.cms.NavigationToolActions)
+    grok.context(zope.interface.Interface)
 
 
 class IImport(zope.interface.Interface):
 
-    data = zope.schema.Bytes(title=u'Content')
+    data = zope.schema.Bytes(
+        title=u'Content',
+        description=(u'The content is expected to be in the Assembly CMS '
+                     u'XML import format.'))
 
 
 class Import(asm.cms.Form):
@@ -33,6 +36,9 @@ class Import(asm.cms.Form):
     form_fields = grok.AutoFields(IImport)
 
     @grok.action(u'Import')
+    def import_action(self, data):
+        self.do_import(data)
+
     def do_import(self, data):
         export = lxml.etree.fromstring(data)
         self.base_path = export.get('base')
@@ -43,6 +49,8 @@ class Import(asm.cms.Form):
                 assert edition_node.tag == 'edition'
                 parameters = set(edition_node.get('parameters').split())
                 parameters = asm.cms.edition.EditionParameters(parameters)
+                # ensure that the fallback language is english
+                parameters = parameters.replace('lang:', 'lang:en')
                 edition = page.getEdition(parameters, create=True)
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
                 edition.title = edition_node.get('title')
@@ -52,7 +60,7 @@ class Import(asm.cms.Form):
                 zope.event.notify(grok.ObjectModifiedEvent(edition))
 
     def import_htmlpage(self, edition, node):
-        content = base64.decodestring(node.text)
+        content = base64.decodestring(node.text).decode('utf-8')
         asm.cms.htmlpage.fix_relative_links(
             content, self.base_path + '/' + node.getparent().get('path'))
         edition.content = content
@@ -69,8 +77,7 @@ class Import(asm.cms.Form):
         while path:
             name = path.pop(0)
             if name not in current:
-                page = asm.cms.page.Page()
-                page.type = type_
+                page = asm.cms.page.Page(type_)
                 current[name] = page
                 # We're importing: remove any initial variations and only use
                 # content from import.

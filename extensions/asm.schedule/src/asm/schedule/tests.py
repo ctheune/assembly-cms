@@ -3,6 +3,7 @@
 
 import unittest
 from zope.app.testing.functional import FunctionalDocFileSuite
+import asm.cms.edition
 import asm.cms.testing
 
 

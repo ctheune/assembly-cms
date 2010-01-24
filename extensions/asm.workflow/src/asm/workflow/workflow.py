@@ -32,14 +32,15 @@ class Prefixes(object):
     prefixes = set(['workflow'])
 
 
-def publish(draft, publication_date=None):
+def publish(current_edition, publication_date=None):
+    draft = current_edition.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+    draft = current_edition.page.getEdition(draft)
     public = draft.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
     public = draft.page.getEdition(public, create=True)
     public.copyFrom(draft)
     public.modified = (
         publication_date or datetime.datetime.now(tz=pytz.UTC))
     zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
-    del draft.__parent__[draft.__name__]
     return public
 
 

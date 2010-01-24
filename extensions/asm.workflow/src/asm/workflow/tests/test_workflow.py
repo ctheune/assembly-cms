@@ -19,7 +19,6 @@ class SeleniumTestCase(asm.cms.testing.SeleniumTestCase):
 
     def testWorkflow(self):
         s = self.selenium
-        s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
         s.click('css=#version h3')
         s.clickAndWait('css=#publish')
         s.assertTextPresent('Published draft')

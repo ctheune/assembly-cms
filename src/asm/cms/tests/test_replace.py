@@ -122,8 +122,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
 
     def test_simple_replace(self):
-        cms = self.getRootFolder()['cms']
-        home = cms.editions.next()
+        home = self.cms.editions.next()
         home.title = 'testing homepage'
         home.content = 'foobar'
         transaction.commit()

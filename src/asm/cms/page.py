@@ -152,7 +152,8 @@ class CMSIndex(megrok.pagelet.Pagelet):
 
     def render(self):
         try:
-            edition = self.context.editions.next()
+            edition = asm.cms.edition.select_edition(
+                self.context, self.request)
         except StopIteration:
             edition = asm.cms.edition.NullEdition()
             edition.__parent__ = self.context
@@ -169,7 +170,8 @@ class PageIndex(megrok.pagelet.Pagelet):
 
     def render(self):
         try:
-            edition = self.context.editions.next()
+            edition = asm.cms.edition.select_edition(
+                self.context, self.request)
         except StopIteration:
             edition = asm.cms.edition.NullEdition()
             edition.__parent__ = self.context

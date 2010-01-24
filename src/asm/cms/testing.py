@@ -25,5 +25,7 @@ class SeleniumTestCase(gocept.selenium.ztk.TestCase):
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
         r = self.getRootFolder()
-        r['cms'] = asm.cms.cms.CMS()
+        r['cms'] = self.cms = asm.cms.cms.CMS()
         transaction.commit()
+        self.selenium.open('http://mgr:mgrpw@%s/++skin++cms/cms' %
+                           self.selenium.server)

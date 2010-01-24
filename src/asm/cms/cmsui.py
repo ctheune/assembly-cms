@@ -86,20 +86,6 @@ class Breadcrumbs(grok.Viewlet):
     grok.context(asm.cms.interfaces.IEdition)
 
 
-class NavDetails(grok.View):
-    grok.context(zope.interface.Interface)
-    grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.require('asm.cms.EditContent')
-
-    def pages(self):
-        if not asm.cms.interfaces.IPage.providedBy(self.context):
-            page = self.context.page
-        else:
-            page = self.context
-        for subpage in page.subpages:
-            yield asm.cms.edition.select_edition(subpage, self.request)
-
-
 class ActionView(grok.View):
 
     grok.baseclass()

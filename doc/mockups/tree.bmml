@@ -151,8 +151,8 @@
     </control>
     <control controlID="50" controlTypeID="com.balsamiq.mockups::Canvas" x="589" y="296" w="188" h="38" measuredW="100" measuredH="70" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
-        <color>15132390</color>
         <borderStyle>none</borderStyle>
+        <color>15132390</color>
       </controlProperties>
     </control>
   </controls>

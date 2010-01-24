@@ -25,6 +25,6 @@ class Search(megrok.pagelet.Pagelet):
     grok.require('asm.cms.EditContent')
 
     def update(self):
-        q = self.request.form.get('q', '')
+        self.keyword = q = self.request.form.get('q', '')
         self.results = hurry.query.query.Query().searchResults(
             hurry.query.Text(('edition_catalog', 'body'), q))

@@ -3,8 +3,10 @@
 
 import asm.cms.page
 import asm.cms.testing
+import grok
 import transaction
 import unittest
+import zope.event
 
 
 class CMSUI(asm.cms.testing.SeleniumTestCase):
@@ -53,3 +55,36 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
         s.assertNotVisible('name=form.tags')
         s.click('//h3[contains(text(), "Tags")]')
         s.assertVisible('name=form.tags')
+
+    def test_search_no_results(self):
+        s = self.selenium
+        s.type('name=q', 'asdf')
+        s.selenium.key_press('name=q', r'\13')
+        s.waitForPageToLoad()
+        s.assertTextPresent(
+            'The search for "asdf" returned no results.')
+
+    def test_search_result_preview_htmlpage(self):
+        self.cms.editions.next().content = 'sometext asdf someothertext'
+        zope.event.notify(grok.ObjectModifiedEvent(self.cms.editions.next()))
+        transaction.commit()
+        s = self.selenium
+        s.type('name=q', 'asdf')
+        s.selenium.key_press('name=q', r'\13')
+        s.waitForPageToLoad()
+        s.assertTextPresent('sometext asdf someothertext')
+        s.assertElementPresent('//span[@class="match"]')
+
+    def test_change_page_type(self):
+        s = self.selenium
+        s.assertNotVisible('xpath=//input[@value="Change page type"]')
+        s.click('//h3[contains(text(), "Page")]')
+        s.assertVisible('xpath=//input[@value="Change page type"]')
+        s.clickAndWait('xpath=//input[@value="Change page type"]')
+        s.click('id=form.type.0') # News section
+        s.clickAndWait('name=form.actions.change')
+        self.assertEquals(
+            'http://localhost:8087/++skin++cms/cms/edition-/@@edit',
+            s.getLocation())
+        transaction.begin()
+        self.assertEquals('news', self.cms.type)

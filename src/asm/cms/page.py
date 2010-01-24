@@ -91,12 +91,14 @@ class ChangePageType(asm.cms.form.EditForm):
 
     @grok.action('Change')
     def change(self, type):
-        for edition in self.context.editions:
+        for edition in list(self.context.editions):
             del edition.__parent__[edition.__name__]
         self.context.type = type
         asm.cms.edition.add_initial_edition(self.context)
         self.flash(u'Page type changed to %s.' % type)
-        self.redirect(self.url(list(self.context.editions)[0]))
+        self.redirect(self.url(
+            asm.cms.edition.select_edition(self.context, self.request),
+            '@@edit'))
 
 
 class Delete(grok.View):

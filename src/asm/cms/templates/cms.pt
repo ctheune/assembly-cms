@@ -62,7 +62,10 @@
                 <ul>
                     <li><button class="button toggle-navigation">Navigation</button></li>
                 </ul>
-                <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
+                <form tal:attributes="action
+                    string:${view/application_url}/@@search">
+                    <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
+                </form>
 
                 <tal:block replace="structure provider:main-page-actions"/>
 

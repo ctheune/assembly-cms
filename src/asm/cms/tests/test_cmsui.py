@@ -46,3 +46,10 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
             'xpath=//div[contains(@class, "breadcrumbs")]/'
             'a[contains(text(), "A test page")]')
         s.assertElementPresent('name=form.actions.save')
+
+    def test_additional_form_fields(self):
+        s = self.selenium
+        s.assertVisible('//h3[contains(text(), "Tags")]')
+        s.assertNotVisible('name=form.tags')
+        s.click('//h3[contains(text(), "Tags")]')
+        s.assertVisible('name=form.tags')

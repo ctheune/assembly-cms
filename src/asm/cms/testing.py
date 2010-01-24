@@ -17,6 +17,12 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
 
     layer = TestLayer
 
+    def setUp(self):
+        super(FunctionalTestCase, self).setUp()
+        r = self.getRootFolder()
+        r['cms'] = self.cms = asm.cms.cms.CMS()
+        transaction.commit()
+
 
 class SeleniumTestCase(gocept.selenium.ztk.TestCase):
 

@@ -27,4 +27,6 @@
     name="workflow"
     />
 
+  <include package=".generations" />
+
 </configure>

@@ -12,15 +12,35 @@ import zope.event
 WORKFLOW_PUBLIC = 'workflow:public'
 WORKFLOW_DRAFT = 'workflow:draft'
 
+WORKFLOW_LABELS = {WORKFLOW_PUBLIC: 'Public',
+                   WORKFLOW_DRAFT: 'Draft'}
 
-def publish(draft, publication_date=None):
+
+class WorkflowLabels(grok.GlobalUtility):
+
+    zope.interface.implements(asm.cms.interfaces.IEditionLabels)
+    grok.name('workflow')
+
+    def lookup(self, tag):
+        return WORKFLOW_LABELS[tag]
+
+
+class Prefixes(object):
+
+    zope.interface.implements(asm.cms.interfaces.IExtensionPrefixes)
+
+    prefixes = set(['workflow'])
+
+
+def publish(current_edition, publication_date=None):
+    draft = current_edition.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+    draft = current_edition.page.getEdition(draft)
     public = draft.parameters.replace(WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
     public = draft.page.getEdition(public, create=True)
     public.copyFrom(draft)
     public.modified = (
         publication_date or datetime.datetime.now(tz=pytz.UTC))
     zope.event.notify(asm.workflow.interfaces.PublishedEvent(draft, public))
-    del draft.__parent__[draft.__name__]
     return public
 
 
@@ -37,7 +57,7 @@ class CMSEditionSelector(object):
         self.preferred = []
         self.acceptable = []
         for edition in page.editions:
-            if WORKFLOW_PUBLIC in edition.parameters:
+            if WORKFLOW_DRAFT in edition.parameters:
                 self.preferred.append(edition)
             else:
                 self.acceptable.append(edition)
@@ -60,44 +80,49 @@ class RetailEditionSelector(object):
 
 
 class PublishMenuItem(grok.Viewlet):
-    grok.viewletmanager(asm.cms.Actions)
+    grok.viewletmanager(asm.cms.PageActionGroups)
     grok.context(asm.cms.IEdition)
 
+    def current_version(self):
+        for candidate in self.context.parameters:
+            if candidate.startswith('workflow:'):
+                return WORKFLOW_LABELS[candidate]
 
-class WorkflowStatusNote(grok.Viewlet):
-    grok.viewletmanager(asm.cms.Notes)
-    grok.context(asm.cms.IEdition)
-
-    def update(self):
+    def hints(self):
+        hints = ''
+        public_p = self.context.parameters.replace(
+            'workflow:*', WORKFLOW_PUBLIC)
         try:
-            public = self.context.parameters.replace(
-                WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
-            public = self.context.page.getEdition(public, create=False)
+            public = self.context.page.getEdition(public_p)
         except KeyError:
-            public = None
-
-        try:
-            draft = self.context.parameters.replace(
-                WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
-            draft = self.context.page.getEdition(draft, create=False)
-        except KeyError:
-            draft = None
-
-        if self.context is public:
-            self.this_name = 'public'
-            self.other_name = 'draft'
+            hints += 'No public version available. '
         else:
-            self.this_name = 'draft'
-            self.other_name = 'public'
+            draft = self.context.page.getEdition(
+                public_p.replace('workflow:*', WORKFLOW_DRAFT), create=True)
 
-        if None in [draft, public]:
-            self.other_is_changed = False
-        else:
-            if draft == self.context:
-                other = public
-            else:
-                other = draft
-            self.other_is_changed = other.modified > self.context.modified
+            if draft is self.context:
+                hints += 'Public version available. '
+
+            if draft.modified > public.modified:
+                hints + 'Draft is newer.'
+
+        return hints
+
+    def list_versions(self):
+        for status in [WORKFLOW_DRAFT, WORKFLOW_PUBLIC]:
+            p = self.context.parameters.replace('workflow:*', status)
+            version = {}
+            version['class'] = ''
+            version['label'] = WORKFLOW_LABELS[status]
+            try:
+                version['edition'] = self.context.page.getEdition(p)
+            except KeyError:
+                continue
+
+            if version['edition'] is self.context:
+                version['class'] = 'selected'
+
+            yield version
 
 
 class Publish(asm.cms.ActionView):
@@ -106,6 +131,7 @@ class Publish(asm.cms.ActionView):
 
     def update(self):
         self.context = publish(self.context)
+        self.redirect(self.url(self.context, '@@edit'))
         self.flash(u"Published draft.")
 
 

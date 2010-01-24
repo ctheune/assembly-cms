@@ -14,10 +14,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestReplace, self).setUp()
-        self.root = self.getRootFolder()
-        self.root['cms'] = asm.cms.cms.CMS()
-        zope.app.component.hooks.setSite(self.root['cms'])
-        self.root['cms']['page'] = self.page = asm.cms.htmlpage.HTMLPage()
+        self.cms['page'] = self.page = asm.cms.htmlpage.HTMLPage()
         self.replace = asm.cms.replace.HTMLReplace(self.page)
 
     def tearDown(self):
@@ -121,23 +118,33 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
 
 class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
 
-    def setUp(self):
-        super(ReplaceSelenium, self).setUp()
-        r = self.getRootFolder()
-        r['cms'] = asm.cms.cms.CMS()
-        transaction.commit()
-
     def test_simple_replace(self):
+        home = self.cms.editions.next()
+        home.title = 'testing homepage'
+        home.content = 'foobar'
+        transaction.commit()
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.clickAndWait('link=Search and replace')
+        s.click('css=#actions .toggle-navigation')
+        s.verifyNotVisible('css=#search-and-replace')
+        s.click('css=#tools h3')
+        s.clickAndWait('css=#search-and-replace')
+        self.assertEquals(
+            'http://localhost:8087/++skin++cms/cms/@@searchandreplace',
+            s.getLocation())
         s.type('name=search', 'foo')
         s.type('name=replace', 'bar')
         s.clickAndWait('name=form.actions.search')
 
+        s.assertTextPresent('Found 1 occurences.')
+        s.assertTextPresent('testing homepage')
+        s.assertElementPresent('name=occurences')
+        s.clickAndWait('name=form.actions.replace')
 
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestReplace))
-    suite.addTest(unittest.makeSuite(ReplaceSelenium))
-    return suite
+        s.assertTextPresent('Replaced 1 occurences.')
+        self.assertEquals(
+            'http://localhost:8087/++skin++cms/cms/searchandreplace',
+            s.getLocation())
+
+        transaction.begin()
+        self.assertEquals('barbar', home.content)

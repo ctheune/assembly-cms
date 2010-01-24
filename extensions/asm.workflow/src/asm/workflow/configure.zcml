@@ -21,4 +21,10 @@
     name="workflow"
     />
 
+  <utility
+    factory=".workflow.Prefixes"
+    provides="asm.cms.interfaces.IExtensionPrefixes"
+    name="workflow"
+    />
+
 </configure>

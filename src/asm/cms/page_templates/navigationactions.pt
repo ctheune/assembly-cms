@@ -1,0 +1,21 @@
+<div class="section expandable">
+    <form tal:attributes="action python:view.url(context.page, '@@addpage')"
+        method="POST" name="addpage">
+        <h3>Add
+            <span class="closed ui-icon ui-icon-carat-1-s"></span>
+            <span class="open ui-icon ui-icon-carat-1-n"></span>
+        </h3>
+        <input type="text" name="title" class="clear-first-focus" value="Page title ..."/>
+        <ul>
+            <li tal:repeat="type viewlet/types"
+                tal:attributes="class python:type['factory'].factory_visible and ' ' or 'expand'">
+                <label>
+                    <input type="radio" name="type"
+                        tal:attributes="value type/name; checked repeat/type/start"/>
+                    <span tal:replace="type/title"/>
+                </label>
+            </li>
+        </ul>
+        <button class="button" id="add-page">Add</button>
+    </form>
+</div>

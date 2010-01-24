@@ -9,11 +9,15 @@ import megrok.pagelet
 import pytz
 import re
 import zope.interface
+import sys
 
 
 class Edition(grok.Model):
 
     grok.implements(asm.cms.interfaces.IEdition)
+
+    factory_visible = False
+    factory_order = sys.maxint
 
     created = None
     modified = None
@@ -114,6 +118,23 @@ class EditionParameters(object):
 
         return EditionParameters(parameters)
 
+    def by_prefix(self, prefix):
+        prefix = prefix + ':'
+        for parameter in self:
+            if parameter.startswith(prefix):
+                yield parameter[len(prefix):]
+
+
+class DisplayParameters(grok.View):
+    grok.context(EditionParameters)
+    grok.name('index')
+
+    def render(self):
+        # XXX use better lookup mechanism for tag labels
+        tags = sorted(self.context)
+        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels)
+        return '(%s)' % ', '.join(labels.lookup(tag) for tag in tags)
+
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
@@ -134,12 +155,12 @@ class Delete(grok.View):
         del page[self.context.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
 
-class Actions(grok.Viewlet):
+class ExtendedPageActions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.Actions)
+    grok.viewletmanager(asm.cms.ExtendedPageActions)
     grok.context(Edition)
 
 
@@ -204,16 +225,12 @@ class ImagePicker(grok.View):
     grok.name('image-picker')
 
 
-class UpdateOrder(grok.View):
+class EditionLabels(grok.GlobalUtility):
 
-    def update(self, order):
-        # The ordered container wants us to establish a total order. We need
-        # to add the editions (or any missing key)
-        # in the order, otherwise it will fail.
-        for key in self.context.page:
-            if key not in order:
-                order.append(key)
-        self.context.page.updateOrder(order)
+    zope.interface.implements(asm.cms.interfaces.IEditionLabels)
 
-    def render(self):
-        return '()'
+    def lookup(self, tag):
+        prefix = tag.split(':')[0]
+        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels,
+                                           name=prefix)
+        return labels.lookup(tag)

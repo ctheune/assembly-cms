@@ -1,3 +1,14 @@
-<li><a tal:attributes="href python:view.url(viewlet.page, '@@addpage')">Add sub-page</a></li>
-<!-- XXX This is ugly and needs refactoring -->
-<li tal:condition="python:context.__parent__.__parent__ is not None"><a tal:attributes="href python:view.url(viewlet.page, '@@delete')">Delete page</a></li>
+<div class="section expandable">
+    <h3>Page
+        <span class="closed ui-icon ui-icon-carat-1-s"></span>
+        <span class="closed hint">more actions</span>
+        <span class="open ui-icon ui-icon-carat-1-n"></span>
+        <span class="open hint">less actions</span>
+    </h3>
+    <ul>
+        <li><input type="submit" value="Preview" class="button open-preview"/></li>
+    </ul>
+    <ul class="expand">
+        <tal:block replace="structure provider:extended-page-actions"/>
+    </ul>
+</div>

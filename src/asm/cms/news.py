@@ -13,6 +13,8 @@ class NewsFolder(asm.cms.Edition):
 
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
+    factory_title = u'News section'
+
     def list(self, base=None):
         """Recursively list all news item pages.
 
@@ -88,9 +90,7 @@ class Edit(asm.cms.EditForm):
     grok.context(NewsFolder)
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
-        'title', 'tags', 'modified')
-    form_fields['tags'].location = 'side'
-    form_fields['modified'].location = 'side'
+        'title')
 
 
 class Index(asm.cms.Pagelet):

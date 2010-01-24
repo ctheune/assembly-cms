@@ -3,17 +3,27 @@
 
 import asm.cms.cmsui
 import asm.cms.edition
+import asm.cms.utils
 import asm.cms.form
 import asm.cms.interfaces
 import grok
 import megrok.pagelet
 import zope.app.form.browser.source
 import zope.interface
+import zope.copypastemove.interfaces
 
 
 class Page(grok.OrderedContainer):
 
     zope.interface.implements(asm.cms.interfaces.IPage)
+
+    def __init__(self, type):
+        super(Page, self).__init__()
+        self.type = type
+
+    @property
+    def page(self):
+        return self
 
     @property
     def subpages(self):
@@ -48,25 +58,20 @@ class Page(grok.OrderedContainer):
             asm.cms.interfaces.IEditionFactory, name=self.type)
 
 
-class AddPage(asm.cms.form.AddForm):
+class AddPage(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
 
-    label = u'Add page'
-    form_fields = grok.AutoFields(asm.cms.interfaces.IPage)
-    form_fields['type'].custom_widget = (
-        lambda field, request: zope.app.form.browser.source.SourceRadioWidget(
-                field, field.source, request))
+    def update(self, title, type):
+        page = Page(type)
+        name = asm.cms.utils.title_to_name(title)
+        self.context[name] = page
+        edition = page.editions.next()
+        edition.title = title
+        self.edition = edition
 
-    factory = Page
-
-    def chooseName(self, obj):
-        return obj.__name__
-
-    def add(self, obj):
-        name = self.chooseName(obj)
-        self.context[name] = obj
-        self.target = asm.cms.edition.select_edition(obj, self.request)
+    def render(self):
+        return self.url(self.edition, '@@edit')
 
 
 class ChangePageType(asm.cms.form.EditForm):
@@ -91,7 +96,7 @@ class ChangePageType(asm.cms.form.EditForm):
         self.context.type = type
         asm.cms.edition.add_initial_edition(self.context)
         self.flash(u'Page type changed to %s.' % type)
-        self.redirect(self.url(list(self.context.editions)[0], '@@edit'))
+        self.redirect(self.url(list(self.context.editions)[0]))
 
 
 class Delete(grok.View):
@@ -100,55 +105,63 @@ class Delete(grok.View):
 
     def update(self):
         if isinstance(self.context, asm.cms.cms.CMS):
-            raise TypeError("Can not delete CMS instances.")
+            raise TypeError("Cannot delete CMS instances.")
         page = self.context
         self.target = page.__parent__
         del page.__parent__[page.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
+        self.redirect(self.url(self.target))
 
 
-class PageActions(grok.Viewlet):
+class Actions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cms.cmsui.Actions)
+    grok.viewletmanager(asm.cms.cmsui.MainPageActions)
     grok.context(asm.cms.interfaces.IEdition)
-    grok.template('actions')
 
     @property
     def page(self):
         return self.context.page
 
 
-class Actions(grok.Viewlet):
-    # XXX We need to repeat ourselves here: page actions are actions for pages
-    # shown on editions. Actions are those shown on pages themselves
-    grok.viewletmanager(asm.cms.cmsui.Actions)
-    grok.context(asm.cms.interfaces.IPage)
+class NavigationActions(grok.Viewlet):
 
-    @property
-    def page(self):
-        return self.context
+    grok.viewletmanager(asm.cms.cmsui.NavigationActions)
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def types(self):
+        # XXX. Meh. Can't we re-use the widget infrastructure here?
+        source = asm.cms.interfaces.EditionFactorySource()
+        result = []
+        for name in source.factory.getValues():
+            factory = zope.component.getUtility(
+                asm.cms.interfaces.IEditionFactory, name=name)
+            result.append(dict(name=name,
+                               factory=factory,
+                               title=source.factory.getTitle(name)))
+        result.sort(key=lambda x: x['factory'].factory_order)
+        return result
 
 
-class RetailIndex(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.interfaces.IRetailSkin)
-    grok.context(asm.cms.interfaces.IPage)
-    grok.name('edit')
-    grok.template('index')
-
-
-class CMSEdit(megrok.pagelet.Pagelet):
+class CMSIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
-    grok.context(asm.cms.interfaces.IPage)
     grok.require('asm.cms.EditContent')
-    grok.name('edit')
-    grok.template('index')
+    grok.context(asm.cms.interfaces.ICMS)
+    grok.name('index')
+
+    def render(self):
+        try:
+            edition = asm.cms.edition.select_edition(
+                self.context, self.request)
+        except StopIteration:
+            edition = asm.cms.edition.NullEdition()
+            edition.__parent__ = self.context
+            edition.__name__ = ''
+        self.redirect(self.url(edition, '@@edit'))
 
 
-class CMSIndex(grok.View):
+class PageIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
@@ -157,13 +170,13 @@ class CMSIndex(grok.View):
 
     def render(self):
         try:
-            edition = self.context.editions.next()
+            edition = asm.cms.edition.select_edition(
+                self.context, self.request)
         except StopIteration:
             edition = asm.cms.edition.NullEdition()
             edition.__parent__ = self.context
             edition.__name__ = ''
-        return zope.component.getMultiAdapter(
-            (edition, self.request), name='index')()
+        self.redirect(self.url(edition))
 
 
 # The following two views are needed to support visual editing of editions
@@ -195,6 +208,7 @@ class EditionBase(grok.View):
 
 
 class Preview(grok.View):
+
     grok.context(asm.cms.interfaces.IPage)
 
     def render(self):
@@ -205,3 +219,31 @@ class Preview(grok.View):
         return zope.component.getMultiAdapter(
             (edition, self.request), zope.interface.Interface,
             name='index')()
+
+
+class Arrange(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    def update(self, id, type):
+        iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        obj = iids.getObject(int(id)).__parent__
+        mover = zope.copypastemove.interfaces.IObjectMover(obj)
+
+        if type == 'inside':
+            mover.moveTo(self.context, obj.__name__)
+        elif type == 'before':
+            mover.moveTo(self.context.__parent__, obj.__name__)
+            keys = list(self.context.__parent__.keys())
+            keys.remove(obj.__name__)
+            keys.insert(keys.index(self.context.__name__), obj.__name__)
+            self.context.__parent__.updateOrder(keys)
+        elif type == 'after':
+            mover.moveTo(self.context.__parent__, obj.__name__)
+            keys = list(self.context.__parent__.keys())
+            keys.remove(obj.__name__)
+            keys.insert(keys.index(self.context.__name__) + 1, obj.__name__)
+            self.context.__parent__.updateOrder(keys)
+
+    def render(self):
+        pass

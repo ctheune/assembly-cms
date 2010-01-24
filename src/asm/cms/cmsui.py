@@ -1,6 +1,8 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import z3c.flashmessage.interfaces
+import cgi
 import asm.cms.edition
 import asm.cms.interfaces
 import datetime
@@ -30,42 +32,58 @@ class LayoutHelper(grok.View):
     def render(self):
         return ''
 
+    def breadcrumbs(self):
+        pages = []
+        page = self.context.page
+        while not isinstance(page, asm.cms.cms.CMS):
+            pages.insert(0, asm.cms.edition.select_edition(page, self.request))
+            page = page.__parent__
+        return pages
 
-class Navtree(grok.View):
-    grok.context(zope.interface.Interface)
+    def messages(self):
+        receiver = zope.component.getUtility(
+            z3c.flashmessage.interfaces.IMessageReceiver)
+        return receiver.receive()
+
+
+class Tree(grok.View):
+
+    grok.context(grok.Application)   # XXX Meh.
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
-    @property
-    def page(self):
-        if asm.cms.interfaces.IEdition.providedBy(self.context):
-            return self.context.__parent__
-        return self.context
+    def update(self):
+        self.request.response.setHeader('Content-Type', 'text/xml')
 
-    def _create_subtree(self, root):
-        tree = {'page': asm.cms.edition.select_edition(root, self.request),
-                'subpages': []}
-        for child in root.subpages:
-            if not len(list(child.subpages)):
-                continue
-            tree['subpages'].append(self._create_subtree(child))
-        return tree
+    def _sub_projects(self, root):
+        intids = zope.component.getUtility(zope.app.intid.IIntIds)
+        edition = asm.cms.edition.select_edition(root, self.request)
+        if isinstance(edition, asm.cms.edition.NullEdition):
+            # XXX
+            return ''
+        html = '<item rel="%s" id="%s">\n' % (root.type,
+                                               intids.getId(edition))
+        html += '<content><name href="%s">%s</name></content>\n' % (
+            self.url(edition), cgi.escape(edition.title))
+        for sub in root.subpages:
+            html += self._sub_projects(sub)
+        html += "</item>\n"
+        return html
 
     def tree(self):
-        # Find root
-        current = self.page
-        while True:
-            parent = current.__parent__
-            if not asm.cms.interfaces.IPage.providedBy(parent):
-                root = current
-                break
-            current = parent
+        html = "<root>\n%s" % self._sub_projects(self.context)
+        html += "</root>\n"
+        return html
 
-        tree = [self._create_subtree(root)]
-        return tree
 
-    def css_classes(self, *classes):
-        return ' '.join(filter(None, classes))
+class PageHeader(grok.ViewletManager):
+    grok.context(zope.interface.Interface)
+    grok.name('pageheader')
+
+
+class Breadcrumbs(grok.Viewlet):
+    grok.viewletmanager(PageHeader)
+    grok.context(asm.cms.interfaces.IEdition)
 
 
 class NavDetails(grok.View):
@@ -88,18 +106,36 @@ class ActionView(grok.View):
     grok.layer(asm.cms.interfaces.ICMSSkin)
 
     def render(self):
-        self.redirect(self.url(self.context, '@@edit'))
+        self.redirect(self.url(self.context))
 
 
-class Actions(grok.ViewletManager):
+class MainPageActions(grok.ViewletManager):
 
-    grok.name('actions')
+    grok.name('main-page-actions')
     grok.context(zope.interface.Interface)
 
 
-class Notes(grok.ViewletManager):
+class ExtendedPageActions(grok.ViewletManager):
 
-    grok.name('notes')
+    grok.name('extended-page-actions')
+    grok.context(zope.interface.Interface)
+
+
+class PageActionGroups(grok.ViewletManager):
+
+    grok.name('page-action-groups')
+    grok.context(zope.interface.Interface)
+
+
+class NavigationActions(grok.ViewletManager):
+
+    grok.name('navigation-actions')
+    grok.context(zope.interface.Interface)
+
+
+class NavigationToolActions(grok.ViewletManager):
+
+    grok.name('navigation-tool-actions')
     grok.context(zope.interface.Interface)
 
 

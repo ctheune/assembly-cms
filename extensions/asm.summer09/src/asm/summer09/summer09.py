@@ -23,17 +23,23 @@ class LayoutHelper(grok.View):
     grok.layer(ISummer09)
 
     def news(self):
-        result = []
-        news_edition = asm.cms.edition.select_edition(
-            self.application['news'], self.request)
-        for item in news_edition.list():
-            edition = asm.cms.edition.select_edition(
-                item, self.request)
-            if isinstance(edition, asm.cms.edition.NullEdition):
-                continue
-            result.append(edition)
-        result.sort(key=lambda x: x.modified, reverse=True)
-        return result[:5]
+        try:
+            # This try/except block makes the skin more resilient towards
+            # incomplete data and use with databases that don't exactly fit
+            # the expected content model.
+            result = []
+            news_edition = asm.cms.edition.select_edition(
+                self.application['news'], self.request)
+            for item in news_edition.list():
+                edition = asm.cms.edition.select_edition(
+                    item, self.request)
+                if isinstance(edition, asm.cms.edition.NullEdition):
+                    continue
+                result.append(edition)
+            result.sort(key=lambda x: x.modified, reverse=True)
+            return result[:5]
+        except:
+            return []
 
     def generateCountdown(self):
         times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
@@ -79,7 +85,7 @@ class LayoutHelper(grok.View):
         return ''
 
 
-class Navtree(asm.cms.cmsui.Navtree):
+class Navtree(grok.View):
     grok.layer(ISummer09)
     grok.context(zope.interface.Interface)
 
@@ -119,6 +125,15 @@ class Navtree(asm.cms.cmsui.Navtree):
 
         tree = self._create_subtree(root, 3)
         return tree['subpages']
+
+    @property
+    def page(self):
+        if asm.cms.interfaces.IEdition.providedBy(self.context):
+            return self.context.__parent__
+        return self.context
+
+    def css_classes(self, *classes):
+        return ' '.join(filter(None, classes))
 
 
 class Homepage(asm.cms.Pagelet):

@@ -1,5 +1,0 @@
-<div class="message" tal:condition="viewlet/other_is_changed">
-    <b>Careful!</b> This is the <b tal:content="viewlet/this_name"/> copy
-        of this document, but the <b tal:content="viewlet/other_name"/> copy has been
-    changed more recently!
-</div>

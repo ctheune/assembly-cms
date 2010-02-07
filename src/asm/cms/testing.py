@@ -1,12 +1,12 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import os.path
-import zope.app.testing.functional
-import gocept.selenium.ztk
 import asm.cms.cms
+import gocept.selenium.ztk
+import os.path
 import transaction
 import zope.app.component.hooks
+import zope.app.testing.functional
 
 
 TestLayer = zope.app.testing.functional.ZCMLLayer(
@@ -39,5 +39,10 @@ class SeleniumTestCase(gocept.selenium.ztk.TestCase):
         r = self.getRootFolder()
         r['cms'] = self.cms = asm.cms.cms.CMS()
         transaction.commit()
+        zope.app.component.hooks.setSite(self.cms)
         self.selenium.open('http://mgr:mgrpw@%s/++skin++cms/cms' %
                            self.selenium.server)
+
+    def tearDown(self):
+        zope.app.component.hooks.setSite(None)
+        super(SeleniumTestCase, self).tearDown()

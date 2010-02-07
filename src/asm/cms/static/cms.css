@@ -123,6 +123,9 @@ a {
     padding-bottom:2100px;
 }
 
+#content, #navigation {
+    padding-top:1em;
+}
 
 .actionbar {
     float:left;
@@ -145,7 +148,7 @@ a {
 /* Intra-page styles */
 #page .section {
     margin:0em -1.5em 0em;
-    padding:1em 1.5em;
+    padding:0em 1.5em 1em;
 }
 
 #page .section h2,  #page .section h3 {
@@ -282,22 +285,25 @@ span.discreet {
     border:1px solid #aaa;
 }
 
-ul.messages {
+#page ul.messages.section {
     padding:0;
     margin:0;
 }
 
 ul.messages li {
-    margin-bottom:0;
-}
-
-.message {
     background-color:#FFFFE0;
     border:1px solid #E6DB55;
     color:#333;
     padding:3px 10px;
     list-style:none;
     margin:0 0 15px 0;
+}
+
+ul.messages li.warning {
+    background-color:#FFDDDD;
+    border:1px solid #FF0000;
+    color:#333;
+
 }
 
 

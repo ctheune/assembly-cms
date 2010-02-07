@@ -77,6 +77,7 @@
                     <li><button class="button toggle-navigation">Back to editor</button></li>
                 </ul>
                 <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
+                <button class="button" id="delete-page">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
                     <h3>Tools

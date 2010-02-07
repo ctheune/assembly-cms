@@ -43,8 +43,21 @@ $(document).ready(function(){
 
     $('.url-action').click(trigger_url_action);
     $('#add-page').click(add_page);
+
+    $('#delete-page').click(delete_page);
 });
 
+
+function delete_page() {
+    var t = $.tree.reference('#navigation-tree');
+    var target = $(t.selected.find('a')[0]);
+    if (!confirm('Delete page "' + target.text() +'"?')) {
+        return false;
+    }
+    $.post(target.attr('href') + '/../@@delete', {}, 
+            function (data) { window.location = data; });
+    return false;
+}
 
 function add_page() {
     var t = $.tree.reference('#navigation-tree');

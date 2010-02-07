@@ -88,3 +88,42 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
             s.getLocation())
         transaction.begin()
         self.assertEquals('news', self.cms.type)
+
+    def test_delete_page(self):
+        s = self.selenium
+        self.cms['xy'] = asm.cms.page.Page('htmlpage')
+        edition = self.cms['xy'].editions.next()
+        edition.title = u'A test page'
+        intids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        xy_id = intids.getId(edition)
+        transaction.commit()
+        s.open(
+            'http://mgr:mgrpw@%s/++skin++cms/cms/xy/edition-/@@edit' %
+            s.server)
+        s.click('css=#actions .toggle-navigation')
+        s.waitForElementPresent('css=#%s a' % xy_id)
+        s.clickAndWait('css=#delete-page')
+        self.assertEquals(u'Delete page "\xa0A test page"?',
+                          s.selenium.get_confirmation())
+        s.assertText('css=li.message', 'Page deleted.')
+        transaction.abort()
+        self.assertRaises(KeyError, self.cms.__getitem__, 'xy')
+
+    def test_cant_delete_root(self):
+        intids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        edition = self.cms.editions.next()
+        edition.title = u'Foobar'
+        transaction.commit()
+        cms_id = intids.getId(edition)
+        s = self.selenium
+        s.refresh()
+        s.waitForPageToLoad()
+        s.click('css=#actions .toggle-navigation')
+        s.waitForElementPresent('css=#%s a' % cms_id)
+        s.clickAndWait('css=#delete-page')
+        self.assertEquals(u'Delete page "\xa0Foobar"?',
+                          s.selenium.get_confirmation())
+        s.assertText('css=li.warning', 'Cannot delete the root page!')
+        transaction.abort()
+        # Ensure the CMS is really still there.
+        self.assert_(self.getRootFolder()['cms'])

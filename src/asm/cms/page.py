@@ -107,13 +107,16 @@ class Delete(grok.View):
 
     def update(self):
         if isinstance(self.context, asm.cms.cms.CMS):
-            raise TypeError("Cannot delete CMS instances.")
+            self.flash('Cannot delete the root page!', 'warning')
+            self.target = self.context
+            return
         page = self.context
         self.target = page.__parent__
         del page.__parent__[page.__name__]
+        self.flash('Page deleted.')
 
     def render(self):
-        self.redirect(self.url(self.target))
+        return self.url(self.target)
 
 
 class Actions(grok.Viewlet):
@@ -145,7 +148,7 @@ class NavigationActions(grok.Viewlet):
         return result
 
 
-class CMSIndex(megrok.pagelet.Pagelet):
+class CMSIndex(grok.View):
 
     grok.layer(asm.cms.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')

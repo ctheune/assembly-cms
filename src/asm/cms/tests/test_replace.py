@@ -7,7 +7,6 @@ import asm.cms.replace
 import asm.cms.testing
 import transaction
 import unittest
-import zope.app.component.hooks
 
 
 class TestReplace(asm.cms.testing.FunctionalTestCase):
@@ -16,10 +15,6 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         super(TestReplace, self).setUp()
         self.cms['page'] = self.page = asm.cms.htmlpage.HTMLPage()
         self.replace = asm.cms.replace.HTMLReplace(self.page)
-
-    def tearDown(self):
-        zope.app.component.hooks.setSite(None)
-        super(TestReplace, self).tearDown()
 
     def test_find_no_occurences(self):
         occurences = list(self.replace.search('asdf'))

@@ -85,7 +85,6 @@ form.inline p {margin-bottom:0;}
 body {
     margin:0;
     padding:0;
-    overflow-y: scroll;
     background-color: #eee;
 }
 
@@ -101,7 +100,6 @@ a {
 
 #header {
     background-color: #000;
-    width:100%;
     margin-bottom:1em;
     padding-left:4em;
     padding-top:1em;

@@ -15,6 +15,8 @@ type_map = {
     'File': 'asset',
 }
 
+context.REQUEST.RESPONSE.setHeader(
+    'Content-Disposition', 'attachment;filename=plone.xml')
 print '<?xml version="1.0" encoding="utf-8"?>'
 print '<import base="%s">' % (
     container.portal_url.getPortalObject().absolute_url_path())

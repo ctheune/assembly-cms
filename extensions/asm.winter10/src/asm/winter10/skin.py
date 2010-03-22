@@ -8,19 +8,19 @@ import zope.interface
 import pytz
 
 
-class ISummer09(asm.cms.IRetailSkin):
-    grok.skin('summer09')
+class ISkin(asm.cms.IRetailSkin):
+    grok.skin('winter10')
 
 
 class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
-    grok.layer(ISummer09)
+    grok.layer(ISkin)
     megrok.pagelet.template('layout.pt')
 
 
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
-    grok.layer(ISummer09)
+    grok.layer(ISkin)
 
     def news(self):
         try:
@@ -86,7 +86,7 @@ class LayoutHelper(grok.View):
 
 
 class Navtree(grok.View):
-    grok.layer(ISummer09)
+    grok.layer(ISkin)
     grok.context(zope.interface.Interface)
 
     def update(self):
@@ -138,6 +138,7 @@ class Navtree(grok.View):
 
 class Homepage(asm.cms.Pagelet):
     grok.context(asm.cms.homepage.Homepage)
+    grok.layer(ISkin)
     grok.name('index')
 
     def news(self, tag):
@@ -173,7 +174,7 @@ class SelectLanguage(grok.View):
 
     grok.context(zope.interface.Interface)
     grok.name('select-language')
-    grok.layer(ISummer09)
+    grok.layer(ISkin)
 
     def update(self, lang):
         self.request.response.setCookie('asm.translation.lang', lang, path='/')

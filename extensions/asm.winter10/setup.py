@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 
 
-setup(name='asm.summer09',
+setup(name='asm.winter10',
       version='0.1dev',
-      description="Assembly Summer09 skin",
+      description="Assembly Winter 2010 skin",
       author="Webcrew",
       author_email="web@assembly.org",
       url="",

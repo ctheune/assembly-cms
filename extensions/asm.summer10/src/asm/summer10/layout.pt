@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Assembly Winter 2010</title>
+    <title>Assembly Summer 2010 - 5.-8.8.2010, Hartwall Areena, Helsinki </title>
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
@@ -13,8 +13,8 @@
   <body>
     <div id="main">
       <div id="header">
-        <h1 id="home"><a title="Assembly Winter" tal:attributes="href view/application_url">Assembly Winter 2010, 22.-24.1.2010, Kaapelitehdas, Helsinki</a></h1>
-        <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Buy Tickets Now!</a>
+        <h1 id="home"><a title="Assembly Winter" tal:attributes="href view/application_url">Assembly Summer 2010, 5.-8.8.2010, Hartwall Areena, Helsinki</a></h1>
+        <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Reserve your tickets!</a>
       </div>
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
@@ -34,21 +34,9 @@
             <div class="box-inside" >
               <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
 
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Microsoft" tal:attributes="src string:${view/application_url}/sponsors/logo/microsoft-plain-logo"/>
-              </a>
-              </p>
-
                  <p>
               <a tal:attributes="href string:${view/application_url}/sponsors">
                 <img class="banner" alt="Everyplay" tal:attributes="src string:${view/application_url}/sponsors/logo/everyplay"/>
-              </a>
-              </p>
-        
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Pelit" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=43cd06da89bf075dc4971ab878dd720e"/>
               </a>
               </p>
         
@@ -60,34 +48,10 @@
 
 		<p>
               <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Effi" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=d7a57c6bf5138b98105a946e42d659bd"/>
-              </a>
-              </p>
-
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
                 <img class="banner" alt="Gocept" tal:attributes="src string:${view/application_url}/sponsors/logo/gocept-medium"/>
               </a>
               </p>
                  
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Esko Otava" tal:attributes="src string:${view/application_url}/sponsors/logo/esko-otava-150"/>
-              </a>
-              </p>
-        
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Gamepro" tal:attributes="src string:${view/application_url}/sponsors/logo/gamepro"/>
-              </a>
-	      </p>
-
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Coolermaster" tal:attributes="src string:${view/application_url}/sponsors/logo/coolermaster"/>
-              </a>
-              </p>
-              
             </div>
           </div>
         </div> <!-- leftbar -->
@@ -106,17 +70,23 @@
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
               <p>
-              <a href="http://www.jimmspc.fi" rel="nofollow">
-                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter10/sponsors/logo/jimmspc-150"/>
+              <a href="http://www.microsoft.com" rel="nofollow">
+                <img class="banner" alt="Microsoft" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=2ca525e6d114890380307ce93fda53be"/>
               </a>
               </p>
 
 
                 <p>
-                <a href="http://www.elisa.fi" rel="nofollow">
-                  <img class="banner" alt="Elisa" src="http://www.assembly.org/winter10/sponsors/logo/elisa"/>
+                <a href="http://www.asus.com" rel="nofollow">
+                  <img class="banner" alt="Asus" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=f8ea9a49a11cb78efdfb2620216470dd"/>
                 </a>
                 </p>
+          	<p>
+	        <a href="http://www.samsung.com" rel="nofollow">
+		   <img class="banner" alt="Samsung" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=dabc9dc4dcd178ceb141d0d4ea76a5a1"/>
+		</a>
+		</p>
+
               </div>
             </div> <!-- sponsors -->
 
@@ -160,8 +130,8 @@
     <div id="nav-top">
       <div id="nav-top-container">
         <ul i18n:domain="asm">
-          <li><a href="http://www.assembly.org/winter10/" i18n:translate="">Winter'10</a></li>
-          <li><a href="http://www.assembly.org/summer09/" class="active">Summer'09</a></li>
+          <li><a href="http://www.assembly.org/summer10/" i18n:translate="">Summer'10</a></li>
+          <li><a href="http://www.assembly.org/winter10/">Winter'10</a></li>
           <li><a href="http://forum.assembly.org/">Forums</a></li>
           <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
           <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>

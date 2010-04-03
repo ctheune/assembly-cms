@@ -46,12 +46,12 @@ margin:0 auto;
 width:994px;
 }
 #header {
-background:url("images/header-bg2.jpg") no-repeat;
+background:url("images/header-bg.jpg") no-repeat;
 color:#eee;
 height:177px;
 }
 #subheader {
-background:url("images/subheader-bg.gif") no-repeat;
+background:url("images/subheader-bg.png") no-repeat;
 color:#585858;
 height:33px;
 padding:15px 20px 0 20px;
@@ -81,7 +81,7 @@ width:197px;
 float:right;
 }
 #footer {
-background:url("images/footer-bg.jpg") no-repeat transparent;
+background:url("images/footer-bg.gif") no-repeat transparent;
 clear:both;
 color:#ccc;
 height:127px;

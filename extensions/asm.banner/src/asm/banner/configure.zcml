@@ -5,20 +5,12 @@
 
   <grok:grok package="." />
 
-  <subscriber
-    factory=".workflow.RetailEditionSelector"
-    provides="asm.cms.interfaces.IEditionSelector"
-    />
+  <utility component=".banner.SponsorsArea" name="sponsorsarea"/>
 
   <subscriber
-    factory=".workflow.CMSEditionSelector"
-    provides="asm.cms.interfaces.IEditionSelector"
-    />
-
-  <utility
-    component=".workflow.select_initial_parameters"
-    provides="asm.cms.IInitialEditionParameters"
-    name="workflow"
+    factory=".banner.add_banner"
+    for="asm.cms.asset.Asset"
+    provides="asm.cms.interfaces.IAdditionalSchema"
     />
 
 </configure>

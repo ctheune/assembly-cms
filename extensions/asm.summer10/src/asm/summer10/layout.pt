@@ -34,24 +34,14 @@
             <div class="box-inside" >
               <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
 
-                 <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Everyplay" tal:attributes="src string:${view/application_url}/sponsors/logo/everyplay"/>
-              </a>
-              </p>
-        
-  		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="World Cyber Games" src="http://www.assembly.org/winter08/compos/wcg-150px"/>
-              </a>
-              </p>
+              <tal:banners repeat="banner context/@@choosebanner/main">
+                <p>
+                  <a tal:attributes="href string:${view/application_url}/sponsors">
+                    <img class="banner" tal:attributes="src python:view.url(banner)"/>
+                  </a>
+                </p>
+              </tal:banners>
 
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Gocept" tal:attributes="src string:${view/application_url}/sponsors/logo/gocept-medium"/>
-              </a>
-              </p>
-                 
             </div>
           </div>
         </div> <!-- leftbar -->

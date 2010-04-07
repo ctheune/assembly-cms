@@ -1,27 +1,16 @@
-=====================
-Advertisement banners
-=====================
-
-
+===============
+Sponsor banners
+===============
 
 Design
 ------
 
-An extension to manage banner images which can be dynamically embedded in a
-page's layout.
+* A separate page type ("sponsor area") which is a sub-type of HTML pages with
+  an additional field that defines possible areas where banners can appear
 
-- Manage banner images with a URL, an alternative text, an area,
+* An extension schema for assets that defines an additional field which can turn
+  an asset into a banner and locates it into an area
 
-- An area defines the number of banners shown in this area.
-
-- A persistent utility IBannerChooser provides a method `chooseBanners` which
-  returns a list of banners (specifically assets) based on the criteria for which slot it
-  is intended.
-
-- The utility is installed automatically into all sites (existing and new) but
-  is not part of the site.
-
-- The utility contains the banners, but the banners are not part of the site
-  content (watch out for indexing).
-
-- The utility needs to show up somewhere in navigation. -> actions viewlet
+* A utility/view API that returns a generator of asset variations for a given
+  area. It ensures that it does not repeatedly return the same asset. The
+  generator will be exhausted if no assets remain.

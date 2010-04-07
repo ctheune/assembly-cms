@@ -41,9 +41,12 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
         field = self.context
         asset = field.context
         data = field.get(asset)
-        return (html +
-                '<br/><img src="data:%s;base64,%s"/>' % (
-                    asm.cms.magic.whatis(data), data.encode('base64')))
+        if data is not None:
+            img = ('<br/><img src="data:%s;base64,%s"/>' %
+                   (asm.cms.magic.whatis(data), data.encode('base64')))
+        else:
+            img = ''
+        return (html + img)
 
 
 class Edit(asm.cms.form.EditionEditForm):

@@ -11,6 +11,7 @@ import grok
 import lxml.etree
 import os.path
 import pytz
+import zope.exceptions.interfaces
 import zope.interface
 import zope.schema
 import zope.traversing.api
@@ -49,9 +50,14 @@ class Import(asm.cms.Form):
                 assert edition_node.tag == 'edition'
                 parameters = set(edition_node.get('parameters').split())
                 parameters = asm.cms.edition.EditionParameters(parameters)
-                # ensure that the fallback language is english
-                parameters = parameters.replace('lang:', 'lang:en')
-                edition = page.getEdition(parameters, create=True)
+                if 'lang:' in parameters:
+                    # ensure that the fallback language is english
+                    parameters = parameters.replace('lang:', 'lang:en')
+                try:
+                    edition = page.addEdition(parameters)
+                except zope.exceptions.interfaces.DuplicationError:
+                    # Leave existing content alone.
+                    continue
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
                 edition.title = edition_node.get('title')
                 edition.tags = edition_node.get('tags')

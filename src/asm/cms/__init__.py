@@ -14,6 +14,12 @@ def application(self):
 grok.View.application = property(fget=application)
 
 
+def cms_edition(self):
+    return asm.cms.edition.select_edition(self.application, self.request)
+
+grok.View.cms_edition = property(fget=cms_edition)
+
+
 def resolve_relative_urls(self, content, source):
 
     def resolve(url):

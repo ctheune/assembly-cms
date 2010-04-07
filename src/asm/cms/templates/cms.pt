@@ -31,7 +31,7 @@
     <body>
 
         <div id="header">
-            <h1>Assembly Winter 2010</h1>
+            <h1 tal:content="view/cms_edition/title">Assembly Winter 2010</h1>
         </div>
 
         <div id="pagecontainer">

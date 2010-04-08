@@ -34,7 +34,7 @@
             <div class="box-inside" >
               <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
 
-              <tal:banners repeat="banner context/@@choosebanner/main">
+              <tal:banners repeat="banner context/@@choosebanner/sponsor_6">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors">
                     <img class="banner" tal:attributes="src python:view.url(banner)"/>
@@ -59,23 +59,14 @@
             <div class="box-light sponsors">
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
-              <p>
-              <a href="http://www.microsoft.com" rel="nofollow">
-                <img class="banner" alt="Microsoft" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=2ca525e6d114890380307ce93fda53be"/>
-              </a>
-              </p>
 
-
+              <tal:banners repeat="banner context/@@choosebanner/main_3">
                 <p>
-                <a href="http://www.asus.com" rel="nofollow">
-                  <img class="banner" alt="Asus" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=f8ea9a49a11cb78efdfb2620216470dd"/>
-                </a>
+                  <a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow">
+                    <img class="banner" tal:attributes="src python:view.url(banner)"/>
+                  </a>
                 </p>
-          	<p>
-	        <a href="http://www.samsung.com" rel="nofollow">
-		   <img class="banner" alt="Samsung" src="http://www.assembly.org/summer09/portal_banner/showBanner?bannerid=dabc9dc4dcd178ceb141d0d4ea76a5a1"/>
-		</a>
-		</p>
+              </tal:banners>
 
               </div>
             </div> <!-- sponsors -->

@@ -14,10 +14,11 @@ $(document).ready(function(){
 
   $("#navigation-tree").tree({
     ui: { theme_name: 'classic' },
-    types: {
+    types: {                                    // XXX the winter10 reference is *bad*
       htmlpage: { clickable: true, icon:  { image: '/winter10/@@/asm.cms/icons/page_white.png'}},
       homepage: { icon:  { image: '/winter10/@@/asm.cms/icons/house.png'}},
       news: { icon:  { image: '/winter10/@@/asm.cms/icons/newspaper.png'}},
+      sponsorsarea: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_medal.png'}},
       asset: { icon:  { image: '/winter10/@@/asm.cms/icons/page_white_picture.png'}}},
     data: { type: 'xml_nested',
             opts: {url: $('#navigation-tree').attr('href')}},

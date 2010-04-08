@@ -22,6 +22,7 @@ class Asset(asm.cms.edition.Edition):
     content = ''
 
     def copyFrom(self, other):
+        super(Asset, self).copyFrom(other)
         self.content = other.content
         self.title = other.title
 
@@ -47,6 +48,15 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
         else:
             img = ''
         return (html + img)
+
+    def _toFieldValue(self, input):
+        value = super(FileWithDisplayWidget, self)._toFieldValue(input)
+        if value is self.context.missing_value:
+            # Use existing value, don't override with missing.
+            field = self.context
+            asset = field.context
+            value = field.get(asset)
+        return value
 
 
 class Edit(asm.cms.form.EditionEditForm):

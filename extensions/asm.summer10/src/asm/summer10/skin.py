@@ -42,8 +42,8 @@ class LayoutHelper(grok.View):
             return []
 
     def generateCountdown(self):
-        times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
-                 ('24.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+        times = (('05.08.2010 12:00', True, "until ASSEMBLY!"),
+                 ('28.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
@@ -112,7 +112,7 @@ class Navtree(grok.View):
         if root in self.active:
             tree['class'].add('active')
             for child in root.subpages:
-                sub_tree = self._create_subtree(child, levels-1)
+                sub_tree = self._create_subtree(child, levels - 1)
                 if sub_tree:
                     tree['subpages'].append(sub_tree)
         if 'active' in tree['class'] and not tree['subpages']:

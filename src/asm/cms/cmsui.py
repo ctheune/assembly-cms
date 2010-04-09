@@ -51,12 +51,16 @@ class Tree(grok.View):
         intids = zope.component.getUtility(zope.app.intid.IIntIds)
         edition = asm.cms.edition.select_edition(root, self.request)
         if isinstance(edition, asm.cms.edition.NullEdition):
-            # XXX
-            return ''
-        html = '<item rel="%s" id="%s">\n' % (root.type,
-                                               intids.getId(edition))
+            ref = root
+            title = root.__name__
+            id = ''
+        else:
+            ref = edition
+            title = edition.title
+            id = intids.getId(edition)
+        html = '<item rel="%s" id="%s">\n' % (root.type, id)
         html += '<content><name href="%s">%s</name></content>\n' % (
-            self.url(edition), cgi.escape(edition.title))
+            self.url(ref), cgi.escape(title))
         for sub in root.subpages:
             html += self._sub_projects(sub)
         html += "</item>\n"

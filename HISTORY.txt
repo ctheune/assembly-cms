@@ -1,0 +1,6 @@
+
+0.1.3 (unreleased)
+------------------
+
+- Refactor ZCML/buildouts a bit to keep shared configuration in the package's
+  ZCML avoiding duplication in the various installations of asm.cms.

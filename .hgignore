@@ -1,4 +1,5 @@
 .installed.cfg
+dist
 etc
 var
 downloads

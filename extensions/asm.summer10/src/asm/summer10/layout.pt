@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Assembly Summer 2010 - 5.-8.8.2010, Hartwall Areena, Helsinki </title>
+    <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2010 &ndash; 5.-8.8.2010, Hartwall Areena, Helsinki </title>
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>

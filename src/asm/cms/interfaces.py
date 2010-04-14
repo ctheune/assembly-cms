@@ -135,3 +135,11 @@ class IReplaceOccurence(zope.interface.Interface):
 class IAdditionalSchema(zope.interface.Interface):
     """Provides an additional schema to transparently extend
     edition objects."""
+
+
+class IProfile(zope.component.interfaces.IComponents):
+    """A component registry defining an Assembly CMS profile."""
+
+
+class ISkinProfile(zope.interface.Interface):
+    """The name of the skin in a profile."""

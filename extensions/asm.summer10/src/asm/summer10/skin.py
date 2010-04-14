@@ -7,6 +7,10 @@ import time
 import zope.interface
 import pytz
 
+summer10 = asm.cms.cms.Profile('summer10')
+languages = ['en', 'fi']
+skin_name = 'summer10'
+
 
 class ISkin(asm.cms.IRetailSkin):
     grok.skin('summer10')

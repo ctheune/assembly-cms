@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='asm.cms',
-      version = '0.1.4dev',
+      version='0.1.4dev',
       description="Assembly Website CMS",
       author="Assembly Webcrew",
       author_email="web@assembly.org",
@@ -33,4 +33,5 @@ setup(name='asm.cms',
                         'hurry.zoperesource',
                         'hurry.tinymce',
                         'hurry.query',
+                        'z3c.baseregistry',
                         'gocept.selenium>0.3'])

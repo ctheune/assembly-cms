@@ -54,4 +54,6 @@
   <role id="zope.Member" title="Site Member" />
   <grantAll role="zope.Manager" />
 
+  <include package="z3c.baseregistry" file="meta.zcml" />
+
 </configure>

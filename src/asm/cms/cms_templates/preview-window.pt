@@ -31,7 +31,7 @@
             }
         </style>
         <script type="text/javascript" tal:attributes="src
-            context/@@layouthelper/static/jquery.js"></script>
+            context/@@layouthelper/static/jquery-1.4.min.js"></script>
         <script>
             function followParent() {
                 var parent = window.opener;

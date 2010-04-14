@@ -96,7 +96,7 @@ class ActionView(grok.View):
     grok.layer(asm.cms.interfaces.ICMSSkin)
 
     def render(self):
-        self.redirect(self.url(self.context))
+        self.redirect(self.url(self.context, '@@edit'))
 
 
 class MainPageActions(grok.ViewletManager):

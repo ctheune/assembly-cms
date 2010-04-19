@@ -116,7 +116,9 @@ class Delete(grok.View):
         self.flash('Page deleted.')
 
     def render(self):
-        return self.url(self.target)
+        target = asm.cms.edition.select_edition(
+            self.target, self.request)
+        return self.url(target, '@@edit')
 
 
 class Actions(grok.Viewlet):

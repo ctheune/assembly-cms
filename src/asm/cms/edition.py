@@ -146,16 +146,18 @@ def add_initial_edition(page, event=None):
 
 
 class Delete(grok.View):
+    """Deletes an edition."""
 
     grok.context(Edition)
 
     def update(self):
         page = self.context.__parent__
-        self.target = page
+        self.target = asm.cms.edition.select_edition(
+            page, self.request)
         del page[self.context.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target))
+        self.redirect(self.url(self.target, '@@edit'))
 
 
 class ExtendedPageActions(grok.Viewlet):

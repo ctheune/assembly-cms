@@ -62,6 +62,14 @@ class IEdition(zope.interface.Interface):
     def copyFrom(other):
         """Copy all content from another edition of the same kind."""
 
+    def __eq__(other):
+        """Check whether the content of the other edition is the same as this.
+
+        Does not include creation and modification dates and the edition
+        parameters.
+
+        """
+
 
 class IInitialEditionParameters(zope.interface.Interface):
     """Describes a set of parameters that should be set on initial editions
@@ -135,6 +143,14 @@ class IReplaceOccurence(zope.interface.Interface):
 class IAdditionalSchema(zope.interface.Interface):
     """Provides an additional schema to transparently extend
     edition objects."""
+
+    def copyFrom(other):
+        """Copy all content from another edition of the same kind."""
+
+    def __eq__(other):
+        """Check whether the content of the other edition is the same as this.
+
+        """
 
 
 class IProfile(zope.component.interfaces.IComponents):

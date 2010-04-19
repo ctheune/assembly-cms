@@ -158,7 +158,7 @@ padding:0 0 1px 12px;
 }
 
 #navigation .active ul li {background-image:none; color:#000;}
-#navigation .active ul ul li {margin:5px 0 5px 11px; }
+#navigation .active ul ul li {margin:5px 0 0px 16px; width:180px; font-weight:normal; line-height:1; padding:0 0 2px 0; }
 #navigation .active ul ul li a {padding:0; padding-bottom:2px;background:none;}
 #navigation .active ul ul ul li {padding-left:5px; margin-bottom: 5px; border-top:1px dotted #333; font-weight:normal;}
 #navigation .active ul ul ul li a {border:0;}

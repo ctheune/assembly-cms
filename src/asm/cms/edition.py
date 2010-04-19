@@ -30,6 +30,16 @@ class Edition(grok.Model):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
 
+    def __eq__(self, other):
+        if not self.__class__ == other.__class__:
+            return False
+        for schema in zope.component.subscribers(
+                (self,), asm.cms.interfaces.IAdditionalSchema):
+            if not schema(self) == schema(other):
+                return False
+        return (self.tags == other.tags and
+                self.title == other.title)
+
     @property
     def editions(self):
         return self.__parent__.editions

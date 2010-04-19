@@ -28,6 +28,11 @@ class HTMLPage(asm.cms.edition.Edition):
         self.content = other.content
         super(HTMLPage, self).copyFrom(other)
 
+    def __eq__(self, other):
+        if not super(HTMLPage, self).__eq__(other):
+            return False
+        return self.content == other.content
+
     @property
     def size(self):
         return len(self.content)

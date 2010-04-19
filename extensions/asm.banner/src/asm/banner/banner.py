@@ -48,6 +48,9 @@ class BannerAnnotation(grok.Annotation, grok.Model):
     def copyFrom(self, other):
         self.area = other.area
 
+    def __eq__(self, other):
+        return self.area == other.area
+
 
 def add_banner(edition):
     page = edition.page

@@ -61,13 +61,16 @@ class TeaserAnnotation(grok.Annotation,
         self.teaser = other.teaser
         self.image = other.image
 
+    def __eq__(self, other):
+        return (self.teaser == other.teaser,
+                self.image == other.image)
+
     def set_image(self, value):
         if value is None:
             return
         edition = self.__parent__
         if not 'teaser-image' in edition.page:
-            image = asm.cms.page.Page()
-            image.type = 'asset'
+            image = asm.cms.page.Page('asset')
             edition.page['teaser-image'] = image
         image = edition.page['teaser-image']
         image_edition = image.getEdition(edition.parameters, create=True)

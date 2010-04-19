@@ -30,6 +30,16 @@ class Edition(grok.Model):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
 
+    def __eq__(self, other):
+        if not self.__class__ == other.__class__:
+            return False
+        for schema in zope.component.subscribers(
+                (self,), asm.cms.interfaces.IAdditionalSchema):
+            if not schema(self) == schema(other):
+                return False
+        return (self.tags == other.tags and
+                self.title == other.title)
+
     @property
     def editions(self):
         return self.__parent__.editions
@@ -146,16 +156,18 @@ def add_initial_edition(page, event=None):
 
 
 class Delete(grok.View):
+    """Deletes an edition."""
 
     grok.context(Edition)
 
     def update(self):
         page = self.context.__parent__
-        self.target = page
+        self.target = asm.cms.edition.select_edition(
+            page, self.request)
         del page[self.context.__name__]
 
     def render(self):
-        self.redirect(self.url(self.target))
+        self.redirect(self.url(self.target, '@@edit'))
 
 
 class ExtendedPageActions(grok.Viewlet):

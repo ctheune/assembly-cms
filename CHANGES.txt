@@ -4,8 +4,29 @@ Changes
 0.1.4 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Various skin adjustments for Assembly Summer 2010
 
+- Enhance content API to allow equality check of editions
+
+- Added CLI tool to remove drafts that don't have changes compared to their
+  public version.
+
+- Remove unused banner template that caused warnings.
+
+- Fix redirection target after deleting a page.
+
+- Added CLI tool to find editions with weird parameters.
+
+- Make action views redirect to @@edit again.
+
+- Add general profile mechanism to allow setting up local policies for
+  individual sites hosted in a single server.
+
+- Fix preview and add a smoke test.
+
+- Make edit forms generally redirect to themselves instead of '@@edit'.
+
+- Retrieve name of skin used in preview based on current site profile.
 
 0.1.3 (2010-04-12)
 ==================

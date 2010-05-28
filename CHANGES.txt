@@ -4,6 +4,9 @@ Changes
 0.1.5 (unreleased)
 ==================
 
+- #7080: In addition to selecting the current document we also open the branch
+  beneath it (if it has children).
+
 - Improve banner selection by switching to a real function call and allowing
   to not randomize banners. Apply for summer10 skin.
 

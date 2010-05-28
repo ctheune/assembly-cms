@@ -26,6 +26,7 @@ $(document).ready(function(){
     callback: { onload: function(tree) {
                     $("#navigation-tree li").each(function() {
                         if ($('a', this).attr('href')+'/@@edit' == window.location) {
+                            tree.toggle_branch($(this));
                             tree.select_branch($(this));
                         }});},
                 ondblclk: function(node, tree) {

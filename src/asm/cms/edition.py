@@ -1,4 +1,4 @@
-# Copyright (c) 2009 Assembly Organizing
+# Copyright (c) 2010 Assembly Organizing
 # See also LICENSE.txt
 
 import BTrees.OOBTree
@@ -8,8 +8,8 @@ import grok
 import megrok.pagelet
 import pytz
 import re
-import zope.interface
 import sys
+import zope.interface
 
 
 class Edition(grok.Model):
@@ -230,6 +230,20 @@ def select_edition(page, request):
     editions = editions.items()
     editions.sort(key=lambda x: x[1], reverse=True)
     return editions[0][0]
+
+
+def find_editions(root, request, schema=zope.interface.Interface, recurse=True):
+    for page in root.subpages:
+        edition = select_edition(page, request)
+        try:
+            edition = schema(edition)
+        except LookupError:
+            continue
+        yield edition
+    if recurse:
+        for page in root.subpages:
+            for sub in find_editions(page, request, schema):
+                yield sub
 
 
 class ImagePicker(grok.View):

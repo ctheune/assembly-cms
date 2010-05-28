@@ -4,7 +4,8 @@ Changes
 0.1.5 (unreleased)
 ==================
 
-- Nothing changed yet.
+- Improve banner selection by switching to a real function call and allowing
+  to not randomize banners. Apply for summer10 skin.
 
 
 0.1.4 (2010-04-27)

@@ -4,18 +4,20 @@
 import asm.cms.asset
 import os.path
 import unittest
+import ZODB.blob
 
 
 class AssetTests(unittest.TestCase):
 
     def test_constructor(self):
         asset = asm.cms.asset.Asset()
-        self.assertEquals('', asset.content)
+        self.assertEquals(None, asset.content)
 
     def test_size(self):
         asset = asm.cms.asset.Asset()
         self.assertEquals(0, asset.size)
-        asset.content = '.' * 100
+        asset.content = ZODB.blob.Blob()
+        asset.content.open('w').write('.' * 100)
         self.assertEquals(100, asset.size)
 
     def test_magic(self):
@@ -25,7 +27,3 @@ class AssetTests(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), '..',
                          'static', 'icons', 'pencil.png')).read()
         self.assertEquals('image/x-png', asset.content_type)
-
-
-def test_suite():
-    return unittest.makeSuite(AssetTests)

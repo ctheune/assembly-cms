@@ -1,6 +1,7 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import ZODB.blob
 import asm.cms.edition
 import asm.cms.form
 import asm.cms.interfaces
@@ -9,8 +10,16 @@ import grok
 import zope.interface
 
 
-# Asset contains binary data, eg. image
 class Asset(asm.cms.edition.Edition):
+    """An asset stores binary data, like images.
+
+    This can be used to storage images to display in the web site or binary
+    files to download from the site.
+
+    It is expected that custom logic can be used in the future that builds on
+    the mime type of the content.
+
+    """
 
     zope.interface.implements(asm.cms.interfaces.IAsset)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
@@ -19,7 +28,7 @@ class Asset(asm.cms.edition.Edition):
     factory_order = 2
     factory_visible = True
 
-    content = ''
+    content = None
 
     def copyFrom(self, other):
         super(Asset, self).copyFrom(other)
@@ -33,7 +42,13 @@ class Asset(asm.cms.edition.Edition):
 
     @property
     def size(self):
-        return len(self.content)
+        if self.content is None:
+            return 0
+        f = self.content.open('r')
+        f.seek(0, 2)
+        size = f.tell()
+        f.close()
+        return size
 
     @property
     def content_type(self):
@@ -46,21 +61,24 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
         html = super(FileWithDisplayWidget, self).__call__()
         field = self.context
         asset = field.context
-        data = field.get(asset)
-        if data is not None:
-            img = ('<br/><img src="data:%s;base64,%s"/>' %
-                   (asm.cms.magic.whatis(data), data.encode('base64')))
-        else:
-            img = ''
+        blob = field.get(asset)
+        img = ''
+        if blob is not None:
+            data = blob.open().read()
+            if data:
+                img = ('<br/><img src="data:%s;base64,%s"/>' %
+                       (asm.cms.magic.whatis(data), data.encode('base64')))
         return (html + img)
 
     def _toFieldValue(self, input):
-        value = super(FileWithDisplayWidget, self)._toFieldValue(input)
-        if value is self.context.missing_value:
+        if input == self._missing:
             # Use existing value, don't override with missing.
             field = self.context
             asset = field.context
             value = field.get(asset)
+        else:
+            value = ZODB.blob.Blob()
+            value.consumeFile(input.name)
         return value
 
 
@@ -82,9 +100,12 @@ class Index(grok.View):
     def render(self):
         self.request.response.setHeader(
             'Content-Type', self.context.content_type)
+        f = open(self.context.content.committed())
+        f.seek(0, 2)
         self.request.response.setHeader(
-            'Content-Length', len(self.context.content))
-        return self.context.content
+            'Content-Length', f.tell())
+        f.seek(0)
+        return f
 
 
 class ImagePicker(grok.View):

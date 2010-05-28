@@ -3,6 +3,7 @@
 
 import asm.banner.interfaces
 import asm.cms.interfaces
+import asm.cms.edition
 import datetime
 import grok
 import pytz
@@ -70,23 +71,14 @@ class ChooseBanner(grok.View):
         # Just a helper view.
         pass
 
-    def __getitem__(self, category):
-        limit = None
-        if '_' in category:
-            category, limit = category.rsplit('_', 1)
-            try:
-                limit = int(limit)
-            except ValueError:
-                pass
-        sponsors = self.application['sponsors']
+    def choose(self, category, limit=None, randomize=True):
+        # XXX use utility to look up the sponsors area
         banners = []
-        for page in sponsors.subpages:
-            edition = asm.cms.edition.select_edition(page, self.request)
-            if not isinstance(edition, asm.cms.asset.Asset):
-                continue
-            b = asm.banner.interfaces.IBanner(edition)
-            if b.area != category:
-                continue
-            banners.append(edition)
-        random.shuffle(banners)
+        for banner in asm.cms.edition.find_editions(
+                self.application['sponsors'], self.request,
+                asm.banner.interfaces.IBanner):
+            if banner.area == category:
+                banners.append(banner)
+        if randomize:
+            random.shuffle(banners)
         return banners[:limit]

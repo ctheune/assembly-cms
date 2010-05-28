@@ -205,31 +205,46 @@ def annotate_creation_date(obj, event):
 
 
 def select_edition(page, request):
-    editions = dict((x, 0) for x in page.editions)
-    for selector in zope.component.subscribers(
-        (page, request), asm.cms.interfaces.IEditionSelector):
-        # Clean out all editions which are neither preferred nor accepted
-        # by the current selector
-        selected = set()
-        selected.update(selector.preferred)
-        selected.update(selector.acceptable)
-        for edition in list(editions.keys()):
-            if edition not in selected:
-                del editions[edition]
+    """Select the most appropriate edition of the page in the context of the
+    given request.
 
-        for edition in selector.preferred:
-            if edition in editions:
-                editions[edition] += 1
+    This function consults IEditionSelector objects to categorize all editions
+    of the page into one of three categories:
 
-    if not editions:
+    - undesired
+    - acceptable
+    - preferred
+
+    Whenever at least one edition selector finds an edition undesired it can
+    never be the result of selection_edition.
+
+    """
+    # Track the score for all editions, starting with 0.
+    scores = dict((x, 0) for x in page.editions)
+
+    # Consult all edition selectors
+    selectors = zope.component.subscribers(
+        (page, request), asm.cms.interfaces.IEditionSelector)
+    for selector in selectors:
+        desired = set(selector.preferred + selector.acceptable)
+        for edition in list(scores):
+            if edition not in desired:
+                del scores[edition]
+            if edition in selector.preferred:
+                scores[edition] += 1
+
+    # In case that the selectors found all the existing editions undesirable,
+    # we bail out with a dummy.
+    if not scores:
         null = NullEdition()
         null.__parent__ = page
         null.__name__ = u''
         return null
 
-    editions = editions.items()
-    editions.sort(key=lambda x: x[1], reverse=True)
-    return editions[0][0]
+    # Select one of the editions that has the highest score.
+    scores = scores.items()
+    scores.sort(key=lambda x: x[1], reverse=True)
+    return scores[0][0]
 
 
 def find_editions(root, request=None, schema=zope.interface.Interface, recurse=True):

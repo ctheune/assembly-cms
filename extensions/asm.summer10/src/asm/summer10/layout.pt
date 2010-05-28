@@ -36,10 +36,10 @@
             <div class="box-inside" >
               <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
 
-              <tal:banners repeat="banner context/@@choosebanner/sponsor_6">
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 3)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors">
-                    <img class="banner" tal:attributes="src python:view.url(banner)"/>
+                    <img class="banner" tal:attributes="src python:view.url(banner.__parent__)"/>
                   </a>
                 </p>
               </tal:banners>
@@ -62,10 +62,10 @@
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
 
-              <tal:banners repeat="banner context/@@choosebanner/main_3">
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('main', randomize=False)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow">
-                    <img class="banner" tal:attributes="src python:view.url(banner)"/>
+                    <img class="banner" tal:attributes="src python:view.url(banner.__parent__)"/>
                   </a>
                 </p>
               </tal:banners>

@@ -61,8 +61,8 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
         s.type('name=q', 'asdf')
         s.selenium.key_press('name=q', r'\13')
         s.waitForPageToLoad()
-        s.assertTextPresent(
-            'The search for "asdf" returned no results.')
+        s.waitForTextPresent(
+            'The search for "asdf" returned\n no results.')
 
     def test_search_result_preview_htmlpage(self):
         self.cms.editions.next().content = 'sometext asdf someothertext'

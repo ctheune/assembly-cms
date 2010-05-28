@@ -7,6 +7,8 @@ Changes
 - Improve banner selection by switching to a real function call and allowing
   to not randomize banners. Apply for summer10 skin.
 
+- #6328: Switch assets over to using blobs.
+
 
 0.1.4 (2010-04-27)
 ==================

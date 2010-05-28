@@ -232,14 +232,18 @@ def select_edition(page, request):
     return editions[0][0]
 
 
-def find_editions(root, request, schema=zope.interface.Interface, recurse=True):
+def find_editions(root, request=None, schema=zope.interface.Interface, recurse=True):
     for page in root.subpages:
-        edition = select_edition(page, request)
-        try:
-            edition = schema(edition)
-        except LookupError:
-            continue
-        yield edition
+        if request is not None:
+            editions = [select_edition(page, request)]
+        else:
+            editions = page.editions
+        for edition in editions:
+            try:
+                edition = schema(edition)
+            except TypeError:
+                continue
+            yield edition
     if recurse:
         for page in root.subpages:
             for sub in find_editions(page, request, schema):

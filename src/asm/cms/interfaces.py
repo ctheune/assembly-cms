@@ -3,6 +3,7 @@
 
 import zope.interface
 import zope.schema
+import ZODB.blob
 import grok
 import zc.sourcefactory.basic
 
@@ -86,9 +87,14 @@ class IHTMLPage(zope.interface.Interface):
     content = zope.schema.Text(title=u'Page content')
 
 
+class Blob(zope.schema.Field):
+
+    _type = ZODB.blob.Blob
+
+
 class IAsset(zope.interface.Interface):
 
-    content = zope.schema.Bytes(title=u'File', required=False)
+    content = Blob(title=u'File', required=False)
     content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
 
 

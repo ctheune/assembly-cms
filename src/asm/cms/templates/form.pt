@@ -16,13 +16,22 @@
         <div tal:repeat="group view/grouped_widgets" class="section expandable">
             <h3><span tal:replace="group"/>
                 <span class="closed ui-icon ui-icon-carat-1-s"></span>
-                <span class="closed hint" 
+                <span class="closed hint"
                       tal:content="python:view.group_info[group]"></span>
                 <span class="open ui-icon ui-icon-carat-1-n"></span>
             </h3>
+
+            <tal:block tal:repeat="widget python:view.grouped_widgets[group]">
+              <tal:block tal:condition="widget/required">
+                <div metal:use-macro="template/macros/fields"></div>
+              </tal:block>
+            </tal:block>
+
             <div class="expand">
                 <tal:block tal:repeat="widget python:view.grouped_widgets[group]">
-                <div metal:use-macro="template/macros/fields"></div>
+                  <tal:block tal:condition="not: widget/required">
+                    <div metal:use-macro="template/macros/fields"></div>
+                  </tal:block>
                 </tal:block>
             </div>
         </div>
@@ -33,7 +42,7 @@
                 tal:replace="structure action/render"
                 />
             </span>
-        </div> 
+        </div>
 
     </div>
 </form>
@@ -43,7 +52,8 @@
     <div class="field" metal:define-macro="fields">
         <label tal:attributes="for widget/name;
             class python:widget.required and 'required' or ''">
-            <span i18n:translate="" tal:content="widget/label">label</span>
+            <span i18n:translate="" tal:content="widget/label">label</span> <span tal:condition="widget/required"
+      class="required">(required)</span>
         </label>
 
         <p class="description" tal:content="widget/context/description"

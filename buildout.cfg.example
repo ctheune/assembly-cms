@@ -1,5 +1,5 @@
 [buildout]
-extends = profiles/buildout.cfg
+extends = profiles/base.cfg
 
 [app]
 admin-password = admin

@@ -35,7 +35,7 @@ class INewsFields(zope.interface.Interface):
 
     zope.interface.taggedValue('label', u'News')
     zope.interface.taggedValue(
-        'description', u'Write a teaser text and upload a teaser image.')
+        'description', u'Upload a teaser image.')
 
     teaser = zope.schema.TextLine(
         title=u'Teaser text',

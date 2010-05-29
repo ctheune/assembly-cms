@@ -52,7 +52,6 @@ $(document).ready(function(){
     $('.expandable .error').each(expand_section);
 });
 
-
 function delete_page() {
     var t = $.tree.reference('#navigation-tree');
     var target = $(t.selected.find('a')[0]);

@@ -1,71 +1,62 @@
 <ul class="message" tal:condition="view/errors">
-    <li tal:repeat="error view/error_views">
-    <span tal:replace="structure error">error type</span>
-    </li>
+  <li tal:repeat="error view/error_views">
+  <span tal:replace="structure error">error type</span>
+  </li>
 </ul>
 
 <form action="." tal:attributes="action request/URL" method="post"
-    class="edit-form" enctype="multipart/form-data">
+  class="edit-form" enctype="multipart/form-data">
 
-    <div id="page-edit" class="column">
+  <div id="page-edit" class="column">
 
-        <tal:block tal:repeat="widget view/main_widgets">
+    <tal:block tal:repeat="widget view/main_widgets">
+    <div metal:use-macro="template/macros/fields"></div>
+    </tal:block>
+
+    <div tal:repeat="group view/grouped_widgets" class="section expandable">
+      <h3><span tal:replace="group"></span>
+        <span class="closed ui-icon ui-icon-carat-1-s"></span>
+        <span class="closed hint"
+          tal:content="python:view.group_info[group]"></span>
+        <span class="open ui-icon ui-icon-carat-1-n"></span>
+      </h3>
+
+      <div tal:repeat="widget python:view.grouped_widgets[group]"
+        tal:attributes="class python:widget.required and ' ' or 'expand'">
         <div metal:use-macro="template/macros/fields"></div>
-        </tal:block>
-
-        <div tal:repeat="group view/grouped_widgets" class="section expandable">
-            <h3><span tal:replace="group"/>
-                <span class="closed ui-icon ui-icon-carat-1-s"></span>
-                <span class="closed hint"
-                      tal:content="python:view.group_info[group]"></span>
-                <span class="open ui-icon ui-icon-carat-1-n"></span>
-            </h3>
-
-            <tal:block tal:repeat="widget python:view.grouped_widgets[group]">
-              <tal:block tal:condition="widget/required">
-                <div metal:use-macro="template/macros/fields"></div>
-              </tal:block>
-            </tal:block>
-
-            <div class="expand">
-                <tal:block tal:repeat="widget python:view.grouped_widgets[group]">
-                  <tal:block tal:condition="not: widget/required">
-                    <div metal:use-macro="template/macros/fields"></div>
-                  </tal:block>
-                </tal:block>
-            </div>
-        </div>
-
-        <div id="actionsView">
-            <span class="actionButtons" tal:condition="view/availableActions">
-                <input tal:repeat="action view/actions"
-                tal:replace="structure action/render"
-                />
-            </span>
-        </div>
-
+      </div>
     </div>
+
+    <div id="actionsView">
+      <span class="actionButtons" tal:condition="view/availableActions">
+        <input tal:repeat="action view/actions"
+        tal:replace="structure action/render"
+        />
+      </span>
+    </div>
+
+  </div>
 </form>
 
 <tal:block condition="nothing">
-    <!-- Define the macro for showing individual fields -->
-    <div class="field" metal:define-macro="fields">
-        <label tal:attributes="for widget/name;
-            class python:widget.required and 'required' or ''">
-            <span i18n:translate="" tal:content="widget/label">label</span> <span tal:condition="widget/required"
+<!-- Define the macro for showing individual fields -->
+<div class="field" metal:define-macro="fields">
+  <label tal:attributes="for widget/name;
+    class python:widget.required and 'required' or ''">
+    <span i18n:translate="" tal:content="widget/label">label</span> <span tal:condition="widget/required"
       class="required">(required)</span>
-        </label>
+  </label>
 
-        <p class="description" tal:content="widget/context/description"
-        tal:condition="widget/context/description">
-        </p>
+  <p class="description" tal:content="widget/context/description"
+  tal:condition="widget/context/description">
+  </p>
 
-        <div class="error" tal:condition="widget/error">
-            <span tal:replace="structure widget/error">error</span>
-        </div>
+  <div class="error" tal:condition="widget/error">
+    <span tal:replace="structure widget/error">error</span>
+  </div>
 
-        <div class="widget" tal:content="structure widget">
-            <input type="text" />
-        </div>
-    </div>
+  <div class="widget" tal:content="structure widget">
+    <input type="text" />
+  </div>
+</div>
 </tal:block>

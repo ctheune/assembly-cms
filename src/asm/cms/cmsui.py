@@ -91,19 +91,6 @@ class PageHeader(grok.ViewletManager):
     grok.name('pageheader')
 
 
-class Breadcrumbs(grok.Viewlet):
-    grok.viewletmanager(PageHeader)
-    grok.context(asm.cms.interfaces.IEdition)
-
-    def update(self):
-        pages = []
-        page = self.context.page
-        while not isinstance(page, asm.cms.cms.CMS):
-            pages.insert(0, asm.cms.edition.select_edition(page, self.request))
-            page = page.__parent__
-        self.breadcrumbs = pages
-
-
 class ActionView(grok.View):
 
     grok.baseclass()

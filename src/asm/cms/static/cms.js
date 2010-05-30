@@ -5,7 +5,8 @@ $(document).ready(function(){
             toggle_navigation();
         }});
 
-  $(".toggle-navigation").click(function() {toggle_navigation();});
+  $(".show-navigation").click(show_navigation);
+  $(".hide-navigation").click(hide_navigation);
 
   $("input.clear-first-focus").one('click', clear_input);
 
@@ -98,6 +99,8 @@ function hide_navigation() {
     $("#navigation-actions").hide();
     $("#content").show();
     $("#actions").show();
+    $('.show-navigation').show();
+    $('.hide-navigation').hide();
     toggle_navigation = show_navigation;
     return false;
 }
@@ -107,6 +110,8 @@ function show_navigation() {
     $("#navigation-actions").show();
     $("#content").hide();
     $("#actions").hide();
+    $('.show-navigation').hide();
+    $('.hide-navigation').show();
     toggle_navigation = hide_navigation;
     return false;
 }

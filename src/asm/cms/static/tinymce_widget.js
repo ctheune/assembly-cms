@@ -27,12 +27,10 @@ tinyMCE.init({
 
 
 function asmcmsFileBrowser(field_name, url, type, win) {
-
     tinyMCE.activeEditor.windowManager.open({
-        // XXX The ../ means we know that /edition is the current base
-        url: window.location + '/../../@@tinymce-linkbrowser',
-        width:400,
-        height:400,
+        url: $('base').attr('href') + '/@@tinymce-linkbrowser',
+        width: 400,
+        height :400,
         inline: "yes",
     }, {window: win,
         input: field_name}

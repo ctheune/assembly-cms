@@ -1,13 +1,14 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import z3c.flashmessage.interfaces
-import cgi
 import asm.cms.edition
 import asm.cms.interfaces
+import cgi
 import datetime
 import grok
 import megrok.pagelet
+import z3c.flashmessage.interfaces
+import zope.app.intid
 import zope.interface
 
 
@@ -38,6 +39,17 @@ class LayoutHelper(grok.View):
         return list(receiver.receive())
 
 
+class IntId(grok.View):
+
+    grok.context(zope.interface.Interface)   # XXX Meh.
+    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
+
+    def render(self):
+        intids = zope.component.getUtility(zope.app.intid.IIntIds)
+        return intids.getId(self.context)
+
+
 class Tree(grok.View):
 
     grok.context(grok.Application)   # XXX Meh.
@@ -53,12 +65,14 @@ class Tree(grok.View):
         if isinstance(edition, asm.cms.edition.NullEdition):
             ref = root
             title = root.__name__
-            id = ''
         else:
             ref = edition
             title = edition.title
-            id = intids.getId(edition)
-        html = '<item rel="%s" id="%s">\n' % (root.type, id)
+
+        id = intids.getId(root)
+
+        html = '<item rel="%s" id="%s">\n' % (
+            root.type, id)
         html += '<content><name href="%s">%s</name></content>\n' % (
             self.url(ref), cgi.escape(title))
         for sub in root.subpages:

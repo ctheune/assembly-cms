@@ -7,6 +7,7 @@ import asm.cms.interfaces
 import asm.cms.tinymce
 import asm.cms.utils
 import bn
+import cgi
 import grok
 import lxml.etree
 import megrok.pagelet
@@ -79,6 +80,8 @@ class SearchPreview(grok.View):
 
         # Select limited amount of characters
         focus = text.lower().find(self.keyword.lower())
+        if focus == -1:
+            return cgi.escape(text[:100])
         text = text[max(focus - 50, 0):focus + 50]
 
         # Insert highlighting. Recompute offset of focus with shorter text.
@@ -86,7 +89,7 @@ class SearchPreview(grok.View):
         pre, keyword, post = (text[:focus],
                               text[focus:focus + len(self.keyword)],
                               text[focus + len(self.keyword):])
-        text = '%s<span class="match">%s</span>%s' % (pre, keyword, post)
+        text = '%s<span class="match">%s</span>%s' % tuple(map(cgi.escape, [pre, keyword, post]))
         return text
 
 

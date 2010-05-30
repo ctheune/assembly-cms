@@ -25,7 +25,7 @@ $(document).ready(function(){
             opts: {url: $('#navigation-tree').attr('href')}},
     callback: { onload: function(tree) {
                     $("#navigation-tree li").each(function() {
-                        if ($('a', this).attr('href')+'/@@edit' == window.location) {
+                        if ($(this).attr('id') == $('link[rel="pageid"]').attr('href')) {
                             tree.toggle_branch($(this));
                             tree.select_branch($(this));
                         }});},

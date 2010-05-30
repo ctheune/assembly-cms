@@ -19,9 +19,11 @@
 
         <tal:block condition="context/page|nothing">
             <link rel="preview" tal:attributes="href python:view.url(context.page, '@@preview')"/>
+            <link rel="pageid" tal:attributes="href context/page/@@intid"/>
         </tal:block>
         <tal:block condition="not:context/page|nothing">
             <link rel="preview" tal:attributes="href python:view.url(context, '@@preview')"/>
+            <link rel="pageid" tal:attributes="href context/@@intid"/>
         </tal:block>
         <link rel="root" tal:attributes="href view/application_url"/>
 

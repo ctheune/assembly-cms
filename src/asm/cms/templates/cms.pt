@@ -83,15 +83,16 @@
                 <button class="button" id="delete-page">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
-                    <h3>Tools
-                        <span class="closed ui-icon ui-icon-carat-1-s"></span>
-                        <span class="closed hint">more tools</span>
-                        <span class="open ui-icon ui-icon-carat-1-n"></span>
-                        <span class="open hint">less tools</span>
-                    </h3>
+                    <h3>Tools</h3>
                     <ul>
                     <tal:block replace="structure provider:navigation-tool-actions"/>
                     </ul>
+                    <div class="opener">
+                        <span class="closed"><span class="ui-icon
+                                ui-icon-carat-1-s"></span></span>
+                        <span class="open"><span class="ui-icon
+                                ui-icon-carat-1-n"></span></span>
+                    </div>
                 </div>
             </div>
         </div>

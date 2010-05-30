@@ -42,7 +42,7 @@ $(document).ready(function(){
             max_children: 1},
     });
 
-    $('.expandable h3').click(toggle_extended_options);
+    $('.expandable .opener').click(toggle_extended_options);
 
     $('.url-action').click(trigger_url_action);
     $('#add-page').click(add_page);
@@ -84,7 +84,7 @@ function trigger_url_action() {
 }
 
 function toggle_extended_options() {
-    $(this).parent().find('.expand').slideToggle();
+    $(this).parents('.expandable').find('.expand').slideToggle();
     $(this).parent().find('.open').toggle();
     $(this).parent().find('.closed').toggle();
 };

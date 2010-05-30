@@ -45,7 +45,7 @@ $(document).ready(function(){
     $('.expandable .opener').click(toggle_extended_options);
 
     $('.url-action').click(trigger_url_action);
-    $('#add-page').click(add_page);
+    $('form[name="addpage"]').submit(add_page);
 
     $('#delete-page').click(delete_page);
 
@@ -74,7 +74,7 @@ function expand_section() {
 function add_page() {
     var t = $.tree.reference('#navigation-tree');
     var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
-    $.post(add_page_url, $(this).parent().serialize(),
+    $.post(add_page_url, $(this).serialize(),
            function(data) { window.location = data; });
     return false;
 }

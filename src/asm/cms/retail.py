@@ -4,6 +4,7 @@
 import asm.cms.interfaces
 import grok
 import megrok.pagelet
+import zope.app.publication.interfaces
 import zope.interface
 
 
@@ -83,3 +84,12 @@ def fix_virtual_host(event):
         # XXX This is extremely hacky but the APIs don't allow me to do
         # better.
         event.request._vh_root = root.__parent__
+
+
+@grok.subscribe(zope.app.publication.interfaces.IBeforeTraverseEvent)
+def propagate_before_traverse_to_pages(event):
+    if not asm.cms.interfaces.IEdition.providedBy(event.object):
+        return
+    notification = zope.app.publication.interfaces.BeforeTraverseEvent(
+        event.object.__parent__, event.request)
+    zope.event.notify(notification)

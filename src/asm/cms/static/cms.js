@@ -48,8 +48,9 @@ $(document).ready(function(){
     $('#add-page').click(add_page);
 
     $('#delete-page').click(delete_page);
-});
 
+    $('.expandable .error').each(expand_section);
+});
 
 function delete_page() {
     var t = $.tree.reference('#navigation-tree');
@@ -57,9 +58,17 @@ function delete_page() {
     if (!confirm('Delete page "' + target.text() +'"?')) {
         return false;
     }
-    $.post(target.attr('href') + '/../@@delete', {}, 
+    $.post(target.attr('href') + '/../@@delete', {},
             function (data) { window.location = data; });
     return false;
+}
+
+function expand_section() {
+    $(this).parents('.section').each(function() {
+        $(this).find('.expand').slideDown();
+        $(this).find('.open').show();
+        $(this).find('.closed').hide();
+    });
 }
 
 function add_page() {
@@ -86,18 +95,18 @@ function clear_input() {
 
 function hide_navigation() {
     $("#navigation").hide();
-    $("#navigation-actions").hide()
-    $("#content").show()
-    $("#actions").show()
+    $("#navigation-actions").hide();
+    $("#content").show();
+    $("#actions").show();
     toggle_navigation = show_navigation;
     return false;
 }
 
 function show_navigation() {
     $("#navigation").show();
-    $("#navigation-actions").show()
-    $("#content").hide()
-    $("#actions").hide()
+    $("#navigation-actions").show();
+    $("#content").hide();
+    $("#actions").hide();
     toggle_navigation = hide_navigation;
     return false;
 }

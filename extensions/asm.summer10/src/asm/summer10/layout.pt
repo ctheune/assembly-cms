@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+    <link rel="search" type="application/opensearchdescription+xml" title="Assembly Summer 2010" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
     
     <script tal:attributes="src context/@@layouthelper/static/jss/jquery.tools.min.js" type="text/javascript"></script>
     <script tal:attributes="src context/@@layouthelper/static/jss/assembly.js" type="text/javascript"></script>
@@ -20,6 +21,12 @@
       </div>
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
+
+        <div>
+        <form tal:attributes="action string: ${view/application_url}/@@search"
+              method="get"><p><input type="text" style="width: 10em" name="q" /><input type="submit" class="submit" value="Search" /></p></form>
+        </div>
+
         <div>
           <div id="language">
             <a class="language-english" tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English</a>

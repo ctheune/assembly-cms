@@ -166,3 +166,9 @@ class NoneFormat(grok.View):
 
     def render(self):
         return ''
+
+
+class NotificationMessages(grok.ViewletManager):
+
+    grok.context(zope.interface.Interface)
+    grok.name('notification-messages')

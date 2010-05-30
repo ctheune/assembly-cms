@@ -288,7 +288,7 @@ span.discreet {
     margin:0;
 }
 
-ul.messages li {
+ul.messages li, .notification {
     background-color:#FFFFE0;
     border:1px solid #E6DB55;
     color:#333;
@@ -301,9 +301,7 @@ ul.messages li.warning {
     background-color:#FFDDDD;
     border:1px solid #FF0000;
     color:#333;
-
 }
-
 
 .widget img {
     margin-top:0.5em;

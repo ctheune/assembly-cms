@@ -41,6 +41,9 @@
             <div id="page">
                 <div id="content">
                     <tal:block replace="structure provider:pageheader"/>
+
+                    <tal:block replace="structure provider:notification-messages"/>
+
                     <ul tal:define="messages context/@@layouthelper/messages"
                         tal:condition="messages"
                         class="messages section">

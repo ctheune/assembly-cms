@@ -186,3 +186,9 @@ class NotificationMessages(grok.ViewletManager):
 
     grok.context(zope.interface.Interface)
     grok.name('notification-messages')
+
+
+class FlashMessageNotification(grok.Viewlet):
+
+    grok.viewletmanager(NotificationMessages)
+    grok.context(zope.interface.Interface)

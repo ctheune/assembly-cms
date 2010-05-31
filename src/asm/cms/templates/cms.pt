@@ -46,15 +46,6 @@
 
                     <tal:block replace="structure provider:notification-messages"/>
 
-                    <ul tal:define="messages context/@@layouthelper/messages"
-                        tal:condition="messages"
-                        class="messages section">
-                      <li
-                        tal:repeat="message messages"
-                        tal:attributes="class message/type"
-                        tal:content="message/message">Sauron will arrive soon!
-                      </li>
-                    </ul>
                     <tal:block replace="structure view/render"></tal:block>
                 </div>
                 <div id="navigation">

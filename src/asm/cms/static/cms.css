@@ -161,6 +161,7 @@ a {
     background-color: #ddd;
     padding:1em;
 }
+
 /* Navigation tree */
 #navigation {
     display: none;
@@ -187,7 +188,12 @@ input.close-navigation, input.open-navigation {
 .actionbar .section {
     background-color:white;
     padding:1em;
+    padding-top:0.5em;
     margin-top:1em;
+}
+
+.actionbar .section.expandable {
+    padding-bottom:0em;
 }
 
 .actionbar .section h3 {
@@ -196,28 +202,11 @@ input.close-navigation, input.open-navigation {
     margin-bottom:0.5em;
 }
 
-.expandable h3 span {
-    float:right;
-    font-weight:normal;
-    margin-top:0.1em;
-}
-
-.expandable .section h3 .ui-icon {
-    margin-top:0;
-}
-
 .actionbar ul {
     list-style-type:none;
     margin-left:0;
     margin-bottom:0;
     margin-right:0;
-}
-
-.expandable .expand {
-    display: none;
-}
-.expandable h3 .open {
-    display: none;
 }
 
 .actionbar li.selected {
@@ -233,6 +222,35 @@ input.close-navigation, input.open-navigation {
     font-size: 8pt;
     margin-bottom:0;
 }
+
+/* Expandable sections */
+.expandable .opener {
+    text-align: center;
+    margin-bottom:0;
+}
+
+.expandable .opener span {
+    font-weight:normal;
+}
+
+.expandable .opener .open {
+    display: none;
+}
+
+.expandable .expand {
+    display: none;
+}
+
+.expandable h3 .opener {
+    text-align: left;
+    float:right;
+}
+
+.expandable h3 .opener span {
+    display: block;
+    float: left;
+}
+
 /* other stuff */
 div.preview {
     color:#555;

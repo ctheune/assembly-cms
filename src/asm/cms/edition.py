@@ -230,7 +230,11 @@ def select_edition(page, request):
         for edition in list(scores):
             if edition not in desired:
                 del scores[edition]
-            if edition in selector.preferred:
+            if edition in set(selector.preferred):
+                # XXX the above condition needs a test: we used to apply the
+                # __contains__ test on the list but that causes problems
+                # because lists use __eq__ where as we need __hash__ for
+                # comparison.
                 scores[edition] += 1
 
     # In case that the selectors found all the existing editions undesirable,

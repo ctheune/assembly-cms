@@ -33,6 +33,7 @@ def cleanup_initial_edition(obj, event):
         return
     for edition in cms.values():
         obj.register(edition)
+    obj.register(cms)
 
 
 class PreviewWindow(grok.View):

@@ -25,7 +25,7 @@ $(document).ready(function(){
             opts: {url: $('#navigation-tree').attr('href')}},
     callback: { onload: function(tree) {
                     $("#navigation-tree li").each(function() {
-                        if ($('a', this).attr('href')+'/@@edit' == window.location) {
+                        if ($(this).attr('id') == $('link[rel="pageid"]').attr('href')) {
                             tree.toggle_branch($(this));
                             tree.select_branch($(this));
                         }});},
@@ -42,10 +42,10 @@ $(document).ready(function(){
             max_children: 1},
     });
 
-    $('.expandable h3').click(toggle_extended_options);
+    $('.expandable .opener').click(toggle_extended_options);
 
     $('.url-action').click(trigger_url_action);
-    $('#add-page').click(add_page);
+    $('form[name="addpage"]').submit(add_page);
 
     $('#delete-page').click(delete_page);
 
@@ -74,7 +74,7 @@ function expand_section() {
 function add_page() {
     var t = $.tree.reference('#navigation-tree');
     var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
-    $.post(add_page_url, $(this).parent().serialize(),
+    $.post(add_page_url, $(this).serialize(),
            function(data) { window.location = data; });
     return false;
 }
@@ -84,7 +84,7 @@ function trigger_url_action() {
 }
 
 function toggle_extended_options() {
-    $(this).parent().find('.expand').slideToggle();
+    $(this).parents('.expandable').find('.expand').slideToggle();
     $(this).parent().find('.open').toggle();
     $(this).parent().find('.closed').toggle();
 };

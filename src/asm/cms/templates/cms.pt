@@ -19,9 +19,11 @@
 
         <tal:block condition="context/page|nothing">
             <link rel="preview" tal:attributes="href python:view.url(context.page, '@@preview')"/>
+            <link rel="pageid" tal:attributes="href context/page/@@intid"/>
         </tal:block>
         <tal:block condition="not:context/page|nothing">
             <link rel="preview" tal:attributes="href python:view.url(context, '@@preview')"/>
+            <link rel="pageid" tal:attributes="href context/@@intid"/>
         </tal:block>
         <link rel="root" tal:attributes="href view/application_url"/>
 
@@ -86,15 +88,16 @@
                 <button class="button" id="delete-page">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
-                    <h3>Tools
-                        <span class="closed ui-icon ui-icon-carat-1-s"></span>
-                        <span class="closed hint">more tools</span>
-                        <span class="open ui-icon ui-icon-carat-1-n"></span>
-                        <span class="open hint">less tools</span>
-                    </h3>
+                    <h3>Tools</h3>
                     <ul>
                     <tal:block replace="structure provider:navigation-tool-actions"/>
                     </ul>
+                    <div class="opener">
+                        <span class="closed"><span class="ui-icon
+                                ui-icon-carat-1-s"></span></span>
+                        <span class="open"><span class="ui-icon
+                                ui-icon-carat-1-n"></span></span>
+                    </div>
                 </div>
             </div>
         </div>

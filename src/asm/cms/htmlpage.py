@@ -67,6 +67,8 @@ class TextIndexing(grok.Adapter):
 
 class SearchPreview(grok.View):
 
+    PREVIEW_AMOUNT = 50
+
     def update(self, q):
         self.keyword = q
 
@@ -81,15 +83,17 @@ class SearchPreview(grok.View):
         # Select limited amount of characters
         focus = text.lower().find(self.keyword.lower())
         if focus == -1:
-            return cgi.escape(text[:100])
-        text = text[max(focus - 50, 0):focus + 50]
+            return cgi.escape(text[:2*self.PREVIEW_AMOUNT])
+        text = text[
+            max(focus - self.PREVIEW_AMOUNT, 0):(focus + self.PREVIEW_AMOUNT)]
 
         # Insert highlighting. Recompute offset of focus with shorter text.
         focus = text.lower().find(self.keyword.lower())
         pre, keyword, post = (text[:focus],
                               text[focus:focus + len(self.keyword)],
                               text[focus + len(self.keyword):])
-        text = '%s<span class="match">%s</span>%s' % tuple(map(cgi.escape, [pre, keyword, post]))
+        text = '%s<span class="match">%s</span>%s' % \
+            tuple(map(cgi.escape, [pre, keyword, post]))
         return text
 
 

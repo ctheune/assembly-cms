@@ -1,7 +1,9 @@
+var KEY_ESCAPE = 27;
+
 $(document).ready(function(){
   // Showing/hiding navigation screen
   $(document).keydown(function(e) {
-        if (e.which == 27) {
+        if (e.which == KEY_ESCAPE) {
             toggle_navigation();
         }});
 

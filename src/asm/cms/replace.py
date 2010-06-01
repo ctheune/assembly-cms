@@ -73,6 +73,8 @@ class Occurence(object):
 
     grok.implements(asm.cms.interfaces.IReplaceOccurence)
 
+    PREVIEW_AMOUNT = 50
+
     def __init__(self, page, page_id, attribute, offset, term):
         self.page = page
         self.page_id = page_id
@@ -95,9 +97,9 @@ class Occurence(object):
     @property
     def preview(self):
         content = getattr(self.page, self.attribute)
-        start = content[max(self.offset-50, 0):self.offset]
+        start = content[max(self.offset - self.PREVIEW_AMOUNT, 0):self.offset]
         end = content[self.offset + len(self.term):
-                      self.offset + len(self.term) + 50]
+                      self.offset + len(self.term) + self.PREVIEW_AMOUNT]
         return (cgi.escape(start) +
                 '<span class="match">' + cgi.escape(self.term) + '</span>' +
                 cgi.escape(end))

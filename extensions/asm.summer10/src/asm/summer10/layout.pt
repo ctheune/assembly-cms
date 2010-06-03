@@ -2,6 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2010 &ndash; 5.-8.8.2010, Hartwall Areena, Helsinki </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
@@ -46,7 +49,7 @@
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 3)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors">
-                    <img class="banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                    <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
                   </a>
                 </p>
               </tal:banners>
@@ -72,7 +75,7 @@
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('main', randomize=False)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow">
-                    <img class="banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                    <img class="banner" alt="Main sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
                   </a>
                 </p>
               </tal:banners>

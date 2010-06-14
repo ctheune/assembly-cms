@@ -25,9 +25,9 @@
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
 
-        <div>
+        <div style="width:220px; float:left; margin-left:20px;">
         <form tal:attributes="action string: ${view/application_url}/@@search"
-              method="get"><p><input type="text" style="width: 10em" name="q" /><input type="submit" class="submit" value="Search" /></p></form>
+              method="get"><p><input type="text" style="width: 15em; height:15px;" name="q" /><!-- <input type="submit" class="submit" value="Search" />--></p></form>
         </div>
 
         <div>

@@ -54,13 +54,20 @@
                 </p>
                 </tal:banners>
 
+            </div>
+          </div>
+
+          <div class="box-light sponsors">
+            <div class="box-inside" >
+              <h4><a tal:attributes="href string:${view/application_url}/sponsors">Associates</a></h4>
+
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('associate', 2)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors">
                     <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
                   </a>
                 </p>
-              </tal:banners>
+                </tal:banners>
 
             </div>
           </div>

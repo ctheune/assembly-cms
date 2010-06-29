@@ -5,6 +5,7 @@ import asm.cms
 import asm.cms.edition
 import grok
 import zope.interface
+import ZODB.blob
 
 
 class NewsFolder(asm.cms.Edition):
@@ -74,7 +75,11 @@ class TeaserAnnotation(grok.Annotation,
             edition.page['teaser-image'] = image
         image = edition.page['teaser-image']
         image_edition = image.getEdition(edition.parameters, create=True)
-        image_edition.content = value
+        if image_edition.content is None:
+            image_edition.content = ZODB.blob.Blob()
+        b = image_edition.content.open('w')
+        b.write(value)
+        b.close()
 
     def get_image(self):
         edition = self.__parent__
@@ -83,7 +88,11 @@ class TeaserAnnotation(grok.Annotation,
         image = edition.page['teaser-image']
         image_edition = image.getEdition(self.__parent__.parameters,
                                          create=True)
-        return image_edition.content
+        if image_edition.content is not None:
+            b = image_edition.content.open('r')
+            result = b.read()
+            b.close()
+            return result
 
     image = property(fget=get_image, fset=set_image)
 

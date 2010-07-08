@@ -52,7 +52,7 @@ class Asset(asm.cms.edition.Edition):
 
     @property
     def content_type(self):
-        return asm.cms.magic.whatis(self.content)
+        return asm.cms.magic.whatis(self.content.open('r').read())
 
 
 class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
@@ -78,7 +78,9 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
             value = field.get(asset)
         else:
             value = ZODB.blob.Blob()
-            value.consumeFile(input.name)
+	    f = value.open('w')
+	    f.write(input.read())
+	    f.close()
         return value
 
 

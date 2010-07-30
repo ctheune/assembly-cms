@@ -22,7 +22,7 @@
           tal:attributes="class python:repeat['event'].odd() and 'odd' or 'even'">
           <td class="schedule-time"><span
                   tal:content="python:event.start.strftime('%H:%M')">12:00</span>&nbsp;&ndash;&nbsp;<span
-                  tal:content="python:event.start.strftime('%H:%M')">12:00</span>
+                  tal:content="python:event.end.strftime('%H:%M')">12:00</span>
           </td>
           <td><a tal:attributes="href event/url" tal:content="event/title">ASSEMBLY Summer 2009 alkaa!</a></td>
           <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>

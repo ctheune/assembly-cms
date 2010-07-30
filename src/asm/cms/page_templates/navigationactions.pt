@@ -2,7 +2,7 @@
     <form tal:attributes="action python:view.url(context.page, '@@addpage')"
         method="POST" name="addpage">
         <h3>Add new page</h3>
-        <input type="text" name="title" class="clear-first-focus" value="Page title ..."/>
+        <input type="text" name="title" title="Title for a new page. Lower case version of this will be the page's name in URL."/>
         <ul>
             <li tal:repeat="type viewlet/types"
                 tal:attributes="class python:type['factory'].factory_visible and ' ' or 'expand'">

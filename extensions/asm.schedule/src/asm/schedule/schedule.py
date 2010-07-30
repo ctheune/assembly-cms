@@ -127,7 +127,9 @@ class Edit(asm.cms.EditForm):
                 event.location_url = row['location_url']
                 schedule.events[int(row['id'])] = event
 
-        self.context.public_csv = public_data.getvalue()
+        public_csv = public_data.getvalue()
+        english.public_csv = public_csv
+        finnish.public_csv = public_csv
 
         self.flash(u'Your schedule was imported successfully.')
 

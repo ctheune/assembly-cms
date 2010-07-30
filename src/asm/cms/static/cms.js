@@ -74,8 +74,25 @@ function expand_section() {
 }
 
 function add_page() {
+    var title = $(this).find("input[name=title]");
+    if ($.trim(title.attr('value')).length == 0) {
+        // XXX For some reason title.addClass() does not work.
+        title.css("background-color", "#FBE3E4");
+        title.css("color", "#8a1f11");
+        title.css("border-color", "#FBC2C4");
+        return false;
+    }
     var t = $.tree.reference('#navigation-tree');
     var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
+
+    $(this).ajaxError(
+        function() {
+            // XXX For some reason title.addClass() does not work.
+            title.css("background-color", "#FBE3E4");
+            title.css("color", "#8a1f11");
+            title.css("border-color", "#FBC2C4");
+        });
+
     $.post(add_page_url, $(this).serialize(),
            function(data) { window.location = data; });
     return false;

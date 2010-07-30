@@ -27,36 +27,36 @@ class HTMLReplace(grok.Adapter):
         self.context_id = ids.getId(self.context)
 
     def search(self, term):
-        occurences = Occurences()
+        occurrences = Occurrences()
         for attribute in ['title', 'content']:
             offset = getattr(self.context, attribute).find(term)
             while offset != -1:
-                o = Occurence(self.context, self.context_id,
+                o = Occurrence(self.context, self.context_id,
                               attribute, offset, term)
-                occurences.add(o)
+                occurrences.add(o)
                 offset = getattr(self.context, attribute).find(
                     term, offset + 1)
-        return occurences
+        return occurrences
 
 
-class Occurences(object):
-    """A helper class to allow multiple occurences to work on the same
+class Occurrences(object):
+    """A helper class to allow multiple occurrences to work on the same
     object and attributes."""
 
     def __init__(self):
         self.entries = []
 
-    def add(self, occurence):
-        occurence.group = self
-        self.entries.append(occurence)
+    def add(self, occurrence):
+        occurrence.group = self
+        self.entries.append(occurrence)
 
-    def rebase(self, occurence, delta):
-        """Rebase the offset of all occurences after occurence by <delta>
+    def rebase(self, occurrence, delta):
+        """Rebase the offset of all occurrences after occurrence by <delta>
         characters."""
         for candidate in self.entries:
-            if candidate.attribute != occurence.attribute:
+            if candidate.attribute != occurrence.attribute:
                 continue
-            if candidate.offset <= occurence.offset:
+            if candidate.offset <= occurrence.offset:
                 continue
             candidate.offset += delta
 
@@ -67,11 +67,11 @@ class Occurences(object):
         return iter(self.entries)
 
 
-class Occurence(object):
-    """An occurence of for search and replace of a term within an HTML
+class Occurrence(object):
+    """An occurrence of for search and replace of a term within an HTML
     page."""
 
-    grok.implements(asm.cms.interfaces.IReplaceOccurence)
+    grok.implements(asm.cms.interfaces.IReplaceOccurrence)
 
     PREVIEW_AMOUNT = 50
 
@@ -140,19 +140,19 @@ class ReplacePreview(megrok.pagelet.Pagelet):
                     replace = asm.cms.interfaces.IReplaceSupport(edition)
                 except TypeError:
                     continue
-                occurences = replace.search(self.search)
-                self.found += len(occurences)
-                if occurences:
+                occurrences = replace.search(self.search)
+                self.found += len(occurrences)
+                if occurrences:
                     self.results.append(
                         {'edition': edition,
-                         'occurences': occurences})
+                         'occurrences': occurrences})
 
-        self.flash('Found %s occurences.' % self.found)
+        self.flash('Found %s occurrences.' % self.found)
 
 
 class Replace(megrok.pagelet.Pagelet):
-    """Preform a replace operation given a users search and replace terms and
-    a list of matches. Then display the remaining occurences."""
+    """Perform a replace operation given a users search and replace terms and
+    a list of matches. Then display the remaining occurrences."""
 
     grok.context(asm.cms.cms.CMS)
     grok.layer(asm.cms.ICMSSkin)
@@ -165,23 +165,23 @@ class Replace(megrok.pagelet.Pagelet):
         replace_cache = {}
 
         ids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
-        occurences = self.request.form.get('occurences')
-        if isinstance(occurences, basestring):
-            occurences = [occurences]
-        for occurence_id in occurences:
-            id, _, _, _ = occurence_id.split('-')
+        occurrences = self.request.form.get('occurrences')
+        if isinstance(occurrences, basestring):
+            occurrences = [occurrences]
+        for occurrence_id in occurrences:
+            id, _, _, _ = occurrence_id.split('-')
             if id not in replace_cache:
                 edition = ids.getObject(int(id))
                 replace = asm.cms.interfaces.IReplaceSupport(edition)
                 replace_cache[id] = replace.search(self.search)
-            occurences = replace_cache[id]
-            for candidate in occurences:
-                if candidate.id == occurence_id:
+            occurrences = replace_cache[id]
+            for candidate in occurrences:
+                if candidate.id == occurrence_id:
                     candidate.replace(self.replace)
                     self.replaced += 1
 
     def render(self):
-        self.flash('Replaced %s occurences.' % self.replaced)
+        self.flash('Replaced %s occurrences.' % self.replaced)
         self.redirect(self.url(self.context, 'searchandreplace'))
 
 

@@ -2,7 +2,7 @@
     <h3>Page</h3>
 
     <ul>
-        <li><input type="submit" value="Preview" class="button open-preview"/></li>
+        <li><input type="submit" value="Preview" class="button open-preview" title="Opens preview version of this page in a new window."/></li>
     </ul>
 
     <ul class="expand">
@@ -11,8 +11,8 @@
 
     <div class="opener">
         <span class="closed"><span class="ui-icon
-                ui-icon-carat-1-s"></span></span>
+                ui-icon-carat-1-s" title="Show more page options."></span></span>
         <span class="open"><span class="ui-icon
-                ui-icon-carat-1-n"></span></span>
+                ui-icon-carat-1-n" title="Hide extra page options."></span></span>
     </div>
 </div>

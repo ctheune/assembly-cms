@@ -1,3 +1,2 @@
 <li class="expand"><button class="button url-action" id="search-and-replace" tal:attributes="href
-    string:${view/application_url}/@@searchandreplace">Search and
-    replace</button></li>
+    string:${view/application_url}/@@searchandreplace" title="Search and replace strings in all pages on site.">Search and replace</button></li>

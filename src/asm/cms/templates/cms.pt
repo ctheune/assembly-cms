@@ -59,7 +59,7 @@
 
             <div id="actions" class="actionbar">
                 <ul>
-                    <li><button class="button toggle-navigation">Navigation</button></li>
+                    <li><button class="button toggle-navigation" title="Display navigation tree.">Navigation</button></li>
                 </ul>
                 <form tal:attributes="action
                     string:${view/application_url}/@@search">
@@ -73,10 +73,10 @@
 
             <div id="navigation-actions" class="actionbar">
                 <ul>
-                    <li><button class="button toggle-navigation">Back to editor</button></li>
+                    <li><button class="button toggle-navigation" title="Close navigation tree and continue editing.">Back to editor</button></li>
                 </ul>
                 <input type="text" name="q" class="search clear-first-focus" value="Search ..."/>
-                <button class="button" id="delete-page">Delete page</button>
+                <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">
                     <h3>Tools</h3>

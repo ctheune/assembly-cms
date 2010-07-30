@@ -10,7 +10,7 @@
     <input type="text" disabled="disabled" tal:attributes="value request/search"/>
     <span style="padding-left:1em; padding-right:1em;">&#x27f6;</span>
     <input type="text" disabled="disabled" tal:attributes="value request/replace"/>
-    <input type="submit" class="button" name="form.actions.replace" value="Replace" />
+    <input type="submit" class="button" name="form.actions.replace" value="Replace" title="Replaces selected string occurrences with a new value."/>
 
     <tal:block repeat="result view/results">
     <h3 class="section"><span tal:content="result/edition/title"/>
@@ -18,10 +18,10 @@
                 tal:content="result/edition/parameters/@@index"></span></h3>
 
     <ul>
-        <li tal:repeat="occurence result/occurences" style="margin-left:1.5em;">
-            <input type="checkbox" tal:attributes="value occurence/id"
-            name="occurences" checked="checked" style="margin-left:-1.5em;"/>
-            <span tal:content="structure occurence/preview"/>
+        <li tal:repeat="occurrence result/occurrences" style="margin-left:1.5em;">
+            <input type="checkbox" tal:attributes="value occurrence/id"
+            name="occurrences" checked="checked" style="margin-left:-1.5em;"/>
+            <span tal:content="structure occurrence/preview"/>
         </li>
     </ul>
     </tal:block>

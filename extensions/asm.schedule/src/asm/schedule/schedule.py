@@ -177,7 +177,7 @@ class Index(asm.cms.Pagelet):
     filters = dict(
         major=lambda x: x.major,
         all=lambda x: True,
-        compo=lambda x: x.class_.startswith('game_'))
+        compo=lambda x: x.class_.startswith('Compo'))
 
     def events(self):
         events = []

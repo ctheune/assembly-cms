@@ -2,14 +2,22 @@
 import zope.interface
 import zope.schema
 
-class IGalleryItem(zope.interface.Interface):
+class IMediaGalleryRoot(zope.interface.Interface):
+    title = zope.schema.TextLine(title=u'Title')
+
+    compo_data = zope.schema.Bytes(title=u'Compo data', required=False)
+
+class IMediaGalleryFolder(zope.interface.Interface):
+    title = zope.schema.TextLine(title=u'Title')
+
+class IMediaGalleryItem(zope.interface.Interface):
 
     def title():
         """Automatically generated title."""
 
-    author = zope.schema.TextLine(title=u'Author')
-
     name = zope.schema.TextLine(title=u'Name')
+
+    author = zope.schema.TextLine(title=u'Author')
 
     thumbnail = zope.schema.TextLine(title=u'Thumbnail', required=False)
 

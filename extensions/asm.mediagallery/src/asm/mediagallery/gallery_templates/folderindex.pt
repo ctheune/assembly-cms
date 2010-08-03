@@ -1,14 +1,15 @@
 <h1 tal:content="context/title"></h1>
 
-Uguu =(
-
-<tal:block repeat="item view/list">
-
-<h2 tal:content="item/title"></h2>
-<h2 tal:content="item/author"></h2>
-
-<!-- <div tal:content="structure -->
-<!--     python:view.resolve_relative_urls(item.thumbnail, source=item)"> -->
-<!-- </div> -->
-
-</tal:block>
+<table tal:repeat="item view/list" style="display: inline">
+  <tr><td>
+  <a tal:attributes="href python:view.url(item)">
+    <img tal:attributes="src python:view.url(item) + '/' + item.thumbnail;
+                         alt item/title" />
+  </a>
+  </td></tr>
+  <tr><td>
+    <a tal:attributes="href python:view.url(item)">
+      <span tal:replace="item/title" />
+    </a>
+  </td></tr>
+</table>

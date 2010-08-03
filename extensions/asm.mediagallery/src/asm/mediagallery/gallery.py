@@ -1,18 +1,101 @@
 import asm.cms
 import asm.cms.edition
 import asm.mediagallery.interfaces
-import urllib
 import grok
+import sys
+import urllib
 import zope.interface
 import ZODB.blob
 
-TYPE_GALLERY_FOLDER = 'galleryfolder'
-TYPE_GALLERY_ITEM = 'galleryitem'
+TYPE_GALLERY_ROOT = 'mediagalleryroot'
+TYPE_GALLERY_FOLDER = 'mediagalleryfolder'
+TYPE_GALLERY_ITEM = 'mediagalleryitem'
+THUMBNAIL_IMAGE = 'thumbnail-image'
 
-class GalleryFolder(asm.cms.Edition):
+class MediaGalleryRoot(asm.cms.Edition):
+    zope.interface.implements(asm.mediagallery.interfaces.IMediaGalleryRoot)
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
-    factory_title = u'Gallery folder'
+    factory_title = u'Media gallery root'
+
+    title = u''
+
+    compo_data = None
+
+    def list_folders(self, base=None):
+        if base is None:
+            base = self.page
+        for page in base.subpages:
+            if page.type == TYPE_GALLERY_FOLDER:
+                yield page
+
+    def list_items(self, base=None):
+        if base is None:
+            base = self.page
+        for page in base.subpages:
+            if page.type == TYPE_GALLERY_ITEM:
+                yield page
+
+
+class RootEdit(asm.cms.EditForm):
+
+    grok.context(MediaGalleryRoot)
+    grok.name('edit')
+
+    form_fields = grok.AutoFields(asm.mediagallery.interfaces.IMediaGalleryRoot).select(
+        'title', 'compo_data')
+
+
+    @grok.action(u'Add compos')
+    def add_compos(self, compo_data=None, title=None):
+        self.context.title = title
+
+        if not compo_data:
+            self.flash('Saved changes.')
+            return
+
+        # TODO mass import compo data here.
+        self.flash('TODO')
+
+
+class RootIndex(asm.cms.Pagelet):
+    grok.context(MediaGalleryRoot)
+    grok.name('index')
+
+    def list_folders(self):
+        for folder in self.context.list_folders():
+            edition = asm.cms.edition.select_edition(folder, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+
+    def list_items(self):
+        for item in self.context.list_folders():
+            edition = asm.cms.edition.select_edition(item, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+
+    def list_folder_items(self, folder, limit=None):
+        maxLimit = limit
+        if maxLimit == None:
+            maxLimit = sys.maxint
+        returned = 0
+        for media in folder.list():
+            edition = asm.cms.edition.select_edition(media, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+            returned += 1
+            if returned >= maxLimit:
+                break
+
+
+class MediaGalleryFolder(asm.cms.Edition):
+    zope.interface.implements(asm.mediagallery.interfaces.IMediaGalleryFolder)
+    zope.interface.classProvides(asm.cms.IEditionFactory)
+
+    factory_title = u'Media gallery folder'
 
     def list(self, base=None):
         if base is None:
@@ -21,18 +104,29 @@ class GalleryFolder(asm.cms.Edition):
             if page.type == TYPE_GALLERY_ITEM:
                 yield page
 
+
 class FolderEdit(asm.cms.EditForm):
 
-    grok.context(GalleryFolder)
+    grok.context(MediaGalleryFolder)
     grok.name('edit')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
         'title')
 
+class FolderIndex(asm.cms.Pagelet):
+    grok.context(MediaGalleryFolder)
+    grok.name('index')
 
-class GalleryItem(asm.cms.edition.Edition):
+    def list(self):
+        for media in self.context.list():
+            edition = asm.cms.edition.select_edition(media, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
 
-    zope.interface.implements(asm.mediagallery.interfaces.IGalleryItem)
+class MediaGalleryItem(asm.cms.edition.Edition):
+
+    zope.interface.implements(asm.mediagallery.interfaces.IMediaGalleryItem)
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     factory_title = u'Media gallery item'
@@ -45,6 +139,8 @@ class GalleryItem(asm.cms.edition.Edition):
     _view = u''
 
     def get_attributes(self):
+        if self.attributes is None:
+            return {}
         attributes = self.attributes.split("\n")
         result = {}
         for attribute in attributes:
@@ -72,9 +168,9 @@ class GalleryItem(asm.cms.edition.Edition):
         if not view:
             attributes = self.get_attributes()
             if 'youtube' in attributes:
-                view = """<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/LWDWn6tzsIc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385"></embed></object>""" % attributes['youtube']
+                view = """<object width="560" height="336"><param name="movie" value="http://www.youtube.com/v/LWDWn6tzsIc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="336"></embed></object>""" % attributes['youtube']
             elif 'dtvvideo' in attributes:
-                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%s" width="640" height="505" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % attributes['dtvvideo']
+                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%s" width="560" height="442" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % attributes['dtvvideo']
         self._view = view
 
     view = property(get_view, set_view)
@@ -86,15 +182,17 @@ class GalleryItem(asm.cms.edition.Edition):
         thumbnail = value
         page = self.page
         levels = 0
-        while page.type != TYPE_GALLERY_FOLDER and not thumbnail:
-            if 'thumbnail-image' in page:
+        while not thumbnail:
+            if THUMBNAIL_IMAGE in page:
                 thumbnail = "/".join(['..'] * levels)
                 if thumbnail != '':
                     thumbnail += "/"
-                thumbnail += 'thumbnail-image'
+                thumbnail += THUMBNAIL_IMAGE
                 break
             else:
                 levels += 1
+                if page.type == TYPE_GALLERY_ROOT:
+                    break
                 page = page.__parent__.page
         self._thumbnail = thumbnail
 
@@ -104,20 +202,20 @@ class GalleryItem(asm.cms.edition.Edition):
         self.author = other.author
         self.name = other.name
         self._thumbnail = other._thumbnail
-        self.view = other.view
         self.content = other.content
         self.attributes = other.attributes
-        super(GalleryItem, self).copyFrom(other)
+        self._view = other._view
+        super(MediaGalleryItem, self).copyFrom(other)
 
     def __eq__(self, other):
-        if not super(GalleryItem, self).__eq__(other):
+        if not super(MediaGalleryItem, self).__eq__(other):
             return False
         return (self.author == other.author and
                 self.name == other.name and
-                self.thumbnail == other.thumbnail and
-                self.view == other.view and
+                self._thumbnail == other._thumbnail and
                 self.content == other.content and
-                self.attributes == other.attributes)
+                self.attributes == other.attributes and
+                self._view == other._view)
 
     @property
     def size(self):
@@ -134,19 +232,21 @@ class GalleryItem(asm.cms.edition.Edition):
 
 class ItemEdit(asm.cms.EditForm):
 
-    grok.context(GalleryItem)
+    grok.context(MediaGalleryItem)
     grok.name('edit')
 
-    form_fields = grok.AutoFields(asm.mediagallery.interfaces.IGalleryItem).select(
-        *'author name thumbnail view content attributes'.split(" "))
+    form_fields = grok.AutoFields(asm.mediagallery.interfaces.IMediaGalleryItem).select(
+        *'name author thumbnail content attributes view'.split(" "))
     form_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
 class ItemIndex(asm.cms.Pagelet):
 
-    grok.context(GalleryItem)
+    grok.context(MediaGalleryItem)
     grok.name('index')
 
     def links(self):
+        if self.context.attributes is None:
+            return []
         candidates = self.context.attributes.split("\n")
         results = []
         for candidate in candidates:
@@ -164,92 +264,7 @@ class ItemIndex(asm.cms.Pagelet):
                 results.append(("Watch on DTV", "http://demoscene.tv/prod.php?id_prod=%s" % value))
         return results
 
-
-class FolderIndex(asm.cms.Pagelet):
-    grok.context(GalleryFolder)
-    grok.name('index')
-
-    def list(self):
-        for media in self.context.list():
-            edition = asm.cms.edition.select_edition(media, self.request)
-            if isinstance(edition, asm.cms.edition.NullEdition):
-                continue
-            yield edition
-
-class IGalleryItemFields(zope.interface.Interface):
-
-    zope.interface.taggedValue('label', u'Media gallery item')
-    zope.interface.taggedValue(
-        'description', u'Upload a teaser image.')
-
-    author = zope.schema.TextLine(title=u'Author')
-    name = zope.schema.TextLine(title=u'Name')
-
-    thumbnail = zope.schema.Bytes(
-        title=u'Thumbnail image', required=False)
-
-
-THUMBNAIL_IMAGE = 'thumbnail-image'
-
-class ThumbnailAnnotation(grok.Annotation,
-                          grok.Model):
-    grok.implements(IGalleryItemFields)
-    grok.provides(IGalleryItemFields)
-    grok.context(asm.cms.interfaces.IEdition)
-
-    author = u''
-    name = u''
-
-    def copyFrom(self, other):
-        self.author = other.author
-        self.name = other.name
-        self.thumbnail = other.thumbnail
-
-    def __eq__(self, other):
-        return (self.author == other.author,
-                self.name == other.name,
-                self.thumbnail == other.thumbnail,
-                )
-
-    def set_thumbnail(self, value):
-        if value is None:
-            return
-        edition = self.__parent__
-        if not THUMBNAIL_IMAGE in edition.page:
-            image = asm.cms.page.Page('asset')
-            edition.page[THUMBNAIL_IMAGE] = image
-        image = edition.page[THUMBNAIL_IMAGE]
-        image_edition = image.getEdition(edition.parameters, create=True)
-        if image_edition.content is None:
-            image_edition.content = ZODB.blob.Blob()
-        b = image_edition.content.open('w')
-        b.write(value)
-        b.close()
-
-    def get_thumbnail(self):
-        edition = self.__parent__
-        if not THUMBNAIL_IMAGE in edition.page:
-            return None
-        image = edition.page[THUMBNAIL_IMAGE]
-        image_edition = image.getEdition(self.__parent__.parameters,
-                                         create=True)
-        if image_edition.content is not None:
-            b = image_edition.content.open('r')
-            result = b.read()
-            b.close()
-            return result
-
-    thumbnail = property(fget=get_thumbnail, fset=set_thumbnail)
-
-
-@grok.subscribe(asm.cms.htmlpage.HTMLPage)
-@grok.implementer(asm.cms.interfaces.IAdditionalSchema)
-def add_thumbnails(edition):
-    page = edition.page
-    while page:
-        if not asm.cms.interfaces.IPage.providedBy(page):
-            break
-        if page.type == TYPE_GALLERY_FOLDER:
-            return IGalleryItemFields
-        page = page.__parent__
+@grok.subscribe(asm.mediagallery.interfaces.IMediaGalleryItem, grok.IObjectModifiedEvent)
+def update_view(modified_item, event):
+    modified_item.view = modified_item.view
 

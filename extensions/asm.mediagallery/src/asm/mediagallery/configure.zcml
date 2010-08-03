@@ -1,0 +1,17 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="asm.cms">
+
+  <grok:grok package="." />
+
+  <utility component=".gallery.GalleryFolder" name="galleryfolder"/>
+  <utility component=".gallery.GalleryItem" name="galleryitem" />
+
+  <subscriber
+    factory=".gallery.add_thumbnails"
+    for="asm.cms.htmlpage.HTMLPage"
+    provides="asm.cms.interfaces.IAdditionalSchema"
+    />
+
+</configure>

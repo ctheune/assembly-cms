@@ -75,7 +75,10 @@
                 <ul>
                     <li><button class="button toggle-navigation" title="Close navigation tree and continue editing.">Back to editor</button></li>
                 </ul>
-                <input type="text" name="q" class="search" class="search" title="Search all pages for occurrences of this string."/>
+                <form tal:attributes="action
+                    string:${view/application_url}/@@search">
+                  <input type="text" name="q" class="search" class="search" title="Search all pages for occurrences of this string."/>
+                </form>
                 <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>
                 <div class="section expandable" id="tools">

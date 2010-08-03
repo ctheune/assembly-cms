@@ -1,0 +1,21 @@
+<h1 tal:content="context/title">Year</h1>
+
+<div tal:repeat="folder view/list_folders">
+  <h2><a tal:attributes="href python:view.url(folder.page)"
+         tal:content="folder/title">Compo type</a></h2>
+
+  <table tal:repeat="item python:view.list_folder_items(folder, 3)" style="display: inline">
+  <tr><td>
+    <div>
+      <a tal:attributes="href python:view.url(item)">
+        <img tal:attributes="src python:view.url(item) + '/' + item.thumbnail;
+                         alt item/title" />
+      </a>
+  </td></tr>
+  <tr><td>
+    <a tal:attributes="href python:view.url(item)">
+      <span tal:replace="item/title" />
+    </a>
+  </td></tr>
+  </table>
+</div>

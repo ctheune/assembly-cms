@@ -1,0 +1,12 @@
+<h1 tal:content="context/title">Title</h1>
+
+<p tal:content="structure context/view">View</p>
+
+<p tal:condition="context/content"
+   tal:replace="structure context/content">Extra content</p>
+
+<div tal:repeat="link view/links">
+  <a tal:attributes="href python:link[1]"
+     tal:content="python:link[0]">link</a>
+</div>
+

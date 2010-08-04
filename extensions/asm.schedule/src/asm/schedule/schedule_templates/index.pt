@@ -21,9 +21,9 @@
 <tal:block repeat="record view/filter/events">
   <h2 tal:content="python:view.format_date(record['day'])"></h2>
 
-  <table>
+  <table class="schedule">
       <tr tal:repeat="event record/events"
-          tal:attributes="class python:repeat['event'].odd() and 'odd' or 'even'">
+          tal:attributes="class python:view.event_class(event) + ' ' + (repeat['event'].odd() and 'odd' or 'even')">
           <td class="schedule-time">
             <span tal:content="python:event.start.strftime('%H:%M')">12:00</span>
             <tal:block condition="python:event.start != event.end">&ndash;

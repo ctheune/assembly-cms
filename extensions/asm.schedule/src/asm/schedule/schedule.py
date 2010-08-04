@@ -231,9 +231,18 @@ class Index(asm.cms.Pagelet):
         if day != 'all':
             day = datetime.datetime.strptime(day, '%Y-%m-%d').date()
         details = self.request.get('details', 'all')
+        self.now = datetime.datetime.now()
 
         self.filter = FilteredSchedule(
             self.context, details, day)
+
+    def event_class(self, event):
+        if event.end < self.now:
+            return 'past'
+        if event.start > self.now:
+            return 'future'
+        if event.start < self.now and event.end > self.now:
+            return 'current'
 
     def format_date(self, date):
         specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',

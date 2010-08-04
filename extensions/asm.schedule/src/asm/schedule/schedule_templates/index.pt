@@ -1,28 +1,28 @@
 <span tal:replace="structure context/message|nothing" />
 
 <p class="schedulefilter"><strong>Select day:</strong><br />
-<tal:block repeat="day view/events">
-<a tal:attributes="href string:?day=${day/date/isoformat}&details=${view/details};
-                   class python:day['date'].isoformat() == view.day and 'selected' or ' '"
-     tal:content="python: day['date'].strftime('%A')">Thursday</a>
- -
+<tal:block repeat="option view/filter/day_options">
+<a tal:attributes="href string:?day=${option/token}&details=${view/filter/details};
+                   class option/class_"
+     tal:content="option/label">Thursday</a>
+<tal:block condition="not:repeat/option/end"> - </tal:block>
 </tal:block>
-<a tal:attributes="href string:?day=all&details=${view/details};
-                   class python:view.day == 'all' and 'selected' or ' '">all days</a>
 </p>
 
 <p class="schedulefilter"><strong>Select schedule details:</strong><br />
-<a tal:attributes="href string:?details=major&day=${view/day}; class python:view.details == 'major' and 'selected' or ' '">major events only</a> -
-<a tal:attributes="href string:?details=compo&day=${view/day}; class python:view.details == 'compo' and 'selected' or ' '">compo-related events</a> - 
-<a tal:attributes="href string:?details=all&day=${view/day}; class python:view.details == 'all' and 'selected' or ' '">all events</a>
+<tal:block repeat="option view/filter/detail_options">
+  <a tal:attributes="href string:?details=${option/token}&day=${view/filter/day};
+                     class option/class_"
+     tal:content="option/label">major events only</a>
+<tal:block condition="not:repeat/option/end"> - </tal:block>
+</tal:block>
 </p>
 
-<tal:block repeat="day view/events">
-<tal:block condition="day/events">
-  <a tal:attributes="name string:day-${repeat/day/index}"></a>
-  <h2 tal:content="python:view.format_date(day['date'])"></h2>
+<tal:block repeat="record view/filter/events">
+  <h2 tal:content="python:view.format_date(record['day'])"></h2>
+
   <table>
-      <tr tal:repeat="event day/events"
+      <tr tal:repeat="event record/events"
           tal:attributes="class python:repeat['event'].odd() and 'odd' or 'even'">
           <td class="schedule-time">
             <span tal:content="python:event.start.strftime('%H:%M')">12:00</span>
@@ -35,5 +35,4 @@
           <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>
       </tr>
   </table>
-</tal:block>
 </tal:block>

@@ -10,8 +10,6 @@
 
   <include package=".generations" />
 
-  <browser:defaultSkin name="cms" />
-
   <utility component=".htmlpage.HTMLPage" name="htmlpage" />
   <utility component=".asset.Asset" name="asset" />
   <utility component=".news.NewsFolder" name="news"/>

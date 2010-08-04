@@ -192,3 +192,31 @@ class FlashMessageNotification(grok.Viewlet):
 
     grok.viewletmanager(NotificationMessages)
     grok.context(zope.interface.Interface)
+
+class Arrange(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    def update(self, id, type):
+        iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        to_move = iids.getObject(int(id))
+        mover = zope.copypastemove.interfaces.IObjectMover(to_move)
+
+        if type == 'inside':
+            mover.moveTo(self.context, to_move.__name__)
+        else:
+            mover.moveTo(self.context.__parent__, to_move.__name__)
+
+            keys = list(self.context.__parent__.keys())
+            keys.remove(to_move.__name__)
+
+            if type == 'before':
+                keys.insert(keys.index(self.context.__name__), to_move.__name__)
+            elif type == 'after':
+                keys.insert(keys.index(self.context.__name__) + 1, to_move.__name__)
+
+            self.context.__parent__.updateOrder(keys)
+
+    def render(self):
+        pass
+

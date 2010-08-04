@@ -109,14 +109,6 @@ def add_teaser(edition):
         page = page.__parent__
 
 
-class Edit(asm.cms.EditForm):
-
-    grok.context(NewsFolder)
-
-    form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
-        'title')
-
-
 class Index(asm.cms.Pagelet):
 
     grok.context(NewsFolder)

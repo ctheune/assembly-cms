@@ -138,6 +138,8 @@ class MediaGalleryItem(asm.cms.edition.Edition):
     _thumbnail = u''
     _view = u''
 
+    MEDIA_WIDTH = 560.0
+
     def get_attributes(self):
         if self.attributes is None:
             return {}
@@ -168,9 +170,21 @@ class MediaGalleryItem(asm.cms.edition.Edition):
         if not view:
             attributes = self.get_attributes()
             if 'youtube' in attributes:
-                view = """<object width="560" height="336"><param name="movie" value="http://www.youtube.com/v/LWDWn6tzsIc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="336"></embed></object>""" % attributes['youtube']
+                youtube_player_controls_height = 15.0
+                youtube_height = MEDIA_WIDTH * 9.0 / 16.0 + youtube_player_controls_height
+                view = """<object width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>""" % {
+                    'id': attributes['youtube'],
+                    'width': MEDIA_WIDTH,
+                    'height': youtube_height
+                    }
             elif 'dtvvideo' in attributes:
-                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%s" width="560" height="442" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % attributes['dtvvideo']
+                dtv_player_controls_height = 20.0
+                dtv_height = MEDIA_WIDTH * 3.0 / 4.0 + dtv_player_controls_height
+                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id)s" width="%(width)d" height="%(height)d" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % {
+                    'id': attributes['dtvvideo'],
+                    'width': MEDIA_WIDTH,
+                    'height': dtv_height
+                    }
         self._view = view
 
     view = property(get_view, set_view)

@@ -172,34 +172,68 @@ def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
 
+class FilteredSchedule(object):
+    """A helper to create a filtered view on a schedule."""
+
+    filters = {'all': ('all events', lambda x: True),
+               'major': ('major events only', lambda x: x.major),
+               'compo': ('compo-related events',
+                         lambda x: x.class_.startswith('Compo'))}
+
+    def __init__(self, schedule, details, day):
+        day_options = set()
+        self.details = details
+        self.day = day
+
+        by_day = {}
+        matches = self.filters[details][1]
+
+        for event in schedule.events.values():
+            day_options.add(event.start.date())
+            if not matches(event):
+                continue
+            event_day = event.start.date()
+            if day != 'all' and day != event_day:
+                continue
+            day_events = by_day.setdefault(event_day, [])
+            day_events.append(event)
+
+        self.events = []
+        for day, events in sorted(by_day.items()):
+            if not events:
+                continue
+            data = {}
+            data['day'] = day
+            data['events'] = sorted(events, key=lambda x:x.start)
+            self.events.append(data)
+
+        self.day_options = [
+            dict(token=day.isoformat(),
+                 class_=(self.day == day and 'selected' or ' '),
+                 label=day.strftime('%A'))
+            for day in sorted(day_options)]
+        self.day_options.append(dict(
+            token='all',
+            label='all days',
+            class_=(self.day == 'all' and 'selected' or ' ')))
+
+        self.detail_options = [
+            dict(token=key,
+                 class_=(self.details == key and 'selected' or ' '),
+                 label=value[0])
+            for key, value in self.filters.items()]
+
+
 class Index(asm.cms.Pagelet):
 
-    filters = dict(
-        major=lambda x: x.major,
-        all=lambda x: True,
-        compo=lambda x: x.class_.startswith('Compo'))
-
     def update(self):
-        self.details = self.request.get('details', 'all')
-        self.day = self.request.get('day', 'all')
+        day = self.request.get('day', 'all')
+        if day != 'all':
+            day = datetime.datetime.strptime(day, '%Y-%m-%d').date()
+        details = self.request.get('details', 'all')
 
-    def events(self):
-        events = []
-        filter = self.filters[self.details]
-        current = dict(date=None, events=[])
-        for event in sorted(self.context.events.values(),
-                            key=lambda x: x.start):
-            if event.start.date() != current['date']:
-                if current['date']:
-                    events.append(current)
-                current = dict(date=event.start.date(), events=[])
-            if not filter(event):
-                continue
-            if self.day != 'all' and event.start.date().isoformat() != self.day:
-                continue
-            current['events'].append(event)
-        events.append(current)
-        return events
+        self.filter = FilteredSchedule(
+            self.context, details, day)
 
     def format_date(self, date):
         specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',

@@ -30,9 +30,12 @@ class Schedule(asm.cms.Edition):
         self.events = BTrees.IOBTree.IOBTree()
 
     def copyFrom(self, other):
+        super(Schedule, self).copyFrom(other)
         self.events.clear()
         for key, value in other.events.items():
             self.events[key] = value
+        self.message = other.message
+
 
 
 class Event(persistent.Persistent):

@@ -179,20 +179,26 @@ class Index(asm.cms.Pagelet):
         all=lambda x: True,
         compo=lambda x: x.class_.startswith('Compo'))
 
+    def update(self):
+        self.details = self.request.get('details', 'all')
+        self.day = self.request.get('day', 'all')
+
     def events(self):
         events = []
-        filter = self.filters[self.request.get('details', 'all')]
-        current = dict(date=None)
+        filter = self.filters[self.details]
+        current = dict(date=None, events=[])
         for event in sorted(self.context.events.values(),
                             key=lambda x: x.start):
             if event.start.date() != current['date']:
                 if current['date']:
                     events.append(current)
                 current = dict(date=event.start.date(), events=[])
-            if filter(event):
-                current['events'].append(event)
-        if current['events']:
-            events.append(current)
+            if not filter(event):
+                continue
+            if self.day != 'all' and event.start.date().isoformat() != self.day:
+                continue
+            current['events'].append(event)
+        events.append(current)
         return events
 
     def format_date(self, date):

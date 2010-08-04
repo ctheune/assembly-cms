@@ -398,6 +398,10 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
     width:8em;
 }
 
+.schedulefilter .selected {
+    font-weight: bold;
+}
+
 #livestream {
     background:url("images/asmtv-livestream.png") no-repeat;
     display:block;
@@ -466,3 +470,4 @@ div.wrap {
 	float:right;
 	margin:10px 4px 0 6px;
 }
+

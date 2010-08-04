@@ -235,22 +235,22 @@ class Arrange(grok.View):
 
     def update(self, id, type):
         iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
-        obj = iids.getObject(int(id)).__parent__
-        mover = zope.copypastemove.interfaces.IObjectMover(obj)
+        to_move = iids.getObject(int(id))
+        mover = zope.copypastemove.interfaces.IObjectMover(to_move)
 
         if type == 'inside':
-            mover.moveTo(self.context, obj.__name__)
-        elif type == 'before':
-            mover.moveTo(self.context.__parent__, obj.__name__)
+            mover.moveTo(self.context, to_move.__name__)
+        else:
+            mover.moveTo(self.context.__parent__, to_move.__name__)
+
             keys = list(self.context.__parent__.keys())
-            keys.remove(obj.__name__)
-            keys.insert(keys.index(self.context.__name__), obj.__name__)
-            self.context.__parent__.updateOrder(keys)
-        elif type == 'after':
-            mover.moveTo(self.context.__parent__, obj.__name__)
-            keys = list(self.context.__parent__.keys())
-            keys.remove(obj.__name__)
-            keys.insert(keys.index(self.context.__name__) + 1, obj.__name__)
+            keys.remove(to_move.__name__)
+
+            if type == 'before':
+                keys.insert(keys.index(self.context.__name__), to_move.__name__)
+            elif type == 'after':
+                keys.insert(keys.index(self.context.__name__) + 1, to_move.__name__)
+
             self.context.__parent__.updateOrder(keys)
 
     def render(self):

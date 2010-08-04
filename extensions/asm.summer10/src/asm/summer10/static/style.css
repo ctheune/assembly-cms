@@ -402,6 +402,24 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
     font-weight: bold;
 }
 
+table.schedule .odd, table.schedule .even {
+    background-color: transparent;
+}
+
+table.schedule .past, table.schedule .past a {
+    color: #999;
+}
+
+table.schedule .current {
+    background-color:yellow;
+    font-weight: bold;
+}
+
+table.schedule .future {
+    background-color:#f4f4f4;
+}
+
+
 #livestream {
     background:url("images/asmtv-livestream.png") no-repeat;
     display:block;

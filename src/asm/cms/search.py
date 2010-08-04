@@ -19,18 +19,6 @@ class EditionCatalog(grok.Indexes):
     body = grok.index.Text()
 
 
-class Search(megrok.pagelet.Pagelet):
-
-    grok.context(asm.cms.cms.CMS)
-    grok.layer(asm.cms.ICMSSkin)
-    grok.require('asm.cms.EditContent')
-
-    def update(self):
-        self.keyword = q = self.request.form.get('q', '')
-        self.results = hurry.query.query.Query().searchResults(
-            hurry.query.Text(('edition_catalog', 'body'), q))
-
-
 class PublicSearch(megrok.pagelet.Pagelet):
 
     grok.context(asm.cms.interfaces.IEdition)

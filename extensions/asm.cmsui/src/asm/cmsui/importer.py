@@ -4,7 +4,6 @@
 import asm.cms
 import asm.cms.cms
 import asm.cms.edition
-import asm.cms.htmlpage
 import base64
 import datetime
 import grok
@@ -67,7 +66,7 @@ class Import(asm.cms.Form):
 
     def import_htmlpage(self, edition, node):
         content = base64.decodestring(node.text).decode('utf-8')
-        asm.cms.htmlpage.fix_relative_links(
+        fix_relative_links(
             content, self.base_path + '/' + node.getparent().get('path'))
         edition.content = content
 
@@ -98,3 +97,12 @@ def extract_date(str):
         return datetime.datetime.now(pytz.UTC)
     date = datetime.datetime.strptime(str, '%Y-%m-%d %H:%M:%S')
     return date.replace(tzinfo=pytz.UTC)
+
+def fix_relative_links(document, current_path):
+
+    def fix_relative(url):
+        if not url.startswith('/'):
+            return
+        return bn.relpath(url, current_path)
+
+    return asm.cms.utils.rewrite_urls(document, fix_relative)

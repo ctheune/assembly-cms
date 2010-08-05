@@ -18,21 +18,31 @@
 </tal:block>
 </p>
 
-<tal:block repeat="record view/filter/events">
-  <h2 tal:content="python:view.format_date(record['day'])"></h2>
 
   <table class="schedule">
-      <tr tal:repeat="event record/events"
-          tal:attributes="class python:view.event_class(event) + ' ' + (repeat['event'].odd() and 'odd' or 'even')">
-          <td class="schedule-time">
-            <span tal:content="python:event.start.strftime('%H:%M')">12:00</span>
-            <tal:block condition="python:event.start != event.end">&ndash;
-              <span tal:content="python:event.end.strftime('%H:%M')">12:00</span>
-              <span tal:condition="python:event.start.day != event.end.day" tal:content="python:event.end.strftime('%a')"/>
-            </tal:block>
-          </td>
-          <td><a tal:attributes="href event/url" tal:content="event/title">ASSEMBLY Summer 2009 alkaa!</a></td>
-          <td><a tal:attributes="href event/location_url" tal:content="event/location">Kaikki alueet</a></td>
-      </tr>
+    <tal:block repeat="record view/filter/events">
+    <tr class="day">
+      <th colspan="2" tal:content="python:record['day'].strftime('%A')">
+      </th>
+    </tr>
+    <tal:block repeat="hour_record record/hours">
+    <tal:block repeat="event hour_record/events">
+    <tr>
+      <th tal:condition="repeat/event/start"
+        tal:content="python:hour_record['hour'].strftime('%H:%M')"
+        tal:attributes="rowspan repeat/event/length">
+      </th>
+      <td tal:attributes="class python:view.event_class(event)">
+        <a tal:content="event/title" tal:attributes="href event/url"></a><br/>
+        <a tal:content="event/location" tal:attributes="href event/location_url" class="location"></a>
+        <span class="until" tal:condition="python:event.start != event.end">&ndash;
+          until <span tal:content="python:event.end.strftime('%H:%M')">12:00</span>
+          <span tal:condition="python:event.start.day != event.end.day" tal:content="python:event.end.strftime('%A')"/>
+        </span>
+      </td>
+    </tr>
+    </tal:block>
+    </tal:block>
+    </tal:block>
   </table>
-</tal:block>
+

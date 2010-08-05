@@ -1,17 +1,22 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-class Edit(asm.cms.form.EditionEditForm):
+import grok
+import asm.cmsui.form
+import asm.cmsui.interfaces
+import asm.cms.asset
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+grok.context(asm.cms.asset.Asset)
+
+class Edit(asm.cmsui.form.EditionEditForm):
+
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.name('edit')
 
-    main_fields = grok.AutoFields(Asset).select(
+    main_fields = grok.AutoFields(asm.cms.asset.Asset).select(
         'title', 'content')
-    main_fields['content'].custom_widget = FileWithDisplayWidget
+    main_fields['content'].custom_widget = asm.cmsui.form.FileWithDisplayWidget
 
 
 class ImagePicker(grok.View):
-    grok.context(Asset)
     grok.name('image-picker')
-

@@ -16,6 +16,7 @@ setup(name='asm.schedule',
                         'asm.cms',
                         'asm.workflow',
                         'grok',
+                        'icalendar',
                         'setuptools',
                         'zope.interface',
                         'zope.schema'])

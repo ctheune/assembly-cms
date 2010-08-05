@@ -9,7 +9,6 @@ import grok
 import persistent
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
-import asm.cms
 
 
 class Schedule(asm.cms.Edition):
@@ -36,6 +35,27 @@ class Schedule(asm.cms.Edition):
             self.events[key] = value
         self.message = other.message
 
+
+            
+class TextIndexing(grok.Adapter):
+
+    zope.interface.implements(asm.cms.interfaces.ISearchableText)
+
+    def __init__(self, schedule):
+        result = [schedule.title, schedule.message]
+        for event in schedule.events.values():
+            result.extend([event.title, event.location])
+        self.body = ' '.join(result)
+
+        
+class SearchPreview(grok.View):
+
+    def update(self, q):
+        self.keyword = q
+        self.result = []
+        for event in self.context.events.values():
+            if self.keyword.lower() in event.title.lower():
+                self.result.append(event)
 
 
 class Event(persistent.Persistent):
@@ -82,7 +102,8 @@ class Edit(asm.cms.EditForm):
     def upload(self, data=None, title=None, message=None):
         self.context.title = title
         self.context.message = message
-
+        zope.event.notify(grok.ObjectModifiedEvent(self.context))
+        
         if not data:
             self.flash('Saved changes.')
             return
@@ -133,7 +154,8 @@ class Edit(asm.cms.EditForm):
         public_csv = public_data.getvalue()
         english.public_csv = public_csv
         finnish.public_csv = public_csv
-
+        zope.event.notify(grok.ObjectModifiedEvent(english))
+        zope.event.notify(grok.ObjectModifiedEvent(finnish))
         self.flash(u'Your schedule was imported successfully.')
 
 

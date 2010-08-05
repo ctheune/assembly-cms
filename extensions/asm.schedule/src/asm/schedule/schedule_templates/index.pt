@@ -1,5 +1,7 @@
 <span tal:replace="structure context/message|nothing" />
 
+<a tal:attributes="href python:view.url(context, 'schedule.ics')">Subscribe as iCal</a>
+
 <p class="schedulefilter"><strong>Select day:</strong><br />
 <tal:block repeat="option view/filter/day_options">
 <a tal:attributes="href string:?day=${option/token}&details=${view/filter/details};

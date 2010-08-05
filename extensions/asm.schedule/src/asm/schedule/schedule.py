@@ -1,6 +1,7 @@
 import BTrees
 import StringIO
 import asm.cms
+import asm.cms.tinymce
 import asm.schedule.interfaces
 import asm.workflow.interfaces
 import csv

@@ -29,9 +29,12 @@ class Schedule(asm.cms.Edition):
         self.events = BTrees.IOBTree.IOBTree()
 
     def copyFrom(self, other):
+        super(Schedule, self).copyFrom(other)
         self.events.clear()
         for key, value in other.events.items():
             self.events[key] = value
+        self.message = other.message
+
 
             
 class TextIndexing(grok.Adapter):
@@ -194,28 +197,81 @@ def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
 
+class FilteredSchedule(object):
+    """A helper to create a filtered view on a schedule."""
+
+    filters = {'all': ('all events', lambda x: True),
+               'major': ('major events only', lambda x: x.major),
+               'compo': ('compo-related events',
+                         lambda x: x.class_.startswith('Compo'))}
+
+    def __init__(self, schedule, details, day):
+        day_options = set()
+        self.details = details
+        self.day = day
+
+        by_day = {}
+        matches = self.filters[details][1]
+
+        for event in schedule.events.values():
+            day_options.add(event.start.date())
+            if not matches(event):
+                continue
+            event_day = event.start.date()
+            if day != 'all' and day != event_day:
+                continue
+            day_events = by_day.setdefault(event_day, [])
+            day_events.append(event)
+
+        self.events = []
+        for day, events in sorted(by_day.items()):
+            if not events:
+                continue
+            data = {}
+            data['day'] = day
+            hours = {}
+            for event in events:
+                hours.setdefault(event.start, []).append(event)
+            data['hours'] = [dict(hour=k, events=v) for k,v in
+                             sorted(hours.items())]
+            self.events.append(data)
+
+        self.day_options = [
+            dict(token=day.isoformat(),
+                 class_=(self.day == day and 'selected' or ' '),
+                 label=day.strftime('%A'))
+            for day in sorted(day_options)]
+        self.day_options.append(dict(
+            token='all',
+            label='all days',
+            class_=(self.day == 'all' and 'selected' or ' ')))
+
+        self.detail_options = [
+            dict(token=key,
+                 class_=(self.details == key and 'selected' or ' '),
+                 label=value[0])
+            for key, value in self.filters.items()]
+
+
 class Index(asm.cms.Pagelet):
 
-    filters = dict(
-        major=lambda x: x.major,
-        all=lambda x: True,
-        compo=lambda x: x.class_.startswith('Compo'))
+    def update(self):
+        day = self.request.get('day', 'all')
+        if day != 'all':
+            day = datetime.datetime.strptime(day, '%Y-%m-%d').date()
+        details = self.request.get('details', 'all')
+        self.now = datetime.datetime.now()
 
-    def events(self):
-        events = []
-        filter = self.filters[self.request.get('details', 'all')]
-        current = dict(date=None)
-        for event in sorted(self.context.events.values(),
-                            key=lambda x: x.start):
-            if event.start.date() != current['date']:
-                if current['date']:
-                    events.append(current)
-                current = dict(date=event.start.date(), events=[])
-            if filter(event):
-                current['events'].append(event)
-        if current['events']:
-            events.append(current)
-        return events
+        self.filter = FilteredSchedule(
+            self.context, details, day)
+
+    def event_class(self, event):
+        if event.end < self.now:
+            return 'past'
+        if event.start > self.now:
+            return 'future'
+        if event.start < self.now and event.end > self.now:
+            return 'current'
 
     def format_date(self, date):
         specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',

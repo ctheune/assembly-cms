@@ -1,10 +1,10 @@
 <h1 tal:content="context/title">Year</h1>
 
-<div tal:repeat="folder view/list_folders">
-  <h2><a tal:attributes="href python:view.url(folder.page)"
-         tal:content="folder/title">Compo type</a></h2>
+<div tal:repeat="category view/list_categories">
+  <h2><a tal:attributes="href python:view.url(category.page)"
+         tal:content="category/title">Compo type</a></h2>
 
-  <table tal:repeat="item python:view.list_folder_items(folder, 3)" style="display: inline">
+  <table tal:repeat="item python:view.list_category_items(category, 3)" style="display: inline">
   <tr><td>
     <div>
       <a tal:attributes="href python:view.url(item)">

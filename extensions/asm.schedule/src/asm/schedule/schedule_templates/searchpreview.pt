@@ -1,1 +1,7 @@
-<ul>    <li tal:repeat="item view/result">            <span tal:replace="item/title" />			(<span tal:replace="python:item.start.strftime('%A %H:%M')" />,			<span tal:replace="item/location" />)    </li></ul>
+<ul>
+  <li tal:repeat="item view/result">
+  <span tal:replace="item/title"></span>
+  <span tal:replace="python:item.start.strftime('%A %H:%M')"></span> ,
+  <span tal:replace="item/location"></span>)
+  </li>
+</ul>

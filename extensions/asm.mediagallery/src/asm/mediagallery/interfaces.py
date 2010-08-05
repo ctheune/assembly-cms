@@ -7,7 +7,7 @@ class IMediaGalleryRoot(zope.interface.Interface):
 
     compo_data = zope.schema.Bytes(title=u'Compo data', required=False)
 
-class IMediaGalleryFolder(zope.interface.Interface):
+class IMediaGalleryCategory(zope.interface.Interface):
     title = zope.schema.TextLine(title=u'Title')
 
 class IMediaGalleryItem(zope.interface.Interface):

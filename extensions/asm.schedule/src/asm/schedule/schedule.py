@@ -207,7 +207,11 @@ class FilteredSchedule(object):
                 continue
             data = {}
             data['day'] = day
-            data['events'] = sorted(events, key=lambda x:x.start)
+            hours = {}
+            for event in events:
+                hours.setdefault(event.start, []).append(event)
+            data['hours'] = [dict(hour=k, events=v) for k,v in
+                             sorted(hours.items())]
             self.events.append(data)
 
         self.day_options = [

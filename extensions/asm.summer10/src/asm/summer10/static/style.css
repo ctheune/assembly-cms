@@ -369,7 +369,7 @@ list-style-type:none;
 }
 
 #nav-top a:hover {
-text-decoration:underline;;
+text-decoration:underline;
 }
 
 
@@ -402,23 +402,56 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
     font-weight: bold;
 }
 
-table.schedule .odd, table.schedule .even {
-    background-color: transparent;
+table.schedule th {
+    background-color: #eee;
+    vertical-align: top;
+    padding:0.5em;
+    text-align: left;
+    font-size: 1.5em;
 }
 
-table.schedule .past, table.schedule .past a {
-    color: #999;
-}
-
-table.schedule .current {
-    background-color:yellow;
+table.schedule td {
+    padding: 0.5em;
+    padding-left: 1em;
+    font-size: 1.5em;
     font-weight: bold;
+    line-height:1;
 }
 
-table.schedule .future {
-    background-color:#f4f4f4;
+table.schedule td a {
+    text-decoration: none;
 }
 
+table.schedule td a.location,
+table.schedule td .until {
+    font-size: 70%;
+    font-weight: normal;
+}
+
+table.schedule td .until {
+    color: #666;
+}
+
+table.schedule th {
+    border-top: 1px solid #ccc;
+}
+
+table.schedule td {
+    border-top: 1px solid #eee;
+}
+
+table.schedule tr.day th {
+    background-color: #333;
+    color: white;
+}
+
+table.schedule a:visited {
+    color: #2d778e;
+}
+
+table.schedule td.current {
+    background-color: #ebf2f3;
+}
 
 #livestream {
     background:url("images/asmtv-livestream.png") no-repeat;

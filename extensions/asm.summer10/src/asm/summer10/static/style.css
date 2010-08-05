@@ -448,6 +448,10 @@ table.schedule td.current {
     background-color: #ebf2f3;
 }
 
+.forum-banner {
+    margin-left:4px;
+}
+
 #livestream {
     background:url("images/asmtv-livestream.png") no-repeat;
     display:block;

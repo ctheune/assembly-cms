@@ -26,6 +26,14 @@ class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
 
+    def current_events(self):
+        schedule = asm.cms.edition.select_edition(
+            self.application['program']['schedule'], self.request)
+        now = datetime.datetime.now()
+        for event in schedule.events.values():
+            if event.start <= now and event.end > now:
+                yield event
+
     def news(self):
         try:
             # This try/except block makes the skin more resilient towards

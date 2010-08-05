@@ -1,6 +1,5 @@
 h1, h2, h3, h4, h5 {color:#333; border:0; font-family:"Trebuched MS", Verdana, Arial; font-weight:bold;}
 a, a:link {color:#2d778e;}
-a:visited {color:#21484e;}
 a:hover {text-decoration:none; color:#e70101;}
 h2 a, h2 a:link, h2 a:visited {text-decoration:none; color:#2d778e;;}
 h1 {font-size:2em; border-bottom:1px solid #ccc; }
@@ -443,10 +442,6 @@ table.schedule td {
 table.schedule tr.day th {
     background-color: #333;
     color: white;
-}
-
-table.schedule a:visited {
-    color: #2d778e;
 }
 
 table.schedule td.current {

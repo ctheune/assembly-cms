@@ -460,7 +460,7 @@ table.schedule td.current {
 div.overlay {
 	
 	/* growing background image */
-	
+	background:url("images/1x1.png") no-repeat;	
 	/* dimensions after the growing animation finishes  */
 	width:600px;
 	height:470px;		
@@ -474,8 +474,8 @@ div.overlay {
 
 /* default close button positioned on upper right corner */
 div.overlay div.close {
-	background-image:url(http://static.flowplayer.org/tools/img/overlay/close.png);
-	position:absolute;
+	/*background-image:url(http://static.flowplayer.org/tools/img/overlay/close.png);
+	*/position:absolute;
 	right:5px;
 	top:5px;
 	cursor:pointer;
@@ -500,9 +500,9 @@ div.black h2, div.petrol h2 {
 }
 
 #overlay {
-	background: #000;
+	background-color:black;
 	color:#efefef;
-	width:520px; height:440px; padding:40px; -moz-border-radius:5px; -webkit-border-radius:5px;
+	width:520px; height:300px; padding:40px; -moz-border-radius:5px; -webkit-border-radius:5px;
 }
 
 div.wrap {
@@ -517,3 +517,11 @@ div.wrap {
 	margin:10px 4px 0 6px;
 }
 
+/* get rid of those system borders being generated for A tags */
+a:active {
+  outline:none;
+  }
+
+  :focus {
+    -moz-outline-style:none;
+    }

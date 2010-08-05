@@ -2,9 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.edition
-import asm.cms.form
 import asm.cms.interfaces
-import asm.cms.tinymce
 import asm.cms.utils
 import bn
 import cgi

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
+import asm.cmsui.interfaces
 import grok
 import megrok.pagelet
 import os.path
@@ -14,7 +15,7 @@ import zope.traversing.api
 class CMSForm(object):
 
     grok.require('asm.cms.EditContent')
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
     def __init__(self, context, request):
@@ -117,3 +118,31 @@ class EditionEditForm(EditForm):
                 field.location = schema.getTaggedValue('label')
             fields += zope.formlib.form.FormFields(*add_fields)
         return fields
+
+class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
+
+    def __call__(self):
+        html = super(FileWithDisplayWidget, self).__call__()
+        field = self.context
+        asset = field.context
+        blob = field.get(asset)
+        img = ''
+        if blob is not None:
+            data = blob.open().read()
+            if data:
+                img = ('<br/><img src="data:%s;base64,%s"/>' %
+                       (asm.cms.magic.whatis(data), data.encode('base64')))
+        return (html + img)
+
+    def _toFieldValue(self, input):
+        if input == self._missing:
+            # Use existing value, don't override with missing.
+            field = self.context
+            asset = field.context
+            value = field.get(asset)
+        else:
+            value = ZODB.blob.Blob()
+            f = value.open('w')
+            f.write(input.read())
+            f.close()
+        return value

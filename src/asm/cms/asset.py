@@ -3,7 +3,6 @@
 
 import ZODB.blob
 import asm.cms.edition
-import asm.cms.form
 import asm.cms.interfaces
 import asm.cms.magic
 import grok

@@ -1,6 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grok
+import zope.interface
+
 
 class ICMSSkin(grok.IDefaultBrowserLayer):
         grok.skin('cms')

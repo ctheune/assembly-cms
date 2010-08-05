@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms
+import asm.cms.retail
 import asm.cms.edition
 import grok
 import zope.interface
@@ -109,7 +110,7 @@ def add_teaser(edition):
         page = page.__parent__
 
 
-class Index(asm.cms.Pagelet):
+class Index(asm.cms.retail.Pagelet):
 
     grok.context(NewsFolder)
 

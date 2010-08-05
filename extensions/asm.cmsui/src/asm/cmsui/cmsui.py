@@ -3,6 +3,7 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import asm.cmsui.interfaces
 import cgi
 import datetime
 import grok
@@ -19,7 +20,7 @@ class EditContent(grok.Permission):
 class Layout(megrok.pagelet.Layout):
 
     grok.context(zope.interface.Interface)
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
 
     megrok.pagelet.template('templates/cms.pt')
 
@@ -42,7 +43,7 @@ class LayoutHelper(grok.View):
 class IntId(grok.View):
 
     grok.context(zope.interface.Interface)   # XXX Meh.
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def render(self):
@@ -53,7 +54,7 @@ class IntId(grok.View):
 class Tree(grok.View):
 
     grok.context(grok.Application)   # XXX Meh.
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def update(self):
@@ -107,7 +108,7 @@ class Breadcrumbs(grok.Viewlet):
 class ActionView(grok.View):
 
     grok.baseclass()
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
 
     def render(self):
         self.redirect(self.url(self.context, '@@edit'))

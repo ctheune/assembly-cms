@@ -107,7 +107,9 @@
 
               </div>
             </div> <!-- sponsors -->
-
+            <div class="forum-banner">
+	      <a href="http://forum.assembly.org"><img tal:attributes="src context/@@layouthelper/static/images/banner-forum.png" alt="Assembly Forums"></a>
+	    </div>
             <div class="sidebar-box">
               <h4>News</h4>
               <ul>

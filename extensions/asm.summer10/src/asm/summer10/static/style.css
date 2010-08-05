@@ -460,7 +460,7 @@ table.schedule td.current {
 div.overlay {
 	
 	/* growing background image */
-	background:url("/images/1x1.png") no-repeat;	
+	background:url("images/1x1.png") no-repeat;	
 	/* dimensions after the growing animation finishes  */
 	width:600px;
 	height:470px;		
@@ -517,3 +517,11 @@ div.wrap {
 	margin:10px 4px 0 6px;
 }
 
+/* get rid of those system borders being generated for A tags */
+a:active {
+  outline:none;
+  }
+
+  :focus {
+    -moz-outline-style:none;
+    }

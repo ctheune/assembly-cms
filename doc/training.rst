@@ -10,14 +10,14 @@ Preface
 =======
 
 The WebCrew is here to make Assembly better by using Web technology. The
-Assembly homepage is an important piece about providing information to the
+Assembly homepage is an important tool for providing information to the
 public (visitors and non-visitors) before, during, and after the Assembly.
 
 We want to make your life easier by providing you with a Web authoring system
-that helps you to get this information out as quickly, as easy, and as
+that helps you to get this information out as quickly, as easily, and as
 accurate as possible.
 
-If you find anything hard to use, understand, wrong or otherwise in need of
+If you find anything difficult to use or understand, wrong or otherwise in need of
 change, please feel free to speak up to us: either personally or via IRC
 (!webcrew) or by email (web@assembly.org).
 
@@ -45,10 +45,10 @@ http://asmdemo.gocept.com/public
 Frontend vs. Backend
 ====================
 
-The system is split between a frontend that shows the website with all
-graphical details, typography, imagery, banners, etc. The frontend is
-accessible by anonymous users and will only provide information that has been
-published.
+The system is split between a frontend that shows the website with all 
+graphical details, typography, imagery, banners, etc. The frontend is 
+accessible by the general public and will only provide information that 
+has been published.
 
 The backend requires a login and uses a light-weight graphical design that is
 intended to allow you to focus on the content editing task while not worrying
@@ -62,7 +62,7 @@ Basics - getting around
 
   * Use the "Navigation" button to switch to/from navigation
   * Alternatively use the Escape key to switch
-  * Symbols of a page represent a type
+  * The symbol in front of the page name shows the type of the page
   * Click on a page in the tree to select it
   * Click on the + sign in front of a page to open or close the sub-tree of that page.
   * Double-click a page to edit it.
@@ -71,7 +71,7 @@ Basics - getting around
 
   * Searches all variations of content
   * Tries to show a bit of a preview
-  * OpenSearch integration
+  * The search integrates with the browser address line (OpenSearch)
 
 * Parts of the CMS are hidden if they aren't needed very often. You can
   discover those parts by looking for small up/down arrows.
@@ -118,7 +118,7 @@ a file holding an image or document.
 To upload an image:
 
 * Switch to navigation mode.
-* Click on the root node.
+* Click on the page under which you want the image to be stored.
 * Type a name for the new page in the 'Add new page' box.
 * Select 'File/Image'.
 * Click 'Add'.

@@ -6,7 +6,7 @@
   <grok:grok package="." />
 
   <utility component=".gallery.MediaGalleryRoot" name="mediagalleryroot"/>
-  <utility component=".gallery.MediaGalleryFolder" name="mediagalleryfolder"/>
+  <utility component=".gallery.MediaGalleryCategory" name="mediagallerycategory"/>
   <utility component=".gallery.MediaGalleryItem" name="mediagalleryitem" />
 
 </configure>

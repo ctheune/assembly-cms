@@ -1,14 +1,16 @@
 import asm.cms
 import asm.cms.edition
 import asm.mediagallery.interfaces
+import asm.workflow
 import grok
+import re
 import sys
 import urllib
 import zope.interface
 import ZODB.blob
 
 TYPE_GALLERY_ROOT = 'mediagalleryroot'
-TYPE_GALLERY_FOLDER = 'mediagalleryfolder'
+TYPE_GALLERY_CATEGORY = 'mediagallerycategory'
 TYPE_GALLERY_ITEM = 'mediagalleryitem'
 THUMBNAIL_IMAGE = 'thumbnail-image'
 
@@ -22,11 +24,11 @@ class MediaGalleryRoot(asm.cms.Edition):
 
     compo_data = None
 
-    def list_folders(self, base=None):
+    def list_categories(self, base=None):
         if base is None:
             base = self.page
         for page in base.subpages:
-            if page.type == TYPE_GALLERY_FOLDER:
+            if page.type == TYPE_GALLERY_CATEGORY:
                 yield page
 
     def list_items(self, base=None):
@@ -37,6 +39,14 @@ class MediaGalleryRoot(asm.cms.Edition):
                 yield page
 
 
+def normalize_name(string):
+    result = string.strip().lower()
+    result = re.sub("[^a-z0-9]", "-", result)
+    result = re.sub("-+", "-", result)
+    result = result.strip("-")
+    return result
+
+
 class RootEdit(asm.cms.EditForm):
 
     grok.context(MediaGalleryRoot)
@@ -45,6 +55,73 @@ class RootEdit(asm.cms.EditForm):
     form_fields = grok.AutoFields(asm.mediagallery.interfaces.IMediaGalleryRoot).select(
         'title', 'compo_data')
 
+    def _add_category(self, category_name):
+        category_id = normalize_name(category_name)
+
+        category = self.context.page.get(category_id)
+        if category is None:
+            category = asm.cms.page.Page(TYPE_GALLERY_CATEGORY)
+            self.context.page[category_id] = category
+
+        # Get the first edition.
+        for edition in category.editions:
+            category_edition = edition
+            break
+
+        category_edition.title = category_name
+
+        zope.event.notify(grok.ObjectModifiedEvent(category_edition))
+        if asm.workflow.WORKFLOW_DRAFT in category_edition.parameters:
+            asm.workflow.publish(category_edition)
+
+        return category
+
+
+    def _add_item(self, category, line):
+        category_parts = line.split("|")
+
+        item_name = None
+        item_author = None
+        item_thumbnail = None
+        item_view = None
+
+        item_attributes = []
+
+        for part in category_parts:
+            name, value = part.split(":", 1)
+            if name == 'name':
+                item_name = value
+            elif name == 'author':
+                item_author = value
+            elif name == 'thumbnail':
+                item_thumbnail = value
+            elif name == 'view':
+                item_view = value
+
+            item_attributes.append(part)
+
+        item_id = normalize_name(item_name) + u"-by-" + normalize_name(item_author)
+
+        item = category.get(item_id)
+        if item is None:
+            item = asm.cms.page.Page(TYPE_GALLERY_ITEM)
+            category[item_id] = item
+
+        # Get the first edition.
+        for edition in item.editions:
+            item_edition = edition
+            break
+
+        item_edition.name = item_name
+        item_edition.author = item_author
+        item_edition.attributes = "\n".join(item_attributes)
+
+        item_edition.thumbnail = item_thumbnail
+        item_edition.view = item_view
+
+        zope.event.notify(grok.ObjectModifiedEvent(item_edition))
+        if asm.workflow.WORKFLOW_DRAFT in item_edition.parameters:
+            asm.workflow.publish(item_edition)
 
     @grok.action(u'Add compos')
     def add_compos(self, compo_data=None, title=None):
@@ -54,34 +131,44 @@ class RootEdit(asm.cms.EditForm):
             self.flash('Saved changes.')
             return
 
-        # TODO mass import compo data here.
-        self.flash('TODO')
+        current_category = None
+
+        for line in compo_data.split("\n"):
+            line = unicode(line.strip(), "UTF-8")
+
+            if line == "" or line[0] == "#":
+                continue
+            elif line[0] == "!":
+                category_name = line[1:].strip()
+                current_category = self._add_category(category_name)
+            else:
+                item = self._add_item(current_category, line)
 
 
 class RootIndex(asm.cms.Pagelet):
     grok.context(MediaGalleryRoot)
     grok.name('index')
 
-    def list_folders(self):
-        for folder in self.context.list_folders():
-            edition = asm.cms.edition.select_edition(folder, self.request)
+    def list_categories(self):
+        for category in self.context.list_categories():
+            edition = asm.cms.edition.select_edition(category, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
             yield edition
 
     def list_items(self):
-        for item in self.context.list_folders():
+        for item in self.context.list_items():
             edition = asm.cms.edition.select_edition(item, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
             yield edition
 
-    def list_folder_items(self, folder, limit=None):
+    def list_category_items(self, category, limit=None):
         maxLimit = limit
         if maxLimit == None:
             maxLimit = sys.maxint
         returned = 0
-        for media in folder.list():
+        for media in category.list():
             edition = asm.cms.edition.select_edition(media, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
@@ -91,11 +178,11 @@ class RootIndex(asm.cms.Pagelet):
                 break
 
 
-class MediaGalleryFolder(asm.cms.Edition):
-    zope.interface.implements(asm.mediagallery.interfaces.IMediaGalleryFolder)
+class MediaGalleryCategory(asm.cms.Edition):
+    zope.interface.implements(asm.mediagallery.interfaces.IMediaGalleryCategory)
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
-    factory_title = u'Media gallery folder'
+    factory_title = u'Media gallery category'
 
     def list(self, base=None):
         if base is None:
@@ -105,16 +192,17 @@ class MediaGalleryFolder(asm.cms.Edition):
                 yield page
 
 
-class FolderEdit(asm.cms.EditForm):
+class CategoryEdit(asm.cms.EditForm):
 
-    grok.context(MediaGalleryFolder)
+    grok.context(MediaGalleryCategory)
     grok.name('edit')
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
         'title')
 
-class FolderIndex(asm.cms.Pagelet):
-    grok.context(MediaGalleryFolder)
+
+class CategoryIndex(asm.cms.Pagelet):
+    grok.context(MediaGalleryCategory)
     grok.name('index')
 
     def list(self):
@@ -123,6 +211,7 @@ class FolderIndex(asm.cms.Pagelet):
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
             yield edition
+
 
 class MediaGalleryItem(asm.cms.edition.Edition):
 
@@ -137,6 +226,8 @@ class MediaGalleryItem(asm.cms.edition.Edition):
     attributes = u''
     _thumbnail = u''
     _view = u''
+
+    MEDIA_WIDTH = 560.0
 
     def get_attributes(self):
         if self.attributes is None:
@@ -168,9 +259,21 @@ class MediaGalleryItem(asm.cms.edition.Edition):
         if not view:
             attributes = self.get_attributes()
             if 'youtube' in attributes:
-                view = """<object width="560" height="336"><param name="movie" value="http://www.youtube.com/v/LWDWn6tzsIc&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="560" height="336"></embed></object>""" % attributes['youtube']
+                youtube_player_controls_height = 15.0
+                youtube_height = self.MEDIA_WIDTH * 9.0 / 16.0 + youtube_player_controls_height
+                view = """<object width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>""" % {
+                    'id': attributes['youtube'],
+                    'width': self.MEDIA_WIDTH,
+                    'height': youtube_height
+                    }
             elif 'dtvvideo' in attributes:
-                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%s" width="560" height="442" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % attributes['dtvvideo']
+                dtv_player_controls_height = 20.0
+                dtv_height = self.MEDIA_WIDTH * 3.0 / 4.0 + dtv_player_controls_height
+                view = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id)s" width="%(width)d" height="%(height)d" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" % {
+                    'id': attributes['dtvvideo'],
+                    'width': self.MEDIA_WIDTH,
+                    'height': dtv_height
+                    }
         self._view = view
 
     view = property(get_view, set_view)
@@ -264,7 +367,8 @@ class ItemIndex(asm.cms.Pagelet):
                 results.append(("Watch on DTV", "http://demoscene.tv/prod.php?id_prod=%s" % value))
         return results
 
+
 @grok.subscribe(asm.mediagallery.interfaces.IMediaGalleryItem, grok.IObjectModifiedEvent)
 def update_view(modified_item, event):
     modified_item.view = modified_item.view
-
+    modified_item.thumbnail = modified_item.thumbnail

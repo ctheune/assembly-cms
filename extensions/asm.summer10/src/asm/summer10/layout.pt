@@ -83,6 +83,16 @@
           </div> <!-- content-column -->
 
           <div id="rightbar">
+
+            <div class="sidebar-box">
+              <h4>Now on</h4>
+              <ul>
+                <li tal:repeat="item context/@@layouthelper/current_events">
+                  <a tal:attributes="href string:${view/application_url}/program/schedule"
+                    tal:content="item/title">Asus desktop image competition results </a>
+                </li>
+              </ul>
+            </div> <!-- sidebar news -->
             <div class="box-light sponsors">
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>

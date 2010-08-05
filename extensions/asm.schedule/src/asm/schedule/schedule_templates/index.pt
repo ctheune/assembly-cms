@@ -1,6 +1,6 @@
 <span tal:replace="structure context/message|nothing" />
 
-<a tal:attributes="href python:view.url(context, 'schedule.ics')">Subscribe as iCal</a>
+<a tal:attributes="href python:view.url(context, 'schedule.ics')"><img tal:attributes="src string:${view/application_url}/@@/asm.schedule/ics.gif"/></a>
 
 <p class="schedulefilter"><strong>Select day:</strong><br />
 <tal:block repeat="option view/filter/day_options">

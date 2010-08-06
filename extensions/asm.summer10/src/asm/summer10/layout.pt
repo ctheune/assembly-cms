@@ -88,8 +88,8 @@
               <h4>Now on</h4>
               <ul>
                 <li tal:repeat="item context/@@layouthelper/current_events">
-                  <a tal:attributes="href string:${view/application_url}/program/schedule"
-                    tal:content="item/title">Asus desktop image competition results </a>
+                  <a tal:attributes="href string:${view/application_url}/program/schedule#${item/key}"
+                    tal:content="item/event/title">Asus desktop image competition results </a>
                 </li>
               </ul>
             </div> <!-- sidebar news -->

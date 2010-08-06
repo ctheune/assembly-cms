@@ -30,9 +30,9 @@ class LayoutHelper(grok.View):
         schedule = asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
         now = datetime.datetime.now()
-        for event in schedule.events.values():
+        for key, event in schedule.events.items():
             if event.start <= now and event.end > now:
-                yield event
+                yield dict(event=event,key=key)
 
     def news(self):
         try:

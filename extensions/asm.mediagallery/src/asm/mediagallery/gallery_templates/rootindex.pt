@@ -8,7 +8,7 @@
   <tr><td>
     <div>
       <a tal:attributes="href python:view.url(item)">
-        <img tal:attributes="src python:view.url(item) + '/' + item.thumbnail;
+        <img tal:attributes="src python:'://' in item.thumbnail and item.thumbnail or view.url(item) + '/' + item.thumbnail;
                          alt item/title" />
       </a>
   </td></tr>

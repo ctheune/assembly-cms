@@ -148,11 +148,15 @@ class DisplayParameters(grok.View):
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
+    page.addEdition(get_initial_parameters())
+
+
+def get_initial_parameters():
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
             asm.cms.interfaces.IInitialEditionParameters):
         parameters.update(factory())
-    page.addEdition(parameters)
+    return EditionParameters(parameters)
 
 
 class Delete(grok.View):

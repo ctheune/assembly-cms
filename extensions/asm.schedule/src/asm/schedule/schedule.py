@@ -46,7 +46,7 @@ class TextIndexing(grok.Adapter):
         result = [schedule.title, schedule.message]
         for event in schedule.events.values():
             result.extend([event.title, event.location])
-        result = filter(lambda x : x != None, result) 
+        result = filter(lambda x: x != None, result) 
 	self.body = ' '.join(result)
 
         

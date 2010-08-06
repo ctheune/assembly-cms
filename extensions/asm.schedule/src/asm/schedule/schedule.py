@@ -45,7 +45,8 @@ class TextIndexing(grok.Adapter):
         result = [schedule.title, schedule.message]
         for event in schedule.events.values():
             result.extend([event.title, event.location])
-        self.body = ' '.join(result)
+        result = filter(lambda x: x != None, result) 
+	self.body = ' '.join(result)
 
 
 class SearchPreview(grok.View):
@@ -209,19 +210,18 @@ class FilteredSchedule(object):
         day_options = set()
         self.details = details
         self.day = day
-
         by_day = {}
         matches = self.filters[details][1]
 
-        for event in schedule.events.values():
-            day_options.add(event.start.date())
+        for key, event in schedule.events.items():
+	    day_options.add(event.start.date())
             if not matches(event):
                 continue
             event_day = event.start.date()
             if day != 'all' and day != event_day:
                 continue
             day_events = by_day.setdefault(event_day, [])
-            day_events.append(event)
+            day_events.append(dict(event=event, key=key))	
 
         self.events = []
         for day, events in sorted(by_day.items()):
@@ -231,7 +231,7 @@ class FilteredSchedule(object):
             data['day'] = day
             hours = {}
             for event in events:
-                hours.setdefault(event.start, []).append(event)
+                hours.setdefault(event['event'].start, []).append(event)
             data['hours'] = [dict(hour=k, events=v) for k,v in
                              sorted(hours.items())]
             self.events.append(data)
@@ -266,11 +266,11 @@ class Index(asm.cms.Pagelet):
             self.context, details, day)
 
     def event_class(self, event):
-        if event.end < self.now:
+        if event['event'].end < self.now:
             return 'past'
-        if event.start > self.now:
+        if event['event'].start > self.now:
             return 'future'
-        if event.start < self.now and event.end > self.now:
+        if event['event'].start < self.now and event['event'].end > self.now:
             return 'current'
 
     def format_date(self, date):

@@ -35,11 +35,11 @@
         tal:attributes="rowspan repeat/event/length">
       </th>
       <td tal:attributes="class python:view.event_class(event)">
-        <a tal:content="event/title" tal:attributes="href event/url"></a><br/>
-        <a tal:content="event/location" tal:attributes="href event/location_url" class="location"></a>
-        <span class="until" tal:condition="python:event.start != event.end">&ndash;
-          until <span tal:content="python:event.end.strftime('%H:%M')">12:00</span>
-          <span tal:condition="python:event.start.day != event.end.day" tal:content="python:event.end.strftime('%A')"/>
+        <a tal:content="event/event/title" tal:attributes="name event/key; href event/event/url"></a><br/>
+        <a tal:content="event/event/location" tal:attributes="href event/event/location_url" class="location"></a>
+        <span class="until" tal:condition="python:event['event'].start != event['event'].end">&ndash;
+          until <span tal:content="python:event['event'].end.strftime('%H:%M')">12:00</span>
+          <span tal:condition="python:event['event'].start.day != event['event'].end.day" tal:content="python:event['event'].end.strftime('%A')"/>
         </span>
       </td>
     </tr>

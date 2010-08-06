@@ -29,7 +29,7 @@ gallery = obj
 def get_thumbnail(url):
     # Get thumbnail, scale down
     data = StringIO.StringIO(
-        urllib.urlopen('http://dl.dropbox.com/u/8355/assembly2010.png').read())
+        urllib.urlopen(url).read())
     im = Image.open(data)
     width, height = im.size
 
@@ -66,9 +66,12 @@ for line in open(file, 'r'):
         section_title = line[1:].strip()
         section_name = asm.cms.utils.normalize_name(section_title)
         if section_name not in gallery:
-            gallery[section_name] = asm.cms.page.Page('mediagallery')
-            gallery.editions.next().title = section_title
+            gallery[section_name] = p = asm.cms.page.Page('mediagallery')
+            section = p.editions.next()
+            section.title = section_title
+            asm.workflow.workflow.publish(section)
             print "Created gallery", section_title
+
         section = gallery[section_name]
     else:
         data = {}
@@ -82,11 +85,16 @@ for line in open(file, 'r'):
         yt.id = data['youtube']
         edition.locations = (yt,)
 
+        edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+        if 'author' in data:
+            edition_galleryinfo.author = data['author']
+
         edition.thumbnail = ZODB.blob.Blob()
         f = edition.thumbnail.open('w')
         f.write(get_thumbnail(data['thumbnail']).getvalue())
         f.close()
 
+        asm.workflow.workflow.publish(edition)
         print "Imported", edition.title
 
  #       publish content object

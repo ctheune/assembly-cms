@@ -600,6 +600,7 @@ a:active {
 .mediaitemlisting .item {
     float: left;
     margin-right:1em;
+    width:170px;
 }
 
 .mediaitemlisting .item .thumbnail {
@@ -617,21 +618,26 @@ a:active {
     clear: both;
 }
 
+.mediaitemlisting .item .description table {
+    border-spacing: 0;
+    padding-bottom:1em;
+}
+
 .mediaitemlisting .item .rank {
     font-size: 22pt;
-    margin-right:0.25em;
-    float: left;
     color: #ccc;
     font-family: "Helvetica Neue", "Helvetica", Arial, sans;
 }
 
 .mediaitemlisting .title {
-    display:inline-block;
-    padding-top:0.25em;
+    padding-top:0;
+    padding-bottom:0;
 }
 
 .mediaitemlisting .author {
     color: #999;
+    padding-top:0;
+    padding-bottom:0;
 }
 
 .mediacategory {

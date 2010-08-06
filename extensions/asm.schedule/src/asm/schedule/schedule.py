@@ -37,7 +37,6 @@ class Schedule(asm.cms.Edition):
         self.message = other.message
 
 
-            
 class TextIndexing(grok.Adapter):
 
     zope.interface.implements(asm.cms.interfaces.ISearchableText)
@@ -48,7 +47,7 @@ class TextIndexing(grok.Adapter):
             result.extend([event.title, event.location])
         self.body = ' '.join(result)
 
-        
+
 class SearchPreview(grok.View):
 
     def update(self, q):

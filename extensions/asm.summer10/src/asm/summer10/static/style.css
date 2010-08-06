@@ -599,7 +599,7 @@ a:active {
 
 .mediaitemlisting .item {
     float: left;
-    margin-right:2em;
+    margin-right:1em;
 }
 
 .mediaitemlisting .item .thumbnail {
@@ -632,4 +632,10 @@ a:active {
 
 .mediaitemlisting .author {
     color: #999;
+}
+
+.mediacategory {
+    clear: both;
+    float: left;
+    margin-bottom:2em;
 }

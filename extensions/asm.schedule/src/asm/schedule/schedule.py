@@ -200,9 +200,9 @@ def extract_date(date):
 class FilteredSchedule(object):
     """A helper to create a filtered view on a schedule."""
 
-    filters = {'all': ('all events', lambda x: True),
-               'major': ('major events only', lambda x: x.major),
-               'compo': ('compo-related events',
+    filters = {'all': ('Full schedule', lambda x: True),
+               'major': ('Major events', lambda x: x.major),
+               'compo': ('Compos',
                          lambda x: x.class_.startswith('Compo'))}
 
     def __init__(self, schedule, details, day):
@@ -241,9 +241,9 @@ class FilteredSchedule(object):
                  class_=(self.day == day and 'selected' or ' '),
                  label=day.strftime('%A'))
             for day in sorted(day_options)]
-        self.day_options.append(dict(
+        self.day_options.insert(0, dict(
             token='all',
-            label='all days',
+            label='All',
             class_=(self.day == 'all' and 'selected' or ' ')))
 
         self.detail_options = [

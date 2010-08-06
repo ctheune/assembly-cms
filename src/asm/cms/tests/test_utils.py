@@ -38,17 +38,20 @@ class UtilityTests(unittest.TestCase):
                 '<a/><img/>',
                 lambda x: 'test'))
 
-    def test_title_to_name(self):
-        self.assertEquals('asdf', asm.cms.utils.title_to_name('asdf'))
-        self.assertEquals('asdf', asm.cms.utils.title_to_name('ASDF'))
+    def test_normalize_name(self):
+        self.assertEquals('asdf', asm.cms.utils.normalize_name('asdf'))
+        self.assertEquals('asdf', asm.cms.utils.normalize_name('ASDF'))
         self.assertEquals('asdf-bsdf',
-                          asm.cms.utils.title_to_name('asdf bsdf'))
+                          asm.cms.utils.normalize_name('asdf bsdf'))
         self.assertEquals('asdf-bsdf',
-                          asm.cms.utils.title_to_name('asdf/bsdf'))
+                          asm.cms.utils.normalize_name('asdf/bsdf'))
         self.assertEquals('asdf-bsdf',
-                          asm.cms.utils.title_to_name('asdf#bsdf'))
+                          asm.cms.utils.normalize_name('asdf#bsdf'))
         self.assertEquals('asdf-bsdf',
-                          asm.cms.utils.title_to_name('asdf?bsdf'))
+                          asm.cms.utils.normalize_name('asdf?bsdf'))
+        self.assertEquals('asdf-bsdf',
+                          asm.cms.utils.normalize_name(u'asdf\xfcbsdf'))
+
 
 class ViewApplicationTests(unittest.TestCase):
 

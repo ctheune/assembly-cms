@@ -1,0 +1,37 @@
+<h1 tal:content="context/title"></h1>
+
+<div tal:repeat="category view/list_categories" class="mediacategory">
+  <h2><a tal:attributes="href python:view.url(category.page)">
+      <span tal:replace="category/title">Compo type</span> &raquo;</a></h2>
+
+  <div class="mediaitemlisting">
+    <div tal:repeat="item python:view.list_category_items(category, 3)" class="item">
+      <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail" width="165" height="77">
+        <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                             alt item/edition/title" />
+       </a>
+       <a class="description" tal:attributes="href python:view.url(item['edition'])">
+         <span class="rank" tal:content="python:item['gallery'].ranking or default">#</span>
+         <span class="title" tal:content="item/edition/title" /><br/>
+         <span class="author" tal:content="item/gallery/author" />
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="mediaitemlisting">
+
+  <div tal:repeat="item view/list_items" class="item">
+    <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail" width="165" height="77">
+      <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                           alt item/edition/title" />
+     </a>
+     <a class="description" tal:attributes="href python:view.url(item['edition'])">
+       <span class="rank" tal:content="python:item['gallery'].ranking or default">#</span>
+       <span class="title" tal:content="item/edition/title" /><br/>
+       <span class="author" tal:content="item/gallery/author" />
+    </a>
+  </div>
+
+</div>

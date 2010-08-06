@@ -100,6 +100,7 @@ class TeaserAnnotation(grok.Annotation,
 @grok.subscribe(asm.cms.htmlpage.HTMLPage)
 @grok.implementer(asm.cms.interfaces.IAdditionalSchema)
 def add_teaser(edition):
+    print "asdf"
     page = edition.page
     while page:
         if not asm.cms.interfaces.IPage.providedBy(page):

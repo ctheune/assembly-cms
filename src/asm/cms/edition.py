@@ -24,8 +24,6 @@ class Edition(grok.Model):
     tags = None
     title = u''
 
-    size = 0
-
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
@@ -68,6 +66,10 @@ class Edition(grok.Model):
         tags = self.tags.split(' ')
         return tag in tags
 
+    def list_subpages(self, type=None):
+        for page in self.page.subpages:
+            if type is None or page.type in type:
+                yield page
 
 grok.context(Edition)
 

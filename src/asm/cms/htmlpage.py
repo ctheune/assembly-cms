@@ -34,10 +34,6 @@ class HTMLPage(asm.cms.edition.Edition):
             return False
         return self.content == other.content
 
-    @property
-    def size(self):
-        return len(self.content)
-
 
 class Index(megrok.pagelet.Pagelet):
     grok.layer(asm.cms.interfaces.IRetailSkin)

@@ -11,9 +11,15 @@
                              alt item/edition/title" />
        </a>
        <a class="description" tal:attributes="href python:view.url(item['edition'])">
-         <span class="rank" tal:content="python:item['gallery'].ranking or default">#</span>
-         <span class="title" tal:content="item/edition/title" /><br/>
-         <span class="author" tal:content="item/gallery/author" />
+         <table>
+           <tr>
+             <td class="rank" rowspan="2" tal:content="python:item['gallery'].ranking or default">#</td>
+             <td class="title" tal:content="item/edition/title"></td>
+           </tr>
+           <tr>
+             <td class="author" tal:content="item/gallery/author"></td>
+           </tr>
+         </table>
       </a>
     </div>
   </div>
@@ -27,11 +33,15 @@
       <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
                            alt item/edition/title" />
      </a>
-     <a class="description" tal:attributes="href python:view.url(item['edition'])">
-       <span class="rank" tal:content="python:item['gallery'].ranking or default">#</span>
-       <span class="title" tal:content="item/edition/title" /><br/>
-       <span class="author" tal:content="item/gallery/author" />
-    </a>
+       <a class="description" tal:attributes="href python:view.url(item['edition'])">
+         <table>
+           <tr>
+             <td class="rank" tal:content="python:item['gallery'].ranking or default">#</td>
+             <td><span class="title" tal:content="item/edition/title"/><br/>
+             <span class="author" tal:content="item/gallery/author"/></td>
+           </tr>
+         </table>
+      </a>
   </div>
 
 </div>

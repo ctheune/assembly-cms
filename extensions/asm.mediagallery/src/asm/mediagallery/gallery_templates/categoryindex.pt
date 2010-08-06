@@ -3,8 +3,8 @@
 <table tal:repeat="item view/list" style="display: inline">
   <tr><td>
   <a tal:attributes="href python:view.url(item)">
-    <img tal:attributes="src python:view.url(item) + '/' + item.thumbnail;
-                         alt item/title" />
+    <img tal:attributes="src python:'://' in item.thumbnail and item.thumbnail or view.url(item) + '/' + item.thumbnail;
+                         alt item/title"/>
   </a>
   </td></tr>
   <tr><td>

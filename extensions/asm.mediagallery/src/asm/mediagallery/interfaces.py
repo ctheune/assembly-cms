@@ -1,29 +1,64 @@
 
 import zope.interface
 import zope.schema
+import asm.cms.interfaces
+import zc.sourcefactory.basic
 
-class IMediaGalleryRoot(zope.interface.Interface):
-    title = zope.schema.TextLine(title=u'Title')
 
-    compo_data = zope.schema.Bytes(title=u'Compo data', required=False)
+class IMediaGallery(zope.interface.Interface):
+    pass
 
-class IMediaGalleryCategory(zope.interface.Interface):
-    title = zope.schema.TextLine(title=u'Title')
 
-class IMediaGalleryItem(zope.interface.Interface):
+class IMediaGalleryAdditionalInfo(zope.interface.Interface):
 
-    def title():
-        """Automatically generated title."""
-
-    name = zope.schema.TextLine(title=u'Name')
+    zope.interface.taggedValue('label', u'Gallery')
+    zope.interface.taggedValue(
+        'description', u'Enter author and ranking information.')
 
     author = zope.schema.TextLine(title=u'Author')
 
-    thumbnail = zope.schema.TextLine(title=u'Thumbnail', required=False)
+    ranking = zope.schema.Int(
+        title=u'Rank',
+        required=False)
 
-    content = zope.schema.Text(title=u'Page content', required=False)
 
-    attributes = zope.schema.Text(title=u'Attributes', required=False)
+class HostingServices(zc.sourcefactory.basic.BasicSourceFactory):
 
-    view = zope.schema.Text(title=u'View content', required=False)
+    def getValues(self):
+        return [name for name, service in
+                zope.component.getUtilitiesFor(IContentHostingService)]
 
+
+class IHostingServiceChoice(zope.interface.Interface):
+
+    service_id = zope.schema.Choice(
+        title=u'Service',
+        source=HostingServices())
+
+    id = zope.schema.TextLine(
+        title=u'ID',
+        description=u'ID of this content at the service.')
+
+
+class IExternalAsset(zope.interface.Interface):
+
+    thumbnail = asm.cms.interfaces.Blob(
+        title=u'Thumbnail', required=False)
+
+    locations = zope.schema.List(
+        title=u'Hosting services',
+        value_type=zope.schema.Object(
+            schema=IHostingServiceChoice))
+
+
+class IContentHostingService(zope.interface.Interface):
+
+
+    def link_code(id):
+        pass
+
+
+class IEmbeddableContentHostingService(IContentHostingService):
+
+    def embed_code(id):
+        pass

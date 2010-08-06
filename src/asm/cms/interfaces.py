@@ -58,8 +58,6 @@ class IEdition(zope.interface.Interface):
     created = zope.schema.Datetime(title=u'Created', readonly=True)
     modified = zope.schema.Datetime(title=u'Last change', readonly=True)
 
-    size = zope.schema.Int(title=u'Size', readonly=True)
-
     def copyFrom(other):
         """Copy all content from another edition of the same kind."""
 
@@ -96,6 +94,7 @@ class IAsset(zope.interface.Interface):
 
     content = Blob(title=u'File', required=False)
     content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
+    size = zope.schema.Int(title=u'Size of this asset', readonly=True)
 
 
 class ICMSSkin(grok.IDefaultBrowserLayer):

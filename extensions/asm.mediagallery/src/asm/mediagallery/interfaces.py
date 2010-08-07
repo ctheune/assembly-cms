@@ -17,6 +17,9 @@ class IMediaGalleryAdditionalInfo(zope.interface.Interface):
 
     author = zope.schema.TextLine(title=u'Author')
 
+    thumbnail = asm.cms.interfaces.Blob(
+        title=u'Thumbnail', required=False)
+
     ranking = zope.schema.Int(
         title=u'Rank',
         required=False)
@@ -41,9 +44,6 @@ class IHostingServiceChoice(zope.interface.Interface):
 
 
 class IExternalAsset(zope.interface.Interface):
-
-    thumbnail = asm.cms.interfaces.Blob(
-        title=u'Thumbnail', required=False)
 
     locations = zope.schema.List(
         title=u'Hosting services',

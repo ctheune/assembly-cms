@@ -32,6 +32,10 @@ class Index(asm.cms.Pagelet):
 
     grok.context(MediaGallery)
 
+    def update(self):
+        self.skip = self.offset = int(self.request.get('offset', 0))
+        self.show = 18
+
     def list_categories(self):
         for category in self.context.list_subpages(type=['mediagallery']):
             edition = asm.cms.edition.select_edition(category, self.request)
@@ -49,7 +53,15 @@ class Index(asm.cms.Pagelet):
                 edition=edition,
                 gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
         items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
-        return items
+        self.total = len(items)
+        for item in items:
+            if self.skip:
+                self.skip -= 1
+                continue
+            if not self.show:
+                return
+            yield item
+            self.show -= 1
 
     def list_category_items(self, category, limit=None):
         items = []

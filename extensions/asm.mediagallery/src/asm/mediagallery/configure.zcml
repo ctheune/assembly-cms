@@ -19,6 +19,14 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="asm.cms.interfaces.Blob
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory="asm.cms.asset.FileWithDisplayWidget"
+    permission="zope.Public"
+    />
+
   <subscriber
     factory=".gallery.add_gallery_data"
     for="asm.cms.interfaces.IEdition"

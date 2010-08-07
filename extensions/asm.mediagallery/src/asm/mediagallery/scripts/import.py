@@ -26,10 +26,7 @@ while steps:
         pass
 gallery = obj
 
-def get_thumbnail(url):
-    # Get thumbnail, scale down
-    data = StringIO.StringIO(
-        urllib.urlopen(url).read())
+def get_thumbnail(data):
     im = Image.open(data)
     width, height = im.size
 
@@ -77,25 +74,50 @@ for line in open(file, 'r'):
         data = {}
         for field in line.split('|'):
             data.__setitem__(*field.split(':', 1))
-        section[asm.cms.utils.normalize_name(data['title'])] = p = asm.cms.page.Page('externalasset')
-        edition = p.editions.next()
-        edition.title = data['title']
-        yt = asm.mediagallery.externalasset.HostingServiceChoice()
-        yt.service_id = 'youtube'
-        yt.id = data['youtube']
-        edition.locations = (yt,)
 
-        edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
-        if 'author' in data:
-            edition_galleryinfo.author = data['author']
 
-        edition.thumbnail = ZODB.blob.Blob()
-        f = edition.thumbnail.open('w')
-        f.write(get_thumbnail(data['thumbnail']).getvalue())
-        f.close()
+        if data.get('type') == 'external':
+            section[asm.cms.utils.normalize_name(data['title'])] = p = asm.cms.page.Page('externalasset')
+            edition = p.editions.next()
+            edition.title = data['title']
+            yt = asm.mediagallery.externalasset.HostingServiceChoice()
+            yt.service_id = 'youtube'
+            yt.id = data['youtube']
+            edition.locations = (yt,)
 
-        asm.workflow.workflow.publish(edition)
-        print "Imported", edition.title
+            edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+            if 'author' in data:
+                edition_galleryinfo.author = data['author']
+
+            edition_galleryinfo.thumbnail = ZODB.blob.Blob()
+            f = edition_galleryinfo.thumbnail.open('w')
+            # Get thumbnail, scale down
+            img = StringIO(urllib.urlopen(data['thumbnail']).read())
+            f.write(get_thumbnail(img).getvalue())
+            f.close()
+            asm.workflow.workflow.publish(edition)
+            print "Imported", edition.title
+        else:
+            section[asm.cms.utils.normalize_name(data['title'])] = p = asm.cms.page.Page('asset')
+            edition = p.editions.next()
+            edition.title = data['title']
+            edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+            if 'author' in data:
+                edition_galleryinfo.author = data['author']
+
+            img = open(data['image'], 'rb')
+            edition.content = ZODB.blob.Blob()
+            f = edition.content.open('w')
+            f.write(img.read())
+            img.seek(0)
+
+            edition_galleryinfo.thumbnail = ZODB.blob.Blob()
+            f = edition_galleryinfo.thumbnail.open('w')
+            f.write(get_thumbnail(img).getvalue())
+            f.close()
+
+            asm.workflow.workflow.publish(edition)
+            print "Imported", edition.title
 
  #       publish content object
 

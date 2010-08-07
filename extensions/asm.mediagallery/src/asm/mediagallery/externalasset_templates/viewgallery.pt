@@ -15,3 +15,5 @@
         </tal:block>
     </div>
 </div>
+
+<div tal:replace="structure context/@@gallerynavbar"/>

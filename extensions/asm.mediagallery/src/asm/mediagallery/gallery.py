@@ -107,3 +107,21 @@ class Thumbnail(grok.View):
         info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(
             self.context)
         return open(info.thumbnail.committed())
+
+
+class GalleryNavBar(grok.View):
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def next(self):
+        all = [x.__name__ for x in self.context.page.__parent__.subpages]
+        current = all.index(self.context.__parent__.__name__)
+        if len(all) > current+1:
+            next = self.context.__parent__.__parent__[all[current+1]]
+            return asm.cms.edition.select_edition(next, self.request)
+
+    def previous(self):
+        all = [x.__name__ for x in self.context.page.__parent__.subpages]
+        current = all.index(self.context.__parent__.__name__)
+        if current > 0:
+            prev = self.context.__parent__.__parent__[all[current-1]]
+            return asm.cms.edition.select_edition(prev, self.request)

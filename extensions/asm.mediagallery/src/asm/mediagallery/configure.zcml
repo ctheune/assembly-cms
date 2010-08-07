@@ -5,8 +5,32 @@
 
   <grok:grok package="." />
 
-  <utility component=".gallery.MediaGalleryRoot" name="mediagalleryroot"/>
-  <utility component=".gallery.MediaGalleryCategory" name="mediagallerycategory"/>
-  <utility component=".gallery.MediaGalleryItem" name="mediagalleryitem" />
+  <utility component=".gallery.MediaGallery" name="mediagallery"/>
+  <utility component=".externalasset.ExternalAsset" name="externalasset"/>
+  <utility provides="zope.component.interfaces.IFactory"
+           component=".externalasset.HostingServiceChoice"
+           name="IHostingServiceChoice"/>
+
+  <adapter
+    for="zope.schema.interfaces.IObject
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory=".externalasset.setupObjectInputWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="asm.cms.interfaces.Blob
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    provides="zope.app.form.browser.interfaces.IInputWidget"
+    factory="asm.cms.asset.FileWithDisplayWidget"
+    permission="zope.Public"
+    />
+
+  <subscriber
+    factory=".gallery.add_gallery_data"
+    for="asm.cms.interfaces.IEdition"
+    provides="asm.cms.interfaces.IAdditionalSchema"
+    />
 
 </configure>

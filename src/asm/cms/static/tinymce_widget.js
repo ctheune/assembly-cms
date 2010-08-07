@@ -11,7 +11,9 @@ tinyMCE.init({
     theme_advanced_buttons2: "",
     theme_advanced_buttons3: "",
 
-    theme_advanced_blockformats: "p,h2,h3,blockquote,code",
+    theme_advanced_blockformats: "p,h2,h3,blockquote,pre",
+
+    content_css : $('link[rel="root"]').attr('href') + '/@@/asm.cms/tinymce_content.css',
 
     dialog_type : 'modal',
 

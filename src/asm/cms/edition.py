@@ -24,8 +24,6 @@ class Edition(grok.Model):
     tags = None
     title = u''
 
-    size = 0
-
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
@@ -68,6 +66,10 @@ class Edition(grok.Model):
         tags = self.tags.split(' ')
         return tag in tags
 
+    def list_subpages(self, type=None):
+        for page in self.page.subpages:
+            if type is None or page.type in type:
+                yield page
 
 grok.context(Edition)
 
@@ -148,11 +150,15 @@ class DisplayParameters(grok.View):
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
+    page.addEdition(get_initial_parameters())
+
+
+def get_initial_parameters():
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
             asm.cms.interfaces.IInitialEditionParameters):
         parameters.update(factory())
-    page.addEdition(parameters)
+    return EditionParameters(parameters)
 
 
 class Delete(grok.View):

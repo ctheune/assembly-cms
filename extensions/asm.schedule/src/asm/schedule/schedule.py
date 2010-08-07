@@ -45,8 +45,8 @@ class TextIndexing(grok.Adapter):
         result = [schedule.title, schedule.message]
         for event in schedule.events.values():
             result.extend([event.title, event.location])
-        result = filter(lambda x: x != None, result) 
-	self.body = ' '.join(result)
+        result = filter(lambda x: x is not None, result)
+        self.body = ' '.join(result)
 
 
 class SearchPreview(grok.View):
@@ -201,9 +201,9 @@ def extract_date(date):
 class FilteredSchedule(object):
     """A helper to create a filtered view on a schedule."""
 
-    filters = {'all': ('all events', lambda x: True),
-               'major': ('major events only', lambda x: x.major),
-               'compo': ('compo-related events',
+    filters = {'all': ('Full schedule', lambda x: True),
+               'major': ('Major events', lambda x: x.major),
+               'compo': ('Compos',
                          lambda x: x.class_.startswith('Compo'))}
 
     def __init__(self, schedule, details, day):
@@ -214,7 +214,7 @@ class FilteredSchedule(object):
         matches = self.filters[details][1]
 
         for key, event in schedule.events.items():
-	    day_options.add(event.start.date())
+            day_options.add(event.start.date())
             if not matches(event):
                 continue
             event_day = event.start.date()
@@ -241,9 +241,9 @@ class FilteredSchedule(object):
                  class_=(self.day == day and 'selected' or ' '),
                  label=day.strftime('%A'))
             for day in sorted(day_options)]
-        self.day_options.append(dict(
+        self.day_options.insert(0, dict(
             token='all',
-            label='all days',
+            label='All',
             class_=(self.day == 'all' and 'selected' or ' ')))
 
         self.detail_options = [
@@ -266,11 +266,11 @@ class Index(asm.cms.Pagelet):
             self.context, details, day)
 
     def event_class(self, event):
-        if event['event'].end < self.now:
+        if event.end < self.now:
             return 'past'
-        if event['event'].start > self.now:
+        if event.start > self.now:
             return 'future'
-        if event['event'].start < self.now and event['event'].end > self.now:
+        if event.start < self.now and event.end > self.now:
             return 'current'
 
     def format_date(self, date):

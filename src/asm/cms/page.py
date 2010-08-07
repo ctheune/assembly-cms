@@ -64,7 +64,7 @@ class AddPage(grok.View):
 
     def update(self, title, type):
         page = Page(type)
-        name = asm.cms.utils.title_to_name(title)
+        name = asm.cms.utils.normalize_name(title)
         self.context[name] = page
         edition = page.editions.next()
         edition.title = title

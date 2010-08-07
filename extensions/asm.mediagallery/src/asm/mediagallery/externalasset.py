@@ -43,7 +43,7 @@ class Edit(asm.cms.form.EditionEditForm):
         'title', 'locations')
 
 
-class Index(asm.cms.Pagelet):
+class ViewGallery(asm.cms.Pagelet):
 
     grok.context(ExternalAsset)
 

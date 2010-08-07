@@ -9,7 +9,7 @@ import sys
 import urllib
 import zope.interface
 import ZODB.blob
-
+import random
 
 class MediaGallery(asm.cms.Edition):
 
@@ -62,6 +62,8 @@ class Index(asm.cms.Pagelet):
                 gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
         items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
         if limit:
+            if items[0]['gallery'].ranking is None:
+                random.shuffle(items)
             items = items[:limit]
         return items
 

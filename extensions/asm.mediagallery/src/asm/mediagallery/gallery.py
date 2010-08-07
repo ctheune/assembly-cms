@@ -76,13 +76,16 @@ class AssetAnnotation(grok.Annotation, grok.Model):
 
     author = u''
     ranking = None
+    thumbnail = None
 
     def copyFrom(self, other):
         self.author = other.author
         self.ranking = other.ranking
+        self.thumbnail = other.thumbnail
 
     def __eq__(self, other):
         return (self.author == other.author and
+                self.thumbnail == other.thumbnail and
                 self.ranking == other.ranking)
 
 
@@ -94,3 +97,13 @@ def add_gallery_data(edition):
         if page.type == 'mediagallery':
             return asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo
         page = page.__parent__
+
+
+class Thumbnail(grok.View):
+
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def render(self):
+        info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(
+            self.context)
+        return open(info.thumbnail.committed())

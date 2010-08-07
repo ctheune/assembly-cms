@@ -16,20 +16,17 @@ class ExternalAsset(asm.cms.edition.Edition):
 
     factory_title = u'External asset'
 
-    thumbnail = None
     locations = ()
 
     def copyFrom(self, other):
         super(ExternalAsset, self).copyFrom(other)
         # XXX deepcopy
-        self.thumbnail = other.thumbnail
         self.locations = other.locations
 
     def __eq__(self, other):
         if not super(ExternalAsset, self).__eq__(other):
             return False
-        return (self.thumbnail == other.thumbnail and
-                self.locations == other.locations)
+        return (self.locations == other.locations)
 
 
 def setupObjectInputWidget(field, request):
@@ -43,9 +40,7 @@ class Edit(asm.cms.form.EditionEditForm):
     grok.context(ExternalAsset)
 
     main_fields = grok.AutoFields(ExternalAsset).select(
-        'title', 'thumbnail', 'locations')
-    main_fields['thumbnail'].custom_widget = (
-        asm.cms.asset.FileWithDisplayWidget)
+        'title', 'locations')
 
 
 class Index(asm.cms.Pagelet):
@@ -78,11 +73,6 @@ class Index(asm.cms.Pagelet):
             if count == max:
                 return
 
-
-class Thumbnail(grok.View):
-
-    def render(self):
-        return open(self.context.thumbnail.committed())
 
 
 class HostingServiceChoice(persistent.Persistent):

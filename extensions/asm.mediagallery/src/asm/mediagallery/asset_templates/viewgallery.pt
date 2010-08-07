@@ -9,3 +9,5 @@
       <a tal:attributes="href python:view.url(context)">Download</a>
     </div>
 </div>
+
+<div tal:replace="structure context/@@gallerynavbar"/>

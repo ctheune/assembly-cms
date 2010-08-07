@@ -648,3 +648,25 @@ a:active {
     float: left;
     margin-bottom:2em;
 }
+
+.medianavigationbar {
+    margin-top:1em;
+}
+
+.medianavigationbar .back {
+    float: left;
+    display: block;
+}
+
+.medianavigationbar .forward {
+    float: right;
+    text-align: right;
+}
+
+.medianavigationbar a {
+    text-decoration: none;
+}
+
+.medianavigationbar .control {
+    color: #555;
+}

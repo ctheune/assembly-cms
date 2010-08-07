@@ -618,6 +618,10 @@ a:active {
     clear: both;
 }
 
+.mediaitemlisting .item .titleauthor {
+    vertical-align: top;
+}
+
 .mediaitemlisting .item .description table {
     border-spacing: 0;
     padding-bottom:1em;

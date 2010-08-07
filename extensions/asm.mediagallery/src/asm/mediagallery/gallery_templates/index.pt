@@ -13,11 +13,9 @@
        <a class="description" tal:attributes="href python:view.url(item['edition'])">
          <table>
            <tr>
-             <td class="rank" rowspan="2" tal:content="python:item['gallery'].ranking or default">#</td>
-             <td class="title" tal:content="item/edition/title"></td>
-           </tr>
-           <tr>
-             <td class="author" tal:content="item/gallery/author"></td>
+             <td class="rank" tal:content="python:item['gallery'].ranking or default">#</td>
+             <td class="titleauthor"><span class="title" tal:content="item/edition/title"/><br/>
+             <span class="author" tal:content="item/gallery/author"/></td>
            </tr>
          </table>
       </a>
@@ -37,7 +35,7 @@
          <table>
            <tr>
              <td class="rank" tal:content="python:item['gallery'].ranking or default">#</td>
-             <td><span class="title" tal:content="item/edition/title"/><br/>
+             <td class="titleauthor"><span class="title" tal:content="item/edition/title"/><br/>
              <span class="author" tal:content="item/gallery/author"/></td>
            </tr>
          </table>

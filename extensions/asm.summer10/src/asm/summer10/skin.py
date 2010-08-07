@@ -32,7 +32,7 @@ class LayoutHelper(grok.View):
         now = datetime.datetime.now()
         for key, event in schedule.events.items():
             if event.start <= now and event.end > now:
-                yield dict(event=event,key=key)
+                yield dict(event=event, key=key)
 
     def news(self):
         try:
@@ -55,7 +55,7 @@ class LayoutHelper(grok.View):
 
     def generateCountdown(self):
         times = (('05.08.2010 12:00', True, "until ASSEMBLY!"),
-                 ('28.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+	         ('08.08.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 

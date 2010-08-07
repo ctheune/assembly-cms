@@ -153,27 +153,6 @@ class DateFormat(grok.View):
         return self.context.strftime('%d.%m.%Y %H:%M')
 
 
-class BytesFormat(grok.View):
-
-    grok.context(int)
-
-    units = ['Bytes', 'KiB', 'MiB', 'GiB']
-
-    def render(self):
-        size = float(self.context)
-        units = self.units[:]
-        unit = units.pop(0)
-
-        while size >= (1024 / 2) and units:
-            size = size / 1024
-            unit = units.pop(0)
-
-        size = '%.1f' % size
-        size = size.replace('.0', '')
-
-        return '%s %s' % (size, unit)
-
-
 class NoneFormat(grok.View):
     grok.name('format')
     grok.context(None.__class__)

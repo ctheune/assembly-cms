@@ -78,9 +78,9 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
             value = field.get(asset)
         else:
             value = ZODB.blob.Blob()
-	    f = value.open('w')
-	    f.write(input.read())
-	    f.close()
+            f = value.open('w')
+            f.write(input.read())
+            f.close()
         return value
 
 

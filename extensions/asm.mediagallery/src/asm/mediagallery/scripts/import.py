@@ -26,35 +26,35 @@ while steps:
         pass
 gallery = obj
 
-def get_thumbnail(data):
+def get_thumbnail(data, target=(77.0,165.0), crop=True):
     im = Image.open(data)
     width, height = im.size
-
     orig_ratio = float(width)/height
-    target_ratio = float(165)/77
+    target_ratio = float(target[1])/target[0]
 
     if orig_ratio > target_ratio:
-        width = width / (height/77)
-        height = 77
+        width = width / (height/target[0])
+        height = target[0]
     else:
-        height = height / (width/165)
-        width = 165
+        height = height / (width/target[1])
+        width = target[1]
 
-    im2 = im.resize((width, height), Image.ANTIALIAS)
-    width, height = im2.size
+    im = im.resize((width, height), Image.ANTIALIAS)
+    width, height = im.size
 
-    width_delta = (width-165)/2
-    height_delta = (height-77)/2
+    width_delta = (width-target[1])/2
+    height_delta = (height-target[0])/2
 
-    im3 = im2.crop((
-              width_delta,
-              height_delta,
-              width-width_delta,
-              height-height_delta))
-    im4 = im3.crop((0, 0, 165, 77))
-    im4.load()
+    if crop:
+        im = im.crop((
+                  width_delta,
+                  height_delta,
+                  width-width_delta,
+                  height-height_delta))
+        im = im.crop((0, 0, int(target[1]), int(target[0])))
+        im.load()
     output = StringIO.StringIO()
-    im4.save(output, format='png')
+    im.save(output, format='png')
     return output
 
 for line in open(file, 'r'):
@@ -77,7 +77,12 @@ for line in open(file, 'r'):
 
 
         if data.get('type') == 'external':
-            section[asm.cms.utils.normalize_name(data['title'])] = p = asm.cms.page.Page('externalasset')
+            name = orig_name = asm.cms.utils.normalize_name(data['title'])
+            i = 1
+            while not name or name in section:
+                name = '%s%s' % (orig_name, i)
+                i +=1
+            section[name] = p = asm.cms.page.Page('externalasset')
             edition = p.editions.next()
             edition.title = data['title']
             yt = asm.mediagallery.externalasset.HostingServiceChoice()
@@ -98,7 +103,12 @@ for line in open(file, 'r'):
             asm.workflow.workflow.publish(edition)
             print "Imported", edition.title
         else:
-            section[asm.cms.utils.normalize_name(data['title'])] = p = asm.cms.page.Page('asset')
+            name = orig_name = asm.cms.utils.normalize_name(data['title'])
+            i = 1
+            while not name or name in section:
+                name = '%s%s' % (orig_name, i)
+                i +=1
+            section[name] = p = asm.cms.page.Page('asset')
             edition = p.editions.next()
             edition.title = data['title']
             edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
@@ -106,9 +116,10 @@ for line in open(file, 'r'):
                 edition_galleryinfo.author = data['author']
 
             img = open(data['image'], 'rb')
+            print data['image']
             edition.content = ZODB.blob.Blob()
             f = edition.content.open('w')
-            f.write(img.read())
+            f.write(get_thumbnail(img, (330.0, 560.0), crop=False).getvalue())
             img.seek(0)
 
             edition_galleryinfo.thumbnail = ZODB.blob.Blob()

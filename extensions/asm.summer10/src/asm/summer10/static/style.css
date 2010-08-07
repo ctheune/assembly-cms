@@ -602,7 +602,7 @@ a:active {
     margin-right:1em;
     width:170px;
     height:150px;
-    overflow: hidden;
+    overflow:hidden;
 }
 
 .mediaitemlisting .item .thumbnail {

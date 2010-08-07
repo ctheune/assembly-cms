@@ -650,7 +650,9 @@ a:active {
 }
 
 .medianavigationbar {
+    font-size:12pt;
     margin-top:1em;
+    clear:both;
 }
 
 .medianavigationbar .back {

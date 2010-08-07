@@ -601,7 +601,8 @@ a:active {
     float: left;
     margin-right:1em;
     width:170px;
-    height:100px;
+    height:150px;
+    overflow:hidden;
 }
 
 .mediaitemlisting .item .thumbnail {

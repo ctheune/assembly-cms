@@ -43,3 +43,19 @@
   </div>
 
 </div>
+
+<div class="medianavigationbar"
+    tal:define="next python:view.offset+18;
+                prev python:view.offset-18">
+
+  <a class="back" tal:condition="python:prev >= 0"
+      tal:attributes="href python:view.url(context, data=dict(offset=prev))">
+      <span class="control">Previous</span>
+  </a>
+
+  <a class="forward" href="#" tal:condition="python:next < view.total"
+    tal:attributes="href python:view.url(context, data=dict(offset=next))">
+    <span class="control">Next</span>
+  </a>
+
+</div>

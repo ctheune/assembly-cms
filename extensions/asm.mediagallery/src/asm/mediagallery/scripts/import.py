@@ -59,6 +59,7 @@ def get_thumbnail(data, target=(77.0,165.0), crop=True):
 
 for line in open(file, 'r'):
     line = line.strip()
+    line = line.decode('utf-8')
     if line.startswith('!'):
         section_title = line[1:].strip()
         section_name = asm.cms.utils.normalize_name(section_title)
@@ -97,7 +98,7 @@ for line in open(file, 'r'):
             edition_galleryinfo.thumbnail = ZODB.blob.Blob()
             f = edition_galleryinfo.thumbnail.open('w')
             # Get thumbnail, scale down
-            img = StringIO(urllib.urlopen(data['thumbnail']).read())
+            img = StringIO.StringIO(urllib.urlopen(data['thumbnail']).read())
             f.write(get_thumbnail(img).getvalue())
             f.close()
             asm.workflow.workflow.publish(edition)

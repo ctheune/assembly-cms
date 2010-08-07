@@ -37,7 +37,7 @@ def rewrite_urls(content, visitor):
 
 def normalize_name(title):
     result = title.lower()
-    result = re.sub("[^a-z0-9]", "-", result)
+    result = re.sub("[^\.a-z0-9]", "-", result)
     # Normalize multiple dashes and then remove them from beginning and end.
     result = re.sub("-+", "-", result)
     result = result.strip("-")

@@ -7,6 +7,7 @@ import grok
 import megrok.pagelet
 import zope.app.publication.interfaces
 import zope.interface
+import zope.app.folder.interfaces
 
 
 class Layout(megrok.pagelet.Layout):

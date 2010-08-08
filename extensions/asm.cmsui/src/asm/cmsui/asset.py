@@ -7,6 +7,8 @@ import asm.cmsui.interfaces
 import zope.app.form.browser.textwidgets
 import grok
 
+grok.context(asm.cms.asset.Asset)
+
 
 class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
 

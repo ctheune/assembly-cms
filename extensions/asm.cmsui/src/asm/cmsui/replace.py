@@ -1,20 +1,26 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import megrok.pagelet
+import grok
+import asm.cms.cms
+import asm.cmsui.interfaces
+import asm.cmsui.base
+import zope.interface
+
+grok.context(asm.cms.cms.CMS)
 
 class SearchAndReplace(megrok.pagelet.Pagelet):
     """Present the user a form to allow entering search and replace terms."""
 
-    grok.context(asm.cms.cms.CMS)
-    grok.layer(asm.cms.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
 
 class ReplacePreview(megrok.pagelet.Pagelet):
     """Given a users search and replace terms show a list of all matches."""
 
-    grok.context(asm.cms.cms.CMS)
-    grok.layer(asm.cms.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def update(self):
@@ -45,8 +51,7 @@ class Replace(megrok.pagelet.Pagelet):
     """Perform a replace operation given a users search and replace terms and
     a list of matches. Then display the remaining occurrences."""
 
-    grok.context(asm.cms.cms.CMS)
-    grok.layer(asm.cms.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def update(self):
@@ -79,5 +84,5 @@ class Replace(megrok.pagelet.Pagelet):
 class ReplaceActions(grok.Viewlet):
 
     grok.template('actions')
-    grok.viewletmanager(asm.cms.NavigationToolActions)
+    grok.viewletmanager(asm.cmsui.base.NavigationToolActions)
     grok.context(zope.interface.Interface)

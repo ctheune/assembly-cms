@@ -3,6 +3,8 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="asm.cms">
 
+  <grok:grok package="."/>
+
   <browser:view
       layer=".interfaces.IRetailSkin"
       name=""
@@ -11,6 +13,5 @@
       permission="zope.Public"
       allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
       />
-
 
 </configure>

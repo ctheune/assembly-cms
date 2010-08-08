@@ -1,16 +1,19 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import grok
-import asm.cmsui.actions
 import asm.cms.interfaces
+import asm.cmsui.base
+import asm.cmsui.form
+import asm.cmsui.interfaces
+import grok
 import zope.component
+import megrok.pagelet
 
 
 class Actions(grok.Viewlet):
     """Page-related UI actions to perform on editions."""
 
-    grok.viewletmanager(asm.cmsui.actions.MainPageActions)
+    grok.viewletmanager(asm.cmsui.base.MainPageActions)
     grok.context(asm.cms.interfaces.IEdition)
 
     @property
@@ -20,7 +23,7 @@ class Actions(grok.Viewlet):
 
 class NavigationActions(grok.Viewlet):
 
-    grok.viewletmanager(asm.cmsui.actions.NavigationActions)
+    grok.viewletmanager(asm.cmsui.base.NavigationActions)
     grok.context(asm.cms.interfaces.IEdition)
 
     def types(self):
@@ -53,7 +56,7 @@ class AddPage(grok.View):
         return self.url(self.edition, '@@edit')
 
 
-class ChangePageType(asm.cms.form.EditForm):
+class ChangePageType(asm.cmsui.form.EditForm):
 
     """Changes the type of a page.
 
@@ -103,7 +106,7 @@ class Delete(grok.View):
 
 class CMSIndex(grok.View):
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
     grok.context(asm.cms.interfaces.ICMS)
     grok.name('index')
@@ -121,7 +124,7 @@ class CMSIndex(grok.View):
 
 class PageIndex(megrok.pagelet.Pagelet):
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
     grok.context(asm.cms.interfaces.IPage)
     grok.name('index')

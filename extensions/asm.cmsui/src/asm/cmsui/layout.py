@@ -3,16 +3,14 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
-import asm.cms.interfaces
+import asm.cmsui.base
+import asm.cmsui.interfaces
 import cgi
 import datetime
 import grok
-import grok
-import megrok.pagelet
 import megrok.pagelet
 import z3c.flashmessage.interfaces
 import zope.app.intid
-import zope.interface
 import zope.interface
 import zope.security
 
@@ -20,7 +18,7 @@ import zope.security
 class Layout(megrok.pagelet.Layout):
 
     grok.context(zope.interface.Interface)
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
 
     megrok.pagelet.template('templates/cms.pt')
 
@@ -41,7 +39,7 @@ class LayoutHelper(grok.View):
 
 
 class Breadcrumbs(grok.Viewlet):
-    grok.viewletmanager(PageHeader)
+    grok.viewletmanager(asm.cmsui.base.PageHeader)
     grok.context(asm.cms.interfaces.IEdition)
 
     def update(self):
@@ -55,5 +53,5 @@ class Breadcrumbs(grok.Viewlet):
 
 class FlashMessageNotification(grok.Viewlet):
 
-    grok.viewletmanager(NotificationMessages)
+    grok.viewletmanager(asm.cmsui.base.NotificationMessages)
     grok.context(zope.interface.Interface)

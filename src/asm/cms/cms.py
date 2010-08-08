@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import z3c.baseregistry.baseregistry
-import zc.sourcefactory.basic
 import asm.cms.page
 import grok
 import zope.component
@@ -36,24 +35,9 @@ def cleanup_initial_edition(obj, event):
     obj.register(cms)
 
 
-
-class ProfileSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    def getValues(self):
-        return [name for name, profile in
-                zope.component.getUtilitiesFor(asm.cms.interfaces.IProfile)]
-
-
-class IProfileSelection(zope.interface.Interface):
-
-    name = zope.schema.Choice(
-        title=u'Profile',
-        source=ProfileSource())
-
-
 class CMSProfile(grok.Adapter):
     grok.context(CMS)
-    grok.provides(IProfileSelection)
+    grok.provides(asm.cms.interfaces.IProfileSelection)
 
     def set_name(self, value):
         value = zope.component.getUtility(asm.cms.interfaces.IProfile,
@@ -77,8 +61,6 @@ class CMSProfile(grok.Adapter):
                 return name
 
     name = property(fget=get_name, fset=set_name)
-
-
 
 
 class Profile(z3c.baseregistry.baseregistry.BaseComponents):

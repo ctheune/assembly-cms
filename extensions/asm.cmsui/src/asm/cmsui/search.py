@@ -1,11 +1,16 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import megrok.pagelet
+import grok
+import asm.cms.cms
+import asm.cmsui.interfaces
+
 
 class Search(megrok.pagelet.Pagelet):
 
     grok.context(asm.cms.cms.CMS)
-    grok.layer(asm.cms.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def update(self):
@@ -17,7 +22,7 @@ class Search(megrok.pagelet.Pagelet):
 class PublicSearch(megrok.pagelet.Pagelet):
 
     grok.context(asm.cms.interfaces.IEdition)
-    grok.layer(asm.cms.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
     grok.name('search')
 
     def update(self):

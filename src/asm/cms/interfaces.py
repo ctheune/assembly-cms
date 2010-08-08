@@ -156,3 +156,27 @@ class IProfile(zope.component.interfaces.IComponents):
 
 class ISkinProfile(zope.interface.Interface):
     """The name of the skin in a profile."""
+
+
+class ProfileSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    def getValues(self):
+        return [name for name, profile in
+                zope.component.getUtilitiesFor(asm.cms.interfaces.IProfile)]
+
+
+class IProfileSelection(zope.interface.Interface):
+
+    name = zope.schema.Choice(
+        title=u'Profile',
+        source=ProfileSource())
+
+
+class IImport(zope.interface.Interface):
+
+    data = zope.schema.Bytes(
+        title=u'Content',
+        description=(u'The content is expected to be in the Assembly CMS '
+                     u'XML import format.'))
+
+

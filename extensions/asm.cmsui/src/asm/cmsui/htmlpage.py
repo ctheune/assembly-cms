@@ -8,6 +8,9 @@ import asm.cmsui.form
 import asm.cmsui.tinymce
 import grok
 
+grok.context(asm.cms.htmlpage.HTMLPage)
+
+
 class Index(asm.cmsui.retail.Pagelet):
     grok.layer(asm.cmsui.interfaces.IRetailSkin)
 

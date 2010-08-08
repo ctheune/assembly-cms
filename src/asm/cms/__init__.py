@@ -42,15 +42,6 @@ import zope.deferredimport
 
 zope.deferredimport.define(
     Edition='asm.cms.edition:Edition',
-
-    Form='asm.cms.form:Form',
-    EditForm='asm.cms.form:EditForm',
-    AddForm='asm.cms.form:AddForm',
-
-    Pagelet='asm.cms.retail:Pagelet',
-
-    IRetailSkin='asm.cms.interfaces:IRetailSkin',
-    ICMSSkin='asm.cms.interfaces:ICMSSkin',
     IPage='asm.cms.interfaces:IPage',
     IEditionFactory='asm.cms.interfaces:IEditionFactory',
     IEdition='asm.cms.interfaces:IEdition',

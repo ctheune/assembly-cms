@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
+import asm.cmsui.interfaces
 import grok
 import megrok.pagelet
 import os.path
@@ -14,7 +15,7 @@ import zope.traversing.api
 class CMSForm(object):
 
     grok.require('asm.cms.EditContent')
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
 
     def __init__(self, context, request):

@@ -3,12 +3,13 @@
 
 import grok
 import asm.cmsui.interfaces
+import zope.interface
 
 
 class ActionView(grok.View):
 
     grok.baseclass()
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
 
     def render(self):
         self.redirect(self.url(self.context, '@@edit'))

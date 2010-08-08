@@ -6,6 +6,8 @@ import asm.cms
 import asm.contact.interfaces
 import grok
 import zope.interface
+import asm.cmsui.form
+import asm.cmsui.interfaces
 
 
 class Contact(asm.cms.Edition):
@@ -21,16 +23,16 @@ class Contact(asm.cms.Edition):
         self.email = other.email
 
 
-class Edit(asm.cms.form.EditForm):
+class Edit(asm.cmsui.form.EditForm):
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
 
     form_fields = grok.AutoFields(asm.contact.interfaces.IContactForm)
 
 
-class Index(asm.cms.form.Form):
+class Index(asm.cmsui.form.Form):
 
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
     form_fields = grok.AutoFields(asm.contact.interfaces.IPublicContactData)
 
     @grok.action(u'Send')

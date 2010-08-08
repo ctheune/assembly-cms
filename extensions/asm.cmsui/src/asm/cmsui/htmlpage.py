@@ -1,18 +1,25 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-class Index(megrok.pagelet.Pagelet):
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+import asm.cms.htmlpage
+import asm.cmsui.interfaces
+import asm.cmsui.retail
+import asm.cmsui.form
+import asm.cmsui.tinymce
+import grok
+
+class Index(asm.cmsui.retail.Pagelet):
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
 
 
-class Edit(asm.cms.form.EditionEditForm):
+class Edit(asm.cmsui.form.EditionEditForm):
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
-    main_fields = grok.AutoFields(HTMLPage).select(
+    main_fields = grok.AutoFields(asm.cms.htmlpage.HTMLPage).select(
         'title', 'content')
-    main_fields['content'].custom_widget = asm.cms.tinymce.TinyMCEWidget
+    main_fields['content'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     def post_process(self):
         self.content = fix_relative_links(

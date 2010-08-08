@@ -51,7 +51,6 @@ $(function() {
    });
 });
 
-//$(function() {
 // find wrap/*
 // 
 /*	$("#livestream").overlay({
@@ -78,7 +77,7 @@ $(function() {
 
 
 
-// Rotate News
+// Rotate News 
 $(function() { 
     var rotateDelay = 20000; //milliseconds 
     var rotateTabs=true;     
@@ -102,7 +101,6 @@ $(function() {
     } 
     doRotateTabs(); 
 }); 
-
 // Count-down
 var target;
 function startClock() {

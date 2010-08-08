@@ -25,7 +25,7 @@ class PageTests(asm.cms.testing.FunctionalTestCase):
 
     def test_b_inside_a(self):
         arrange = asm.cms.page.Arrange(self.b.page, self.request)
-        arrange.update(self.intids.getId(self.a), 'inside')
+        arrange.update(self.intids.getId(self.a.page), 'inside')
         self.failUnless('a' in self.b.page)
         self.failIf('a' in self.cms)
 
@@ -33,7 +33,7 @@ class PageTests(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(['edition-', 'a', 'b'],
                           list(self.cms))
         arrange = asm.cms.page.Arrange(self.a.page, self.request)
-        arrange.update(self.intids.getId(self.b), 'before')
+        arrange.update(self.intids.getId(self.b.page), 'before')
         self.assertEquals(['edition-', 'b', 'a'],
                           list(self.cms))
 
@@ -41,6 +41,6 @@ class PageTests(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(['edition-', 'a', 'b'],
                           list(self.cms))
         arrange = asm.cms.page.Arrange(self.b.page, self.request)
-        arrange.update(self.intids.getId(self.a), 'after')
+        arrange.update(self.intids.getId(self.a.page), 'after')
         self.assertEquals(['edition-', 'b', 'a'],
                           list(self.cms))

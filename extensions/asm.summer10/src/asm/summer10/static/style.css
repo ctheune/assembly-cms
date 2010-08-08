@@ -672,3 +672,36 @@ a:active {
 .medianavigationbar .control {
     color: #555;
 }
+
+#search-results h2 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5em;
+    margin-bottom: 1.5em;
+    font-size:14pt;
+}
+
+#search-results dt {
+    font-size:11pt;
+    font-weight: bold;
+}
+
+#search-results dt i {
+    color: #999;
+    font-style: normal;
+    font-weight: normal;
+    font-size:9pt;
+}
+
+#search-results dt a {
+    text-decoration: none;
+}
+
+#search-results dd {
+    margin-bottom:1.5em;
+    margin-left:0;
+    margin-top:0.2em;
+}
+
+#search-results .match {
+    background-color: #bdd6de;
+}

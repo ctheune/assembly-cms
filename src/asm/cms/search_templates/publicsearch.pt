@@ -1,19 +1,28 @@
-<div class="section">
-    <h2>Search results</h2>
-</div>
+<div id="search-results">
 
-<div id="search-results" tal:define="results view/results">
-    <ul tal:condition="results">
-        <li tal:repeat="result results">
-            <a tal:attributes="href python:view.url(result)"
-                tal:content="result/title">
-            </a>
+  <h2> Search results for &ldquo;<i tal:content="request/q">asdf</i>&rdquo;</h2>
 
-            <div class="preview" tal:content="structure result/@@searchpreview|nothing"/>
-        </li>
-    </ul>
-    <p tal:condition="not:results">
-        The search for &quot;<span tal:content="view/keyword"/>&quot; returned
-            no results.
-    </p>
+  <tal:block tal:define="results view/results">
+  <dl tal:condition="results">
+    <tal:block tal:repeat="result results">
+
+    <dt>
+    <a tal:attributes="href python:view.url(result)"
+      tal:content="result/title">
+    </a>
+    <i><span tal:repeat="element python:view.get_path(result)">/<span tal:content="element/__name__"></span></span></i>
+    </dt>
+
+    <dd>
+    <div class="preview" tal:content="structure result/@@searchpreview|nothing">
+    </div>
+    </dd>
+    </tal:block>
+  </dl>
+
+  <p tal:condition="not:results">
+  No results found.
+  </p>
+  </tal:block>
+
 </div>

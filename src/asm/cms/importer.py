@@ -17,11 +17,6 @@ import zope.schema
 import zope.traversing.api
 
 
-class ImportActions(grok.Viewlet):
-
-    grok.viewletmanager(asm.cms.NavigationToolActions)
-    grok.context(zope.interface.Interface)
-
 
 class IImport(zope.interface.Interface):
 
@@ -31,17 +26,14 @@ class IImport(zope.interface.Interface):
                      u'XML import format.'))
 
 
-class Import(asm.cms.Form):
+class Importer(object):
 
-    grok.context(asm.cms.cms.CMS)
-    form_fields = grok.AutoFields(IImport)
+    def __init__(self, cms, data):
+        self.cms = cms
+        self.data = data
 
-    @grok.action(u'Import')
-    def import_action(self, data):
-        self.do_import(data)
-
-    def do_import(self, data):
-        export = lxml.etree.fromstring(data)
+    def __call__(self):
+        export = lxml.etree.fromstring(self.data.read())
         self.base_path = export.get('base')
         for page_node in export:
             page = self.get_page(page_node.get('path'), page_node.tag)
@@ -76,7 +68,7 @@ class Import(asm.cms.Form):
 
     def get_page(self, path, type_):
         path = path.split('/')
-        current = self.context
+        current = self.cms
         if path == ['']:
             # Ugly hack to support importing content on the root page.
             return current
@@ -91,6 +83,7 @@ class Import(asm.cms.Form):
                     del page[edition.__name__]
             current = current.get(name)
         return current
+
 
 
 def extract_date(str):

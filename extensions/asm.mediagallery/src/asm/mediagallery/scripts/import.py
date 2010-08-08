@@ -84,6 +84,10 @@ def create_asset(name, data):
 for line in open(file, 'r'):
     line = line.strip()
     line = line.decode('utf-8')
+    if not line:
+        continue
+    if line.startswith('#'):
+        continue
     if line.startswith('!'):
         section_title = line[1:].strip()
         section_name = asm.cms.utils.normalize_name(section_title)
@@ -98,8 +102,15 @@ for line in open(file, 'r'):
     else:
         data = {}
         for field in line.split('|'):
-            data.__setitem__(*field.split(':', 1))
-        name = orig_name = asm.cms.utils.normalize_name(data['title'])
+            try:
+                data.__setitem__(*field.split(':', 1))
+            except TypeError:
+                print field
+                raise
+        orig_name = data['title']
+        if 'author' in data:
+            orig_name += ' by ' + data['author']
+        name = orig_name = asm.cms.utils.normalize_name(orig_name)
         i = 1
         while not name or name in section:
             name = '%s%s' % (orig_name, i)
@@ -109,7 +120,7 @@ for line in open(file, 'r'):
         edition.title = data['title']
         edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
         edition_galleryinfo.author = data.get('author')
-        edition_galleryinfo.ranking = data.get('position')
+        edition_galleryinfo.ranking = int(data.get('position'))
         edition_galleryinfo.thumbnail = ZODB.blob.Blob()
 
         f = edition_galleryinfo.thumbnail.open('w')

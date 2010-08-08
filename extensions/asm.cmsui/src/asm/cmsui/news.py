@@ -1,19 +1,21 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import asm.cmsui.form
+import asm.cmsui.retail
+import asm.cms.news
+import grok
+
+grok.context(asm.cms.news.NewsFolder)
 
 
-class Edit(asm.cms.EditForm):
-
-    grok.context(NewsFolder)
+class Edit(asm.cmsui.form.EditForm):
 
     form_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select(
         'title')
 
 
-class Index(asm.cms.Pagelet):
-
-    grok.context(NewsFolder)
+class Index(asm.cmsui.retail.Pagelet):
 
     def list(self):
         for news in self.context.list():

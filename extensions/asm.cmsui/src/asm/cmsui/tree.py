@@ -1,10 +1,14 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grok
+import asm.cmsui.interfaces
+
+
 class Tree(grok.View):
 
     grok.context(grok.Application)   # XXX Meh.
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
 
     def update(self):

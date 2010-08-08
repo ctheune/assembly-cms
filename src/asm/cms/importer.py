@@ -17,15 +17,6 @@ import zope.schema
 import zope.traversing.api
 
 
-
-class IImport(zope.interface.Interface):
-
-    data = zope.schema.Bytes(
-        title=u'Content',
-        description=(u'The content is expected to be in the Assembly CMS '
-                     u'XML import format.'))
-
-
 class Importer(object):
 
     def __init__(self, cms, data):
@@ -83,7 +74,6 @@ class Importer(object):
                     del page[edition.__name__]
             current = current.get(name)
         return current
-
 
 
 def extract_date(str):

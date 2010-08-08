@@ -97,14 +97,6 @@ class IAsset(zope.interface.Interface):
     size = zope.schema.Int(title=u'Size of this asset', readonly=True)
 
 
-class ICMSSkin(grok.IDefaultBrowserLayer):
-    grok.skin('cms')
-
-
-class IRetailSkin(grok.IDefaultBrowserLayer):
-    grok.skin('retail')
-
-
 class IEditionSelector(zope.interface.Interface):
 
     preferred = zope.interface.Attribute('A list of preferred editions.')

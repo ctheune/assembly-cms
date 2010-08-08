@@ -52,6 +52,8 @@ class Asset(asm.cms.edition.Edition):
 
     @property
     def content_type(self):
+        if self.content is None:
+            return None
         return asm.cms.magic.whatis(self.content.open('r').read())
 
 

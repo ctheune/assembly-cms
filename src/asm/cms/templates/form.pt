@@ -14,9 +14,9 @@
         </tal:block>
 
         <div tal:repeat="group view/grouped_widgets" class="section expandable">
-            <h3><span tal:replace="group"></span>
+            <h3 class="opener"><span tal:replace="group"></span>
 
-                <span class="opener">
+                <span>
                     <span class="closed">
                         <span class="hint" tal:content="python:view.group_info[group]"></span>
                         <span class="ui-icon ui-icon-carat-1-s"></span>

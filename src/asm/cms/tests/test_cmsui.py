@@ -78,7 +78,7 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
     def test_change_page_type(self):
         s = self.selenium
         s.assertNotVisible('xpath=//input[@value="Change page type"]')
-        s.click('//h3[contains(text(), "Page")]')
+        s.click('//h3[contains(text(), "Page")]/following-sibling::div[@class="opener"]')
         s.assertVisible('xpath=//input[@value="Change page type"]')
         s.clickAndWait('xpath=//input[@value="Change page type"]')
         s.click('id=form.type.0') # News section
@@ -95,7 +95,7 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
         edition = self.cms['xy'].editions.next()
         edition.title = u'A test page'
         intids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
-        xy_id = intids.getId(edition)
+        xy_id = intids.getId(edition.page)
         transaction.commit()
         s.open(
             'http://mgr:mgrpw@%s/++skin++cms/cms/xy/edition-/@@edit' %
@@ -114,7 +114,7 @@ class CMSUI(asm.cms.testing.SeleniumTestCase):
         edition = self.cms.editions.next()
         edition.title = u'Foobar'
         transaction.commit()
-        cms_id = intids.getId(edition)
+        cms_id = intids.getId(edition.page)
         s = self.selenium
         s.refresh()
         s.waitForPageToLoad()

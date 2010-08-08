@@ -43,13 +43,6 @@ import zope.deferredimport
 zope.deferredimport.define(
     Edition='asm.cms.edition:Edition',
 
-    MainPageActions='asm.cms.cmsui:MainPageActions',
-    ExtendedPageActions='asm.cms.cmsui:ExtendedPageActions',
-    PageActionGroups='asm.cms.cmsui:PageActionGroups',
-    NavigationActions='asm.cms.cmsui:NavigationActions',
-    NavigationToolActions='asm.cms.cmsui:NavigationToolActions',
-    ActionView='asm.cms.cmsui:ActionView',
-
     Form='asm.cms.form:Form',
     EditForm='asm.cms.form:EditForm',
     AddForm='asm.cms.form:AddForm',

@@ -36,11 +36,6 @@ def cleanup_initial_edition(obj, event):
     obj.register(cms)
 
 
-class PreviewWindow(grok.View):
-
-    grok.name('preview-window')
-    grok.template('preview-window')
-
 
 class ProfileSource(zc.sourcefactory.basic.BasicSourceFactory):
 
@@ -84,9 +79,6 @@ class CMSProfile(grok.Adapter):
     name = property(fget=get_name, fset=set_name)
 
 
-class SelectProfile(asm.cms.form.EditForm):
-
-    form_fields = grok.AutoFields(IProfileSelection)
 
 
 class Profile(z3c.baseregistry.baseregistry.BaseComponents):

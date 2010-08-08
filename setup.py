@@ -35,5 +35,4 @@ setup(name='asm.cms',
                         'hurry.zoperesource',
                         'hurry.tinymce',
                         'hurry.query',
-                        'z3c.baseregistry',
-                        'gocept.selenium>0.3'])
+                        'z3c.baseregistry'])

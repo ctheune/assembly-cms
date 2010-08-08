@@ -2,14 +2,14 @@
 # See also LICENSE.txt
 
 import asm.cms.page
-import asm.cms.testing
+import asm.cmsui.testing
 import grok
 import transaction
 import unittest
 import zope.event
 
 
-class CMSUI(asm.cms.testing.SeleniumTestCase):
+class CMSUI(asm.cmsui.testing.SeleniumTestCase):
 
     def test_cms_redirects_to_editor(self):
         self.selenium.open('http://mgr:mgrpw@%s/++skin++cms/cms' %

@@ -30,7 +30,3 @@ class SecurityTests(unittest.TestCase):
             self.assertEquals(
                 'asm.cms.EditContent', checker.get_permissions.get('__call__'),
                 'Missing protection for %r' % registration.factory)
-
-
-def test_suite():
-    return unittest.makeSuite(SecurityTests)

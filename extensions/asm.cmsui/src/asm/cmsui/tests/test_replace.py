@@ -4,12 +4,12 @@
 import asm.cms.cms
 import asm.cms.htmlpage
 import asm.cms.replace
-import asm.cms.testing
+import asm.cmsui.testing
 import transaction
 import unittest
 
 
-class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
+class ReplaceSelenium(asm.cmsui.testing.SeleniumTestCase):
 
     def test_simple_replace(self):
         home = self.cms.editions.next()

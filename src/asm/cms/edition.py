@@ -78,8 +78,6 @@ class NullEdition(Edition):
     pass
 
 
-
-
 class EditionParameters(object):
     """Edition parameters are used to differentiate editions from each other.
 
@@ -128,17 +126,6 @@ class EditionParameters(object):
                 yield parameter[len(prefix):]
 
 
-class DisplayParameters(grok.View):
-    grok.context(EditionParameters)
-    grok.name('index')
-
-    def render(self):
-        # XXX use better lookup mechanism for tag labels
-        tags = sorted(self.context)
-        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels)
-        return '(%s)' % ', '.join(labels.lookup(tag) for tag in tags)
-
-
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
     page.addEdition(get_initial_parameters())
@@ -150,21 +137,6 @@ def get_initial_parameters():
             asm.cms.interfaces.IInitialEditionParameters):
         parameters.update(factory())
     return EditionParameters(parameters)
-
-
-class Delete(grok.View):
-    """Deletes an edition."""
-
-    grok.context(Edition)
-
-    def update(self):
-        page = self.context.__parent__
-        self.target = asm.cms.edition.select_edition(
-            page, self.request)
-        del page[self.context.__name__]
-
-    def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
 
 
 
@@ -241,11 +213,6 @@ def find_editions(root, request=None, schema=zope.interface.Interface, recurse=T
         for page in root.subpages:
             for sub in find_editions(page, request, schema):
                 yield sub
-
-
-class ImagePicker(grok.View):
-    grok.context(Edition)
-    grok.name('image-picker')
 
 
 class EditionLabels(grok.GlobalUtility):

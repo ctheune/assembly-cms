@@ -35,3 +35,33 @@ class NullIndex(megrok.pagelet.Pagelet):
 
     def render(self):
         return 'No edition available.'
+
+class DisplayParameters(grok.View):
+    grok.context(EditionParameters)
+    grok.name('index')
+
+    def render(self):
+        # XXX use better lookup mechanism for tag labels
+        tags = sorted(self.context)
+        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels)
+        return '(%s)' % ', '.join(labels.lookup(tag) for tag in tags)
+
+
+class Delete(grok.View):
+    """Deletes an edition."""
+
+    grok.context(Edition)
+
+    def update(self):
+        page = self.context.__parent__
+        self.target = asm.cms.edition.select_edition(
+            page, self.request)
+        del page[self.context.__name__]
+
+    def render(self):
+        self.redirect(self.url(self.target, '@@edit'))
+
+
+class ImagePicker(grok.View):
+    grok.context(Edition)
+    grok.name('image-picker')

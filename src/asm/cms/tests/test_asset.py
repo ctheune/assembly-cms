@@ -25,7 +25,7 @@ class AssetTests(unittest.TestCase):
         self.assertEquals(None, asset.content_type)
         b = asset.content = ZODB.blob.Blob()
         f = b.open('w')
-        f.write(open(os.path.join(os.path.dirname(__file__), '..',
-                                  'static', 'icons', 'pencil.png')).read())
+        f.write(open(os.path.join(os.path.dirname(__file__), 'pencil.png')
+                     ).read())
         f.close()
         self.assertEquals('image/x-png', asset.content_type)

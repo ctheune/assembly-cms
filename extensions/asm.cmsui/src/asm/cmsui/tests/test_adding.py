@@ -1,12 +1,11 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import asm.cms.edition
-import asm.cms.testing
+import asm.cmsui.testing
 import transaction
 
 
-class Adding(asm.cms.testing.SeleniumTestCase):
+class Adding(asm.cmsui.testing.SeleniumTestCase):
 
     def test_add(self):
         s = self.selenium

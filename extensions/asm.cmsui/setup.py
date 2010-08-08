@@ -14,4 +14,5 @@ setup(name='asm.cmsui',
       zip_safe=False,
       install_requires=['asm.cms',
                         'grok',
+                        'gocept.selenium',
                         'setuptools'])

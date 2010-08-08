@@ -1,5 +1,6 @@
 import asm.cms
-import asm.cms.cmsui
+import asm.cmsui.interfaces
+import asm.cmsui.retail
 import datetime
 import grok
 import megrok.pagelet
@@ -8,7 +9,7 @@ import zope.interface
 import pytz
 
 
-class ISkin(asm.cms.IRetailSkin):
+class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin('winter10')
 
 
@@ -136,7 +137,7 @@ class Navtree(grok.View):
         return ' '.join(filter(None, classes))
 
 
-class Homepage(asm.cms.Pagelet):
+class Homepage(asm.cmsui.retail.Pagelet):
     grok.context(asm.cms.homepage.Homepage)
     grok.layer(ISkin)
     grok.name('index')

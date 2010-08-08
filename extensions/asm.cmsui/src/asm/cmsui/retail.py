@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
+import asm.cmsui.interfaces
 import grok
 import megrok.pagelet
 import zope.app.publication.interfaces
@@ -10,7 +11,7 @@ import zope.interface
 
 class Layout(megrok.pagelet.Layout):
     grok.context(zope.interface.Interface)
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
 
     megrok.pagelet.template('templates/retail.pt')
 
@@ -18,7 +19,7 @@ class Layout(megrok.pagelet.Layout):
 class Pagelet(megrok.pagelet.Pagelet):
 
     grok.baseclass()
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
 
 
 class RetailTraverser(grok.Traverser):
@@ -33,10 +34,10 @@ class RetailTraverser(grok.Traverser):
 
     # This directive is currently ignored due to LP #408819. See workaround
     # below.
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
 
     def traverse(self, name):
-        if not asm.cms.interfaces.IRetailSkin.providedBy(self.request):
+        if not asm.cmsui.interfaces.IRetailSkin.providedBy(self.request):
             # Workaround for grok.layer bug
             return
         page = self.get_context()
@@ -67,7 +68,7 @@ class EditionTraverse(RetailTraverser):
         return self.context.page
 
 
-@grok.adapter(asm.cms.interfaces.IEdition, asm.cms.interfaces.IRetailSkin)
+@grok.adapter(asm.cms.interfaces.IEdition, asm.cmsui.interfaces.IRetailSkin)
 @grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
 def edition_url(edition, request):
     return zope.component.getMultiAdapter(
@@ -77,7 +78,7 @@ def edition_url(edition, request):
 
 @grok.subscribe(zope.publisher.interfaces.http.IHTTPVirtualHostChangedEvent)
 def fix_virtual_host(event):
-    if not asm.cms.IRetailSkin.providedBy(event.request):
+    if not asm.cmsui.IRetailSkin.providedBy(event.request):
         return
     root = event.request.getVirtualHostRoot()
     if asm.cms.interfaces.IEdition.providedBy(root):

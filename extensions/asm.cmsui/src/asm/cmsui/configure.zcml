@@ -3,13 +3,11 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="asm.cms">
 
-  <browser:defaultSkin name="cms" />
-
   <browser:view
       layer=".interfaces.IRetailSkin"
       name=""
       class="zope.app.publisher.browser.resources.Resources"
-      for=".interfaces.IEdition"
+      for="asm.cms.interfaces.IEdition"
       permission="zope.Public"
       allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
       />

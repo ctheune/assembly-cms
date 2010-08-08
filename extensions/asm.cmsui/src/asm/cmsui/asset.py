@@ -1,7 +1,11 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import asm.cms.form
+import asm.cms.asset
+import asm.cmsui.form
+import asm.cmsui.interfaces
+import zope.app.form.browser.textwidgets
+import grok
 
 
 class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
@@ -33,12 +37,12 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
         return value
 
 
-class Edit(asm.cms.form.EditionEditForm):
+class Edit(asm.cmsui.form.EditionEditForm):
 
-    grok.layer(asm.cms.interfaces.ICMSSkin)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.name('edit')
 
-    main_fields = grok.AutoFields(Asset).select(
+    main_fields = grok.AutoFields(asm.cms.asset.Asset).select(
         'title', 'content')
     main_fields['content'].custom_widget = FileWithDisplayWidget
 
@@ -60,5 +64,4 @@ class Index(grok.View):
 
 
 class ImagePicker(grok.View):
-    grok.context(Asset)
     grok.name('image-picker')

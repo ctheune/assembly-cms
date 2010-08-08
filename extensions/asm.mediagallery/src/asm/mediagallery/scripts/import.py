@@ -57,6 +57,30 @@ def get_thumbnail(data, target=(77.0,165.0), crop=True):
     im.save(output, format='png')
     return output
 
+
+def create_external(name, data):
+    section[name] = p = asm.cms.page.Page('externalasset')
+    edition = p.editions.next()
+    edition.title = data['title']
+    yt = asm.mediagallery.externalasset.HostingServiceChoice()
+    yt.service_id = 'youtube'
+    yt.id = data['youtube']
+    edition.locations = (yt,)
+    img = StringIO.StringIO(urllib.urlopen(data['thumbnail']).read())
+    return edition, img
+
+
+def create_asset(name, data):
+    section[name] = p = asm.cms.page.Page('asset')
+    edition = p.editions.next()
+    img = open(data['image'], 'rb')
+    edition.content = ZODB.blob.Blob()
+    f = edition.content.open('w')
+    f.write(get_thumbnail(img, (330.0, 560.0), crop=False).getvalue())
+    img.seek(0)
+    return edition, img
+
+
 for line in open(file, 'r'):
     line = line.strip()
     line = line.decode('utf-8')
@@ -75,63 +99,27 @@ for line in open(file, 'r'):
         data = {}
         for field in line.split('|'):
             data.__setitem__(*field.split(':', 1))
+        name = orig_name = asm.cms.utils.normalize_name(data['title'])
+        i = 1
+        while not name or name in section:
+            name = '%s%s' % (orig_name, i)
+            i +=1
 
+        edition, img = locals()['create_' + data.get('type')](name, data)
+        edition.title = data['title']
+        edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+        edition_galleryinfo.author = data.get('author')
+        edition_galleryinfo.ranking = data.get('position')
+        edition_galleryinfo.thumbnail = ZODB.blob.Blob()
 
-        if data.get('type') == 'external':
-            name = orig_name = asm.cms.utils.normalize_name(data['title'])
-            i = 1
-            while not name or name in section:
-                name = '%s%s' % (orig_name, i)
-                i +=1
-            section[name] = p = asm.cms.page.Page('externalasset')
-            edition = p.editions.next()
-            edition.title = data['title']
-            yt = asm.mediagallery.externalasset.HostingServiceChoice()
-            yt.service_id = 'youtube'
-            yt.id = data['youtube']
-            edition.locations = (yt,)
+        f = edition_galleryinfo.thumbnail.open('w')
+        f.write(get_thumbnail(img).getvalue())
+        f.close()
+        del img
 
-            edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
-            if 'author' in data:
-                edition_galleryinfo.author = data['author']
+        asm.workflow.workflow.publish(edition)
+        print "Imported", edition.title
 
-            edition_galleryinfo.thumbnail = ZODB.blob.Blob()
-            f = edition_galleryinfo.thumbnail.open('w')
-            # Get thumbnail, scale down
-            img = StringIO.StringIO(urllib.urlopen(data['thumbnail']).read())
-            f.write(get_thumbnail(img).getvalue())
-            f.close()
-            asm.workflow.workflow.publish(edition)
-            print "Imported", edition.title
-        else:
-            name = orig_name = asm.cms.utils.normalize_name(data['title'])
-            i = 1
-            while not name or name in section:
-                name = '%s%s' % (orig_name, i)
-                i +=1
-            section[name] = p = asm.cms.page.Page('asset')
-            edition = p.editions.next()
-            edition.title = data['title']
-            edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
-            if 'author' in data:
-                edition_galleryinfo.author = data['author']
-
-            img = open(data['image'], 'rb')
-            print data['image']
-            edition.content = ZODB.blob.Blob()
-            f = edition.content.open('w')
-            f.write(get_thumbnail(img, (330.0, 560.0), crop=False).getvalue())
-            img.seek(0)
-
-            edition_galleryinfo.thumbnail = ZODB.blob.Blob()
-            f = edition_galleryinfo.thumbnail.open('w')
-            f.write(get_thumbnail(img).getvalue())
-            f.close()
-
-            asm.workflow.workflow.publish(edition)
-            print "Imported", edition.title
-
- #       publish content object
 
 transaction.commit()
 

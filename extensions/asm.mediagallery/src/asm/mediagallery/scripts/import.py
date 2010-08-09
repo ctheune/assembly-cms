@@ -91,12 +91,13 @@ for line in open(file, 'r'):
     if line.startswith('!'):
         section_title = line[1:].strip()
         section_name = asm.cms.utils.normalize_name(section_title)
-        if section_name not in gallery:
-            gallery[section_name] = p = asm.cms.page.Page('mediagallery')
-            section = p.editions.next()
-            section.title = section_title
-            asm.workflow.workflow.publish(section)
-            print "Created gallery", section_title
+        if section_name in gallery:
+            del gallery[section_name]     
+        gallery[section_name] = p = asm.cms.page.Page('mediagallery')
+        section = p.editions.next()
+        section.title = section_title
+        asm.workflow.workflow.publish(section)
+        print "Created gallery", section_title
 
         section = gallery[section_name]
     else:

@@ -47,6 +47,17 @@ class ViewGallery(asm.cms.Pagelet):
 
     grok.context(ExternalAsset)
 
+    def update(self):
+        return self.redirect(self.url(self.context))
+
+    def render(self):
+        return self.url(self.context)
+
+
+class Index(asm.cms.Pagelet):
+
+    grok.context(ExternalAsset)
+
     def embed(self):
         for service_choice in self.context.locations:
             try:

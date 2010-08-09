@@ -9,6 +9,12 @@ class ServiceTests(asm.cms.testutils.TestCase):
         self.assertValidXml(code)
         self.assertIsIn('link', code)
 
+    def test_download_url_link_text_is_ok(self):
+        service = asm.mediagallery.services.DownloadURLService()
+        code = service.link_code('link|link text')
+        self.assertValidXml(code)
+        self.assertIsIn('link text', code)
+
     def test_youtube_link_code_is_ok(self):
         service = asm.mediagallery.services.YoutubeHosted()
         code = service.link_code('youtube-id')
@@ -31,6 +37,10 @@ class ServiceTests(asm.cms.testutils.TestCase):
         service = asm.mediagallery.services.SceneOrgDownload()
         code = service.link_code('/link/path')
         self.assertValidXml(code)
+
+        named_code = service.link_code('/link/path|link text')
+        self.assertValidXml(named_code)
+        self.assertIsIn('link text', named_code)
 
     def test_demoscene_tv_link_code_is_ok(self):
         service = asm.mediagallery.services.DemosceneTV()

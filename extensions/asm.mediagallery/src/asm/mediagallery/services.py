@@ -24,13 +24,14 @@ class YoutubeHosted(grok.GlobalUtility):
 
     EMBED_TEMPLATE = """<object width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>"""
     CONTROLS_HEIGHT = 25.0
+    ASPECT_RATIO = 16.0 / 9.0
 
     def link_code(self, media_id):
         return ('<a href="http://www.youtube.com/watch?v=%s">'
                 'YouTube</a>') % media_id.strip()
 
     def embed_code(self, media_id):
-        youtube_height = MEDIA_WIDTH * 9.0 / 16.0 + self.CONTROLS_HEIGHT
+        youtube_height = MEDIA_WIDTH / self.ASPECT_RATIO + self.CONTROLS_HEIGHT
         return self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
             'width': MEDIA_WIDTH,
@@ -64,6 +65,7 @@ class DemosceneTV(grok.GlobalUtility):
 
     EMBED_TEMPLATE = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id)s" width="%(width)d" height="%(height)d" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />"""
     CONTROLS_HEIGHT = 20.0
+    ASPECT_RATIO = 16.0 / 9.0
 
     def link_code(self, media_id):
         link, _ = media_id.split(',')
@@ -72,7 +74,7 @@ class DemosceneTV(grok.GlobalUtility):
 
     def embed_code(self, media_id):
         _ , embed = media_id.split(',')
-        dtv_height = MEDIA_WIDTH * 3.0 / 4.0 + self.CONTROLS_HEIGHT
+        dtv_height = MEDIA_WIDTH / self.ASPECT_RATIO + self.CONTROLS_HEIGHT
         return  self.EMBED_TEMPLATE % {
             'id': embed.strip(),
             'width': MEDIA_WIDTH,
@@ -86,11 +88,28 @@ class Vimeo(object):
     EMBED_TEMPLATE = """<object width="%(width)d" height="%(height)d"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=%(id)s&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=abebff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=%(id)s&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=abebff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="%(width)d" height="%(height)d"></embed></object>"""
     CONTROLS_HEIGHT = 0.0
 
-    def link_code(self, media_id):
+    DEFAULT_ASPECT_RATIO = 16.0 / 9.0
+
+    def _get_aspect_ratio(self, aspect_str):
+        width, height = aspect_str.strip().split(":")
+        return float(width)/float(height)
+
+    def _get_media_data(self, media_id_data):
+        if "," in media_id_data:
+            media_id, aspect_ratio_str = media_id_data.split(",")
+            aspect_ratio = self._get_aspect_ratio(aspect_ratio_str)
+        else:
+            media_id = media_id_data
+            aspect_ratio = self.DEFAULT_ASPECT_RATIO
+        return media_id, aspect_ratio
+
+    def link_code(self, media_id_data):
+        media_id, _ = self._get_media_data(media_id_data)
         return "<a href='http://vimeo.com/%s'>Vimeo</a>" % media_id.strip()
 
-    def embed_code(self, media_id):
-        player_height = MEDIA_WIDTH * 9.0 / 16.0 + self.CONTROLS_HEIGHT
+    def embed_code(self, media_id_data):
+        media_id, aspect_ratio = self._get_media_data(media_id_data)
+        player_height = MEDIA_WIDTH / aspect_ratio + self.CONTROLS_HEIGHT
         return  self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
             'width': MEDIA_WIDTH,

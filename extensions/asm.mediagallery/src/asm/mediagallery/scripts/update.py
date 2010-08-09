@@ -78,7 +78,7 @@ def update_external(section, name, data):
     if 'youtube' in data:
         locations += (create_service('youtube', data['youtube']),)
     if 'sceneorg' in data:
-        locations += (create_service('sceneorg', data['sceneorg']),)
+        locations += (create_service('sceneorg', data['sceneorg'] + u"|Original"),)
     if 'sceneorgvideo' in data:
         locations += (create_service('sceneorg', data['sceneorgvideo'] + u"|HQ video"),)
 

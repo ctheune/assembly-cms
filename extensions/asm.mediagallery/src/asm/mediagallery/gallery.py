@@ -8,6 +8,7 @@ import re
 import sys
 import urllib
 import zope.interface
+import zope.publisher.interfaces
 import ZODB.blob
 import random
 
@@ -73,7 +74,7 @@ class Index(asm.cms.Pagelet):
                 edition=edition,
                 gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
         items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
-        if limit:
+        if limit and len(items) > 0:
             if items[0]['gallery'].ranking is None:
                 random.shuffle(items)
             items = items[:limit]
@@ -115,10 +116,16 @@ class Thumbnail(grok.View):
 
     grok.context(asm.cms.interfaces.IEdition)
 
-    def render(self):
-        info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(
+    info = None
+
+    def update(self):
+        self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(
             self.context)
-        return open(info.thumbnail.committed())
+        if self.info.thumbnail is None:
+            raise zope.publisher.interfaces.NotFound(self, self.__name__, self.request)
+
+    def render(self):
+        return open(self.info.thumbnail.committed())
 
 
 class GalleryNavBar(grok.View):

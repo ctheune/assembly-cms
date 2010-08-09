@@ -4,8 +4,9 @@
 
 <div class="mediabottombar">
     <div class="download">
-        <span tal:repeat="download python:view.links(include=['download'], max=1)"
-              tal:replace="structure download"/>
+      <tal:block tal:repeat="download python:view.links(include=['download'], max=1)">
+        <span tal:replace="structure download"/>
+      </tal:block>
     </div>
     <div class="view">
         View on

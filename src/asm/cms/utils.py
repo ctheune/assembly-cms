@@ -1,7 +1,8 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import lxml.etree
+import re
 
 
 def rewrite_urls(content, visitor):
@@ -34,8 +35,10 @@ def rewrite_urls(content, visitor):
     return result.strip()
 
 
-def title_to_name(title):
-    title = title.lower()
-    for char in ' /#?':
-        title = title.replace(char, '-')
-    return title
+def normalize_name(title):
+    result = title.lower()
+    result = re.sub("[^\.a-z0-9]", "-", result)
+    # Normalize multiple dashes and then remove them from beginning and end.
+    result = re.sub("-+", "-", result)
+    result = result.strip("-")
+    return result

@@ -16,25 +16,25 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         self.cms['page'] = self.page = asm.cms.htmlpage.HTMLPage()
         self.replace = asm.cms.replace.HTMLReplace(self.page)
 
-    def test_find_no_occurences(self):
-        occurences = list(self.replace.search('asdf'))
-        self.assertEqual([], occurences)
+    def test_find_no_occurrences(self):
+        occurrences = list(self.replace.search('asdf'))
+        self.assertEqual([], occurrences)
 
-    def test_find_occurences_content(self):
+    def test_find_occurrences_content(self):
         self.page.content = u'fooasdfbar'
-        occurences = list(self.replace.search('asdf'))
-        self.assertEqual(1, len(occurences))
+        occurrences = list(self.replace.search('asdf'))
+        self.assertEqual(1, len(occurrences))
 
-    def test_find_occurences_title(self):
+    def test_find_occurrences_title(self):
         self.page.title = u'fooasdfbar'
-        occurences = list(self.replace.search('asdf'))
-        self.assertEqual(1, len(occurences))
+        occurrences = list(self.replace.search('asdf'))
+        self.assertEqual(1, len(occurrences))
 
-    def test_find_occurences_title_and_content(self):
+    def test_find_occurrences_title_and_content(self):
         self.page.title = u'fooasdfbar'
         self.page.content = u'fooasdfbar'
-        occurences = list(self.replace.search('asdf'))
-        self.assertEqual(2, len(occurences))
+        occurrences = list(self.replace.search('asdf'))
+        self.assertEqual(2, len(occurrences))
 
     def test_replace_occurence_content(self):
         self.page.content = u'fooasdfbar'
@@ -56,7 +56,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         self.assertEquals('foolingonberry0bar', self.page.title)
         self.assertEquals('foolingonberry1bar', self.page.content)
 
-    def test_replace_multiple_occurences_straight(self):
+    def test_replace_multiple_occurrences_straight(self):
         self.page.content = u'fooasdfbarasdfbaz'
         o1, o2 = self.replace.search('asdf')
         o1.replace('lingonberry')
@@ -64,7 +64,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(u'foolingonberrybarpancakebaz',
                           self.page.content)
 
-    def test_replace_multiple_occurences_different_order(self):
+    def test_replace_multiple_occurrences_different_order(self):
         self.page.content = u'fooasdfbarasdfbaz'
         o1, o2 = self.replace.search('asdf')
         o2.replace('lingonberry')
@@ -72,7 +72,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(u'foopancakebarlingonberrybaz',
                           self.page.content)
 
-    def test_replace_multiple_occurences_multiple_attributes(self):
+    def test_replace_multiple_occurrences_multiple_attributes(self):
         self.page.title = u'fooasdfbarasdfbaz'
         self.page.content = u'fooasdfbarasdfbaz'
         o1, o2, o3, o4 = self.replace.search('asdf')
@@ -85,7 +85,7 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(u'foosyrupbarmaplebaz',
                           self.page.content)
 
-    def test_replace_multiple_attributes_occurences_different_order(self):
+    def test_replace_multiple_attributes_occurrences_different_order(self):
         self.page.title = u'fooasdfbarasdfbaz'
         self.page.content = u'fooasdfbarasdfbaz'
         o1, o2, o3, o4 = self.replace.search('asdf')
@@ -109,37 +109,3 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
                           '<span class="match">constructor</span>, and '
                           'is stored in an\n        attribute named cont',
                           o1.preview)
-
-
-class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
-
-    def test_simple_replace(self):
-        home = self.cms.editions.next()
-        home.title = 'testing homepage'
-        home.content = 'foobar'
-        transaction.commit()
-        s = self.selenium
-        s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.click('css=#actions .toggle-navigation')
-        s.verifyNotVisible('css=#search-and-replace')
-        s.click('css=#tools h3')
-        s.clickAndWait('css=#search-and-replace')
-        self.assertEquals(
-            'http://localhost:8087/++skin++cms/cms/@@searchandreplace',
-            s.getLocation())
-        s.type('name=search', 'foo')
-        s.type('name=replace', 'bar')
-        s.clickAndWait('name=form.actions.search')
-
-        s.assertTextPresent('Found 1 occurences.')
-        s.assertTextPresent('testing homepage')
-        s.assertElementPresent('name=occurences')
-        s.clickAndWait('name=form.actions.replace')
-
-        s.assertTextPresent('Replaced 1 occurences.')
-        self.assertEquals(
-            'http://localhost:8087/++skin++cms/cms/searchandreplace',
-            s.getLocation())
-
-        transaction.begin()
-        self.assertEquals('barbar', home.content)

@@ -1,24 +1,22 @@
 <span tal:replace="structure context/message|nothing" />
 
-<a tal:attributes="href python:view.url(context, 'schedule.ics')"><img tal:attributes="src string:${view/application_url}/@@/asm.schedule/ics.gif"/></a>
-
-<p class="schedulefilter"><strong>Select day:</strong><br />
-<tal:block repeat="option view/filter/day_options">
-<a tal:attributes="href string:?day=${option/token}&details=${view/filter/details};
-                   class option/class_"
-     tal:content="option/label">Thursday</a>
-<tal:block condition="not:repeat/option/end"> - </tal:block>
-</tal:block>
-</p>
-
-<p class="schedulefilter"><strong>Select schedule details:</strong><br />
+<p class="scheduleclasses">
 <tal:block repeat="option view/filter/detail_options">
   <a tal:attributes="href string:?details=${option/token}&day=${view/filter/day};
                      class option/class_"
      tal:content="option/label">major events only</a>
-<tal:block condition="not:repeat/option/end"> - </tal:block>
 </tal:block>
 </p>
+
+<p class="scheduledays">
+<tal:block repeat="option view/filter/day_options">
+<span tal:attributes="class option/class_">
+<a tal:attributes="href string:?day=${option/token}&details=${view/filter/details}"
+     tal:content="option/label">Thursday</a>
+</span>
+</tal:block>
+</p>
+
 
 
   <table class="schedule">
@@ -34,7 +32,7 @@
         tal:content="python:hour_record['hour'].strftime('%H:%M')"
         tal:attributes="rowspan repeat/event/length">
       </th>
-      <td tal:attributes="class python:view.event_class(event)">
+      <td tal:attributes="class python:view.event_class(event['event'])">
         <a tal:content="event/event/title" tal:attributes="name event/key; href event/event/url"></a><br/>
         <a tal:content="event/event/location" tal:attributes="href event/event/location_url" class="location"></a>
         <span class="until" tal:condition="python:event['event'].start != event['event'].end">&ndash;

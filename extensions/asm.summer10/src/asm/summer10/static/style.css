@@ -448,6 +448,42 @@ table.schedule td.current {
     background-color: #ebf2f3;
 }
 
+p.scheduleclasses {
+    margin-bottom:1em;
+}
+p.scheduleclasses a {
+    text-decoration: none;
+    font-size:2em;
+    margin-right:1em;
+}
+
+p.scheduledays {
+    margin-bottom:2em;
+    border-top:2px solid #eee;
+}
+
+p.scheduledays a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.5em;
+}
+
+p.scheduledays span {
+    margin-right:1.2em;
+    padding-top:1.5em;
+    display: inline-block;
+}
+
+p.scheduledays span.selected {
+    background-image: url("images/schedule-selected.png");
+    background-repeat: repeat-x;
+}
+
+p.scheduledays span.selected a,
+p.scheduleclasses a.selected {
+    color: black;
+}
+
 .forum-banner {
     margin-left:4px;
 }
@@ -526,6 +562,146 @@ a:active {
   outline:none;
   }
 
-  :focus {
-    -moz-outline-style:none;
-    }
+:focus {
+  -moz-outline-style:none;
+}
+
+.mediabottombar {
+    border:1px solid #ddd;
+    padding:1em;
+    margin-top:1em;
+    font-size:11pt;
+    color: #999;
+}
+
+.mediabottombar a,
+.mediaitemlisting a {
+    text-decoration: none;
+}
+
+.mediabottombar .download {
+    background-image: url('images/icon-download.png');
+    background-repeat: no-repeat;
+    display: inline-block;
+    padding-left:26px;
+    height: 22px;
+}
+
+.mediabottombar .view {
+    background-image: url('images/icon-view.png');
+    background-repeat: no-repeat;
+    background-position: 0px 2px;
+    display: inline-block;
+    padding-left:36px;
+    float:right;
+    height: 22px;
+}
+
+.mediaitemlisting .item {
+    float: left;
+    margin-right:1em;
+    width:170px;
+    height:150px;
+    overflow:hidden;
+}
+
+.mediaitemlisting .item .thumbnail {
+    float: left;
+}
+
+.mediaitemlisting .item .thumbnail img {
+    border:2px solid white;
+    -webkit-box-shadow: 0px 2px 3px #ccc;
+}
+
+.mediaitemlisting .item .description {
+    margin-top:0.5em;
+    float: left;
+    clear: both;
+}
+
+.mediaitemlisting .item .description table {
+    border-spacing: 0;
+    padding-bottom:1em;
+}
+
+.mediaitemlisting .item .rank {
+    font-size: 22pt;
+    color: #ccc;
+    padding: 0;
+    font-family: "Helvetica Neue", "Helvetica", Arial, sans;
+}
+
+.mediaitemlisting .title {
+    padding-top:0;
+    padding-bottom:0;
+}
+
+.mediaitemlisting .author {
+    color: #999;
+    padding-top:0;
+    padding-bottom:0;
+}
+
+.mediacategory {
+    clear: both;
+    float: left;
+    margin-bottom:2em;
+}
+
+.medianavigationbar {
+    font-size:12pt;
+    margin-top:1em;
+    clear:both;
+}
+
+.medianavigationbar .back {
+    float: left;
+    display: block;
+}
+
+.medianavigationbar .forward {
+    float: right;
+    text-align: right;
+}
+
+.medianavigationbar a {
+    text-decoration: none;
+}
+
+.medianavigationbar .control {
+    color: #555;
+}
+
+#search-results h2 {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5em;
+    margin-bottom: 1.5em;
+    font-size:14pt;
+}
+
+#search-results dt {
+    font-size:11pt;
+    font-weight: bold;
+}
+
+#search-results dt i {
+    color: #999;
+    font-style: normal;
+    font-weight: normal;
+    font-size:9pt;
+}
+
+#search-results dt a {
+    text-decoration: none;
+}
+
+#search-results dd {
+    margin-bottom:1.5em;
+    margin-left:0;
+    margin-top:0.2em;
+}
+
+#search-results .match {
+    background-color: #bdd6de;
+}

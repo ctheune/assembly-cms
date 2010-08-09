@@ -1,0 +1,13 @@
+<h1 tal:content="context/title"/>
+
+<p style="text-align:center;">
+  <img tal:attributes="src python:view.url(context)"/>
+</p>
+
+<div class="mediabottombar">
+    <div class="download">
+      <a tal:attributes="href python:view.url(context)">Download</a>
+    </div>
+</div>
+
+<div tal:replace="structure context/@@gallerynavbar"/>

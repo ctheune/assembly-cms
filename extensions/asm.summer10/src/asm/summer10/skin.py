@@ -1,5 +1,6 @@
 import asm.cms
-import asm.cms.cmsui
+import asm.cmsui.retail
+import asm.cmsui.interfaces
 import datetime
 import grok
 import megrok.pagelet
@@ -12,7 +13,7 @@ languages = ['en', 'fi']
 skin_name = 'summer10'
 
 
-class ISkin(asm.cms.IRetailSkin):
+class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin('summer10')
 
 
@@ -32,7 +33,7 @@ class LayoutHelper(grok.View):
         now = datetime.datetime.now()
         for key, event in schedule.events.items():
             if event.start <= now and event.end > now:
-                yield dict(event=event,key=key)
+                yield dict(event=event, key=key)
 
     def news(self):
         try:
@@ -55,7 +56,7 @@ class LayoutHelper(grok.View):
 
     def generateCountdown(self):
         times = (('05.08.2010 12:00', True, "until ASSEMBLY!"),
-                 ('28.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+	         ('08.08.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
@@ -148,7 +149,7 @@ class Navtree(grok.View):
         return ' '.join(filter(None, classes))
 
 
-class Homepage(asm.cms.Pagelet):
+class Homepage(asm.cmsui.retail.Pagelet):
     grok.context(asm.cms.homepage.Homepage)
     grok.layer(ISkin)
     grok.name('index')

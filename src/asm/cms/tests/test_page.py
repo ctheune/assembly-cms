@@ -14,33 +14,25 @@ class PageTests(asm.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(PageTests, self).setUp()
-        self.cms['a'] = asm.cms.page.Page('htmlpage')
-        self.cms['b'] = asm.cms.page.Page('htmlpage')
-        self.a = self.cms['a'].editions.next()
-        self.b = self.cms['b'].editions.next()
+        self.cms['a'] = self.a = asm.cms.page.Page('htmlpage')
+        self.cms['b'] = self.b = asm.cms.page.Page('htmlpage')
         transaction.commit()
-        self.request = zope.publisher.browser.TestRequest()
-        self.intids = zope.component.getUtility(
-            zope.app.intid.interfaces.IIntIds)
 
     def test_b_inside_a(self):
-        arrange = asm.cms.page.Arrange(self.b.page, self.request)
-        arrange.update(self.intids.getId(self.a), 'inside')
-        self.failUnless('a' in self.b.page)
+        self.b.arrange(self.a, 'inside')
+        self.failUnless('a' in self.b)
         self.failIf('a' in self.cms)
 
     def test_b_before_a(self):
-        self.assertEquals(['edition-', 'a', 'b'],
-                          list(self.cms))
-        arrange = asm.cms.page.Arrange(self.a.page, self.request)
-        arrange.update(self.intids.getId(self.b), 'before')
-        self.assertEquals(['edition-', 'b', 'a'],
-                          list(self.cms))
+        self.assertEquals(
+            ['edition-', 'a', 'b'], list(self.cms))
+        self.a.arrange(self.b, 'before')
+        self.assertEquals(
+            ['edition-', 'b', 'a'], list(self.cms))
 
     def test_a_after_b(self):
-        self.assertEquals(['edition-', 'a', 'b'],
-                          list(self.cms))
-        arrange = asm.cms.page.Arrange(self.b.page, self.request)
-        arrange.update(self.intids.getId(self.a), 'after')
-        self.assertEquals(['edition-', 'b', 'a'],
-                          list(self.cms))
+        self.assertEquals(
+            ['edition-', 'a', 'b'], list(self.cms))
+        self.b.arrange(self.a, 'after')
+        self.assertEquals(
+            ['edition-', 'b', 'a'], list(self.cms))

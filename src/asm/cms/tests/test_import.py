@@ -23,21 +23,9 @@ class ImportUnit(unittest.TestCase):
 class ImportFunctional(asm.cms.testing.FunctionalTestCase):
 
     def test_import(self):
-        request = zope.publisher.browser.TestRequest()
-        importer = asm.cms.importer.Import(self.cms, request)
-        importer.do_import(
-            open(os.path.join(os.path.dirname(__file__),
-                              'import.xml')).read())
+        data = open(os.path.join(os.path.dirname(__file__), 'import.xml'))
+        importer = asm.cms.importer.Importer(self.cms, data)
+        importer()
         self.assertEquals(2, len(list(self.cms.subpages)))
         self.assertEquals('htmlpage', self.cms['testpage'].type)
         self.assertEquals('asset', self.cms['testimage'].type)
-
-
-class ImportSelenium(asm.cms.testing.SeleniumTestCase):
-
-    def test_import_form_available(self):
-        s = self.selenium
-        s.click('css=#actions .toggle-navigation')
-        s.click("xpath=//span[contains(text(), 'more tools')]")
-        s.assertVisible("xpath=//button[contains(text(), 'Import content')]")
-        s.clickAndWait("xpath=//button[contains(text(), 'Import content')]")

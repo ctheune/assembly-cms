@@ -27,6 +27,8 @@ class LayoutHelper(grok.View):
     grok.layer(ISkin)
 
     def current_events(self):
+        if 'program' not in self.application or 'schedule' not in self.application['program']:
+            raise StopIteration()
         schedule = asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
         now = datetime.datetime.now()

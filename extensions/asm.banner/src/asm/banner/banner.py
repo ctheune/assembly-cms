@@ -73,6 +73,9 @@ class ChooseBanner(grok.View):
 
     def choose(self, category, limit=None, randomize=True):
         # XXX use utility to look up the sponsors area
+        if 'sponsors' not in self.application:
+            return []
+
         banners = []
         for banner in asm.cms.edition.find_editions(
                 self.application['sponsors'], self.request,

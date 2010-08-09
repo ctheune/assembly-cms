@@ -17,31 +17,14 @@ import zope.schema
 import zope.traversing.api
 
 
-class ImportActions(grok.Viewlet):
+class Importer(object):
 
-    grok.viewletmanager(asm.cms.NavigationToolActions)
-    grok.context(zope.interface.Interface)
+    def __init__(self, cms, data):
+        self.cms = cms
+        self.data = data
 
-
-class IImport(zope.interface.Interface):
-
-    data = zope.schema.Bytes(
-        title=u'Content',
-        description=(u'The content is expected to be in the Assembly CMS '
-                     u'XML import format.'))
-
-
-class Import(asm.cms.Form):
-
-    grok.context(asm.cms.cms.CMS)
-    form_fields = grok.AutoFields(IImport)
-
-    @grok.action(u'Import')
-    def import_action(self, data):
-        self.do_import(data)
-
-    def do_import(self, data):
-        export = lxml.etree.fromstring(data)
+    def __call__(self):
+        export = lxml.etree.fromstring(self.data.read())
         self.base_path = export.get('base')
         for page_node in export:
             page = self.get_page(page_node.get('path'), page_node.tag)
@@ -76,7 +59,7 @@ class Import(asm.cms.Form):
 
     def get_page(self, path, type_):
         path = path.split('/')
-        current = self.context
+        current = self.cms
         if path == ['']:
             # Ugly hack to support importing content on the root page.
             return current

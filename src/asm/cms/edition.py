@@ -24,8 +24,6 @@ class Edition(grok.Model):
     tags = None
     title = u''
 
-    size = 0
-
     def __init__(self):
         super(Edition, self).__init__()
         self.parameters = BTrees.OOBTree.OOTreeSet()
@@ -68,23 +66,16 @@ class Edition(grok.Model):
         tags = self.tags.split(' ')
         return tag in tags
 
+    def list_subpages(self, type=None):
+        for page in self.page.subpages:
+            if type is None or page.type in type:
+                yield page
 
 grok.context(Edition)
 
 
 class NullEdition(Edition):
     pass
-
-
-class NullIndex(megrok.pagelet.Pagelet):
-
-    grok.layer(asm.cms.ICMSSkin)
-    grok.require('asm.cms.EditContent')
-    grok.name('index')
-    grok.context(NullEdition)
-
-    def render(self):
-        return 'No edition available.'
 
 
 class EditionParameters(object):
@@ -135,63 +126,18 @@ class EditionParameters(object):
                 yield parameter[len(prefix):]
 
 
-class DisplayParameters(grok.View):
-    grok.context(EditionParameters)
-    grok.name('index')
-
-    def render(self):
-        # XXX use better lookup mechanism for tag labels
-        tags = sorted(self.context)
-        labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels)
-        return '(%s)' % ', '.join(labels.lookup(tag) for tag in tags)
-
-
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
+    page.addEdition(get_initial_parameters())
+
+
+def get_initial_parameters():
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
             asm.cms.interfaces.IInitialEditionParameters):
         parameters.update(factory())
-    page.addEdition(parameters)
+    return EditionParameters(parameters)
 
-
-class Delete(grok.View):
-    """Deletes an edition."""
-
-    grok.context(Edition)
-
-    def update(self):
-        page = self.context.__parent__
-        self.target = asm.cms.edition.select_edition(
-            page, self.request)
-        del page[self.context.__name__]
-
-    def render(self):
-        self.redirect(self.url(self.target, '@@edit'))
-
-
-class ExtendedPageActions(grok.Viewlet):
-
-    grok.viewletmanager(asm.cms.ExtendedPageActions)
-    grok.context(Edition)
-
-
-# Issue #59: The following viewlet setup is a bit annoying: we register a
-# viewlet for displaying all editions when looking at a page and when looking
-# at a specific edition. The code is basically the same each time (we actually
-# re-use the template), but the amount of registration necessary is just bad.
-
-
-class Editions(grok.ViewletManager):
-
-    grok.name('editions')
-    grok.context(zope.interface.Interface)
-
-
-class PageEditions(grok.Viewlet):
-    grok.viewletmanager(Editions)
-    grok.context(zope.interface.Interface)
-    grok.template('editions')
 
 
 @grok.subscribe(asm.cms.interfaces.IEdition, grok.IObjectModifiedEvent)
@@ -267,11 +213,6 @@ def find_editions(root, request=None, schema=zope.interface.Interface, recurse=T
         for page in root.subpages:
             for sub in find_editions(page, request, schema):
                 yield sub
-
-
-class ImagePicker(grok.View):
-    grok.context(Edition)
-    grok.name('image-picker')
 
 
 class EditionLabels(grok.GlobalUtility):

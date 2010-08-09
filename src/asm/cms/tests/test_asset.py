@@ -22,8 +22,10 @@ class AssetTests(unittest.TestCase):
 
     def test_magic(self):
         asset = asm.cms.asset.Asset()
-        self.assertEquals('data', asset.content_type)
-        asset.content = open(
-            os.path.join(os.path.dirname(__file__), '..',
-                         'static', 'icons', 'pencil.png')).read()
+        self.assertEquals(None, asset.content_type)
+        b = asset.content = ZODB.blob.Blob()
+        f = b.open('w')
+        f.write(open(os.path.join(os.path.dirname(__file__), 'pencil.png')
+                     ).read())
+        f.close()
         self.assertEquals('image/x-png', asset.content_type)

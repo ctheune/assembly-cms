@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import asm.cms.cms
-import gocept.selenium.ztk
 import os.path
 import transaction
 import zope.app.component.hooks
@@ -28,21 +27,3 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
     def tearDown(self):
         zope.app.component.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
-
-
-class SeleniumTestCase(gocept.selenium.ztk.TestCase):
-
-    layer = gocept.selenium.ztk.Layer(TestLayer)
-
-    def setUp(self):
-        super(SeleniumTestCase, self).setUp()
-        r = self.getRootFolder()
-        r['cms'] = self.cms = asm.cms.cms.CMS()
-        transaction.commit()
-        zope.app.component.hooks.setSite(self.cms)
-        self.selenium.open('http://mgr:mgrpw@%s/++skin++cms/cms' %
-                           self.selenium.server)
-
-    def tearDown(self):
-        zope.app.component.hooks.setSite(None)
-        super(SeleniumTestCase, self).tearDown()

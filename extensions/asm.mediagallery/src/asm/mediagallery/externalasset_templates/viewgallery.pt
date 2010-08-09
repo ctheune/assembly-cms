@@ -1,0 +1,19 @@
+<h1 tal:content="context/title"/>
+
+<div tal:content="structure view/embed"/>
+
+<div class="mediabottombar">
+    <div class="download">
+        <span tal:repeat="download python:view.links(include=['download'], max=1)"
+              tal:replace="structure download"/>
+    </div>
+    <div class="view">
+        View on
+        <tal:block tal:repeat="download python:view.links(exclude=['download'])">
+            <span tal:replace="structure download"/>
+            <tal:block condition="not:repeat/download/end"> | </tal:block>
+        </tal:block>
+    </div>
+</div>
+
+<div tal:replace="structure context/@@gallerynavbar"/>

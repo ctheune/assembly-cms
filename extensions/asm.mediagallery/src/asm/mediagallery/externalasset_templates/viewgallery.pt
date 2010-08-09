@@ -4,13 +4,14 @@
 
 <div class="mediabottombar">
     <div class="download">
-      <tal:block tal:repeat="download python:view.links(include=['download'], max=1)">
+      <tal:block tal:repeat="download python:view.links(include=['download', 'sceneorg'])">
         <span tal:replace="structure download"/>
+        <tal:block condition="not:repeat/download/end"> | </tal:block>
       </tal:block>
     </div>
     <div class="view">
         View on
-        <tal:block tal:repeat="download python:view.links(exclude=['download'])">
+        <tal:block tal:repeat="download python:view.links(exclude=['download', 'sceneorg'])">
             <span tal:replace="structure download"/>
             <tal:block condition="not:repeat/download/end"> | </tal:block>
         </tal:block>

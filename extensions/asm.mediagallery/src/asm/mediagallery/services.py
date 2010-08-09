@@ -7,14 +7,24 @@ import urllib
 
 MEDIA_WIDTH = 560.0
 
+def get_media_info(media_id_data, default_text):
+    media_id = media_id_data
+    link_text = default_text
+    if "|" in media_id_data:
+        media_id, link_text = media_id_data.split(u"|")
+    return media_id, link_text
+
 
 class DownloadURLService(grok.GlobalUtility):
 
     grok.provides(asm.mediagallery.interfaces.IContentHostingService)
     grok.name('download')
+    DEFAULT_LINK_TEXT = u"Download"
 
-    def link_code(self, media_id):
-        return '<a href="%s">Download</a>' % media_id.strip()
+    def link_code(self, media_id_data):
+        link_address, link_text = get_media_info(
+            media_id_data, self.DEFAULT_LINK_TEXT)
+        return u'<a href="%s">%s</a>' % (link_address, link_text)
 
 
 class YoutubeHosted(grok.GlobalUtility):
@@ -53,9 +63,13 @@ class SceneOrgDownload(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IContentHostingService)
     grok.name('sceneorg')
 
-    def link_code(self, media_id):
-        return ('<a href="http://www.scene.org/file.php?file=%s">scene.org</a>' %
-                urllib.quote_plus(media_id.strip()))
+    DEFAULT_LINK_TEXT = u"scene.org"
+
+    def link_code(self, media_id_data):
+        media_id, link_text = get_media_info(
+            media_id_data, self.DEFAULT_LINK_TEXT)
+        return (u'<a href="http://www.scene.org/file.php?file=%s">%s</a>' %
+                (urllib.quote_plus(media_id.strip()), link_text))
 
 
 class DemosceneTV(grok.GlobalUtility):
@@ -95,8 +109,8 @@ class Vimeo(object):
         return float(width)/float(height)
 
     def _get_media_data(self, media_id_data):
-        if "," in media_id_data:
-            media_id, aspect_ratio_str = media_id_data.split(",")
+        if "|" in media_id_data:
+            media_id, aspect_ratio_str = media_id_data.split("|")
             aspect_ratio = self._get_aspect_ratio(aspect_ratio_str)
         else:
             media_id = media_id_data

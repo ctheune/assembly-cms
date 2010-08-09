@@ -27,7 +27,7 @@ class YoutubeHosted(grok.GlobalUtility):
                 'YouTube</a>') % id
 
     def embed_code(self, id):
-        youtube_player_controls_height = 15.0
+        youtube_player_controls_height = 25.0
         youtube_height = MEDIA_WIDTH * 9.0 / 16.0 + youtube_player_controls_height
         return """<object width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>""" % {
             'id': id,

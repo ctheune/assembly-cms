@@ -50,8 +50,16 @@ class ServiceTests(asm.cms.testutils.TestCase):
         self.assertValidXml(code)
         self.assertIsIn('vimeo-id', code)
 
+        aspected_code = service.link_code('vimeo-id,4:3')
+        self.assertValidXml(aspected_code)
+        self.assertIsIn('vimeo-id', aspected_code)
+
     def test_vimeo_embed_code_is_ok(self):
         service = asm.mediagallery.services.Vimeo()
         code = service.embed_code('vimeo-id')
         self.assertValidXml(code)
         self.assertIsIn('vimeo-id', code)
+
+        aspected_code = service.embed_code('vimeo-id,4:3')
+        self.assertValidXml(aspected_code)
+        self.assertIsIn('vimeo-id', aspected_code)

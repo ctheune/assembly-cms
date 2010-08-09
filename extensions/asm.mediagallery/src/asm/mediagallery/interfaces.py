@@ -28,8 +28,9 @@ class IMediaGalleryAdditionalInfo(zope.interface.Interface):
 class HostingServices(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
-        return [name for name, service in
-                zope.component.getUtilitiesFor(IContentHostingService)]
+        service_names = [name for name, service in
+                         zope.component.getUtilitiesFor(IContentHostingService)]
+        return sorted(service_names)
 
 
 class IHostingServiceChoice(zope.interface.Interface):

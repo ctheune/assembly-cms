@@ -7,6 +7,8 @@ import ZODB.blob
 import asm.cms.page
 import asm.cms.utils
 import asm.mediagallery.externalasset
+import os.path
+import re
 import sys
 import urllib
 import zope.app.component.hooks
@@ -26,24 +28,48 @@ while steps:
         pass
 gallery = obj
 
+def create_image_id(image_format, data):
+    # Assume we only have images here.
+    image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
+    image_name = re.sub("[^.]+$", image_format, image_name, re.M)
+
+    orig_name = data['title']
+    if 'author' in data:
+        orig_name += ' by ' + data['author']
+
+    return image_name, (u"%s|%s" % (image_name, orig_name))
+
+def get_smallest_format(image):
+    output_png = StringIO.StringIO()
+    image.save(output_png, format='png', optimize=1)
+    output_jpeg = StringIO.StringIO()
+    image.convert('RGB').save(output_jpeg, format='jpeg', optimize=1)
+    output_png = output_png.getvalue()
+    output_jpeg = output_jpeg.getvalue()
+    if len(output_jpeg) < len(output_png):
+        return output_jpeg, 'jpeg'
+    return output_png, 'png'
+
 def get_thumbnail(data, target=(77.0,165.0), crop=True):
     im = Image.open(data)
     width, height = im.size
     orig_ratio = float(width)/height
-    target_ratio = float(target[1])/target[0]
+
+    target_height, target_width = (float(x) for x in target)
+    target_ratio = target_width/target_height
 
     if orig_ratio > target_ratio:
-        width = width / (height/target[0])
-        height = target[0]
+        width = width / (height/target_height)
+        height = target_height
     else:
-        height = height / (width/target[1])
-        width = target[1]
+        height = height / (width/target_width)
+        width = target_width
 
     im = im.resize((width, height), Image.ANTIALIAS)
     width, height = im.size
 
-    width_delta = (width-target[1])/2
-    height_delta = (height-target[0])/2
+    width_delta = (width-target_width)/2
+    height_delta = (height-target_height)/2
 
     if crop:
         im = im.crop((
@@ -51,12 +77,19 @@ def get_thumbnail(data, target=(77.0,165.0), crop=True):
                   height_delta,
                   width-width_delta,
                   height-height_delta))
-        im = im.crop((0, 0, int(target[1]), int(target[0])))
+        im = im.crop((0, 0, int(target_width), int(target_height)))
         im.load()
-    output = StringIO.StringIO()
-    im.save(output, format='png')
-    return output
+    return get_smallest_format(im)
 
+
+def resize_image_to_width(data, target_width):
+    im = Image.open(data)
+    width, height = im.size
+    orig_ratio = float(width)/height
+    target_height = int(float(height) * (float(target_width) / width))
+
+    im = im.resize((target_width, target_height), Image.ANTIALIAS)
+    return get_smallest_format(im)
 
 def create_external(name, data):
     section[name] = p = asm.cms.page.Page('externalasset')
@@ -71,13 +104,28 @@ def create_external(name, data):
 
 
 def create_asset(name, data):
-    section[name] = p = asm.cms.page.Page('asset')
+    section[name] = p = asm.cms.page.Page('externalasset')
     edition = p.editions.next()
+    edition.title = data['title']
+
     img = open(data['image'], 'rb')
-    edition.content = ZODB.blob.Blob()
-    f = edition.content.open('w')
-    f.write(get_thumbnail(img, (330.0, 560.0), crop=False).getvalue())
+    target_width = 560.0
+    output, image_format = resize_image_to_width(img, target_width)
+
+    external = asm.mediagallery.externalasset.HostingServiceChoice()
+    external.service_id = 'image'
+    image_name, external.id = create_image_id(image_format, data)
+
+    edition.locations = (external,)
+
+    p[image_name] = image_page = asm.cms.page.Page('asset')
+    image_edition = image_page.editions.next()
+
+    image_edition.content = ZODB.blob.Blob()
+    f = image_edition.content.open('w')
+    f.write(output)
     img.seek(0)
+    asm.workflow.workflow.publish(image_edition)
     return edition, img
 
 
@@ -125,7 +173,8 @@ for line in open(file, 'r'):
         edition_galleryinfo.thumbnail = ZODB.blob.Blob()
 
         f = edition_galleryinfo.thumbnail.open('w')
-        f.write(get_thumbnail(img).getvalue())
+        output, format = get_thumbnail(img)
+        f.write(output)
         f.close()
         del img
 

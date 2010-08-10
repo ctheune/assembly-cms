@@ -35,7 +35,7 @@ class Index(asm.cms.Pagelet):
 
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
-        self.show = 18
+        self.show = 27
 
     def list_categories(self):
         for category in self.context.list_subpages(type=['mediagallery']):

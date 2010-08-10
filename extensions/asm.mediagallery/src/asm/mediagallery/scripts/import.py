@@ -28,6 +28,17 @@ while steps:
         pass
 gallery = obj
 
+def create_image_id(image_format, data):
+    # Assume we only have images here.
+    image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
+    image_name = re.sub("[^.]+$", image_format, image_name, re.M)
+
+    orig_name = data['title']
+    if 'author' in data:
+        orig_name += ' by ' + data['author']
+
+    return image_name, (u"%s|%s" % (image_name, orig_name))
+
 def get_smallest_format(image):
     output_png = StringIO.StringIO()
     image.save(output_png, format='png', optimize=1)
@@ -101,18 +112,10 @@ def create_asset(name, data):
     target_width = 560.0
     output, image_format = resize_image_to_width(img, target_width)
 
-    # Assume we only have images here.
-    image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
-    image_name = re.sub("[^.]+$", image_format, image_name, re.M)
-
     external = asm.mediagallery.externalasset.HostingServiceChoice()
     external.service_id = 'image'
+    image_name, external.id = create_image_id(image_format, data)
 
-    orig_name = data['title']
-    if 'author' in data:
-        orig_name += ' by ' + data['author']
-
-    external.id = u"%s|%s" % (image_name, orig_name)
     edition.locations = (external,)
 
     p[image_name] = image_page = asm.cms.page.Page('asset')

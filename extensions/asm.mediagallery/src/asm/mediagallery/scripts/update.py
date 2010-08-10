@@ -82,6 +82,10 @@ def update_external(section, name, data):
     if 'sceneorgvideo' in data:
         locations += (create_service('sceneorg', data['sceneorgvideo'] + u"|HQ video"),)
 
+    for location in edition.locations:
+        if location.service_id == 'image':
+            locations += (location,)
+
     edition.locations = locations
     return edition
 

@@ -1,5 +1,7 @@
 <h1 tal:content="context/title"></h1>
 
+<p tal:condition="context/description" tal:replace="structure context/description" />
+
 <div tal:repeat="category view/list_categories" class="mediacategory">
   <h2><a tal:attributes="href python:view.url(category.page)">
       <span tal:replace="category/title">Compo type</span> &raquo;</a></h2>

@@ -79,6 +79,9 @@ class Index(asm.cms.Pagelet):
             service = zope.component.getUtility(
                 asm.mediagallery.interfaces.IContentHostingService,
                 name=service_choice.service_id)
+            link_code = service.link_code(service_choice.id)
+            if not link_code:
+                continue
             yield service.link_code(service_choice.id)
             count += 1
             if count == max:

@@ -95,7 +95,7 @@ class DemosceneTV(grok.GlobalUtility):
             'height': dtv_height}
 
 
-class Vimeo(object):
+class Vimeo(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('vimeo')
 
@@ -109,8 +109,8 @@ class Vimeo(object):
         return float(width)/float(height)
 
     def _get_media_data(self, media_id_data):
-        if "|" in media_id_data:
-            media_id, aspect_ratio_str = media_id_data.split("|")
+        if "," in media_id_data:
+            media_id, aspect_ratio_str = media_id_data.split(",")
             aspect_ratio = self._get_aspect_ratio(aspect_ratio_str)
         else:
             media_id = media_id_data
@@ -128,3 +128,20 @@ class Vimeo(object):
             'id': media_id.strip(),
             'width': MEDIA_WIDTH,
             'height': player_height}
+
+
+class Image(grok.GlobalUtility):
+    grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
+    grok.name('image')
+
+    EMBED_TEMPLATE = """<img src='%(id)s' alt='%(image_text)s' />"""
+    DEFAULT_TEXT = "Gallery image."
+
+    def link_code(self, media_id):
+        return None
+
+    def embed_code(self, media_id_data):
+        media_id, image_text = get_media_info(media_id_data, self.DEFAULT_TEXT)
+        return  self.EMBED_TEMPLATE % {
+            'id': media_id.strip(),
+            'image_text': image_text.strip()}

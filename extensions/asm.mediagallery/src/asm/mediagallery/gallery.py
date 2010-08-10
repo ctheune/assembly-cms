@@ -1,16 +1,17 @@
 import asm.cms
 import asm.cms.edition
-import asm.mediagallery.interfaces
 import asm.cms.form
+import asm.cms.tinymce
+import asm.mediagallery.interfaces
 import asm.workflow
 import grok
+import random
 import re
 import sys
 import urllib
+import ZODB.blob
 import zope.interface
 import zope.publisher.interfaces
-import ZODB.blob
-import random
 
 class MediaGallery(asm.cms.Edition):
 
@@ -21,12 +22,25 @@ class MediaGallery(asm.cms.Edition):
 
     title = u''
 
+    description = u''
+
+    def copyFrom(self, other):
+        self.description = other.description
+        super(MediaGallery, self).copyFrom(other)
+
+    def __eq__(self, other):
+        if not super(MediaGallery, self).__eq__(other):
+            return False
+        return self.description == other.description
+
 
 class Edit(asm.cms.form.EditionEditForm):
 
     grok.context(MediaGallery)
 
-    main_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select('title')
+    main_fields = grok.AutoFields(MediaGallery).select(
+        'title', 'description')
+    main_fields['description'].custom_widget = asm.cms.tinymce.TinyMCEWidget
 
 
 class Index(asm.cms.Pagelet):

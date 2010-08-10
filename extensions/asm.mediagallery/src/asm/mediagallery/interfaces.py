@@ -6,7 +6,10 @@ import zc.sourcefactory.basic
 
 
 class IMediaGallery(zope.interface.Interface):
-    pass
+
+    description = zope.schema.Text(
+        title=u'Gallery description', required=False)
+
 
 
 class IMediaGalleryAdditionalInfo(zope.interface.Interface):
@@ -15,7 +18,7 @@ class IMediaGalleryAdditionalInfo(zope.interface.Interface):
     zope.interface.taggedValue(
         'description', u'Enter author and ranking information.')
 
-    author = zope.schema.TextLine(title=u'Author')
+    author = zope.schema.TextLine(title=u'Author', required=False)
 
     thumbnail = asm.cms.interfaces.Blob(
         title=u'Thumbnail', required=False)

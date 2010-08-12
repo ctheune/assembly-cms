@@ -120,3 +120,25 @@ function updateClock() {
   if (diff > 0) { setTimeout('updateClock()', 60000); }
 }
 
+var KEYCODE_LEFT = 37;
+var KEYCODE_RIGHT = 39;
+
+function galleryLinkGo(event) {
+    if (event.keyCode == KEYCODE_RIGHT) {
+        var newLocation = $('#gallery-link-next');
+        var address = newLocation.attr('href');
+        if (address != null) {
+            window.location = address;
+            event.preventDefault();
+        }
+    } else if (event.keyCode == KEYCODE_LEFT) {
+        var newLocation = $('#gallery-link-previous');
+        var address = newLocation.attr('href');
+        if (address != null) {
+            window.location = address;
+            event.preventDefault();
+        }
+    }
+}
+
+$(document).bind('keydown', galleryLinkGo);

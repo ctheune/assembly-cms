@@ -1,6 +1,6 @@
 <h1 tal:content="context/title"></h1>
 
-<p tal:condition="context/description" tal:replace="structure context/description" />
+<p tal:condition="view/info/description" tal:replace="structure view/info/description" />
 
 <div tal:repeat="category view/list_categories" class="mediacategory">
   <h2><a tal:attributes="href python:view.url(category.page)">
@@ -47,8 +47,8 @@
 </div>
 
 <div class="medianavigationbar"
-    tal:define="next python:view.offset+27;
-                prev python:view.offset-27">
+    tal:define="next python:view.offset + view.show;
+                prev python:view.offset - view.show">
 
   <a class="back" tal:condition="python:prev >= 0"
       tal:attributes="href python:view.url(context, data=dict(offset=prev))">

@@ -120,25 +120,38 @@ function updateClock() {
   if (diff > 0) { setTimeout('updateClock()', 60000); }
 }
 
-var KEYCODE_LEFT = 37;
-var KEYCODE_RIGHT = 39;
+// jquery.hotkeys module must be loaded before this file.
+var galleryLinkEventsEnabled = true;
 
-function galleryLinkGo(event) {
-    if (event.keyCode == KEYCODE_RIGHT) {
-        var newLocation = $('#gallery-link-next');
-        var address = newLocation.attr('href');
-        if (address != null) {
-            window.location = address;
-            event.preventDefault();
-        }
-    } else if (event.keyCode == KEYCODE_LEFT) {
-        var newLocation = $('#gallery-link-previous');
-        var address = newLocation.attr('href');
-        if (address != null) {
-            window.location = address;
-            event.preventDefault();
-        }
+function galleryLinkNext(event) {
+    if (!galleryLinkEventsEnabled) {
+        return;
+    }
+    var newLocation = $('#gallery-link-next');
+    var address = newLocation.attr('href');
+    if (address != null) {
+        window.location = address;
+        event.preventDefault();
     }
 }
 
-$(document).bind('keydown', galleryLinkGo);
+function galleryLinkPrevious(event) {
+    if (!galleryLinkEventsEnabled) {
+        return;
+    }
+    var newLocation = $('#gallery-link-previous');
+    var address = newLocation.attr('href');
+    if (address != null) {
+        window.location = address;
+        event.preventDefault();
+    }
+}
+
+$(document).bind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
+$(document).bind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+
+function disableGalleryLinkEvents() {
+    galleryLinkEventsEnabled = false;
+    $(document).unbind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
+    $(document).unbind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+}

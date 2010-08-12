@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import Image
+import ImageFile
 import StringIO
 import ZODB.blob
 import asm.cms.page
@@ -13,6 +14,9 @@ import sys
 import urllib
 import zope.app.component.hooks
 import transaction
+
+# Workaround for JPEG encoding: http://mail.python.org/pipermail/image-sig/1999-August/000816.html
+ImageFile.MAXBLOCK = 4000000
 
 gallery = sys.argv[1]
 file = sys.argv[2]
@@ -30,8 +34,11 @@ gallery = obj
 
 def create_image_id(image_format, data):
     # Assume we only have images here.
-    image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
-    image_name = re.sub("[^.]+$", image_format, image_name, re.M)
+    if 'key' in data:
+        image_name = data['key'] + "." + image_format
+    else:
+        image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
+        image_name = re.sub("[^.]+$", image_format, image_name, re.M)
 
     orig_name = data['title']
     if 'author' in data:
@@ -155,20 +162,21 @@ for line in open(file, 'r'):
             except TypeError:
                 print field
                 raise
-        orig_name = data['title']
-        if 'author' in data:
-            orig_name += ' by ' + data['author']
-        name = orig_name = asm.cms.utils.normalize_name(orig_name)
-        i = 1
-        while not name or name in section:
-            name = '%s%s' % (orig_name, i)
-            i +=1
+
+        if 'key' in data:
+            name = orig_name = data['key']
+        else:
+            orig_name = data['title']
+            if 'author' in data:
+                orig_name += ' by ' + data['author']
+            name = orig_name = asm.cms.utils.normalize_name(orig_name)
 
         edition, img = locals()['create_' + data.get('type')](name, data)
-        edition.title = data['title']
+        edition.title = data.get('title')
         edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
         edition_galleryinfo.author = data.get('author')
-        edition_galleryinfo.ranking = int(data.get('position'))
+        if data.get('position', None) is not None:
+            edition_galleryinfo.ranking = int(data.get('position'))
         edition_galleryinfo.thumbnail = ZODB.blob.Blob()
 
         f = edition_galleryinfo.thumbnail.open('w')

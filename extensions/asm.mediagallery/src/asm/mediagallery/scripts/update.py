@@ -81,6 +81,8 @@ def update_external(section, name, data):
         locations += (create_service('sceneorg', data['sceneorg'] + u"|Original"),)
     if 'sceneorgvideo' in data:
         locations += (create_service('sceneorg', data['sceneorgvideo'] + u"|HQ video"),)
+    if 'download' in data:
+        locations += (create_service('download', data['download'] + u"|Original"),)
 
     for location in edition.locations:
         if location.service_id == 'image':
@@ -138,16 +140,20 @@ for line in open(file, 'r'):
             except TypeError:
                 print field
                 raise
-        orig_name = data['title']
-        if 'author' in data:
-            orig_name += ' by ' + data['author']
-        name = orig_name = asm.cms.utils.normalize_name(orig_name)
+        if 'key' in data:
+            name = data['key']
+        else:
+            orig_name = data['title']
+            if 'author' in data:
+                orig_name += ' by ' + data['author']
+            name = orig_name = asm.cms.utils.normalize_name(orig_name)
 
         edition = update_external(section, name, data)
-        edition.title = data['title']
+        edition.title = data.get('title')
         edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
         edition_galleryinfo.author = data.get('author')
-        edition_galleryinfo.ranking = int(data.get('position'))
+        if data.get('position', None) is not None:
+            edition_galleryinfo.ranking = int(data.get('position'))
 
         if asm.workflow.WORKFLOW_DRAFT in edition.parameters:
             asm.workflow.workflow.publish(edition)

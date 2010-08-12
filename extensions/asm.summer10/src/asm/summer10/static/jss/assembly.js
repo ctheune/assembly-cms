@@ -120,3 +120,38 @@ function updateClock() {
   if (diff > 0) { setTimeout('updateClock()', 60000); }
 }
 
+// jquery.hotkeys module must be loaded before this file.
+var galleryLinkEventsEnabled = true;
+
+function galleryLinkNext(event) {
+    if (!galleryLinkEventsEnabled) {
+        return;
+    }
+    var newLocation = $('#gallery-link-next');
+    var address = newLocation.attr('href');
+    if (address != null) {
+        window.location = address;
+        event.preventDefault();
+    }
+}
+
+function galleryLinkPrevious(event) {
+    if (!galleryLinkEventsEnabled) {
+        return;
+    }
+    var newLocation = $('#gallery-link-previous');
+    var address = newLocation.attr('href');
+    if (address != null) {
+        window.location = address;
+        event.preventDefault();
+    }
+}
+
+$(document).bind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
+$(document).bind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+
+function disableGalleryLinkEvents() {
+    galleryLinkEventsEnabled = false;
+    $(document).unbind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
+    $(document).unbind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+}

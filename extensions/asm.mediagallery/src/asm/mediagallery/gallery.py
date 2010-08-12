@@ -38,6 +38,8 @@ class Index(asm.cms.Pagelet):
 
     grok.context(MediaGallery)
 
+    ITEMS_PER_PAGE = LIMIT_GALLERY_ITEMS
+
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
         self.show = LIMIT_GALLERY_ITEMS

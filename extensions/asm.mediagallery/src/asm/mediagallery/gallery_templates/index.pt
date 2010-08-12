@@ -47,8 +47,8 @@
 </div>
 
 <div class="medianavigationbar"
-    tal:define="next python:view.offset + view.show;
-                prev python:view.offset - view.show">
+    tal:define="next python:view.offset + view.ITEMS_PER_PAGE;
+                prev python:view.offset - view.ITEMS_PER_PAGE">
 
   <a class="back" tal:condition="python:prev >= 0"
       tal:attributes="href python:view.url(context, data=dict(offset=prev))">

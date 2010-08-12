@@ -2,6 +2,7 @@ import asm.cms
 import asm.cms.edition
 import asm.cms.form
 import asm.cms.tinymce
+import asm.mediagallery.externalasset
 import asm.mediagallery.interfaces
 import asm.workflow
 import grok
@@ -13,6 +14,9 @@ import ZODB.blob
 import zope.interface
 import zope.publisher.interfaces
 
+TYPE_MEDIA_GALLERY = 'mediagallery'
+LIMIT_GALLERY_ITEMS = 27
+
 class MediaGallery(asm.cms.Edition):
 
     zope.interface.implements(asm.mediagallery.interfaces.IMediaGallery)
@@ -22,25 +26,12 @@ class MediaGallery(asm.cms.Edition):
 
     title = u''
 
-    description = u''
-
-    def copyFrom(self, other):
-        self.description = other.description
-        super(MediaGallery, self).copyFrom(other)
-
-    def __eq__(self, other):
-        if not super(MediaGallery, self).__eq__(other):
-            return False
-        return self.description == other.description
-
 
 class Edit(asm.cms.form.EditionEditForm):
 
     grok.context(MediaGallery)
 
-    main_fields = grok.AutoFields(MediaGallery).select(
-        'title', 'description')
-    main_fields['description'].custom_widget = asm.cms.tinymce.TinyMCEWidget
+    main_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select('title')
 
 
 class Index(asm.cms.Pagelet):
@@ -49,10 +40,11 @@ class Index(asm.cms.Pagelet):
 
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
-        self.show = 27
+        self.show = LIMIT_GALLERY_ITEMS
+        self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
 
     def list_categories(self):
-        for category in self.context.list_subpages(type=['mediagallery']):
+        for category in self.context.list_subpages(type=[TYPE_MEDIA_GALLERY]):
             edition = asm.cms.edition.select_edition(category, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
@@ -60,7 +52,8 @@ class Index(asm.cms.Pagelet):
 
     def list_items(self):
         items = []
-        for item in self.context.list_subpages(type=['asset', 'externalasset']):
+        for item in self.context.list_subpages(type=[
+                'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]):
             edition = asm.cms.edition.select_edition(item, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
@@ -80,7 +73,8 @@ class Index(asm.cms.Pagelet):
 
     def list_category_items(self, category, limit=None):
         items = []
-        for media in category.list_subpages(type=['asset', 'externalasset']):
+        for media in category.list_subpages(type=[
+                'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]):
             edition = asm.cms.edition.select_edition(media, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
@@ -104,16 +98,19 @@ class AssetAnnotation(grok.Annotation, grok.Model):
     author = u''
     ranking = None
     thumbnail = None
+    description = u''
 
     def copyFrom(self, other):
         self.author = other.author
         self.ranking = other.ranking
         self.thumbnail = other.thumbnail
+        self.description = other.description
 
     def __eq__(self, other):
         return (self.author == other.author and
                 self.thumbnail == other.thumbnail and
-                self.ranking == other.ranking)
+                self.ranking == other.ranking and
+                self.description == other.description)
 
 
 def add_gallery_data(edition):
@@ -121,7 +118,7 @@ def add_gallery_data(edition):
     while page:
         if not asm.cms.interfaces.IPage.providedBy(page):
             break
-        if page.type == 'mediagallery':
+        if page.type == TYPE_MEDIA_GALLERY:
             return asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo
         page = page.__parent__
 
@@ -142,19 +139,20 @@ class Thumbnail(grok.View):
         return open(self.info.thumbnail.committed())
 
 
+def get_relative_to_this_gallery_item(context, from_this, request):
+        all = [x.__name__ for x in context.page.__parent__.subpages]
+        current = all.index(context.__parent__.__name__)
+        wanted_position = current + from_this
+        if 0 <= wanted_position and wanted_position < len(all):
+            next = context.__parent__.__parent__[all[wanted_position]]
+            return asm.cms.edition.select_edition(next, request)
+
+
 class GalleryNavBar(grok.View):
     grok.context(asm.cms.interfaces.IEdition)
 
     def next(self):
-        all = [x.__name__ for x in self.context.page.__parent__.subpages]
-        current = all.index(self.context.__parent__.__name__)
-        if len(all) > current+1:
-            next = self.context.__parent__.__parent__[all[current+1]]
-            return asm.cms.edition.select_edition(next, self.request)
+        return get_relative_to_this_gallery_item(self.context, +1, self.request)
 
     def previous(self):
-        all = [x.__name__ for x in self.context.page.__parent__.subpages]
-        current = all.index(self.context.__parent__.__name__)
-        if current > 0:
-            prev = self.context.__parent__.__parent__[all[current-1]]
-            return asm.cms.edition.select_edition(prev, self.request)
+        return get_relative_to_this_gallery_item(self.context, -1, self.request)

@@ -2,13 +2,13 @@
     tal:define="prev view/previous;
                 next view/next">
 
-  <a class="back" tal:condition="prev"
+  <a class="back" id="gallery-link-previous" tal:condition="prev"
       tal:attributes="href python:view.url(prev, '@@viewgallery')">
       <span class="control">Previous</span><br/>
       <span class="title" tal:content="prev/title">Toilet Seat of Gods II</span>
   </a>
 
-  <a class="forward" href="#" tal:condition="next"
+  <a class="forward" id="gallery-link-next" href="#" tal:condition="next"
     tal:attributes="href python:view.url(next, '@@viewgallery')">
     <span class="control">Next</span><br/>
     <span class="title" tal:content="next/title">Namevote this sucka</span>

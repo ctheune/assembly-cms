@@ -1,6 +1,13 @@
 <h1 tal:content="context/title"/>
 
-<div tal:content="structure view/embed"/>
+<div tal:define="embed view/embed;
+                       next context/@@gallerynavbar/next">
+  <a tal:condition="python: next and embed.startswith('<img ')"
+     tal:replace="structure python: '<a href=\'%s\'>' % view.url(next)" />
+  <div tal:replace="structure embed"/>
+  <a tal:condition="python: next and embed.startswith('<img ')"
+     tal:replace="structure python: '</a>'" />
+</div>
 
 <div class="mediabottombar">
     <div class="download">

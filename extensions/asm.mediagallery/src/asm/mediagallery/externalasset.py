@@ -8,6 +8,7 @@ import persistent
 import zope.interface
 import zope.app.form.browser.objectwidget
 
+TYPE_EXTERNAL_ASSET = 'externalasset'
 
 class ExternalAsset(asm.cms.edition.Edition):
 

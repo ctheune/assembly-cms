@@ -50,12 +50,12 @@
     tal:define="next python:view.offset + view.ITEMS_PER_PAGE;
                 prev python:view.offset - view.ITEMS_PER_PAGE">
 
-  <a class="back" tal:condition="python:prev >= 0"
+  <a class="back" id="gallery-link-previous" tal:condition="python:prev >= 0"
       tal:attributes="href python:view.url(context, data=dict(offset=prev))">
       <span class="control">Previous</span>
   </a>
 
-  <a class="forward" href="#" tal:condition="python:next < view.total"
+  <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total"
     tal:attributes="href python:view.url(context, data=dict(offset=next))">
     <span class="control">Next</span>
   </a>

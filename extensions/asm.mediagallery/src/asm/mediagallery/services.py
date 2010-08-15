@@ -32,7 +32,8 @@ class YoutubeHosted(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('youtube')
 
-    EMBED_TEMPLATE = """<object width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/%(id)s&amp;hl=en_US&amp;fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>"""
+    YOUTUBE_PARAMETERS = "&amp;hl=en_US&amp;fs=1&amp;enablejsapi=1"
+    EMBED_TEMPLATE = """<object id="ytplayerobject" width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;playerapiid=ytplayerobject%(params)s"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed id="ytplayerembed" src="http://www.youtube.com/v/%(id)s&amp;playerapiid=ytplayerembed%(params)s" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>"""
     CONTROLS_HEIGHT = 25.0
     ASPECT_RATIO = 16.0 / 9.0
 
@@ -45,7 +46,8 @@ class YoutubeHosted(grok.GlobalUtility):
         return self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
             'width': MEDIA_WIDTH,
-            'height': youtube_height
+            'height': youtube_height,
+            'params': self.YOUTUBE_PARAMETERS,
             }
 
 

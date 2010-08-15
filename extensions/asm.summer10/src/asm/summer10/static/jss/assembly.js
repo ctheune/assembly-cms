@@ -121,7 +121,7 @@ function updateClock() {
 }
 
 // jquery.hotkeys module must be loaded before this file.
-var galleryLinkEventsEnabled = true;
+var galleryLinkEventsEnabled = false;
 
 function galleryLinkNext(event) {
     if (!galleryLinkEventsEnabled) {
@@ -147,11 +147,48 @@ function galleryLinkPrevious(event) {
     }
 }
 
-$(document).bind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
-$(document).bind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+function enableGalleryLinkEvents() {
+    if (galleryLinkEventsEnabled == true) {
+        return;
+    }
+    galleryLinkEventsEnabled = true;
+    $(document).bind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
+    $(document).bind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+}
+
+enableGalleryLinkEvents();
 
 function disableGalleryLinkEvents() {
+    if (galleryLinkEventsEnabled == false) {
+        return;
+    }
     galleryLinkEventsEnabled = false;
     $(document).unbind('keydown', {combi: 'right', disableInInput: true}, galleryLinkNext);
     $(document).unbind('keydown', {combi: 'left', disableInInput: true}, galleryLinkPrevious);
+}
+
+var YOUTUBE_UNSTARTED = -1;
+var YOUTUBE_ENDED = 0;
+var YOUTUBE_PLAYING = 1;
+var YOUTUBE_PAUSED = 2;
+var YOUTUBE_BUFFERING = 3;
+var YOUTUBE_VIDEO_CUED = 5;
+
+function galleryHandleYoutubeEvents(state) {
+    switch (state) {
+    case YOUTUBE_PLAYING:
+    case YOUTUBE_BUFFERING:
+        disableGalleryLinkEvents();
+        break;
+    case YOUTUBE_ENDED:
+        enableGalleryLinkEvents();
+        break;
+    default:
+        // Do nothing.
+    }
+}
+
+function onYouTubePlayerReady(playerId) {
+    var ytplayer = document.getElementById(playerId);
+    ytplayer.addEventListener("onStateChange", "galleryHandleYoutubeEvents");
 }

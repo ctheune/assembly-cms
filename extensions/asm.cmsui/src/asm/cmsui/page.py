@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.interfaces
+import asm.cms.page
 import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
@@ -45,7 +46,7 @@ class AddPage(grok.View):
     grok.context(asm.cms.interfaces.IPage)
 
     def update(self, title, type):
-        page = Page(type)
+        page = asm.cms.page.Page(type)
         name = asm.cms.utils.normalize_name(title)
         self.context[name] = page
         edition = page.editions.next()

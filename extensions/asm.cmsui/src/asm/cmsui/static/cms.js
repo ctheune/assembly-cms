@@ -18,11 +18,11 @@ $(document).ready(function(){
   $("#navigation-tree").tree({
     ui: { theme_name: 'classic' },
     types: {
-      htmlpage: { clickable: true, icon:  { image: root+'/@@/asm.cms/icons/page_white.png'}},
-      homepage: { icon:  { image: root+'/@@/asm.cms/icons/house.png'}},
-      news: { icon:  { image: root+'/@@/asm.cms/icons/newspaper.png'}},
-      sponsorsarea: { icon:  { image: root+'/@@/asm.cms/icons/page_white_medal.png'}},
-      asset: { icon:  { image: root+'/@@/asm.cms/icons/page_white_picture.png'}}},
+      htmlpage: { clickable: true, icon:  { image: root+'/@@/asm.cmsui/icons/page_white.png'}},
+      homepage: { icon:  { image: root+'/@@/asm.cmsui/icons/house.png'}},
+      news: { icon:  { image: root+'/@@/asm.cmsui/icons/newspaper.png'}},
+      sponsorsarea: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_medal.png'}},
+      asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}}},
     data: { type: 'xml_nested',
             opts: {url: $('#navigation-tree').attr('href')}},
     callback: { onload: function(tree) {

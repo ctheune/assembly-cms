@@ -14,4 +14,12 @@
       allowed_interface="zope.publisher.interfaces.browser.IBrowserPublisher"
       />
 
+  <browser:view
+      layer=".interfaces.IRetailSkin"
+      name=""
+      for="zope.app.folder.interfaces.IRootFolder"
+      class=".retail.RootTraverse"
+      permission="zope.Public"
+      />
+
 </configure>

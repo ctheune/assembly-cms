@@ -1,6 +1,0 @@
-<li class="expand">
-    <button tal:attributes="href string:${view/application_url}/@@import"
-        class="button url-action">
-        Import content
-    </button>
-</li>

@@ -7,6 +7,8 @@ import grok
 import persistent
 import zope.interface
 import zope.app.form.browser.objectwidget
+import asm.cmsui.form
+import asm.cmsui.retail
 
 TYPE_EXTERNAL_ASSET = 'externalasset'
 
@@ -36,7 +38,7 @@ def setupObjectInputWidget(field, request):
     return zope.app.form.browser.objectwidget.ObjectWidget(field, request, factory)
 
 
-class Edit(asm.cms.form.EditionEditForm):
+class Edit(asm.cmsui.form.EditionEditForm):
 
     grok.context(ExternalAsset)
 
@@ -44,7 +46,7 @@ class Edit(asm.cms.form.EditionEditForm):
         'title', 'locations')
 
 
-class ViewGallery(asm.cms.Pagelet):
+class ViewGallery(asm.cmsui.retail.Pagelet):
 
     grok.context(ExternalAsset)
 

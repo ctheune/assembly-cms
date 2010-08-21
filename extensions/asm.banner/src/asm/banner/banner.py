@@ -4,6 +4,8 @@
 import asm.banner.interfaces
 import asm.cms.interfaces
 import asm.cms.edition
+import asm.cmsui.form
+import asm.cmsui.htmlpage
 import datetime
 import grok
 import pytz
@@ -29,11 +31,11 @@ class SponsorsArea(asm.cms.htmlpage.HTMLPage):
         self.areas = other.areas
 
 
-class Edit(asm.cms.form.EditionEditForm):
+class Edit(asm.cmsui.form.EditionEditForm):
 
     grok.context(SponsorsArea)
 
-    main_fields = (asm.cms.htmlpage.Edit.main_fields +
+    main_fields = (asm.cmsui.htmlpage.Edit.main_fields +
                    grok.AutoFields(asm.banner.interfaces.ISponsorsArea).
                        select('areas'))
 

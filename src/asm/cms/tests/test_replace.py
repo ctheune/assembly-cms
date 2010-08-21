@@ -109,36 +109,3 @@ class TestReplace(asm.cms.testing.FunctionalTestCase):
                           '<span class="match">constructor</span>, and '
                           'is stored in an\n        attribute named cont',
                           o1.preview)
-
-
-class ReplaceSelenium(asm.cms.testing.SeleniumTestCase):
-
-    def test_simple_replace(self):
-        home = self.cms.editions.next()
-        home.title = 'testing homepage'
-        home.content = 'foobar'
-        transaction.commit()
-        s = self.selenium
-        s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.click('css=#actions .toggle-navigation')
-        s.verifyNotVisible('css=#search-and-replace')
-        s.click('css=#tools h3')
-        s.clickAndWait('css=#search-and-replace')
-        self.assertEquals(
-            'http://localhost:8087/++skin++cms/cms/@@searchandreplace',
-            s.getLocation())
-        s.type('name=search', 'foo')
-        s.type('name=replace', 'bar')
-        s.clickAndWait('name=form.actions.search')
-        s.assertTextPresent('Found 1 occurrences.')
-        s.assertTextPresent('testing homepage')
-        s.assertElementPresent('name=occurrences')
-        s.clickAndWait('name=form.actions.replace')
-
-        s.assertTextPresent('Replaced 1 occurrences.')
-        self.assertEquals(
-            'http://localhost:8087/++skin++cms/cms/searchandreplace',
-            s.getLocation())
-
-        transaction.begin()
-        self.assertEquals('barbar', home.content)

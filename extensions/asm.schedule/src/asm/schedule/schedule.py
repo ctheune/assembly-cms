@@ -1,7 +1,9 @@
 import BTrees
 import StringIO
 import asm.cms
-import asm.cms.tinymce
+import asm.cmsui.tinymce
+import asm.cmsui.form
+import asm.cmsui.retail
 import asm.schedule.interfaces
 import asm.workflow.interfaces
 import csv
@@ -86,7 +88,7 @@ class ScheduleUpload(grok.Adapter):
     data = None
 
 
-class Edit(asm.cms.EditForm):
+class Edit(asm.cmsui.form.EditForm):
     """Editing a schedule means uploading a CSV file (as produced by Jussi)
     and updating both language editions from that file.
 
@@ -97,7 +99,7 @@ class Edit(asm.cms.EditForm):
     """
 
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
-    form_fields['message'].custom_widget = asm.cms.tinymce.TinyMCEWidget
+    form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     @grok.action(u'Upload')
     def upload(self, data=None, title=None, message=None):
@@ -253,7 +255,7 @@ class FilteredSchedule(object):
             for key, value in self.filters.items()]
 
 
-class Index(asm.cms.Pagelet):
+class Index(asm.cmsui.retail.Pagelet):
 
     def update(self):
         day = self.request.get('day', 'all')
@@ -284,7 +286,7 @@ class Index(asm.cms.Pagelet):
 class Csv(grok.View):
     grok.name('csv')
     grok.context(Schedule)
-    grok.layer(asm.cms.interfaces.IRetailSkin)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
 
     def render(self):
         return self.context.public_csv

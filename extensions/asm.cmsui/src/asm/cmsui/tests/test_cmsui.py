@@ -65,15 +65,16 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
             'The search for "asdf" returned\n no results.')
 
     def test_search_result_preview_htmlpage(self):
-        self.cms.editions.next().content = 'sometext asdf someothertext'
-        zope.event.notify(grok.ObjectModifiedEvent(self.cms.editions.next()))
+        edition = self.cms.editions.next()
+        edition.content = 'sometext asdf someothertext'
+        edition.title = u'Something going on'
+        zope.event.notify(grok.ObjectModifiedEvent(edition))
         transaction.commit()
         s = self.selenium
         s.type('name=q', 'asdf')
         s.selenium.key_press('name=q', r'\13')
         s.waitForPageToLoad()
-        s.assertTextPresent('sometext asdf someothertext')
-        s.assertElementPresent('//span[@class="match"]')
+        s.assertTextPresent('Something going on')
 
     def test_change_page_type(self):
         s = self.selenium

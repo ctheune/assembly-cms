@@ -28,7 +28,8 @@ class Tree(grok.View):
             title = edition.title
 
         id = intids.getId(root)
-
+        if title is None:
+            title = u''
         html = '<item rel="%s" id="%s">\n' % (
             root.type, id)
         html += '<content><name href="%s">%s</name></content>\n' % (

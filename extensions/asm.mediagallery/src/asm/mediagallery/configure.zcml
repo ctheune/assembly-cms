@@ -23,7 +23,7 @@
     for="asm.cms.interfaces.Blob
          zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.IInputWidget"
-    factory="asm.cms.asset.FileWithDisplayWidget"
+    factory="asm.cmsui.asset.FileWithDisplayWidget"
     permission="zope.Public"
     />
 

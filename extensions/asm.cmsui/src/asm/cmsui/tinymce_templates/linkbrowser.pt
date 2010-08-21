@@ -1,0 +1,43 @@
+<html>
+    <head>
+        <script language="JavaScript">
+            function insertURL(a) {
+                var win = tinyMCEPopup.getWindowArg('window');
+                var input = tinyMCEPopup.getWindowArg('input');
+                input = win.document.getElementById(input);
+                input.value = a.href;
+                tinyMCEPopup.close();
+            }
+        </script>
+        <style>
+            body { padding:0; margin: 0; background-color: white; }
+            div.breadcrumbs { background-color:black; color:white;
+                padding:1em;}
+        </style>
+    </head>
+    <body>
+        <div class="breadcrumbs">
+            <tal:block repeat="edition view/breadcrumbs">
+                <span tal:content="edition/title"/>
+                <span tal:omit-tag=""
+                    tal:condition="not:repeat/edition/end">&gt;</span>
+            </tal:block>
+        </div>
+
+        <ul>
+            <li tal:condition="python:context != view.application">
+                <a tal:attributes="
+                    href string:${context/__parent__/@@absolute_url}/@@tinymce-linkbrowser">..</a>
+            </li>
+            <li tal:repeat="edition view/pages">
+                <a tal:attributes="href
+                    string:${edition/page/@@absolute_url}/@@tinymce-linkbrowser"
+                    tal:omit-tag="python:not len(list(edition.page.subpages))"
+                    tal:content="python:edition.title or edition.page.__name__">no title</a>
+                <a tal:attributes="href python:view.url(edition.page)"
+                    onClick="insertURL(this)"><img
+                    tal:attributes="src static/icons/link_add.png"/></a>
+            </li>
+        </ul>
+    </body>
+</html>

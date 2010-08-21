@@ -4,6 +4,8 @@ import asm.cms.form
 import asm.cms.tinymce
 import asm.mediagallery.externalasset
 import asm.mediagallery.interfaces
+import asm.cmsui.form
+import asm.cmsui.retail
 import asm.workflow
 import grok
 import random
@@ -27,14 +29,14 @@ class MediaGallery(asm.cms.Edition):
     title = u''
 
 
-class Edit(asm.cms.form.EditionEditForm):
+class Edit(asm.cmsui.form.EditionEditForm):
 
     grok.context(MediaGallery)
 
     main_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select('title')
 
 
-class Index(asm.cms.Pagelet):
+class Index(asm.cmsui.retail.Pagelet):
 
     grok.context(MediaGallery)
 

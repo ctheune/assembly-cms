@@ -1,3 +1,0 @@
-<h1 tal:content="context/title"/>
-
-<tal:block tal:replace="structure context/content"/>

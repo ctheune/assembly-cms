@@ -5,6 +5,7 @@ import megrok.pagelet
 import grok
 import asm.cms.cms
 import asm.cmsui.interfaces
+import hurry.query.query
 
 
 class Search(megrok.pagelet.Pagelet):

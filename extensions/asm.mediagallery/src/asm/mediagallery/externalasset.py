@@ -57,7 +57,7 @@ class ViewGallery(asm.cmsui.retail.Pagelet):
         return self.url(self.context)
 
 
-class Index(asm.cms.Pagelet):
+class Index(asm.cmsui.retail.Pagelet):
 
     grok.context(ExternalAsset)
 

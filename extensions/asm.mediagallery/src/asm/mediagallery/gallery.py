@@ -1,7 +1,6 @@
 import asm.cms
 import asm.cms.edition
-import asm.cms.form
-import asm.cms.tinymce
+import asm.cmsui.tinymce
 import asm.mediagallery.externalasset
 import asm.mediagallery.interfaces
 import asm.cmsui.form

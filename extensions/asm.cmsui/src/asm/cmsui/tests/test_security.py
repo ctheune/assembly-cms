@@ -1,12 +1,12 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import asm.cms.interfaces
 import asm.cms.testing
+import asm.cmsui.interfaces
 import unittest
+import z3c.template.template
 import zope.interface
 import zope.security.checker
-import z3c.template.template
 
 
 class SecurityTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class SecurityTests(unittest.TestCase):
         for registration in zope.component.globalSiteManager.registeredAdapters():
             if len(registration.required) != 2:
                 continue
-            if registration.required[1] is not asm.cms.interfaces.ICMSSkin:
+            if registration.required[1] is not asm.cmsui.interfaces.ICMSSkin:
                 continue
             if registration.factory.__class__ in self.exceptions:
                 continue

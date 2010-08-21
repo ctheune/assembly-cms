@@ -4,6 +4,7 @@
    >
 
   <include package="asm.cms" file="ftesting.zcml"/>
+  <include package="asm.cmsui" />
 
   <!-- Typical functional testing security setup -->
   <securityPolicy

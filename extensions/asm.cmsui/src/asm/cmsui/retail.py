@@ -54,6 +54,9 @@ class RetailTraverser(grok.Traverser):
 class RootTraverse(RetailTraverser):
 
     grok.context(zope.app.folder.interfaces.IRootFolder)
+    # Another workaround to #408819 as someone else already registers a view
+    # on the default skin.
+    grok.baseclass()
 
 
 class PageTraverse(RetailTraverser):
@@ -79,7 +82,7 @@ def edition_url(edition, request):
 
 @grok.subscribe(zope.publisher.interfaces.http.IHTTPVirtualHostChangedEvent)
 def fix_virtual_host(event):
-    if not asm.cmsui.IRetailSkin.providedBy(event.request):
+    if not asm.cmsui.interfaces.IRetailSkin.providedBy(event.request):
         return
     root = event.request.getVirtualHostRoot()
     if asm.cms.interfaces.IEdition.providedBy(root):

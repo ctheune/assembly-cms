@@ -1,0 +1,37 @@
+<html tal:define="resource nocall:context/@@layouthelper/static">
+    <head>
+        <title>Assembly CMS &mdash; Quick start</title>
+
+        <!-- CMS-specific inclusions -->
+        <script type="text/javascript" tal:attributes="src context/@@layouthelper/static/cms.js"></script>
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/cms.css" />
+    </head>
+
+    <body>
+
+        <div id="header">
+            <h1>Assembly CMS &mdash; Quick start</h1>
+        </div>
+
+        <div id="pagecontainer">
+            <div id="page">
+                <div id="content">
+                    <tal:block replace="structure provider:pageheader"/>
+                    <tal:block replace="structure provider:notification-messages"/>
+                    <tal:block replace="structure view/render"></tal:block>
+                </div>
+            </div>
+
+        <div id="actions" class="actionbar">
+            <div class="section">
+              <h3>Actions</h3> 
+
+              <ul> 
+                <li><a href="/addsite">Add site</a></li>
+              </ul> 
+            </div>
+        </div>
+        </div>
+    </body>
+</html>
+

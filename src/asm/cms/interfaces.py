@@ -1,11 +1,12 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import zope.interface
-import zope.schema
 import ZODB.blob
 import grok
 import zc.sourcefactory.basic
+import zope.component
+import zope.interface
+import zope.schema
 
 
 class IEditionFactory(zope.interface.Interface):
@@ -162,7 +163,7 @@ class ProfileSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
         return [name for name, profile in
-                zope.component.getUtilitiesFor(asm.cms.interfaces.IProfile)]
+                zope.component.getUtilitiesFor(IProfile)]
 
 
 class IProfileSelection(zope.interface.Interface):

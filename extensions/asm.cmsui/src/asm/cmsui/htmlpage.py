@@ -25,7 +25,7 @@ class Edit(asm.cmsui.form.EditionEditForm):
     main_fields['content'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     def post_process(self):
-        self.content = fix_relative_links(
+        self.content = asm.cms.htmlpage.fix_relative_links(
             self.context.content, self.url(self.context))
 
 class SearchPreview(grok.View):

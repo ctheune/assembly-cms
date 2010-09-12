@@ -5,6 +5,11 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+    <meta name="geo.region" content="FI-ES" />
+    <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />
+    <meta name="geo.position" content="60.205868;24.929446" />
+    <meta name="ICBM" content="60.205868, 24.929446" />
+
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>

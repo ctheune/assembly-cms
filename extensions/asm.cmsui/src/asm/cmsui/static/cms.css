@@ -356,6 +356,8 @@ a.highlight {
     margin-left: 0;
 }
 
+/* XXX as this is not a template, we refer to the actual icon file in a
+   location that hopefully works. */
 input.search {
     background-image: url("/@@/asm.cmsui/icons/zoom.png");
     background-repeat: no-repeat;

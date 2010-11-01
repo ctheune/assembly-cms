@@ -355,3 +355,9 @@ a.highlight {
     list-style-type: none;
     margin-left: 0;
 }
+
+input.search {
+    background-image: url("/@@/asm.cmsui/icons/zoom.png");
+    background-repeat: no-repeat;
+    background-position: right center;
+}

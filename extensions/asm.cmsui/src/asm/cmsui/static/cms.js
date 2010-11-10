@@ -1,47 +1,88 @@
 var KEY_ESCAPE = 27;
 
 $(document).ready(function(){
-  // Showing/hiding navigation screen
-  $(document).keydown(function(e) {
+    // Showing/hiding navigation screen
+    $(document).keydown(function(e) {
         if (e.which == KEY_ESCAPE) {
             toggle_navigation();
         }});
 
-  $(".toggle-navigation").click(function() {toggle_navigation();});
+    $(".toggle-navigation").click(function() {toggle_navigation();});
 
-  $("input.clear-first-focus").one('click', clear_input);
+    $("input.clear-first-focus").one('click', clear_input);
 
-  $(".open-preview").click(show_preview);
-  window.preview_location = $('link[rel="preview"]').attr('href');
-  window.root = $('link[rel="root"]').attr('href');
+    $(".open-preview").click(show_preview);
+    window.preview_location = $('link[rel="preview"]').attr('href');
+    window.root = $('link[rel="root"]').attr('href');
 
-  $("#navigation-tree").tree({
-    ui: { theme_name: 'classic' },
-    types: {
-      htmlpage: { clickable: true, icon:  { image: root+'/@@/asm.cmsui/icons/page_white.png'}},
-      homepage: { icon:  { image: root+'/@@/asm.cmsui/icons/house.png'}},
-      news: { icon:  { image: root+'/@@/asm.cmsui/icons/newspaper.png'}},
-      sponsorsarea: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_medal.png'}},
-      asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}}},
-    data: { type: 'xml_nested',
-            opts: {url: $('#navigation-tree').attr('href')}},
-    callback: { onload: function(tree) {
-                    $("#navigation-tree li").each(function() {
-                        if ($(this).attr('id') == $('link[rel="pageid"]').attr('href')) {
-                            tree.toggle_branch($(this));
-                            tree.select_branch($(this));
-                        }});},
-                ondblclk: function(node, tree) {
-                    window.location = $('a', node).attr('href')+'/@@edit';
-                },
-                onmove: function(node, ref, type, tree, rb) {
-                    $.post($('a', ref).attr('href')+'/../@@arrange',
-                           {id: $(node).attr('id'),
-                            type: type},
-                            function() { tree.refresh(); });},
-                },
-    rules: {drag_copy: false,
-            max_children: 1},
+    $("#navigation-tree").bind("loaded.jstree", function(event, data) {
+        // TODO focus to currently open item and open it, if it has any
+        // children.
+
+        // var tree = data.inst;
+
+        // var focused = null;
+
+        // $("#navigation-tree li").each(function() {
+        //     if ($(this).attr('id') == $('link[rel="pageid"]').attr('href')) {
+        //         focused = $(this);
+        //     }
+        // });
+
+        // tree.select_node(focused);
+
+        // if (focused != null) {
+        //     for (node in tree.get_path(focused)) {
+        //         tree.open_node(node);
+        //     }
+        // }
+    }).bind("dblclick.jstree", function(event) {
+        var node = event.target;
+        // This check is here as if we double click iconed items, we'll get a
+        // target that points to the actual icon. It does not have have any
+        // URL information, but the parent node that holds the icon has.
+        if (node.href == undefined) {
+            node = node.parentNode;
+        }
+        window.location = node.href + '/@@edit';
+    })
+        .bind("move_node.jstree", function(event, data) {
+            var tree = data.inst;
+            var type = data.rslt.p;
+            var moved_node = data.rslt.o;
+            var target_node = data.rslt.r;
+
+            $.post($('a', target_node).attr('href')+'/../@@arrange',
+                   {id: $(moved_node).attr('id'),
+                    type: type},
+                   function() { tree.refresh(); }
+                  );
+    })
+.jstree({
+        plugins: [ "themes", "xml_data", "ui", "types", "dnd"],
+        xml_data: {
+            ajax: {
+                url: $('#navigation-tree').attr('href'),
+                data: function(node) {
+                    if (node.attr) {
+                        return {parent_id: node.attr("id")};
+                    }
+                    return {page_id: $('link[rel="pageid"]').attr('href')};
+                }
+            }
+        },
+        ui: {
+            theme_name: 'classic'
+        },
+        types: {
+            types: {
+                htmlpage: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white.png'}},
+                homepage: { icon:  { image: root+'/@@/asm.cmsui/icons/house.png'}},
+                news: { icon:  { image: root+'/@@/asm.cmsui/icons/newspaper.png'}},
+                sponsorsarea: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_medal.png'}},
+                asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}}
+            },
+        },
     });
 
     $('.expandable .opener').click(toggle_extended_options);
@@ -55,12 +96,14 @@ $(document).ready(function(){
 });
 
 function delete_page() {
-    var t = $.tree.reference('#navigation-tree');
-    var target = $(t.selected.find('a')[0]);
+    var t = $.jstree._reference('#navigation-tree');
+    var target = t.get_selected();
+    // TODO if branch is closed, then deletion does not show its children.
+    // but if it's open, then chidren's names are show in target.text().
     if (!confirm('Delete page "' + target.text() +'"?')) {
         return false;
     }
-    $.post(target.attr('href') + '/../@@delete', {},
+    $.post(target.find("a").attr("href") + '/../@@delete', {},
             function (data) { window.location = data; });
     return false;
 }
@@ -82,8 +125,8 @@ function add_page() {
         title.css("border-color", "#FBC2C4");
         return false;
     }
-    var t = $.tree.reference('#navigation-tree');
-    var add_page_url = t.selected.find('a').attr('href') + '/../@@addpage';
+    var t = $.jstree._reference('#navigation-tree');
+    var add_page_url = t.get_selected().find("a").attr("href") + '/../@@addpage';
 
     $(this).ajaxError(
         function() {

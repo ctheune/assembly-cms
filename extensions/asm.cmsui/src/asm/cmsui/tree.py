@@ -94,7 +94,7 @@ class Tree(grok.View):
        'id': page['id'],
        'state_str': state_str,
        'url': page['url'],
-       'title': cgi.escape(page['title'].encode('utf8'))
+       'title': cgi.escape(page['title'])
        }
 
     def _sub_pages(self, parent):

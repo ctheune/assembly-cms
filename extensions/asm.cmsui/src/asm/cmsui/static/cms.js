@@ -16,26 +16,13 @@ $(document).ready(function(){
     window.root = $('link[rel="root"]').attr('href');
 
     $("#navigation-tree").bind("loaded.jstree", function(event, data) {
-        // TODO focus to currently open item and open it, if it has any
-        // children.
+        // Show currently open page and its sub pages in navigation tree.
+        var tree = data.inst;
+        var opened_page_id = $('link[rel="pageid"]').attr('href');
+        var node = tree._get_node("#" + opened_page_id)[0];
 
-        // var tree = data.inst;
-
-        // var focused = null;
-
-        // $("#navigation-tree li").each(function() {
-        //     if ($(this).attr('id') == $('link[rel="pageid"]').attr('href')) {
-        //         focused = $(this);
-        //     }
-        // });
-
-        // tree.select_node(focused);
-
-        // if (focused != null) {
-        //     for (node in tree.get_path(focused)) {
-        //         tree.open_node(node);
-        //     }
-        // }
+        tree.open_node(node);
+        tree.select_node(node);
     }).bind("dblclick.jstree", function(event) {
         var node = event.target;
         // This check is here as if we double click iconed items, we'll get a
@@ -45,20 +32,18 @@ $(document).ready(function(){
             node = node.parentNode;
         }
         window.location = node.href + '/@@edit';
-    })
-        .bind("move_node.jstree", function(event, data) {
-            var tree = data.inst;
-            var type = data.rslt.p;
-            var moved_node = data.rslt.o;
-            var target_node = data.rslt.r;
+    }).bind("move_node.jstree", function(event, data) {
+        var tree = data.inst;
+        var type = data.rslt.p;
+        var moved_node = data.rslt.o;
+        var target_node = data.rslt.r;
 
-            $.post($('a', target_node).attr('href')+'/../@@arrange',
-                   {id: $(moved_node).attr('id'),
-                    type: type},
-                   function() { tree.refresh(); }
-                  );
-    })
-.jstree({
+        $.post($('a', target_node).attr('href')+'/../@@arrange',
+               {id: $(moved_node).attr('id'),
+                type: type},
+               function() { tree.refresh(); }
+              );
+    }).jstree({
         plugins: [ "themes", "xml_data", "ui", "types", "dnd"],
         xml_data: {
             ajax: {
@@ -67,6 +52,10 @@ $(document).ready(function(){
                     if (node.attr) {
                         return {parent_id: node.attr("id")};
                     }
+                    // We are opening navigation for the first time on current
+                    // page => there is no parent as we want to get the root
+                    // of the navigation tree. We also want to get all the
+                    // branches from current page to the root.
                     return {page_id: $('link[rel="pageid"]').attr('href')};
                 }
             }

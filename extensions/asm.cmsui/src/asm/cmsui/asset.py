@@ -4,8 +4,9 @@
 import asm.cms.asset
 import asm.cmsui.form
 import asm.cmsui.interfaces
-import zope.app.form.browser.textwidgets
 import grok
+import magic
+import zope.app.form.browser.textwidgets
 
 grok.context(asm.cms.asset.Asset)
 

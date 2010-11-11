@@ -8,9 +8,10 @@ import grok
 import StringIO
 import zope.component
 
-STATE_CLOSED = False
-STATE_OPEN = True
-STATE_NONE = None
+BRANCH_STATE_CLOSED = False
+BRANCH_STATE_OPEN = True
+# We don't have any children.
+BRANCH_STATE_NONE = None
 
 class Tree(grok.View):
 
@@ -33,6 +34,9 @@ class Tree(grok.View):
         # Page ID is used to give enough data in initial tree that the branch
         # that has currently open page is also transmitted in the initial
         # data request.
+        #
+        # On subsequent calls when opening branches, page_id is not transmitted
+        # any more and parent_id is transmitted instead.
         if page_id is not None:
             iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
             page = iids.getObject(int(page_id))
@@ -53,9 +57,9 @@ class Tree(grok.View):
         if title is None:
             title = u''
 
-        state = STATE_NONE
+        state = BRANCH_STATE_NONE
         if len(list(page.subpages)) > 0:
-            state = STATE_CLOSED
+            state = BRANCH_STATE_CLOSED
 
         parent_id = None
         if page != self.context:
@@ -76,10 +80,10 @@ class Tree(grok.View):
             parent_str = 'parent_id="%s"' % page['parent_id']
 
         state_str = ""
-        if page['state'] is not STATE_NONE:
-            if page['state'] == STATE_OPEN:
+        if page['state'] is not BRANCH_STATE_NONE:
+            if page['state'] == BRANCH_STATE_OPEN:
                 state_str = 'state="open"'
-            elif page['state'] == STATE_CLOSED:
+            elif page['state'] == BRANCH_STATE_CLOSED:
                 state_str = 'state="closed"'
 
         return """<item rel="%(rel)s" %(parent_str)s id="%(id)s" %(state_str)s>
@@ -100,24 +104,31 @@ class Tree(grok.View):
         return pages
 
     def _open_branches_leading_to_open_page(self, pages):
-        # TODO maybe some cleanups
-        opened_ids = []
         open_page = self.open_page
+        if open_page is None:
+            return pages
+
         intids = zope.component.getUtility(zope.app.intid.IIntIds)
-        while open_page is not None and self.context != open_page:
+        opened_ids = []
+        while self.context != open_page:
             pages.extend(self._sub_pages(open_page))
             open_page = open_page.__parent__
-            if open_page is not None:
-                opened_ids.append(intids.getId(open_page))
+            opened_ids.append(intids.getId(open_page))
 
         for page in pages:
             if page['id'] in opened_ids:
-                page['state'] = STATE_OPEN
+                page['state'] = BRANCH_STATE_OPEN
 
         return pages
 
+
     def tree(self):
-        pages = self._sub_pages(self.parent)
+        pages = []
+        # When we are opening the tree for the first time, we don't have
+        # anything in tree and we need to add the root node specifically.
+        if self.parent == self.context:
+            pages = [self._get_page_data(self.parent)]
+        pages.extend(self._sub_pages(self.parent))
 
         pages = self._open_branches_leading_to_open_page(pages)
 

@@ -10,7 +10,7 @@ import datetime
 import grok
 import megrok.pagelet
 import z3c.flashmessage.interfaces
-import zope.app.intid
+import zope.intid
 import zope.interface
 import zope.security
 

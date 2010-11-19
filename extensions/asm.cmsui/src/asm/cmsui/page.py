@@ -188,7 +188,7 @@ class Arrange(grok.View):
     grok.context(asm.cms.interfaces.IPage)
 
     def update(self, id, type):
-        iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         to_move = iids.getObject(int(id))
         self.context.arrange(to_move, type)
 

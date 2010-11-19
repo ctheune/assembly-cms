@@ -8,7 +8,7 @@ import zope.component
 import zope.interface
 import zope.publisher.browser
 import zope.publisher.interfaces.browser
-import zope.app.intid.interfaces
+import zope.intid.interfaces
 
 
 class CMS(grok.Application, asm.cms.page.Page):
@@ -22,7 +22,7 @@ class CMS(grok.Application, asm.cms.page.Page):
         super(CMS, self).__init__(type)
 
 
-@grok.subscribe(zope.app.intid.interfaces.IIntIds, grok.IObjectAddedEvent)
+@grok.subscribe(zope.intid.interfaces.IIntIds, grok.IObjectAddedEvent)
 def cleanup_initial_edition(obj, event):
     # This is a work-around for an ordering problem: eventually the initial
     # editions are created before the intid utility is registered. This cleans

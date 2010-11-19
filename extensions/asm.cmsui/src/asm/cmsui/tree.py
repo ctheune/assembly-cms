@@ -1,11 +1,12 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import StringIO
 import asm.cms.edition
+import asm.cms.utils
 import asm.cmsui.interfaces
 import cgi
 import grok
-import StringIO
 import zope.component
 
 BRANCH_STATE_CLOSED = False
@@ -22,14 +23,22 @@ class Tree(grok.View):
     parent = None
     open_page = None
 
+    def _object_is_my_child(self, page):
+        """Checks if object is inside this current application.
+
+        This is used to make sure that this tree is not used to access objects
+        from other applications by guessing their IDs.
+        """
+        return asm.cms.utils.have_same_application(page, self.context)
+
     def update(self, parent_id=None, page_id=None):
         self.request.response.setHeader('Content-Type', 'text/xml')
-        if parent_id is None:
-            self.parent = self.context
-        else:
+        self.parent = self.context
+        if parent_id is not None:
             iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
             parent = iids.getObject(int(parent_id))
-            self.parent = parent
+            if self._object_is_my_child(parent):
+                self.parent = parent
 
         # Page ID is used to give enough data in initial tree that the branch
         # that has currently open page is also transmitted in the initial
@@ -40,7 +49,9 @@ class Tree(grok.View):
         if page_id is not None:
             iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
             page = iids.getObject(int(page_id))
-            self.open_page = page
+            if self._object_is_my_child(page):
+                self.open_page = page
+
 
     def _get_page_data(self, page):
         intids = zope.component.getUtility(zope.intid.IIntIds)

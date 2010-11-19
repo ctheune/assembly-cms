@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+#prox Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import asm.cms.edition
@@ -10,7 +10,6 @@ import datetime
 import grok
 import megrok.pagelet
 import z3c.flashmessage.interfaces
-import zope.app.intid
 import zope.interface
 import zope.security
 

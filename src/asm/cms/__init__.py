@@ -3,15 +3,18 @@ import grok
 import urlparse
 
 
-def application(self):
-    obj = self.context
+def get_application(context):
+    obj = context
     while obj is not None:
         if isinstance(obj, grok.Application):
             return obj
         obj = obj.__parent__
     raise ValueError("No application found.")
 
-grok.View.application = property(fget=application)
+def get_application_for_view(self):
+    return get_application(self.context)
+
+grok.View.application = property(fget=get_application_for_view)
 
 
 def cms_edition(self):

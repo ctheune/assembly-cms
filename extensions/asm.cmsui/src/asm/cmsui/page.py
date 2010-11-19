@@ -188,8 +188,10 @@ class Arrange(grok.View):
     grok.context(asm.cms.interfaces.IPage)
 
     def update(self, id, type):
-        iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         to_move = iids.getObject(int(id))
+        if not asm.cms.utils.have_same_application(self.context, to_move):
+            raise ValueError("Tried to move objects belonging to different applications.")
         self.context.arrange(to_move, type)
 
     def render(self):

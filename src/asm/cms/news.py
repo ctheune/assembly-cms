@@ -50,8 +50,7 @@ class INewsFields(zope.interface.Interface):
                     u'may be displayed in different styles.')
 
 
-class TeaserAnnotation(grok.Annotation,
-                       grok.Model):
+class TeaserAnnotation(grok.Annotation):
     grok.implements(INewsFields)
     grok.provides(INewsFields)
     grok.context(asm.cms.interfaces.IEdition)

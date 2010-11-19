@@ -40,7 +40,7 @@ class Edit(asm.cmsui.form.EditionEditForm):
                        select('areas'))
 
 
-class BannerAnnotation(grok.Annotation, grok.Model):
+class BannerAnnotation(grok.Annotation):
 
     grok.implements(asm.banner.interfaces.IBanner)
     grok.provides(asm.banner.interfaces.IBanner)

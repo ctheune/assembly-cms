@@ -26,7 +26,7 @@ class CMS(grok.Application, asm.cms.page.Page):
 def cleanup_initial_edition(obj, event):
     # This is a work-around for an ordering problem: eventually the initial
     # editions are created before the intid utility is registered. This cleans
-    # up that mess and registeres all editions that exist in the CMS directly.
+    # up that mess and registers all editions that exist in the CMS directly.
     cms = obj.__parent__.__parent__
     if not asm.cms.interfaces.ICMS.providedBy(cms):
         return

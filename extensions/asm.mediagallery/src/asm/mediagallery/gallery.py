@@ -92,7 +92,7 @@ class Index(asm.cmsui.retail.Pagelet):
         return items
 
 
-class AssetAnnotation(grok.Annotation, grok.Model):
+class AssetAnnotation(grok.Annotation):
 
     grok.implements(asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo)
     grok.provides(asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo)

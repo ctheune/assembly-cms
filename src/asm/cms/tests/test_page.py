@@ -6,7 +6,7 @@ import asm.cms.page
 import transaction
 import unittest
 import zope.app.component.hooks
-import zope.app.intid.interfaces
+import zope.intid.interfaces
 import zope.component
 
 

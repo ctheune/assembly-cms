@@ -95,7 +95,7 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         self.cms['xy'] = asm.cms.page.Page('htmlpage')
         edition = self.cms['xy'].editions.next()
         edition.title = u'A test page'
-        intids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        intids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         xy_id = intids.getId(edition.page)
         transaction.commit()
         s.open(
@@ -111,7 +111,7 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         self.assertRaises(KeyError, self.cms.__getitem__, 'xy')
 
     def test_cant_delete_root(self):
-        intids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        intids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         edition = self.cms.editions.next()
         edition.title = u'Foobar'
         transaction.commit()

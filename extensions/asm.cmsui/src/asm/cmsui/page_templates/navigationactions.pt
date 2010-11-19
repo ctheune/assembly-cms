@@ -1,6 +1,7 @@
 <div class="section expandable">
     <form tal:attributes="action python:view.url(context.page, '@@addpage')"
-        method="POST" name="addpage">
+        method="post" id="addpage">
+      <div>
         <h3>Add new page</h3>
         <input type="text" name="title" title="Title for a new page. Lower case version of this will be the page's name in URL."/>
         <ul>
@@ -20,5 +21,6 @@
                     ui-icon-carat-1-s" title="Show more page types."></span></span>
             <span class="open"><span class="ui-icon ui-icon-carat-1-n" title="Hide extra page types."></span>
         </div>
+      </div>
     </form>
 </div>

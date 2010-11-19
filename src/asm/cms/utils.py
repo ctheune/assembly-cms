@@ -1,9 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import asm.cms
 import lxml.etree
 import re
-
 
 def rewrite_urls(content, visitor):
     """Rewrite URLs using a visitor.
@@ -42,3 +42,7 @@ def normalize_name(title):
     result = re.sub("-+", "-", result)
     result = result.strip("-")
     return result
+
+
+def have_same_application(object1, object2):
+    return asm.cms.get_application(object1) == asm.cms.get_application(object2)

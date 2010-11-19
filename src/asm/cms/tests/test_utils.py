@@ -69,18 +69,18 @@ class ViewApplicationTests(unittest.TestCase):
     def test_context_no_parent(self):
         self.view.context = self.contained
         self.assertRaises(
-            ValueError, asm.cms.application, self.view)
+            ValueError, asm.cms.get_application_for_view, self.view)
 
     def test_context_is_app(self):
         self.view.context = self.application
         self.assertEquals(
-            self.application, asm.cms.application(self.view))
+            self.application, asm.cms.get_application_for_view(self.view))
 
     def test_context_parent_is_app(self):
         self.view.context = self.contained
         self.view.context.__parent__ = self.application
         self.assertEquals(
-            self.application, asm.cms.application(self.view))
+            self.application, asm.cms.get_application_for_view(self.view))
 
 
 class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):

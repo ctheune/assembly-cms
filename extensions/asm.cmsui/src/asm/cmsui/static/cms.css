@@ -107,7 +107,7 @@ a {
     padding-bottom:0.5em;
 }
 
-#header h1 {
+#header h1, #header h1 a {
     color: white;
     font-size:12pt;
     font-weight:bold;

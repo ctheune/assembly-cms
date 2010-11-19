@@ -23,6 +23,9 @@ $(document).ready(function(){
 
         tree.open_node(node);
         tree.select_node(node);
+        // We don't know why we have to call save_selected here, but if we
+        // don't then the selection disappears again. :/
+        tree.save_selected();
     }).bind("dblclick.jstree", function(event) {
         var node = event.target;
         // This check is here as if we double click iconed items, we'll get a
@@ -60,6 +63,7 @@ $(document).ready(function(){
                 }
             }
         },
+        core: { animation: 0 },
         ui: {
             theme_name: 'classic'
         },

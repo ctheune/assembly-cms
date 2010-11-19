@@ -34,7 +34,9 @@ $(document).ready(function(){
         if (node.href == undefined) {
             node = node.parentNode;
         }
-        window.location = node.href + '/@@edit';
+        if (node.href != undefined) {
+            window.location = node.href + '/@@edit';
+        }
     }).bind("move_node.jstree", function(event, data) {
         var tree = data.inst;
         var type = data.rslt.p;

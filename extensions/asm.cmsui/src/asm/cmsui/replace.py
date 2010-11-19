@@ -4,7 +4,6 @@
 import megrok.pagelet
 import grok
 import asm.cms.cms
-import asm.cms.utils
 import asm.cmsui.interfaces
 import asm.cmsui.base
 import zope.interface
@@ -69,9 +68,6 @@ class Replace(megrok.pagelet.Pagelet):
             id, _, _, _ = occurrence_id.split('-')
             if id not in replace_cache:
                 edition = ids.getObject(int(id))
-                if not asm.cms.utils.have_same_application(self.context, edition):
-                    raise ValueError(
-                        "Tried to move objects belonging to different applications.")
                 replace = asm.cms.interfaces.IReplaceSupport(edition)
                 replace_cache[id] = replace.search(self.search)
             occurrences = replace_cache[id]

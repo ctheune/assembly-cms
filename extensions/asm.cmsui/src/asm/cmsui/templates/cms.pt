@@ -1,4 +1,5 @@
-<html tal:define="resource nocall:context/@@layouthelper/static">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" tal:define="resource nocall:context/@@layouthelper/static">
     <head>
         <title tal:content="context/title|nothing"></title>
 
@@ -35,7 +36,7 @@
     <body>
 
         <div id="header">
-            <h1 tal:content="view/cms_edition/title">Assembly Winter 2010</h1>
+            <h1><a tal:attributes="href python:view.url(view.cms_edition) + '/@@edit'" tal:content="view/cms_edition/title">Assembly Winter 2010</a></h1>
         </div>
 
         <div id="pagecontainer">
@@ -51,7 +52,7 @@
                     <div class="section">
                         <h2>Navigation</h2>
                     </div>
-                    <div id="navigation-tree" tal:attributes="href string:${view/application_url}/@@tree">
+                    <div id="navigation-tree"><a tal:attributes="href string:${view/application_url}/@@tree"></a>
                     </div>
                 </div>
             </div>
@@ -62,7 +63,9 @@
                 </ul>
                 <form tal:attributes="action
                     string:${view/application_url}/@@search">
+                  <div>
                     <input type="text" name="q" class="search" title="Search all pages for occurrences of this string."/>
+                  </div>
                 </form>
 
                 <tal:block replace="structure provider:main-page-actions"/>
@@ -76,7 +79,9 @@
                 </ul>
                 <form tal:attributes="action
                     string:${view/application_url}/@@search">
-                  <input type="text" name="q" class="search" class="search" title="Search all pages for occurrences of this string."/>
+                  <div>
+                  <input type="text" name="q" class="search" title="Search all pages for occurrences of this string."/>
+                  </div>
                 </form>
                 <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
                 <tal:block replace="structure provider:navigation-actions"/>

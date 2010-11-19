@@ -1,6 +1,7 @@
 <div class="section expandable">
     <h3>Page</h3>
 
+    <form action="#">
     <ul>
         <li><input type="submit" value="Preview" class="button open-preview" title="Opens preview version of this page in a new window."/></li>
     </ul>
@@ -8,6 +9,7 @@
     <ul class="expand">
         <tal:block replace="structure provider:extended-page-actions"/>
     </ul>
+    </form>
 
     <div class="opener">
         <span class="closed"><span class="ui-icon

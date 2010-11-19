@@ -52,7 +52,7 @@ $(document).ready(function(){
         plugins: [ "themes", "xml_data", "ui", "types", "dnd"],
         xml_data: {
             ajax: {
-                url: $('#navigation-tree').attr('href'),
+                url: $('#navigation-tree a').attr('href'),
                 data: function(node) {
                     if (node.attr) {
                         return {parent_id: node.attr("id")};
@@ -83,7 +83,7 @@ $(document).ready(function(){
     $('.expandable .opener').click(toggle_extended_options);
 
     $('.url-action').click(trigger_url_action);
-    $('form[name="addpage"]').submit(add_page);
+    $('form[id="addpage"]').submit(add_page);
 
     $('#delete-page').click(delete_page);
 

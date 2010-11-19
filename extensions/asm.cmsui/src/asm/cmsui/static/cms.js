@@ -15,40 +15,11 @@ $(document).ready(function(){
     window.preview_location = $('link[rel="preview"]').attr('href');
     window.root = $('link[rel="root"]').attr('href');
 
-    $("#navigation-tree").bind("loaded.jstree", function(event, data) {
-        // Show currently open page and its sub pages in navigation tree.
-        var tree = data.inst;
-        var opened_page_id = $('link[rel="pageid"]').attr('href');
-        var node = tree._get_node("#" + opened_page_id)[0];
-
-        tree.open_node(node);
-        tree.select_node(node);
-        // We don't know why we have to call save_selected here, but if we
-        // don't then the selection disappears again. :/
-        tree.save_selected();
-    }).bind("dblclick.jstree", function(event) {
-        var node = event.target;
-        // This check is here as if we double click iconed items, we'll get a
-        // target that points to the actual icon. It does not have have any
-        // URL information, but the parent node that holds the icon has.
-        if (node.href == undefined) {
-            node = node.parentNode;
-        }
-        if (node.href != undefined) {
-            window.location = node.href + '/@@edit';
-        }
-    }).bind("move_node.jstree", function(event, data) {
-        var tree = data.inst;
-        var type = data.rslt.p;
-        var moved_node = data.rslt.o;
-        var target_node = data.rslt.r;
-
-        $.post($('a', target_node).attr('href')+'/../@@arrange',
-               {id: $(moved_node).attr('id'),
-                type: type},
-               function() { tree.refresh(); }
-              );
-    }).jstree({
+    $("#navigation-tree")
+    .bind("loaded.jstree", tree_select_current_node)
+    .bind("dblclick.jstree", tree_open_selected_page)
+    .bind("move_node.jstree", tree_move_selected_pages)
+    .jstree({
         plugins: [ "themes", "xml_data", "ui", "types", "dnd"],
         xml_data: {
             ajax: {
@@ -89,6 +60,47 @@ $(document).ready(function(){
 
     $('.expandable .error').each(expand_section);
 });
+
+function tree_select_current_node(event, data) {
+    // Show currently open page and its sub pages in navigation tree.
+    var tree = data.inst;
+    var opened_page_id = $('link[rel="pageid"]').attr('href');
+    var node = tree._get_node("#" + opened_page_id)[0];
+
+    tree.open_node(node);
+    tree.select_node(node);
+    // We don't know why we have to call save_selected here, but if we
+    // don't then the selection disappears again. :/
+    tree.save_selected();
+}
+
+function tree_open_selected_page(event) {
+    var node = event.target;
+    // This check is here as if we double click iconed items, we'll get a
+    // target that points to the actual icon. It does not have have any
+    // URL information, but the parent node that holds the icon has.
+    if (node.href == undefined) {
+        node = node.parentNode;
+    }
+    if (node.href != undefined) {
+        window.location = node.href + '/@@edit';
+    }
+}
+
+function tree_move_selected_pages(event, data) {
+    var tree = data.inst;
+    var type = data.rslt.p;
+    var moved_nodes = data.rslt.o;
+    var target_node = data.rslt.r;
+
+    var ids = $(moved_nodes).map(function() { return $(this).attr('id'); }).get();
+
+    $.post($('a', target_node).attr('href')+'/../@@arrange',
+           {ids: ids.join(","),
+            type: type},
+           function() { tree.refresh(); }
+          );
+}
 
 function delete_page() {
     var t = $.jstree._reference('#navigation-tree');

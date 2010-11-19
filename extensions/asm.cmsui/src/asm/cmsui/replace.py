@@ -61,7 +61,7 @@ class Replace(megrok.pagelet.Pagelet):
         self.replaced = 0
         replace_cache = {}
 
-        ids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+        ids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         occurrences = self.request.form.get('occurrences')
         if isinstance(occurrences, basestring):
             occurrences = [occurrences]

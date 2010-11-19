@@ -35,7 +35,7 @@ class Tree(grok.View):
         self.request.response.setHeader('Content-Type', 'text/xml')
         self.parent = self.context
         if parent_id is not None:
-            iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+            iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
             parent = iids.getObject(int(parent_id))
             if self._object_is_my_child(parent):
                 self.parent = parent
@@ -47,14 +47,14 @@ class Tree(grok.View):
         # On subsequent calls when opening branches, page_id is not transmitted
         # any more and parent_id is transmitted instead.
         if page_id is not None:
-            iids = zope.component.getUtility(zope.app.intid.interfaces.IIntIds)
+            iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
             page = iids.getObject(int(page_id))
             if self._object_is_my_child(page):
                 self.open_page = page
 
 
     def _get_page_data(self, page):
-        intids = zope.component.getUtility(zope.app.intid.IIntIds)
+        intids = zope.component.getUtility(zope.intid.IIntIds)
         edition = asm.cms.edition.select_edition(page, self.request)
 
         if isinstance(edition, asm.cms.edition.NullEdition):
@@ -119,7 +119,7 @@ class Tree(grok.View):
         if open_page is None:
             return pages
 
-        intids = zope.component.getUtility(zope.app.intid.IIntIds)
+        intids = zope.component.getUtility(zope.intid.IIntIds)
         opened_ids = []
         while self.context != open_page:
             pages.extend(self._sub_pages(open_page))

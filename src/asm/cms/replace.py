@@ -23,7 +23,7 @@ class HTMLReplace(grok.Adapter):
     def __init__(self, context):
         self.context = context
         ids = zope.component.getUtility(
-            zope.app.intid.interfaces.IIntIds)
+            zope.intid.interfaces.IIntIds)
         self.context_id = ids.getId(self.context)
 
     def search(self, term):

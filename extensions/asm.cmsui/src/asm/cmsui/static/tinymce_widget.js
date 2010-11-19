@@ -13,7 +13,7 @@ tinyMCE.init({
 
     theme_advanced_blockformats: "p,h2,h3,blockquote,pre",
 
-    content_css : $('link[rel="root"]').attr('href') + '/@@/asm.cms/tinymce_content.css',
+    content_css : $('link[rel="root"]').attr('href') + '/@@/asm.cmsui/tinymce_content.css',
 
     dialog_type : 'modal',
 

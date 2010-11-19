@@ -7,7 +7,7 @@ import hurry.resource
 import asm.cms.interfaces
 import grok
 
-widget_lib = hurry.resource.Library('asm.cms')
+widget_lib = hurry.resource.Library('asm.cmsui')
 widget = hurry.resource.ResourceInclusion(widget_lib, 'tinymce_widget.js',
                                  depends=[hurry.tinymce.tinymce],
                                  bottom=True)

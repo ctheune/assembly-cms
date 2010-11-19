@@ -5,7 +5,7 @@ import grok
 import zope.interface
 import asm.cmsui.interfaces
 import zope.component
-import zope.app.intid
+import zope.intid
 
 
 class IntId(grok.View):
@@ -15,5 +15,5 @@ class IntId(grok.View):
     grok.require('asm.cms.EditContent')
 
     def render(self):
-        intids = zope.component.getUtility(zope.app.intid.IIntIds)
+        intids = zope.component.getUtility(zope.intid.IIntIds)
         return intids.getId(self.context)

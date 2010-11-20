@@ -1,0 +1,25 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="asm.cms">
+
+  <grok:grok package="." />
+
+  <utility
+    component=".skin.winter11"
+    name="winter11"
+    provides="asm.cms.interfaces.IProfile"
+    />
+
+  <registerIn registry=".skin.winter11">
+      <utility
+        component=".skin.languages"
+        provides="asm.translation.interfaces.ILanguageProfile"
+        />
+      <utility
+        component=".skin.skin_name"
+        provides="asm.cms.interfaces.ISkinProfile"
+        />
+  </registerIn>
+
+</configure>

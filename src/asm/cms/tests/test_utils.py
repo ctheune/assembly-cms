@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.cms
+import asm.cms.testing
 import asm.cms.utils
 import grok
 import unittest

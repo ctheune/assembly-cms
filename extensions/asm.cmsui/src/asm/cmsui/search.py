@@ -36,17 +36,6 @@ class PublicSearch(megrok.pagelet.Pagelet):
             if result is asm.cms.edition.select_edition(result.page, self.request):
                 self.results.append(result)
 
-    def get_path(self, item):
-        path = []
-        item = item.page
-        while item is not None:
-            path.append(item)
-            item = item.__parent__
-        path.reverse()
-        del path[-1]
-        del path[0]
-        return path
-
 
 class OSDDEdition(grok.View):
     grok.context(asm.cms.interfaces.IEdition)

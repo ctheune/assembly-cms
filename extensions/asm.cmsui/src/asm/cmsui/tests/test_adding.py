@@ -11,9 +11,9 @@ class Adding(asm.cmsui.testing.SeleniumTestCase):
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
         s.verifyNotVisible('css=#add-page')
-        s.click('css=#actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.verifyVisible('css=#add-page')
-        s.type('css=form[name="addpage"] input[name="title"]', 'A test')
+        s.type('css=form[id="addpage"] input[name="title"]', 'A test')
         s.clickAndWait('css=#add-page')
         self.assertEquals(
             u'http://localhost:8087/++skin++cms/cms/a-test/edition-/@@edit',

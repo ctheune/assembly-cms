@@ -95,7 +95,7 @@ function delete_page() {
     var target = t.get_selected();
     // TODO if branch is closed, then deletion does not show its children.
     // but if it's open, then chidren's names are show in target.text().
-    if (!confirm('Delete page "' + target.text() +'"?')) {
+    if (!confirm('Delete page "' + $.trim(target.text()) +'"?')) {
         return false;
     }
     $.post(target.find("a").attr("href") + '/../@@delete', {},

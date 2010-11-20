@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>Assembly Winter 2010</title>
+    <title>Assembly Winter 2011</title>
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
@@ -13,7 +13,7 @@
   <body>
     <div id="main">
       <div id="header">
-        <h1 id="home"><a title="Assembly Winter" tal:attributes="href view/application_url">Assembly Winter 2010, 22.-24.1.2010, Kaapelitehdas, Helsinki</a></h1>
+        <h1 id="home"><a title="Assembly Winter" tal:attributes="href view/application_url">Assembly Winter 2011, 11.-13.2.2011, Kaapelitehdas, Helsinki</a></h1>
         <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Buy Tickets Now!</a>
       </div>
       <div id="subheader">
@@ -107,14 +107,14 @@
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
               <p>
               <a href="http://www.jimmspc.fi" rel="nofollow">
-                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter10/sponsors/logo/jimmspc-150"/>
+                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter11/sponsors/logo/jimmspc-150"/>
               </a>
               </p>
 
 
                 <p>
                 <a href="http://www.elisa.fi" rel="nofollow">
-                  <img class="banner" alt="Elisa" src="http://www.assembly.org/winter10/sponsors/logo/elisa"/>
+                  <img class="banner" alt="Elisa" src="http://www.assembly.org/winter11/sponsors/logo/elisa"/>
                 </a>
                 </p>
               </div>
@@ -153,14 +153,14 @@
       <a tal:attributes="href string:${view/application_url}/asm/contact">feedback</a> |
       <a tal:attributes="href string:${view/application_url}/asm/asmorg/privacy">privacy</a> |
       <a tal:attributes="href string:${view/application_url}/asm/contact">contact</a> |
-      <br />Copyright &copy; <a tal:attributes="href string:${view/application_url}/asm/asmorg">Assembly Organizing</a>, 2009-2010
+      <br />Copyright &copy; <a tal:attributes="href string:${view/application_url}/asm/asmorg">Assembly Organizing</a>, 2009-2011
       </p>
     </div> <!-- footer -->
 
     <div id="nav-top">
       <div id="nav-top-container">
         <ul i18n:domain="asm">
-          <li><a href="http://www.assembly.org/winter10/" i18n:translate="">Winter'10</a></li>
+          <li><a href="http://www.assembly.org/winter11/" i18n:translate="">Winter'11</a></li>
           <li><a href="http://www.assembly.org/summer09/" class="active">Summer'09</a></li>
           <li><a href="http://forum.assembly.org/">Forums</a></li>
           <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>

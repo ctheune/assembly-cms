@@ -9,6 +9,10 @@ import zope.interface
 import pytz
 
 
+winter11 = asm.cms.cms.Profile('winter11')
+languages = ['en', 'fi']
+skin_name = 'winter11'
+
 class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin('winter11')
 

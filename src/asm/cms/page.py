@@ -1,7 +1,6 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
-import asm.cms
 import asm.cms.edition
 import asm.cms.interfaces
 import asm.cms.utils
@@ -58,10 +57,6 @@ class Page(grok.OrderedContainer):
 
     def arrange(self, obj, type):
         """Move a given object relative to this page."""
-
-        if not asm.cms.utils.have_same_application(obj, self):
-            raise ValueError(
-                "Tried to move objects belonging to different applications.")
 
         mover = zope.copypastemove.interfaces.IObjectMover(obj)
         if type == 'inside':

@@ -74,7 +74,7 @@
 
         <div id="navigation-actions" class="actionbar">
             <div class="section">
-              <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
+              <button class="button" id="delete-page" title="Deletes selected page(s).">Delete page(s)</button>
             </div>
             <tal:block replace="structure provider:navigation-actions"/>
             <div class="section expandable" id="tools">

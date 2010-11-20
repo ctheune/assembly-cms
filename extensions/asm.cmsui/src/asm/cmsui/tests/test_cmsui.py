@@ -104,10 +104,9 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
             s.server)
         s.click('css=.toggle-navigation')
         s.waitForElementPresent('css=#%s a' % xy_id)
-        s.clickAndWait('css=#delete-page')
+        s.click('css=#delete-page')
         self.assertEquals(u'Delete page "A test page"?',
                           s.selenium.get_confirmation())
-        s.assertText('css=li.message', 'Page deleted.')
         transaction.abort()
         self.assertRaises(KeyError, self.cms.__getitem__, 'xy')
 
@@ -120,12 +119,11 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         s = self.selenium
         s.refresh()
         s.waitForPageToLoad()
+        # In this case we are on the root page and the root element so it is
+        # selected and page deletion button should be disabled.
         s.click('css=.toggle-navigation')
         s.waitForElementPresent('css=#%s a' % cms_id)
-        s.clickAndWait('css=#delete-page')
-        self.assertEquals(u'Delete page "Foobar"?',
-                          s.selenium.get_confirmation())
-        s.assertText('css=li.warning', 'Cannot delete the root page!')
+        s.assertNotEditable("css=#delete-page")
         transaction.abort()
-        # Ensure the CMS is really still there.
-        self.assert_(self.getRootFolder()['cms'])
+        # TODO test case where we click some non-root node and see that page
+        # deletion button will be editable again.

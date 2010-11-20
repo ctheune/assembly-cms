@@ -31,64 +31,13 @@
           <div tal:replace="structure context/@@navtree">
           </div>
           <div class="box-light sponsors">
-            <div class="box-inside" >
-              <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
-
-              <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Microsoft" tal:attributes="src string:${view/application_url}/sponsors/logo/microsoft-plain-logo"/>
-              </a>
-              </p>
-
-                 <p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Everyplay" tal:attributes="src string:${view/application_url}/sponsors/logo/everyplay"/>
-              </a>
-              </p>
-        
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Pelit" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=43cd06da89bf075dc4971ab878dd720e"/>
-              </a>
-              </p>
-        
-  		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="World Cyber Games" src="http://www.assembly.org/winter08/compos/wcg-150px"/>
-              </a>
-              </p>
-
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Effi" src="http://www.assembly.org/winter09/portal_banner/showBanner?bannerid=d7a57c6bf5138b98105a946e42d659bd"/>
-              </a>
-              </p>
-
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Gocept" tal:attributes="src string:${view/application_url}/sponsors/logo/gocept-medium"/>
-              </a>
-              </p>
-                 
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Esko Otava" tal:attributes="src string:${view/application_url}/sponsors/logo/esko-otava-150"/>
-              </a>
-              </p>
-        
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Gamepro" tal:attributes="src string:${view/application_url}/sponsors/logo/gamepro"/>
-              </a>
-	      </p>
-
-		<p>
-              <a tal:attributes="href string:${view/application_url}/sponsors">
-                <img class="banner" alt="Coolermaster" tal:attributes="src string:${view/application_url}/sponsors/logo/coolermaster"/>
-              </a>
-              </p>
-              
-            </div>
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 4)">
+                <p>
+                  <a tal:attributes="href string:${view/application_url}/sponsors">
+                    <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                  </a>
+                </p>
+                </tal:banners>
           </div>
         </div> <!-- leftbar -->
 

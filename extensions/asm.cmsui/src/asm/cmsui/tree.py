@@ -6,12 +6,63 @@ import asm.cms.edition
 import asm.cmsui.interfaces
 import cgi
 import grok
+import simplejson
 import zope.component
+import zope.copypastemove.interfaces
 
 BRANCH_STATE_CLOSED = False
 BRANCH_STATE_OPEN = True
 # We don't have any children.
 BRANCH_STATE_NONE = None
+
+class DataById(grok.View):
+
+    grok.context(grok.Application)   # XXX Meh.
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
+
+    def update(self, page_id):
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
+        self.page = iids.getObject(int(page_id))
+
+    def render(self):
+        edition = asm.cms.edition.select_edition(self.page, self.request)
+        intids = zope.component.getUtility(zope.intid.IIntIds)
+        page_id = intids.getId(self.page)
+        return simplejson.dumps(
+            {'name': self.page.__name__,
+             'title': edition.title,
+             'id': page_id,
+             })
+
+
+class RenamePage(grok.View):
+
+    grok.context(grok.Application)   # XXX Meh.
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
+
+    def update(self, page_id, new_name):
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
+        self.page = iids.getObject(int(page_id))
+        parent = self.page.__parent__
+        if new_name in parent:
+            self.status = 'failed'
+            return
+
+        self.status = 'ok'
+        edition = asm.cms.edition.select_edition(self.page, self.request)
+        old_name = self.page.__name__
+        parent[new_name] = self.page
+        del parent[old_name]
+
+    def render(self):
+        edition = asm.cms.edition.select_edition(self.page, self.request)
+        return simplejson.dumps(
+            {'status': self.status,
+             'title': edition.title,
+             })
+
 
 class Tree(grok.View):
 
@@ -94,7 +145,7 @@ class Tree(grok.View):
        'id': page['id'],
        'state_str': state_str,
        'url': page['url'],
-       'title': cgi.escape(page['title'])
+       'title': cgi.escape(page['title']),
        }
 
     def _sub_pages(self, parent):

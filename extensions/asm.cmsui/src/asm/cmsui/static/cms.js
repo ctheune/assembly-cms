@@ -18,6 +18,9 @@ $(document).ready(function(){
     $("#navigation-tree")
     .bind("loaded.jstree", tree_select_current_node)
     .bind("dblclick.jstree", tree_open_selected_page)
+    .bind("deselect_node.jstree select_node.jstree", tree_update_rename_icons)
+    .bind("hover_node.jstree", tree_show_hover_icon)
+    .bind("rename_node.jstree", tree_put_old_node_name_back)
     .bind("deselect_node.jstree select_node.jstree", tree_disable_delete_on_root_select)
     .bind("move_node.jstree", tree_move_selected_pages)
     .jstree({
@@ -61,6 +64,72 @@ $(document).ready(function(){
 
     $('.expandable .error').each(expand_section);
 });
+
+function tree_update_rename_icons(event, data) {
+    var tree = data.inst;
+    $("#navigation-tree").find(".rename").each(function() {
+        var node = $(this).parent();
+        if (!tree.is_selected(node)) {
+            tree_hide_rename_icon(tree, node);
+        }
+    });
+    $(tree.get_selected()).each(function() {
+        tree_show_rename_icon(tree, this);
+    });
+}
+
+function tree_show_hover_icon(event, data) {
+    var tree = data.inst;
+    var node = data.rslt.obj;
+    tree_update_rename_icons(event, data);
+    tree_show_rename_icon(tree, node);
+}
+
+function tree_rename_node(rename_anchor) {
+    var tree = $.jstree._reference('#navigation-tree');
+    var node_id = $(rename_anchor).attr("href");
+    var node = tree._get_node(node_id);
+    $.get(application_view("databyid"),
+          {page_id: node_id.replace("#", "")},
+          function (data) {
+              var result = JSON.parse(data);
+              var tree = $.jstree._reference('#navigation-tree');
+              tree.set_text(node, result['name']);
+              tree.select_node(node);
+              tree.rename(node);
+          });
+}
+
+function tree_put_old_node_name_back(event, data) {
+    var new_name = data.rslt.name;
+    var node = data.rslt.obj;
+    $.post(application_view("renamepage"),
+          {page_id: node.attr("id"),
+           new_name: new_name},
+          function (data) {
+              var result = JSON.parse(data);
+              var tree = $.jstree._reference('#navigation-tree');
+              tree.refresh();
+          });
+    return true;
+}
+
+function tree_show_rename_icon(tree, node) {
+    var renamed = $(node).children(".rename");
+    if (renamed.length == 0) {
+        var id = $(node).attr("id");
+        var rename_node = "<a class='rename' href='#" + id + "' style='width: 16px; background-color: white; background:url(/@@/asm.cmsui/icons/pencil.png) center center no-repeat !important;' onclick='tree_rename_node(this)' title='Rename'>&nbsp;</a>";
+        var links = $(node).find("a");
+        var anchor = links.first().after(rename_node);
+        // anchor.click(tree_rename_node, id);
+    }
+}
+
+function tree_hide_rename_icon(tree, node) {
+    if (!tree.is_selected(node)) {
+        $(node).find(".rename").remove();
+    }
+}
 
 function tree_disable_delete_on_root_select(event, data) {
     var tree = data.inst;

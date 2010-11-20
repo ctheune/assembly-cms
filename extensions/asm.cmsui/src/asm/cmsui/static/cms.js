@@ -18,9 +18,10 @@ $(document).ready(function(){
     $("#navigation-tree")
     .bind("loaded.jstree", tree_select_current_node)
     .bind("dblclick.jstree", tree_open_selected_page)
+    .bind("deselect_node.jstree select_node.jstree", tree_disable_delete_on_root_select)
     .bind("move_node.jstree", tree_move_selected_pages)
     .jstree({
-        plugins: [ "themes", "xml_data", "ui", "types", "dnd"],
+        plugins: [ "themes", "xml_data", "ui", "types", "dnd", "crrm"],
         xml_data: {
             ajax: {
                 url: $('#navigation-tree a').attr('href'),
@@ -32,7 +33,7 @@ $(document).ready(function(){
                     // page => there is no parent as we want to get the root
                     // of the navigation tree. We also want to get all the
                     // branches from current page to the root.
-                    return {page_id: $('link[rel="pageid"]').attr('href')};
+                    return {page_id: current_page_id()};
                 }
             }
         },
@@ -61,10 +62,31 @@ $(document).ready(function(){
     $('.expandable .error').each(expand_section);
 });
 
+function tree_disable_delete_on_root_select(event, data) {
+    var tree = data.inst;
+    var target_nodes = tree.get_selected();
+    var root_nodes = tree._get_children(-1);
+
+    var delete_button = $('#delete-page');
+    if (arrays_intersect(target_nodes, root_nodes)) {
+        delete_button.attr('disabled', 'disabled');
+    } else {
+        delete_button.removeAttr('disabled');
+    }
+}
+
+function current_page_id() {
+    return $('link[rel="pageid"]').attr('href');
+}
+
+function application_view(view) {
+    return $('link[rel="root"]').attr('href') + "/@@" + view;
+}
+
 function tree_select_current_node(event, data) {
     // Show currently open page and its sub pages in navigation tree.
     var tree = data.inst;
-    var opened_page_id = $('link[rel="pageid"]').attr('href');
+    var opened_page_id = current_page_id();
     var node = tree._get_node("#" + opened_page_id)[0];
 
     tree.open_node(node);
@@ -102,17 +124,50 @@ function tree_move_selected_pages(event, data) {
           );
 }
 
+function arrays_intersect(first, second) {
+    for (id in first) {
+        var obj = first[id];
+        if ($.inArray(obj, second) != -1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 function delete_page() {
-    var t = $.jstree._reference('#navigation-tree');
-    var target = t.get_selected();
+    var tree = $.jstree._reference('#navigation-tree');
+    var target_nodes = tree.get_selected();
+
     // TODO if branch is closed, then deletion does not show its children.
     // but if it's open, then chidren's names are show in target.text().
-    if (!confirm('Delete page "' + $.trim(target.text()) +'"?')) {
+    if (!confirm('Delete page "' + $.trim(target_nodes.text()) +'"?')) {
         return false;
     }
-    $.post(target.find("a").attr("href") + '/../@@delete', {},
-            function (data) { window.location = data; });
+
+    var target_ids = $(target_nodes).map(function() { return $(this).attr('id'); }).get();
+
+    $.post(
+        application_view('delete'),
+        {ids: target_ids.join(","), current_page_id: current_page_id()},
+        handle_page_deletion
+    );
     return false;
+}
+
+function handle_page_deletion(data) {
+    var result = JSON.parse(data);
+    var tree = $.jstree._reference('#navigation-tree');
+    if (result['status'] == 'ok') {
+        $(result['deleted']).each(function() { tree.remove("#" + this)});
+        tree.deselect_all();
+        if (result['is_current_page_deleted']) {
+            toggle_navigation = function() {
+                window.location = result['target'];
+            };
+        }
+    } else {
+        window.location = result['target'];
+    }
 }
 
 function expand_section() {
@@ -183,6 +238,6 @@ function show_navigation() {
 toggle_navigation = show_navigation;
 
 function show_preview() {
-    w = window.open($('link[rel="root"]').attr('href')+'/@@preview-window');
+    w = window.open(application_view('preview-window'));
     return false;
 };

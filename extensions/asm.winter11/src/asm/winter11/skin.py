@@ -10,7 +10,7 @@ import pytz
 
 
 class ISkin(asm.cmsui.interfaces.IRetailSkin):
-    grok.skin('winter10')
+    grok.skin('winter11')
 
 
 class Layout(megrok.pagelet.Layout):
@@ -43,8 +43,8 @@ class LayoutHelper(grok.View):
             return []
 
     def generateCountdown(self):
-        times = (('22.01.2010 12:00', True, "until ASSEMBLY!"),
-                 ('24.01.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+        times = (('11.02.2011 12:00', True, "until ASSEMBLY!"),
+                 ('13.02.2011 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 

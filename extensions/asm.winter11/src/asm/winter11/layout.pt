@@ -31,7 +31,7 @@
           <div tal:replace="structure context/@@navtree">
           </div>
           <div class="box-light sponsors">
-              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 4)">
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsors', 4)">
                 <p>
                   <a tal:attributes="href string:${view/application_url}/sponsors">
                     <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
@@ -54,19 +54,14 @@
             <div class="box-light sponsors">
               <div class="box-inside" >
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
-              <p>
-              <a href="http://www.jimmspc.fi" rel="nofollow">
-                <img class="banner" alt="JimmsPCStore" src="http://assembly.org/winter11/sponsors/logo/jimmspc-150"/>
-              </a>
-              </p>
 
-
-                <p>
-                <a href="http://www.elisa.fi" rel="nofollow">
-                  <img class="banner" alt="Elisa" src="http://www.assembly.org/winter11/sponsors/logo/elisa"/>
-                </a>
-                </p>
-              </div>
+                <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('main', randomize=False)">
+                  <p>
+                    <a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow">
+                      <img class="banner" alt="Main sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                    </a>
+                  </p>
+                </tal:banners>
             </div> <!-- sponsors -->
 
             <div class="sidebar-box">

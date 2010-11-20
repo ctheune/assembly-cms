@@ -18,7 +18,7 @@ class ReplaceSelenium(asm.cmsui.testing.SeleniumTestCase):
         transaction.commit()
         s = self.selenium
         s.open('http://mgr:mgrpw@%s/++skin++cms/cms' % s.server)
-        s.click('css=#actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.verifyNotVisible('css=#search-and-replace')
         s.click('css=#tools h3')
         s.clickAndWait('css=#search-and-replace')
@@ -28,7 +28,6 @@ class ReplaceSelenium(asm.cmsui.testing.SeleniumTestCase):
         s.type('name=search', 'foo')
         s.type('name=replace', 'bar')
         s.clickAndWait('name=form.actions.search')
-        s.assertTextPresent('Found 1 occurrences.')
         s.assertTextPresent('testing homepage')
         s.assertElementPresent('name=occurrences')
         s.clickAndWait('name=form.actions.replace')

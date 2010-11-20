@@ -100,53 +100,66 @@ a {
 /* Page grid/layout */
 
 #header {
-    background-color: #000;
     margin-bottom:1em;
-    padding-left:4em;
+    padding-left:2em;
     padding-top:1em;
-    padding-bottom:0.5em;
+    padding-bottom:1.25em;
+    padding-right:2em;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2em;
+    background-color: white;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
 }
 
 #header h1 {
-    color: white;
-    font-size:12pt;
-    font-weight:bold;
+    float: left;
+    margin-top:0.2em;
+    margin-left: 0.75em;
+    font-size:1.6em;
+    font-weight: bold;
+    font-family: Georgia;
 }
 
-#pagecontainer {
-    overflow: hidden;
-}
-
-#pagecontainer>div {
-    margin-bottom:-2000px;
-    padding-bottom:2100px;
+#header h1 a {
+    color: #333;
 }
 
 #content, #navigation {
     padding-top:1em;
 }
 
+.button.toggle-navigation {
+    float: right;
+    margin-right: 1em;
+}
+
 .actionbar {
-    float:left;
+    position: fixed;
+    top: 5em;
+    left: 60em;
     width:15em;
-    margin:1em;
-    padding:0em 1em 1em 2em;
-    margin-left:0;
-    background-image: url(images/ui-bg-fade-black-grey-horizontal.png);
-    background-repeat: repeat-y;
 }
 
 #page {
+    position: relative;
     background-color: white;
-    float:left;
+    top: 5em;
+    left: 2em;
     width:50em;
-    margin:1em 0em 1em 4em;
+    margin:1em 0em 1em 0em;
     padding:0em 1.5em 1em 1.5em;
+    min-height: 500px;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
 }
 
 /* Intra-page styles */
 #page .section {
-    margin:0em -1.5em 0em;
+    margin:1em -1.5em 0em;
     padding:0em 1.5em 1em;
 }
 
@@ -166,6 +179,10 @@ a {
 /* Navigation tree */
 #navigation {
     display: none;
+}
+
+#navigation-tree.jstree-focused {
+    background-color: inherit;
 }
 
 .header-buttons {
@@ -191,6 +208,8 @@ input.close-navigation, input.open-navigation {
     padding:1em;
     padding-top:0.5em;
     margin-top:1em;
+    -moz-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: 2px 2px 2px #ccc;
 }
 
 .actionbar .section.expandable {
@@ -275,12 +294,13 @@ span.discreet {
 }
 
 .widget input.textType {
-    font-size:1.6em; width:100%;
+    font-size:1.6em;
     font-family:Georgia;
+    width: 97%;
 }
 
 .widget {
-    margin:0px 0px 10px 0px;
+    margin:0 0 1em 0;
 }
 
 .field span {
@@ -349,6 +369,11 @@ a.highlight {
     display: inline-block;
 }
 
+/* Search */
+#search {
+    float: right;
+}
+
 /* Search and replace */
 
 .search-and-replace ul {
@@ -361,5 +386,9 @@ a.highlight {
 input.search {
     background-image: url("/@@/asm.cmsui/icons/zoom.png");
     background-repeat: no-repeat;
-    background-position: right center;
+    background-position: 95% center;
+}
+
+.search-and-replace label {
+    font-weight: normal;
 }

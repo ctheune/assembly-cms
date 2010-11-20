@@ -23,11 +23,11 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         s.assertNotVisible("css=#navigation")
         s.assertVisible("css=#content")
 
-        s.click('css=#actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.assertVisible("css=#navigation")
         s.assertNotVisible("css=#content")
 
-        s.click('css=#navigation-actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.assertNotVisible("css=#navigation")
         s.assertVisible("css=#content")
 
@@ -62,7 +62,8 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         s.selenium.key_press('name=q', r'\13')
         s.waitForPageToLoad()
         s.waitForTextPresent(
-            'The search for "asdf" returned\n no results.')
+            'The search for "asdf" returned')
+        s.assertTextPresent('no results.')
 
     def test_search_result_preview_htmlpage(self):
         edition = self.cms.editions.next()
@@ -101,10 +102,10 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         s.open(
             'http://mgr:mgrpw@%s/++skin++cms/cms/xy/edition-/@@edit' %
             s.server)
-        s.click('css=#actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.waitForElementPresent('css=#%s a' % xy_id)
         s.clickAndWait('css=#delete-page')
-        self.assertEquals(u'Delete page "\xa0A test page"?',
+        self.assertEquals(u'Delete page "A test page"?',
                           s.selenium.get_confirmation())
         s.assertText('css=li.message', 'Page deleted.')
         transaction.abort()
@@ -119,10 +120,10 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
         s = self.selenium
         s.refresh()
         s.waitForPageToLoad()
-        s.click('css=#actions .toggle-navigation')
+        s.click('css=.toggle-navigation')
         s.waitForElementPresent('css=#%s a' % cms_id)
         s.clickAndWait('css=#delete-page')
-        self.assertEquals(u'Delete page "\xa0Foobar"?',
+        self.assertEquals(u'Delete page "Foobar"?',
                           s.selenium.get_confirmation())
         s.assertText('css=li.warning', 'Cannot delete the root page!')
         transaction.abort()

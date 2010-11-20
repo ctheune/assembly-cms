@@ -35,67 +35,58 @@
 
     <body>
 
-        <div id="header">
-            <h1><a tal:attributes="href python:view.url(view.cms_edition) + '/@@edit'" tal:content="view/cms_edition/title">Assembly Winter 2010</a></h1>
+        <div id="page">
+            <div id="content">
+                <tal:block replace="structure provider:pageheader"/>
+
+                <tal:block replace="structure provider:notification-messages"/>
+
+                <tal:block replace="structure view/render"></tal:block>
+            </div>
+            <div id="navigation">
+                <div class="section">
+                    <h2>Navigation</h2>
+                </div>
+                <div id="navigation-tree"><a tal:attributes="href string:${view/application_url}/@@tree"></a>
+                </div>
+            </div>
         </div>
 
-        <div id="pagecontainer">
-            <div id="page">
-                <div id="content">
-                    <tal:block replace="structure provider:pageheader"/>
+        <div id="header">
+            <h1><a tal:attributes="href python:view.url(view.cms_edition) + '/@@edit'" tal:content="view/cms_edition/title">Assembly Winter 2010</a></h1>
 
-                    <tal:block replace="structure provider:notification-messages"/>
+            <form id="search" tal:attributes="action
+                string:${view/application_url}/@@search">
+              <div>
+                <input type="text" name="q" class="search" title="Search all pages for occurrences of this string."/>
+              </div>
+            </form>
 
-                    <tal:block replace="structure view/render"></tal:block>
-                </div>
-                <div id="navigation">
-                    <div class="section">
-                        <h2>Navigation</h2>
-                    </div>
-                    <div id="navigation-tree"><a tal:attributes="href string:${view/application_url}/@@tree"></a>
-                    </div>
-                </div>
+            <button class="button toggle-navigation" title="Display navigation tree.">Navigation</button>
+
+        </div>
+
+        <div id="actions" class="actionbar">
+            <tal:block replace="structure provider:main-page-actions"/>
+
+            <tal:block replace="structure provider:page-action-groups"/>
+        </div>
+
+        <div id="navigation-actions" class="actionbar">
+            <div class="section">
+              <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
             </div>
-
-            <div id="actions" class="actionbar">
+            <tal:block replace="structure provider:navigation-actions"/>
+            <div class="section expandable" id="tools">
+                <h3>Tools</h3>
                 <ul>
-                    <li><button class="button toggle-navigation" title="Display navigation tree.">Navigation</button></li>
+                <tal:block replace="structure provider:navigation-tool-actions"/>
                 </ul>
-                <form tal:attributes="action
-                    string:${view/application_url}/@@search">
-                  <div>
-                    <input type="text" name="q" class="search" title="Search all pages for occurrences of this string."/>
-                  </div>
-                </form>
-
-                <tal:block replace="structure provider:main-page-actions"/>
-
-                <tal:block replace="structure provider:page-action-groups"/>
-            </div>
-
-            <div id="navigation-actions" class="actionbar">
-                <ul>
-                    <li><button class="button toggle-navigation" title="Close navigation tree and continue editing.">Back to editor</button></li>
-                </ul>
-                <form tal:attributes="action
-                    string:${view/application_url}/@@search">
-                  <div>
-                  <input type="text" name="q" class="search" title="Search all pages for occurrences of this string."/>
-                  </div>
-                </form>
-                <button class="button" id="delete-page" title="Deletes selected page.">Delete page</button>
-                <tal:block replace="structure provider:navigation-actions"/>
-                <div class="section expandable" id="tools">
-                    <h3>Tools</h3>
-                    <ul>
-                    <tal:block replace="structure provider:navigation-tool-actions"/>
-                    </ul>
-                    <div class="opener">
-                        <span class="closed"><span class="ui-icon
-                                ui-icon-carat-1-s"></span></span>
-                        <span class="open"><span class="ui-icon
-                                ui-icon-carat-1-n"></span></span>
-                    </div>
+                <div class="opener">
+                    <span class="closed"><span class="ui-icon
+                            ui-icon-carat-1-s"></span></span>
+                    <span class="open"><span class="ui-icon
+                            ui-icon-carat-1-n"></span></span>
                 </div>
             </div>
         </div>

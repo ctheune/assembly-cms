@@ -45,8 +45,6 @@ class ReplacePreview(megrok.pagelet.Pagelet):
                         {'edition': edition,
                          'occurrences': occurrences})
 
-        self.flash('Found %s occurrences.' % self.found)
-
 
 class Replace(megrok.pagelet.Pagelet):
     """Perform a replace operation given a users search and replace terms and

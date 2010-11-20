@@ -5,4 +5,21 @@
 
   <grok:grok package="." />
 
+  <utility
+    component=".skin.winter11"
+    name="winter11"
+    provides="asm.cms.interfaces.IProfile"
+    />
+
+  <registerIn registry=".skin.winter11">
+      <utility
+        component=".skin.languages"
+        provides="asm.translation.interfaces.ILanguageProfile"
+        />
+      <utility
+        component=".skin.skin_name"
+        provides="asm.cms.interfaces.ISkinProfile"
+        />
+  </registerIn>
+
 </configure>

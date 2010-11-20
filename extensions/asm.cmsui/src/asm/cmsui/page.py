@@ -1,14 +1,16 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import asm.cms
 import asm.cms.interfaces
 import asm.cms.page
 import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
-import zope.component
+import simplejson
 import megrok.pagelet
+import zope.component
 
 
 class Actions(grok.Viewlet):
@@ -84,25 +86,62 @@ class ChangePageType(asm.cmsui.form.EditForm):
             asm.cms.edition.select_edition(self.context, self.request),
             '@@edit'))
 
+DELETE_STATUS_OK = 'ok'
+DELETE_STATUS_FAILED = 'fail'
+
 
 class Delete(grok.View):
 
-    grok.context(asm.cms.interfaces.IPage)
+    grok.context(grok.Application)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
-    def update(self):
-        if isinstance(self.context, asm.cms.cms.CMS):
-            self.flash('Cannot delete the root page!', 'warning')
-            self.target = self.context
-            return
-        page = self.context
-        self.target = page.__parent__
-        del page.__parent__[page.__name__]
-        self.flash('Page deleted.')
+    status = DELETE_STATUS_FAILED
+    deleted = []
+    is_current_page_deleted = True
+
+    def update(self, ids, current_page_id):
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
+        deletable_ids = map(int, ids.split(","))
+        deletable_pages = map(iids.getObject, deletable_ids)
+
+        for deletable_page in deletable_pages:
+            if self.context == deletable_page:
+                self.flash('Cannot delete the root page!', 'warning')
+                self.target = self.context
+                return
+
+        # Make sure that if current page or a branch where current page is,
+        # is deleted, we return to lowest branch that is not deleted.
+        current_page = iids.getObject(int(current_page_id))
+        target_page = current_page
+        parent = target_page
+        while parent != self.context:
+            if parent in deletable_pages:
+                target_page = parent.__parent__
+            parent = parent.__parent__
+
+        self.target = target_page
+
+        self.deleted = deletable_ids
+
+        self.status = DELETE_STATUS_OK
+
+        if target_page == current_page:
+            self.is_current_page_deleted = False
+
+        for page in deletable_pages:
+            del page.__parent__[page.__name__]
 
     def render(self):
         target = asm.cms.edition.select_edition(
             self.target, self.request)
-        return self.url(target, '@@edit')
+        return simplejson.dumps(
+            {'status': self.status,
+             'deleted': self.deleted,
+             'is_current_page_deleted': self.is_current_page_deleted,
+             'target': self.url(target, '@@edit')
+             })
 
 
 class CMSIndex(grok.View):

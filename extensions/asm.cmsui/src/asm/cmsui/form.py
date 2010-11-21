@@ -96,6 +96,7 @@ class EditForm(CMSForm, megrok.pagelet.component.FormPageletMixin,
 class EditionEditForm(EditForm):
 
     grok.baseclass()
+    grok.name('edit')
 
     @property
     def label(self):

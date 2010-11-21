@@ -113,8 +113,8 @@ a {
     height: 2em;
     background-color: white;
     background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
-    -moz-box-shadow: 2px 2px 2px #ccc;
-    -webkit-box-shadow: #aaa 0px 0px 8px;       /* XXX */
+    -webkit-box-shadow: #aaa 0px 0px 8px;
+    -moz-box-shadow: #aaa 0px 0px 8px;
 }
 
 #header h1 {
@@ -156,8 +156,8 @@ a {
     margin:1em 0em 1em 0em;
     padding:0em 1.5em 1em 1.5em;
     min-height: 500px;
-    -moz-box-shadow: 2px 2px 2px #ccc;
-    -webkit-box-shadow: #aaa 0px 2px 4px;       /* XXX */
+    -webkit-box-shadow: #aaa 0px 2px 4px;
+    -moz-box-shadow: #aaa 0px 2px 4px;
     border-top:1px solid #d9d9d9;
 }
 
@@ -223,7 +223,8 @@ input.close-navigation, input.open-navigation {
     margin-top:1em;
     margin-bottom:2em;
     border-top:1px solid #d9d9d9;
-    -webkit-box-shadow: #aaa 0px 2px 4px;       /* XXX */
+    -webkit-box-shadow: #aaa 0px 2px 4px;
+    -moz-box-shadow: #aaa 0px 2px 4px;
 }
 
 .actionbar .section.expandable {

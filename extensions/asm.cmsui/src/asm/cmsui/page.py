@@ -234,3 +234,44 @@ class Arrange(grok.View):
 
     def render(self):
         pass
+
+
+class IdData(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    def render(self):
+        edition = asm.cms.edition.select_edition(self.context, self.request)
+        intids = zope.component.getUtility(zope.intid.IIntIds)
+        page_id = intids.getId(self.context)
+        return simplejson.dumps(
+            {'name': self.context.__name__,
+             'title': edition.title,
+             'id': page_id,
+             })
+
+class Rename(grok.View):
+
+    grok.context(asm.cms.interfaces.IPage)
+
+    def update(self, new_name):
+        # Can not rename applications.
+        if asm.cms.get_application(self.context) == self.context:
+            self.status = 'failed'
+            return
+        parent = self.context.__parent__
+        if new_name in parent:
+            self.status = 'failed'
+            return
+
+        self.status = 'ok'
+        old_name = self.context.__name__
+        parent[new_name] = self.context
+        del parent[old_name]
+
+    def render(self):
+        edition = asm.cms.edition.select_edition(self.context, self.request)
+        return simplejson.dumps(
+            {'status': self.status,
+             'title': edition.title,
+             })

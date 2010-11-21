@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010 gocept gmbh & co. kg#
 # See also LICENSE.txt
 
 import asm.cms
@@ -11,7 +11,6 @@ import grok
 import simplejson
 import megrok.pagelet
 import zope.component
-
 
 class Actions(grok.Viewlet):
     """Page-related UI actions to perform on editions."""
@@ -256,11 +255,16 @@ class Rename(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
 
-    def update(self, new_name):
+    def update(self, new_name, open_page_id):
         # Can not rename applications.
         if asm.cms.get_application(self.context) == self.context:
             self.status = 'failed'
             return
+
+        iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
+        open_page = iids.getObject(int(open_page_id))
+        self.open_edition = asm.cms.edition.select_edition(open_page, self.request)
+
         parent = self.context.__parent__
         if new_name in parent:
             self.status = 'failed'
@@ -288,4 +292,5 @@ class Rename(grok.View):
         return simplejson.dumps(
             {'status': self.status,
              'title': edition.title,
+             'open_page': self.url(self.open_edition, "edit")
              })

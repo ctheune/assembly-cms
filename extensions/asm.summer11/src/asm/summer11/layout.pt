@@ -30,7 +30,8 @@
       Program &raquo; Realtime compos
     </p>
 
-    <div tal:replace="structure view/render">
+    <div tal:replace="structure view/render">a
+    </div>
 
     <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? 

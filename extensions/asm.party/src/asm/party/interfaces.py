@@ -5,7 +5,16 @@ import asm.cms.interfaces
 import zope.schema
 
 
+class IProgramSection(zope.interface.Interface):
+
+    title = zope.schema.TextLine(title=u'Title')
+
+    headline = zope.schema.TextLine(title=u'Headline')
+
+
 class ICompetition(zope.interface.Interface):
+
+    title = zope.schema.TextLine(title=u'Title')
 
     headline = zope.schema.TextLine(title=u'Headline')
 

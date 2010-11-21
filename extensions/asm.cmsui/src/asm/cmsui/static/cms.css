@@ -396,3 +396,8 @@ input.search {
 .search-and-replace label {
     font-weight: normal;
 }
+
+.rename-page {
+    width: 16px;
+    background: transparent url(/@@/asm.cmsui/icons/pencil.png) center center no-repeat !important;
+}

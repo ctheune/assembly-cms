@@ -19,7 +19,9 @@ $(document).ready(function(){
     .bind("loaded.jstree", tree_select_current_node)
     .bind("dblclick.jstree", tree_open_selected_page)
     .bind("deselect_node.jstree select_node.jstree", tree_update_rename_icons)
-    .bind("hover_node.jstree", tree_show_hover_icon)
+    // TODO when we have icon from hovering and try to add onclick event to it,
+    // it fires at some times. Try to find out why and enable this after that.
+    // .bind("hover_node.jstree", tree_show_hover_icon)
     .bind("rename_node.jstree", tree_execute_rename_action)
     .bind("deselect_node.jstree select_node.jstree", tree_disable_delete_on_root_select)
     .bind("move_node.jstree", tree_move_selected_pages)
@@ -128,13 +130,16 @@ function tree_execute_rename_action(event, data) {
 }
 
 function tree_show_rename_icon(tree, node) {
+    // Do not show icons for root nodes.
+    if (is_root_node(tree, node)) {
+        return true;
+    }
     var renamed = $(node).children(".rename");
     if (renamed.length == 0) {
         id = $(node).attr("id");
         var rename_node = "<a class='rename' href='#" + id + "' style='width: 16px; background-color: white; background:url(/@@/asm.cmsui/icons/pencil.png) center center no-repeat !important;' onclick='tree_rename_node(this)' title='Rename'>&nbsp;</a>";
         var links = $(node).find("a");
         var anchor = links.first().after(rename_node);
-        // anchor.click(tree_rename_node, id);
     }
     return true;
 }
@@ -171,6 +176,10 @@ function node_view(node, view) {
 
 }
 
+function is_root_node(tree, node) {
+    return $.inArray(node, tree._get_children(-1)) != -1;
+}
+
 function tree_select_current_node(event, data) {
     // Show currently open page and its sub pages in navigation tree.
     var tree = data.inst;
@@ -182,6 +191,7 @@ function tree_select_current_node(event, data) {
     // We don't know why we have to call save_selected here, but if we
     // don't then the selection disappears again. :/
     tree.save_selected();
+    return true;
 }
 
 function tree_open_selected_page(event) {
@@ -195,6 +205,8 @@ function tree_open_selected_page(event) {
     if (node.href != undefined) {
         window.location = node.href + '/@@edit';
     }
+
+    return true;
 }
 
 function tree_move_selected_pages(event, data) {

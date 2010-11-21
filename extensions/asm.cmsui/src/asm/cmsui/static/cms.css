@@ -141,8 +141,8 @@ a {
 
 .actionbar {
     position: fixed;
-    top: 5em;
-    left: 60em;
+    top: 6em;
+    left: 59.5em;
     width:15em;
 }
 
@@ -150,8 +150,8 @@ a {
     position: relative;
     background-color: white;
     background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
-    top: 5em;
-    left: 2em;
+    top: 6em;
+    left: 3em;
     width:50em;
     margin:1em 0em 1em 0em;
     padding:0em 1.5em 1em 1.5em;

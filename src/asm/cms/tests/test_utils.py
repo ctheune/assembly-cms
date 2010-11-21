@@ -53,27 +53,6 @@ class UtilityTests(unittest.TestCase):
         self.assertEquals('asdf-bsdf',
                           asm.cms.utils.normalize_name(u'asdf\xfcbsdf'))
 
-class ParagraphTests(unittest.TestCase):
-    def test_remove_empty_paragraph(self):
-        self.assertEquals('', 
-            asm.cms.utils.check_paragraphs('<p></p>'))
-
-    def test_only_remove_empty_paragraph(self):
-        self.assertEquals('<p>Assembly 2010</p>',
-            asm.cms.utils.check_paragraphs('<p></p><p>Assembly 2010</p><p></p>'))
-
-    def test_remove_whitespace_paragraph(self):
-        self.assertEquals('',
-            asm.cms.utils.check_paragraphs('<p>          </p>'))
-
-    def test_remove_only_needed_whitespaces(self):
-        self.assertEquals('<p>Assembly  2010</p>',
-            asm.cms.utils.check_paragraphs('<p>            </p><p>Assembly  2010 </p><p>  </p>'))
-
-    def test_remove_newline(self):
-        self.assertEquals('',
-            asm.cms.utils.check_paragraphs('<p>\n</p>'))
-
 class ViewApplicationTests(unittest.TestCase):
 
     def setUp(self):
@@ -151,5 +130,4 @@ def test_suite():
     suite.addTest(unittest.makeSuite(UtilityTests))
     suite.addTest(unittest.makeSuite(ViewApplicationTests))
     suite.addTest(unittest.makeSuite(ViewResolveURLsTests))
-    suite.addTest(unittest.makeSuite(ParagraphTests))
     return suite

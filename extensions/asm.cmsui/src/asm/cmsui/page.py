@@ -35,8 +35,6 @@ class NavigationActions(grok.Viewlet):
         for name in source.factory.getValues():
             factory = zope.component.getUtility(
                 asm.cms.interfaces.IEditionFactory, name=name)
-            if not factory.factory_enabled(self.context.page):
-                continue
             result.append(dict(name=name,
                                factory=factory,
                                title=source.factory.getTitle(name)))

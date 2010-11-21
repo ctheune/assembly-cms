@@ -265,9 +265,21 @@ class Rename(grok.View):
             return
 
         self.status = 'ok'
+
+        # Remember where we were.
         old_name = self.context.__name__
+        keys = list(parent)
+        old_position = keys.index(old_name)
+
+        # Rename. This adds the new name as last one.
         parent[new_name] = self.context
         del parent[old_name]
+
+        # Move the new name back where it was.
+        new_keys = list(parent)
+        new_keys.remove(new_name)
+        new_keys.insert(old_position, new_name)
+        parent.updateOrder(new_keys)
 
     def render(self):
         edition = asm.cms.edition.select_edition(self.context, self.request)

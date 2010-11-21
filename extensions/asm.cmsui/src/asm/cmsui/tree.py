@@ -74,6 +74,7 @@ class Tree(grok.View):
             'state': state,
             'url': self.url(ref),
             'title': title,
+            'name': page.__name__,
             }
 
     def _page_to_xml(self, page):
@@ -89,7 +90,7 @@ class Tree(grok.View):
                 state_str = 'state="closed"'
 
         return """<item rel="%(rel)s" %(parent_str)s id="%(id)s" %(state_str)s>
-<content><name href="%(url)s">%(title)s</name></content>
+<content><name href="%(url)s" page_name="%(name)s">%(title)s</name></content>
 </item>
 """ % {'rel': page['rel'],
        'parent_str': parent_str,
@@ -97,6 +98,7 @@ class Tree(grok.View):
        'state_str': state_str,
        'url': page['url'],
        'title': cgi.escape(page['title']),
+       'name': cgi.escape(page['name']),
        }
 
     def _sub_pages(self, parent):

@@ -1,49 +1,62 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
+<!doctype html>
+<html lang="en">
+<head>
     <title>Assembly Summer 2011</title>
-    <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
+
+    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/reset.css"/>
+    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/960.css"/>
+    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/text.css"/>
+    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css"/>
+
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <ul id="navigation">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Program</a></li>
-      <li><a href="#">Schedule</a></li>
-      <li><a href="#">Location</a></li>
-      <li><a href="#">Gallery</a></li>
-      <li><a href="#">Guide</a></li>
-    </ul>
 
-    <h1>Assembly Summer 2011</h1>
-
-    <p>7.-11.8.2011<br/>Hartwall Arena, Helsinki</p>
-
-    <div id="tickets">
-      <h2>Reserve tickets</h2>
+  <div id="main" class="container_16">
+    
+    <div id="header" class="alpha grey clearfix">
+      <div class="grid_11">
+        <ul class="nav">
+          <li>Home</li>
+          <li>Program</li>
+          <li>Schedule</li>
+          <li>Location</li>
+          <li>Gallery</li>
+          <li>Guide</li>
+        </ul>
+        
+        <div id="masthead" class="grey clearfix">
+          <h1 class="grid_4">Assembly Summer 2011</h1>
+          <p class="grid_6">7.-11.8.2011 <br />Hartwall Arena, Helsinki</p>
+        </div>
+      </div>
+      
+      <div class="grid_5">
+        <h2>Reserve Tickets</h2>
+      </div>
+      
+    </div> <!-- header -->
+    
+    <div id="content_wrap" class="clearfix">
+      
+      <div id="content" class="grid_11"
+          tal:content="structure view/render">
+      </div>
+      
+      <div id="sidebar" class="grid_5 grey">
+        <h3>Sponsors etc</h3>
+      </div>
+      
+    </div>  <!-- content_wrap -->
+    
+    <div id="footer">
+      <p>&copy Assembly Organizing</p>
     </div>
+    
+  </div>
 
-    <p>
-      Program &raquo; Realtime compos
-    </p>
-
-    <div tal:replace="structure view/render">a
-    </div>
-
-    <script type="text/javascript">
-      var gaJsHost = (("https:" == document.location.protocol) ? 
-          "https://ssl." : "http://www.");
-      document.write(unescape("%3Cscript src='" + gaJsHost + 
-            "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    <script type="text/javascript">
-        try {
-          var pageTracker = _gat._getTracker("UA-7109758-1");
-          pageTracker._trackPageview();
-        } catch(err) {}
-    </script>
-  </body>
+</body>
 </html>

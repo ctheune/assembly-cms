@@ -55,23 +55,35 @@ class Page(grok.OrderedContainer):
         return zope.component.getUtility(
             asm.cms.interfaces.IEditionFactory, name=self.type)
 
+    def _add_object_to_position(self, target, obj, position=None):
+        mover = zope.copypastemove.interfaces.IObjectMover(obj)
+        mover.moveTo(target, obj.__name__)
+        if position is None:
+            return
+        keys = list(target)
+        keys.remove(obj.__name__)
+        keys.insert(position, obj.__name__)
+        target.updateOrder(keys)
+
     def arrange(self, obj, type):
         """Move a given object relative to this page."""
 
-        mover = zope.copypastemove.interfaces.IObjectMover(obj)
+        if type not in ['inside', 'before', 'after', 'first', 'last']:
+            raise ValueError("Unknown movement type %s" % type)
+
         if type == 'inside':
-            mover.moveTo(self, obj.__name__)
+            self._add_object_to_position(self, obj)
         elif type in ['before', 'after']:
-            # Before/after needs to happen in two steps:
-            # 1. Locate the object in our parent
+            # Insert new object before this object, or after this object.
             target = self.__parent__
-            mover.moveTo(target, obj.__name__)
-            # 2. Rearrange the objects' key in the parent relative to our
-            #     position in the parent
+            if asm.cms.get_application(self) == self:
+                raise ValueError("Can not move outside this application")
             keys = list(target)
-            keys.remove(obj.__name__)
             target_position = keys.index(self.__name__)
             if type == 'after':
                 target_position += 1
-            keys.insert(target_position, obj.__name__)
-            target.updateOrder(keys)
+            self._add_object_to_position(target, obj, target_position)
+        elif type == 'first':
+            self._add_object_to_position(self, obj, 0)
+        elif type == 'last':
+            self._add_object_to_position(self, obj, len(list(self)))

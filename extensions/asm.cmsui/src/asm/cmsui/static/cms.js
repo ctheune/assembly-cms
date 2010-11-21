@@ -40,7 +40,9 @@ $(document).ready(function(){
                 }
             }
         },
-        core: { animation: 0 },
+        core: {
+            animation: 0,
+        },
         ui: {
             theme_name: 'classic'
         },
@@ -53,6 +55,7 @@ $(document).ready(function(){
                 asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}}
             },
         },
+        crrm: { move: { check_move: tree_check_move_not_outside_root } }
     });
 
     $('.expandable .opener').click(toggle_extended_options);
@@ -64,6 +67,16 @@ $(document).ready(function(){
 
     $('.expandable .error').each(expand_section);
 });
+
+function tree_check_move_not_outside_root(move) {
+    var root_nodes = this._get_children(-1);
+    var type = move.p;
+    if ($.inArray(type, ["before", "after"]) != -1 &&
+        arrays_intersect(move.r, root_nodes)) {
+        return false;
+    }
+    return true;
+}
 
 function tree_update_rename_icons(event, data) {
     var tree = data.inst;
@@ -191,7 +204,7 @@ function tree_move_selected_pages(event, data) {
 
     var ids = $(moved_nodes).map(function() { return $(this).attr('id'); }).get();
 
-    $.post(node_view(target_node, arrange),
+    $.post(node_view(target_node, 'arrange'),
            {ids: ids.join(","),
             type: type},
            function() { tree.refresh(); }

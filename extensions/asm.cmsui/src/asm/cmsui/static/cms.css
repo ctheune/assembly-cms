@@ -87,6 +87,7 @@ body {
     margin:0;
     padding:0;
     background-color: #eee;
+    background-image: url('/@@/asm.cmsui/images/ui-bg-grey-noise.png');
 }
 
 * {
@@ -111,6 +112,7 @@ a {
     right: 0;
     height: 2em;
     background-color: white;
+    background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
     -moz-box-shadow: 2px 2px 2px #ccc;
     -webkit-box-shadow: 2px 2px 2px #ccc;
 }
@@ -139,16 +141,17 @@ a {
 
 .actionbar {
     position: fixed;
-    top: 5em;
-    left: 60em;
+    top: 6em;
+    left: 59.5em;
     width:15em;
 }
 
 #page {
     position: relative;
     background-color: white;
-    top: 5em;
-    left: 2em;
+    background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
+    top: 6em;
+    left: 3em;
     width:50em;
     margin:1em 0em 1em 0em;
     padding:0em 1.5em 1em 1.5em;
@@ -205,6 +208,7 @@ input.close-navigation, input.open-navigation {
 
 .actionbar .section {
     background-color:white;
+    background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
     padding:1em;
     padding-top:0.5em;
     margin-top:1em;

@@ -1,0 +1,28 @@
+<div class="compo">
+    <h2 tal:content="context/title"></h2>
+
+    <p>
+        <span class="location" tal:content="context/location"></span>
+        <span class="time" tal:content="context/time"></span>
+    </p>
+
+    <p class="prizes">
+        <span class="label">Prizes</span>
+        <span class="value" tal:content="context/prizes"></span>
+    </p>
+
+    <p class="rules">
+        <a tal:attributes="href context/participation_info">Participate
+            (rules, etc.)</a>
+    </p>
+
+    <p class="gallery">
+        <a tal:attributes="href context/gallery">Gallery</a>
+    </p>
+</div>
+
+<div class="overview">
+    <h3 tal:content="context/headline"/>
+
+    <p tal:content="context/description"/>
+</div>

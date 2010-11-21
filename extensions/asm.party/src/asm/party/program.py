@@ -18,10 +18,11 @@ class ProgramSection(asm.cms.edition.Edition):
     headline = u''
 
 
-class EditCompetition(asm.cmsui.form.EditionEditForm):
+class EditSection(asm.cmsui.form.EditionEditForm):
 
-    grok.context(Competition)
-    main_fields = grok.AutoFields(asm.party.interfaces.ICompetition)
+    grok.context(asm.party.interfaces.IProgramSection)
+    main_fields = grok.AutoFields(asm.party.interfaces.IProgramSection)
+    grok.name('edit')
 
 
 class Competition(asm.cms.edition.Edition):

@@ -73,7 +73,7 @@ class ImagePicker(grok.View):
     grok.name('image-picker')
 
 
-class ExtendedPageActions(grok.Viewlet):
+class DownloadAction(grok.Viewlet):
     grok.viewletmanager(asm.cmsui.base.ExtendedPageActions)
 
 class Download(grok.View):

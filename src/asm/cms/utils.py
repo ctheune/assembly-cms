@@ -4,6 +4,7 @@
 import lxml.etree
 import re
 
+
 def rewrite_urls(content, visitor):
     """Rewrite URLs using a visitor.
 

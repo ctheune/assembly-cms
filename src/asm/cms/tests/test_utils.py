@@ -53,7 +53,6 @@ class UtilityTests(unittest.TestCase):
         self.assertEquals('asdf-bsdf',
                           asm.cms.utils.normalize_name(u'asdf\xfcbsdf'))
 
-
 class ViewApplicationTests(unittest.TestCase):
 
     def setUp(self):

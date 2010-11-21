@@ -157,6 +157,9 @@ class Homepage(asm.cmsui.retail.Pagelet):
     grok.name('index')
 
     def news(self, tag):
+        if 'news' not in self.context.page:
+           raise StopIteration() 
+        
         news_edition = asm.cms.edition.select_edition(
             self.context.page['news'], self.request)
         for item in news_edition.list():

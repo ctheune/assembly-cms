@@ -52,7 +52,8 @@ $(document).ready(function(){
                 homepage: { icon:  { image: root+'/@@/asm.cmsui/icons/house.png'}},
                 news: { icon:  { image: root+'/@@/asm.cmsui/icons/newspaper.png'}},
                 sponsorsarea: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_medal.png'}},
-                asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}}
+                asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}},
+                programsection: { icon:  { image: root+'/@@/asm.cmsui/icons/film.png'}}
             },
         },
         crrm: { move: { check_move: tree_check_move_not_outside_root } }

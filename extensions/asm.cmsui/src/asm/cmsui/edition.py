@@ -34,6 +34,25 @@ class PageEditions(grok.Viewlet):
     grok.template('editions')
 
 
+class NullEdit(megrok.pagelet.Pagelet):
+    """This pagelet will be displayed as the edit view for all editions
+    for which no specific edit view exists.
+
+    It is mainly intended to support developers to incrementally develop
+    products without having to deal with broken UIs in the intermediate
+    stages.
+
+    """
+
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
+    grok.name('edit')
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def render(self):
+        return ''
+
+
 class NullIndex(megrok.pagelet.Pagelet):
 
     grok.layer(asm.cmsui.interfaces.ICMSSkin)

@@ -18,6 +18,7 @@ class Edition(grok.Model):
 
     factory_visible = False
     factory_order = sys.maxint
+    factory_enabled = staticmethod(lambda parent:True)
 
     created = None
     modified = None

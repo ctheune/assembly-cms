@@ -114,7 +114,7 @@ a {
     background-color: white;
     background-image: url('/@@/asm.cmsui/images/ui-bg-white-noise.png');
     -moz-box-shadow: 2px 2px 2px #ccc;
-    -webkit-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: #aaa 0px 0px 8px;       /* XXX */
 }
 
 #header h1 {
@@ -157,7 +157,8 @@ a {
     padding:0em 1.5em 1em 1.5em;
     min-height: 500px;
     -moz-box-shadow: 2px 2px 2px #ccc;
-    -webkit-box-shadow: 2px 2px 2px #ccc;
+    -webkit-box-shadow: #aaa 0px 2px 4px;       /* XXX */
+    border-top:1px solid #d9d9d9;
 }
 
 /* Intra-page styles */
@@ -175,8 +176,16 @@ a {
 }
 
 #page form h3 {
-    background-color: #ddd;
+    background-color: #eee;
     padding:1em;
+}
+
+#actionsView {
+    margin-top:1em;
+}
+
+#actionsView .button {
+    margin-left: 0px;
 }
 
 /* Navigation tree */
@@ -212,18 +221,27 @@ input.close-navigation, input.open-navigation {
     padding:1em;
     padding-top:0.5em;
     margin-top:1em;
-    -moz-box-shadow: 2px 2px 2px #ccc;
-    -webkit-box-shadow: 2px 2px 2px #ccc;
+    margin-bottom:2em;
+    border-top:1px solid #d9d9d9;
+    -webkit-box-shadow: #aaa 0px 2px 4px;       /* XXX */
 }
 
 .actionbar .section.expandable {
-    padding-bottom:0em;
+    padding-bottom: 0em;
+}
+
+.actionbar .opener {
+    margin: 1em -1em;
+    background-color: #eee;
+    border-top: 1px solid #ddd;
+    cursor: pointer;
 }
 
 .actionbar .section h3 {
     font-size: 10pt;
-    font-weight: bold;
-    margin-bottom:0.5em;
+    font-weight: normal;
+    margin: 0.2em 0 0.8em;
+    text-transform: uppercase;
 }
 
 .actionbar ul {
@@ -283,6 +301,17 @@ input.close-navigation, input.open-navigation {
     float: left;
 }
 
+
+.section .field {
+    padding: 1em;
+}
+
+#content .section.expandable {
+    border:1px solid #ccc;
+    margin:0;
+    padding:0;
+}
+
 /* other stuff */
 div.preview {
     color:#555;
@@ -316,14 +345,35 @@ span.discreet {
 }
 
 .button {
-    border:1px solid #ccc;
-    cursor:pointer;
-    font-size:1.0em;
     line-height:16px;
-    padding:3px 8px;
-    text-decoration:none;
-    background:white;
-    font-weight:normal;
+        cursor:pointer;
+        border:1px solid #ccc;
+        border-bottom:1px solid #b9b9b9;
+        font-size:12px;
+        padding:3px 10px;
+        font-weight:bold;
+        background:#ddd;
+        background-image: -webkit-gradient(
+            linear,
+            left bottom,
+            left top,
+            color-stop(0.14, rgb(224,224,224)),
+            color-stop(0.80, rgb(245,245,245))
+        );
+        background-image: -moz-linear-gradient(
+            center bottom,
+            rgb(224,224,224) 14%,
+            rgb(245,245,245) 80%
+        );
+  color:#343434;
+  text-shadow:0 1px 1px #fff;
+  -webkit-border-radius:5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+.button:active {
+   background:#ddd;
 }
 
 .button.selected {

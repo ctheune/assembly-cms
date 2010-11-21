@@ -3,10 +3,12 @@
 
 import ZODB.blob
 import asm.cms.asset
+import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
 import magic
+import urllib
 import zope.app.form.browser.textwidgets
 
 grok.context(asm.cms.asset.Asset)
@@ -69,3 +71,23 @@ class Index(grok.View):
 
 class ImagePicker(grok.View):
     grok.name('image-picker')
+
+
+class ExtendedPageActions(grok.Viewlet):
+    grok.viewletmanager(asm.cmsui.base.ExtendedPageActions)
+
+class Download(grok.View):
+    grok.layer(grok.IDefaultBrowserLayer)
+
+    def update(self):
+        self.request.response.setHeader("Content-Type", "application/force-download")
+        self.request.response.setHeader("Content-Type", "application/octet-stream")
+        self.request.response.setHeader("Content-Transfer-Encoding", "binary")
+        self.request.response.setHeader("Content-Description", "File Transfer")
+        filename = urllib.quote_plus(self.context.page.__name__)
+        self.request.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
+
+    def render(self):
+        return zope.component.getMultiAdapter(
+            (self.context, self.request), zope.interface.Interface,
+            name='index').render()

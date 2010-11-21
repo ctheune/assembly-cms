@@ -20,7 +20,7 @@ $(document).ready(function(){
     .bind("dblclick.jstree", tree_open_selected_page)
     .bind("deselect_node.jstree select_node.jstree", tree_update_rename_icons)
     .bind("hover_node.jstree", tree_show_hover_icon)
-    .bind("rename_node.jstree", tree_put_old_node_name_back)
+    .bind("rename_node.jstree", tree_execute_rename_action)
     .bind("deselect_node.jstree select_node.jstree", tree_disable_delete_on_root_select)
     .bind("move_node.jstree", tree_move_selected_pages)
     .jstree({
@@ -89,8 +89,8 @@ function tree_rename_node(rename_anchor) {
     var tree = $.jstree._reference('#navigation-tree');
     var node_id = $(rename_anchor).attr("href");
     var node = tree._get_node(node_id);
-    $.get(application_view("databyid"),
-          {page_id: node_id.replace("#", "")},
+    $.get(node_view(node, "iddata"),
+          {},
           function (data) {
               var result = JSON.parse(data);
               var tree = $.jstree._reference('#navigation-tree');
@@ -100,12 +100,11 @@ function tree_rename_node(rename_anchor) {
           });
 }
 
-function tree_put_old_node_name_back(event, data) {
+function tree_execute_rename_action(event, data) {
     var new_name = data.rslt.name;
     var node = data.rslt.obj;
-    $.post(application_view("renamepage"),
-          {page_id: node.attr("id"),
-           new_name: new_name},
+    $.post(node_view(node, "rename"),
+          {new_name: new_name},
           function (data) {
               var result = JSON.parse(data);
               var tree = $.jstree._reference('#navigation-tree');
@@ -117,12 +116,13 @@ function tree_put_old_node_name_back(event, data) {
 function tree_show_rename_icon(tree, node) {
     var renamed = $(node).children(".rename");
     if (renamed.length == 0) {
-        var id = $(node).attr("id");
+        id = $(node).attr("id");
         var rename_node = "<a class='rename' href='#" + id + "' style='width: 16px; background-color: white; background:url(/@@/asm.cmsui/icons/pencil.png) center center no-repeat !important;' onclick='tree_rename_node(this)' title='Rename'>&nbsp;</a>";
         var links = $(node).find("a");
         var anchor = links.first().after(rename_node);
         // anchor.click(tree_rename_node, id);
     }
+    return true;
 }
 
 function tree_hide_rename_icon(tree, node) {
@@ -150,6 +150,11 @@ function current_page_id() {
 
 function application_view(view) {
     return $('link[rel="root"]').attr('href') + "/@@" + view;
+}
+
+function node_view(node, view) {
+    return $('a', node).attr('href') + "/../@@" + view;
+
 }
 
 function tree_select_current_node(event, data) {
@@ -186,7 +191,7 @@ function tree_move_selected_pages(event, data) {
 
     var ids = $(moved_nodes).map(function() { return $(this).attr('id'); }).get();
 
-    $.post($('a', target_node).attr('href')+'/../@@arrange',
+    $.post(node_view(target_node, arrange),
            {ids: ids.join(","),
             type: type},
            function() { tree.refresh(); }
@@ -257,7 +262,7 @@ function add_page() {
         return false;
     }
     var t = $.jstree._reference('#navigation-tree');
-    var add_page_url = t.get_selected().find("a").attr("href") + '/../@@addpage';
+    var add_page_url = node_view(t.get_selected(), 'addpage');
 
     $(this).ajaxError(
         function() {

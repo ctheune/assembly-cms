@@ -1,28 +1,31 @@
-<div class="compo">
-    <h2 tal:content="context/title"></h2>
-
+<div class="compo clearfix">
+  <div class="details grid_4 alpha">
+    <h3 tal:content="context/title">Demo Compo</h3>
+    
     <p>
-        <span class="location" tal:content="context/location"></span>
-        <span class="time" tal:content="context/time"></span>
+      <a href="#" class="location" tal:content="context/location">Bigscreen</a>
+      <a href="#" class="time" tal:content="context/time">Sat 21.00-21.00</a>
     </p>
-
-    <p class="prizes">
-        <span class="label">Prizes</span>
-        <span class="value" tal:content="context/prizes"></span>
+    
+    <p>
+      <strong>Prizes</strong>
+      <span tal:content="context/prizes">To be announced</span>
     </p>
-
-    <p class="rules">
-        <a tal:attributes="href context/participation_info">Participate
-            (rules, etc.)</a>
+    
+    <p>
+      <a tal:attributes="href context/gallery">&raquo; View gallery</a>
+      <a tal:attributes="href context/participation_info">&raquo; View participation details</a>
     </p>
-
-    <p class="gallery">
-        <a tal:attributes="href context/gallery">Gallery</a>
+    
+  </div>
+  
+  <div class="desc grid_7 omega">
+    <p class="intro" tal:content="context/headline">
+      Demo compo is the most awesome compo.
     </p>
-</div>
-
-<div class="overview">
-    <h3 tal:content="context/headline"/>
-
-    <p tal:content="context/description"/>
+    <p tal:content="context/description">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel sem orci, ut pellentesque lorem. Suspendisse ornare vehicula vestibulum. Ut et magna sem. Nulla sed velit risus. 
+    </p>
+  </div>
+  
 </div>

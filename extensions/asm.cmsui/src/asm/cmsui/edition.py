@@ -47,7 +47,7 @@ class NullEdit(megrok.pagelet.Pagelet):
     grok.layer(asm.cmsui.interfaces.ICMSSkin)
     grok.require('asm.cms.EditContent')
     grok.name('edit')
-    grok.context(asm.cms.interfaces.IEdition)
+    grok.context(zope.interface.Interface)
 
     def render(self):
         return ''

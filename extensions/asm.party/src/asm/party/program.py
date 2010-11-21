@@ -31,8 +31,7 @@ class Competition(asm.cms.edition.Edition):
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     factory_title = u'Competition'
-    factory_visible = True
-    factory_enabled = staticmethod(
+    factory_visible = staticmethod(
         lambda parent:parent.factory is ProgramSection)
 
     headline = u''
@@ -65,6 +64,5 @@ class MusicEvent(asm.cms.edition.Edition):
     zope.interface.classProvides(asm.cms.interfaces.IEditionFactory)
 
     factory_title = u'Music event'
-    factory_visible = True
-    factory_enabled = staticmethod(
+    factory_visible = staticmethod(
         lambda parent:parent.factory is ProgramSection)

@@ -83,7 +83,7 @@ function tree_check_move_not_outside_root(move) {
 
 function tree_update_rename_icons(event, data) {
     var tree = data.inst;
-    $("#navigation-tree").find(".rename").each(function() {
+    $("#navigation-tree").find(".rename-page").each(function() {
         var node = $(this).parent();
         if (!tree.is_selected(node)) {
             tree_hide_rename_icon(tree, node);
@@ -105,27 +105,27 @@ function tree_rename_node(rename_anchor) {
     var tree = $.jstree._reference('#navigation-tree');
     var node_id = $(rename_anchor).attr("href");
     var node = tree._get_node(node_id);
-    $.get(node_view(node, "iddata"),
-          {},
-          function (data) {
-              var result = JSON.parse(data);
-              var tree = $.jstree._reference('#navigation-tree');
-              tree.set_text(node, result['name']);
-              tree.select_node(node);
-              tree.rename(node);
-          });
+    tree.set_text(node, $(node).children("a").first().attr('page_name'));
+    tree.rename(node);
 }
 
 function tree_execute_rename_action(event, data) {
     var new_name = data.rslt.name;
     var node = data.rslt.obj;
+    var tree = data.inst;
+    tree.set_text(node, "Updating...");
+    $(node).children("a").addClass("jstree-loading");
     $.post(node_view(node, "rename"),
-          {new_name: new_name},
-          function (data) {
-              var result = JSON.parse(data);
-              var tree = $.jstree._reference('#navigation-tree');
-              tree.refresh();
-          });
+           {new_name: new_name, open_page_id: current_page_id()},
+           function (data) {
+               var result = JSON.parse(data);
+               var tree = $.jstree._reference('#navigation-tree');
+               $(node).children("a").removeClass("jstree-loading");
+               tree.refresh();
+               toggle_navigation = function() {
+                   window.location = result['open_page'];
+               }
+           });
     return true;
 }
 
@@ -134,10 +134,10 @@ function tree_show_rename_icon(tree, node) {
     if (is_root_node(tree, node)) {
         return true;
     }
-    var renamed = $(node).children(".rename");
+    var renamed = $(node).children(".rename-page");
     if (renamed.length == 0) {
         id = $(node).attr("id");
-        var rename_node = "<a class='rename' href='#" + id + "' style='width: 16px; background-color: white; background:url(/@@/asm.cmsui/icons/pencil.png) center center no-repeat !important;' onclick='tree_rename_node(this)' title='Rename'>&nbsp;</a>";
+        var rename_node = "<a class='rename-page' href='#" + id + "' onclick='tree_rename_node(this)' title='Rename the page name that is visible in URLs.'>&nbsp;</a>";
         var links = $(node).find("a");
         var anchor = links.first().after(rename_node);
     }
@@ -146,7 +146,7 @@ function tree_show_rename_icon(tree, node) {
 
 function tree_hide_rename_icon(tree, node) {
     if (!tree.is_selected(node)) {
-        $(node).find(".rename").remove();
+        $(node).find(".rename-page").remove();
     }
 }
 

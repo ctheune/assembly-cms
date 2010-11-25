@@ -4,9 +4,7 @@ import asm.cmsui.interfaces
 import datetime
 import grok
 import megrok.pagelet
-import time
 import zope.interface
-import pytz
 
 summer10 = asm.cms.cms.Profile('summer10')
 languages = ['en', 'fi']
@@ -58,7 +56,7 @@ class LayoutHelper(grok.View):
 
     def generateCountdown(self):
         times = (('05.08.2010 12:00', True, "until ASSEMBLY!"),
-	         ('08.08.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+                 ('08.08.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 
@@ -72,7 +70,6 @@ class LayoutHelper(grok.View):
                 if doCountDown:
                     diff = limit - now
                     diff = (diff.days * 24 * 60 * 60) + diff.seconds
-                    countdown = ""
                     units = (('years', 31536000), ('months', 2592000),
                              ('days', 86400), ('hours', 3600),
                              ('minutes', 60), ('seconds', 1))

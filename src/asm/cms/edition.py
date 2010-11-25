@@ -5,7 +5,6 @@ import BTrees.OOBTree
 import asm.cms.interfaces
 import datetime
 import grok
-import megrok.pagelet
 import pytz
 import re
 import sys

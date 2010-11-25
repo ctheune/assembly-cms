@@ -9,7 +9,6 @@ import base64
 import datetime
 import grok
 import lxml.etree
-import os.path
 import pytz
 import zope.exceptions.interfaces
 import zope.interface

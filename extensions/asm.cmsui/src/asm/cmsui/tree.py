@@ -6,7 +6,6 @@ import asm.cms.edition
 import asm.cmsui.interfaces
 import cgi
 import grok
-import simplejson
 import zope.component
 import zope.copypastemove.interfaces
 

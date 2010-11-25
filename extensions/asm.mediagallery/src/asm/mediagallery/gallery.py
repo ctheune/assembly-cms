@@ -8,10 +8,7 @@ import asm.cmsui.retail
 import asm.workflow
 import grok
 import random
-import re
 import sys
-import urllib
-import ZODB.blob
 import zope.interface
 import zope.publisher.interfaces
 

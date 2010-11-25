@@ -6,7 +6,9 @@ import asm.cmsui.interfaces
 import asm.cmsui.retail
 import asm.cmsui.form
 import asm.cmsui.tinymce
+import cgi
 import grok
+import lxml.etree
 
 grok.context(asm.cms.htmlpage.HTMLPage)
 

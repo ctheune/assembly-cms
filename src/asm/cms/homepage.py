@@ -3,7 +3,6 @@
 
 import asm.cms
 import asm.cms.edition
-import grok
 import zope.interface
 
 

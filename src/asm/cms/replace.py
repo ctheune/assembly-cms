@@ -7,9 +7,6 @@ import asm.cms.interfaces
 import cgi
 import grok
 import hashlib
-import hurry.query.query
-import megrok.pagelet
-import time
 import urllib
 import zope.interface
 
@@ -105,7 +102,6 @@ class Occurrence(object):
                 cgi.escape(end))
 
     def set_id(self):
-        content = getattr(self.page, self.attribute).encode('utf-8')
         content_hash = hashlib.sha1().hexdigest()[:10]
         self.id = '%s-%s-%s-%s' % (self.page_id, content_hash, self.offset,
                                    urllib.quote(self.term.encode('base64')))

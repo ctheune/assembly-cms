@@ -5,8 +5,6 @@ import asm.cms.edition
 import asm.cms.interfaces
 import asm.cmsui.base
 import asm.cmsui.interfaces
-import cgi
-import datetime
 import grok
 import megrok.pagelet
 import z3c.flashmessage.interfaces

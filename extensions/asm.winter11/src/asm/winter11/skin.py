@@ -4,9 +4,7 @@ import asm.cmsui.retail
 import datetime
 import grok
 import megrok.pagelet
-import time
 import zope.interface
-import pytz
 
 
 winter11 = asm.cms.cms.Profile('winter11')
@@ -62,7 +60,6 @@ class LayoutHelper(grok.View):
                 if doCountDown:
                     diff = limit - now
                     diff = (diff.days * 24 * 60 * 60) + diff.seconds
-                    countdown = ""
                     units = (('years', 31536000), ('months', 2592000),
                              ('days', 86400), ('hours', 3600),
                              ('minutes', 60), ('seconds', 1))

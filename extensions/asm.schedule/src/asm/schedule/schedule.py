@@ -223,7 +223,7 @@ class FilteredSchedule(object):
             if day != 'all' and day != event_day:
                 continue
             day_events = by_day.setdefault(event_day, [])
-            day_events.append(dict(event=event, key=key))	
+            day_events.append(dict(event=event, key=key))
 
         self.events = []
         for day, events in sorted(by_day.items()):

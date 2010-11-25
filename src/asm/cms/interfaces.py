@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import ZODB.blob
-import grok
 import zc.sourcefactory.basic
 import zope.component
 import zope.interface

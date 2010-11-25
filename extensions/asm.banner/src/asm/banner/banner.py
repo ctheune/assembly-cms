@@ -6,9 +6,7 @@ import asm.cms.interfaces
 import asm.cms.edition
 import asm.cmsui.form
 import asm.cmsui.htmlpage
-import datetime
 import grok
-import pytz
 import random
 import sys
 import zope.component

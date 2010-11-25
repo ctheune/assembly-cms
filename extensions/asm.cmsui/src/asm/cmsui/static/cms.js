@@ -43,7 +43,7 @@ $(document).ready(function(){
             }
         },
         core: {
-            animation: 0,
+            animation: 0
         },
         ui: {
             theme_name: 'classic'
@@ -56,7 +56,7 @@ $(document).ready(function(){
                 sponsorsarea: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_medal.png'}},
                 asset: { icon:  { image: root+'/@@/asm.cmsui/icons/page_white_picture.png'}},
                 programsection: { icon:  { image: root+'/@@/asm.cmsui/icons/film.png'}}
-            },
+            }
         },
         crrm: { move: { check_move: tree_check_move_not_outside_root } }
     });

@@ -8,6 +8,7 @@ import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
 import magic
+import os
 import urllib
 import zope.app.form.browser.textwidgets
 
@@ -58,15 +59,18 @@ class Index(grok.View):
     grok.layer(grok.IDefaultBrowserLayer)
     grok.name('index')
 
-    def render(self):
-        self.request.response.setHeader(
+    def update(self):
+        self.response.setHeader(
             'Content-Type', self.context.content_type)
-        f = open(self.context.content.committed())
-        f.seek(0, 2)
-        self.request.response.setHeader(
-            'Content-Length', f.tell())
-        f.seek(0)
-        return f
+        filedata = open(self.context.content.committed())
+        filedata.seek(0, os.SEEK_END)
+        self.response.setHeader(
+            'Content-Length', filedata.tell())
+        filedata.seek(0)
+        self.filedata = filedata
+
+    def render(self):
+        return self.filedata
 
 
 class ImagePicker(grok.View):
@@ -80,14 +84,14 @@ class Download(grok.View):
     grok.layer(grok.IDefaultBrowserLayer)
 
     def update(self):
-        self.request.response.setHeader("Content-Type", "application/force-download")
-        self.request.response.setHeader("Content-Type", "application/octet-stream")
-        self.request.response.setHeader("Content-Transfer-Encoding", "binary")
-        self.request.response.setHeader("Content-Description", "File Transfer")
+        self.response.setHeader("Content-Type", "application/force-download")
+        self.response.setHeader("Content-Type", "application/octet-stream")
+        self.response.setHeader("Content-Transfer-Encoding", "binary")
+        self.response.setHeader("Content-Description", "File Transfer")
         filename = urllib.quote_plus(self.context.page.__name__)
-        self.request.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
+        self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
 
     def render(self):
         return zope.component.getMultiAdapter(
             (self.context, self.request), zope.interface.Interface,
-            name='index').render()
+            name='index')()

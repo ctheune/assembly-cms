@@ -52,4 +52,4 @@ class AssetTests(unittest.TestCase):
         f.write(open(os.path.join(os.path.dirname(__file__), 'pencil.png')
                      ).read())
         f.close()
-        self.assertEquals('image/x-png', asset.content_type)
+        self.assertEquals('image/png', asset.content_type)

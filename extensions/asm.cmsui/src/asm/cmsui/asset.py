@@ -86,11 +86,17 @@ class DownloadAction(grok.Viewlet):
     grok.viewletmanager(asm.cmsui.base.ExtendedPageActions)
 
 
-class Download(grok.View):
-    grok.layer(asm.cmsui.interfaces.ICMSSkin)
-    grok.require('asm.cms.EditContent')
+class Download(Index):
+    """Adds headers that enable downloading of assets.
 
-    def update(self):
+    This just wraps the index view and executes its update and render functions
+    as the index view would execute them normally.
+    """
+
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.name('download')
+
+    def update(self, *args, **kw):
         self.response.setHeader("Content-Type", "application/force-download")
         self.response.setHeader("Content-Type", "application/octet-stream")
         self.response.setHeader("Content-Transfer-Encoding", "binary")
@@ -98,7 +104,7 @@ class Download(grok.View):
         filename = urllib.quote_plus(self.context.page.__name__)
         self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
 
-    def render(self):
-        return zope.component.getMultiAdapter(
-            (self.context, self.request), zope.interface.Interface,
-            name='index')()
+        return super(Download, self).update(*args, **kw)
+
+    def render(self, *args, **kw):
+        return super(Download, self).render(*args, **kw)

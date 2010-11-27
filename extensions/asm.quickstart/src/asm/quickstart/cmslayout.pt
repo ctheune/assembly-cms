@@ -4,7 +4,11 @@
 
         <!-- CMS-specific inclusions -->
         <script type="text/javascript" tal:attributes="src context/@@layouthelper/static/cms.js"></script>
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/reset.css" />
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/typography.css" />
+        <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/forms.css" />
         <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/cms.css" />
+
     </head>
 
     <body>
@@ -27,7 +31,7 @@
               <h3>Actions</h3> 
 
               <ul> 
-                <li><a href="/addsite">Add site</a></li>
+                <li><a class="button" href="/addsite">Add site</a></li>
               </ul> 
             </div>
         </div>

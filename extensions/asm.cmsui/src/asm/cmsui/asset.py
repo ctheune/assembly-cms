@@ -7,13 +7,13 @@ import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
+import locale
 import magic
 import os
 import urllib
 import zope.app.form.browser.textwidgets
 
 grok.context(asm.cms.asset.Asset)
-
 
 class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
 
@@ -60,12 +60,17 @@ class Index(grok.View):
     grok.name('index')
 
     def update(self):
-        self.response.setHeader(
-            'Content-Type', self.context.content_type)
+        self.response.setHeader('Content-Type', self.context.content_type)
+
+        oldlocale = locale.getlocale(locale.LC_TIME)
+        locale.setlocale(locale.LC_TIME, 'en_US')
+        modified = self.context.modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        self.response.setHeader('Last-Modified', modified)
+        locale.setlocale(locale.LC_TIME, oldlocale)
+
         filedata = open(self.context.content.committed())
         filedata.seek(0, os.SEEK_END)
-        self.response.setHeader(
-            'Content-Length', filedata.tell())
+        self.response.setHeader('Content-Length', filedata.tell())
         filedata.seek(0)
         self.filedata = filedata
 
@@ -80,8 +85,10 @@ class ImagePicker(grok.View):
 class DownloadAction(grok.Viewlet):
     grok.viewletmanager(asm.cmsui.base.ExtendedPageActions)
 
+
 class Download(grok.View):
-    grok.layer(grok.IDefaultBrowserLayer)
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.require('asm.cms.EditContent')
 
     def update(self):
         self.response.setHeader("Content-Type", "application/force-download")

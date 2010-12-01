@@ -7,12 +7,13 @@ import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
+import locale
 import magic
+import os
 import urllib
 import zope.app.form.browser.textwidgets
 
 grok.context(asm.cms.asset.Asset)
-
 
 class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
 
@@ -58,15 +59,23 @@ class Index(grok.View):
     grok.layer(grok.IDefaultBrowserLayer)
     grok.name('index')
 
+    def update(self):
+        self.response.setHeader('Content-Type', self.context.content_type)
+
+        oldlocale = locale.getlocale(locale.LC_TIME)
+        locale.setlocale(locale.LC_TIME, 'en_US')
+        modified = self.context.modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        self.response.setHeader('Last-Modified', modified)
+        locale.setlocale(locale.LC_TIME, oldlocale)
+
+        filedata = open(self.context.content.committed())
+        filedata.seek(0, os.SEEK_END)
+        self.response.setHeader('Content-Length', filedata.tell())
+        filedata.seek(0)
+        self.filedata = filedata
+
     def render(self):
-        self.request.response.setHeader(
-            'Content-Type', self.context.content_type)
-        f = open(self.context.content.committed())
-        f.seek(0, 2)
-        self.request.response.setHeader(
-            'Content-Length', f.tell())
-        f.seek(0)
-        return f
+        return self.filedata
 
 
 class ImagePicker(grok.View):
@@ -76,18 +85,26 @@ class ImagePicker(grok.View):
 class DownloadAction(grok.Viewlet):
     grok.viewletmanager(asm.cmsui.base.ExtendedPageActions)
 
-class Download(grok.View):
-    grok.layer(grok.IDefaultBrowserLayer)
 
-    def update(self):
-        self.request.response.setHeader("Content-Type", "application/force-download")
-        self.request.response.setHeader("Content-Type", "application/octet-stream")
-        self.request.response.setHeader("Content-Transfer-Encoding", "binary")
-        self.request.response.setHeader("Content-Description", "File Transfer")
+class Download(Index):
+    """Adds headers that enable downloading of assets.
+
+    This just wraps the index view and executes its update and render functions
+    as the index view would execute them normally.
+    """
+
+    grok.layer(asm.cmsui.interfaces.ICMSSkin)
+    grok.name('download')
+
+    def update(self, *args, **kw):
+        self.response.setHeader("Content-Type", "application/force-download")
+        self.response.setHeader("Content-Type", "application/octet-stream")
+        self.response.setHeader("Content-Transfer-Encoding", "binary")
+        self.response.setHeader("Content-Description", "File Transfer")
         filename = urllib.quote_plus(self.context.page.__name__)
-        self.request.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
+        self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
 
-    def render(self):
-        return zope.component.getMultiAdapter(
-            (self.context, self.request), zope.interface.Interface,
-            name='index').render()
+        return super(Download, self).update(*args, **kw)
+
+    def render(self, *args, **kw):
+        return super(Download, self).render(*args, **kw)

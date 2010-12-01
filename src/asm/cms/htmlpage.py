@@ -5,10 +5,7 @@ import asm.cms.edition
 import asm.cms.interfaces
 import asm.cms.utils
 import bn
-import cgi
 import grok
-import lxml.etree
-import megrok.pagelet
 import zope.interface
 
 

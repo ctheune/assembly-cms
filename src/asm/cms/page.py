@@ -5,7 +5,6 @@ import asm.cms.edition
 import asm.cms.interfaces
 import asm.cms.utils
 import grok
-import megrok.pagelet
 import zope.app.form.browser.source
 import zope.copypastemove.interfaces
 import zope.interface

@@ -1,10 +1,8 @@
 # Copyright (c) 2009-2010 Assembly Organizing
 # See also LICENSE.txt
 
-import ZODB.blob
 import asm.cms.edition
 import asm.cms.interfaces
-import grok
 import magic
 import zope.interface
 

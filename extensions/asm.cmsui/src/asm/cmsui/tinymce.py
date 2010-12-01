@@ -44,9 +44,9 @@ class TinyMCELinkBrowser(grok.View):
         result = []
         current = self.context
         while True:
-            result.append(
+            result.insert(0,
                 asm.cms.edition.select_edition(current, self.request))
             if current is self.application:
                 break
             current = current.__parent__
-        return sorted(result, reverse=True)
+        return result

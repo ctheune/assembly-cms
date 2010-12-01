@@ -1,8 +1,8 @@
 <div tal:repeat="site view/sites">
-  <h2 tal:content="site/__name__"></h2>
+  <h1 tal:content="site/__name__"></h1>
 
   <p>
-  <a tal:attributes="href python:view.url(site)">Edit</a> |
-  <a tal:condition="python:view.skin_name(site)" tal:attributes="href python:view.url(context) + '/++skin++%s/%s' % (view.skin_name(site), site.__name__)">View</a>
+    <a class="button" tal:attributes="href python:view.url(site)">Edit</a>
+    <a class="button" tal:condition="python:view.skin_name(site)" tal:attributes="href python:view.url(context) + '/++skin++%s/%s' % (view.skin_name(site), site.__name__)">View</a>
   </p>
 </div>

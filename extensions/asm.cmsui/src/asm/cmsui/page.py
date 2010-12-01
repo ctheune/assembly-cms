@@ -45,6 +45,7 @@ class NavigationActions(grok.Viewlet):
 class AddPage(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     def update(self, title, type):
         page = asm.cms.page.Page(type)
@@ -67,6 +68,7 @@ class ChangePageType(asm.cmsui.form.EditForm):
     """
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     label = u'Change page type'
     form_fields = grok.AutoFields(asm.cms.interfaces.IPage).select('type')
@@ -209,6 +211,7 @@ class EditionBase(grok.View):
 class Preview(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     def render(self):
         skin_name = zope.component.getUtility(asm.cms.interfaces.ISkinProfile)
@@ -224,6 +227,7 @@ class Preview(grok.View):
 class Arrange(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     def update(self, ids, type):
         iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
@@ -238,6 +242,7 @@ class Arrange(grok.View):
 class IdData(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     def render(self):
         edition = asm.cms.edition.select_edition(self.context, self.request)
@@ -252,6 +257,7 @@ class IdData(grok.View):
 class Rename(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
+    grok.require('asm.cms.EditContent')
 
     def update(self, new_name, open_page_id):
         # Can not rename applications.

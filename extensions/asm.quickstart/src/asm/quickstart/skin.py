@@ -1,12 +1,9 @@
 import asm.cms
 import asm.cmsui.retail
 import asm.cmsui.interfaces
-import datetime
 import grok
 import megrok.pagelet
-import time
 import zope.interface
-import pytz
 
 quickstart = asm.cms.cms.Profile('quickstart')
 languages = ['en', 'fr', 'de']

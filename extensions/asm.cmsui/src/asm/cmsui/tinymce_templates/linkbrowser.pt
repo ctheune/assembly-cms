@@ -13,13 +13,16 @@
             body { padding:0; margin: 0; background-color: white; }
             div.breadcrumbs { background-color:black; color:white;
                 padding:1em;}
+            div.breadcrumbs a { color:white; }
         </style>
     </head>
     <body>
         <div class="breadcrumbs">
             <tal:block repeat="edition view/breadcrumbs">
-                <span tal:content="edition/title"/>
-                <span tal:omit-tag=""
+                <a tal:content="edition/title"
+                tal:attributes="href string:${edition/page/@@absolute_url}/@@tinymce-linkbrowser"
+                />
+            <span tal:omit-tag=""
                     tal:condition="not:repeat/edition/end">&gt;</span>
             </tal:block>
         </div>

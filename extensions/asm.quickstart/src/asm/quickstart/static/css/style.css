@@ -1,0 +1,31 @@
+body {
+  padding:1em 0;
+}
+
+.grey {
+  background:rgba(0, 0, 0, 0.1);
+}
+
+.nav {margin:1em 0;}
+.nav li {display:inline; margin:0 2em 0 0;}
+
+.intro {
+  font-size:1.4em;
+  font-style:italic;
+}
+
+.compo .details a {
+  display:block;
+}
+
+.compo {
+  margin:2em 0;
+  padding:1em 0;
+  border-bottom:1px dotted #ccc;
+}
+
+#sidebar {
+  min-height:500px;
+}
+
+#content_wrap {padding-top:2em;}

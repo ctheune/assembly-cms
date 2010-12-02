@@ -191,9 +191,21 @@ def publish_schedule(event):
                 # The public version is up to date, so we ignore it.
                 continue
 
-        draft = page.getEdition(public_p.replace(WORKFLOW_PUBLIC,
-                                                 WORKFLOW_DRAFT))
-        asm.workflow.publish(draft, event.public.modified)
+        # XXX this try-except protects from following case:
+        #
+        # 1. publish schedule
+        # 2. create a draft for one language version
+        # 3. publish the draft
+        #
+        # In step 1 we publish all language versions.
+        # In step 2 we create draft for only 1 language version.
+        # In step 3 we are in trouble as there is draft only for 1 language.
+        try:
+            draft = page.getEdition(
+                public_p.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT))
+            asm.workflow.publish(draft, event.public.modified)
+        except KeyError:
+            pass
 
 
 def extract_date(date):

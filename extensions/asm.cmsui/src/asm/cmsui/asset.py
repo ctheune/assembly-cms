@@ -3,11 +3,11 @@
 
 import ZODB.blob
 import asm.cms.asset
+import asm.cms.utils
 import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
 import grok
-import locale
 import magic
 import os
 import urllib
@@ -62,11 +62,8 @@ class Index(grok.View):
     def update(self):
         self.response.setHeader('Content-Type', self.context.content_type)
 
-        oldlocale = locale.getlocale(locale.LC_TIME)
-        locale.setlocale(locale.LC_TIME, 'en_US')
-        modified = self.context.modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
+        modified = asm.cms.utils.datetime_to_http_timestamp(self.context.modified)
         self.response.setHeader('Last-Modified', modified)
-        locale.setlocale(locale.LC_TIME, oldlocale)
 
         filedata = open(self.context.content.committed())
         filedata.seek(0, os.SEEK_END)

@@ -1,3 +1,4 @@
+import asm.cms.utils
 import datetime
 import grok
 import zope.component
@@ -20,7 +21,7 @@ class Cache(grok.View):
 
         self.request.response.setHeader(
             "Expires",
-            expiresAt.strftime("%a, %d %b %Y %H:%M:%S GMT")
+            asm.cms.utils.datetime_to_http_timestamp(expiresAt)
             )
         self.request.response.setHeader(
             "Cache-Control",

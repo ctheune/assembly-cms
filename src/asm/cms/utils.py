@@ -3,7 +3,7 @@
 
 import lxml.etree
 import re
-
+import time
 
 def rewrite_urls(content, visitor):
     """Rewrite URLs using a visitor.
@@ -41,4 +41,16 @@ def normalize_name(title):
     # Normalize multiple dashes and then remove them from beginning and end.
     result = re.sub("-+", "-", result)
     result = result.strip("-")
+    return result
+
+
+def datetime_to_http_timestamp(datetime_raw):
+    """Converts an datetime object to HTTP timestamp."""
+
+    # This is probably the shortest way to do this with the standard libraries
+    # when assuming that datetime_raw is in UTC time.
+    assert(datetime_raw.utcoffset().seconds == 0)
+    time_raw = time.asctime(datetime_raw.timetuple())
+    wday, month, day, daytime, year = time_raw.split(" ")
+    result = "%s, %s %s %s %s GMT" % (wday, day, month, year, daytime)
     return result

@@ -1,1 +1,0 @@
-<li><input type="button" value="Change page type" class="button url-action" title="Opens menu for changing page type." tal:attributes="href string:${context/page/@@absolute_url}/@@changepagetype" /></li>

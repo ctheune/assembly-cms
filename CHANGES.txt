@@ -4,6 +4,8 @@ Changes
 0.1.5 (unreleased)
 ==================
 
+- Undocumented masses and masses of stuff.
+
 - #7080: In addition to selecting the current document we also open the branch
   beneath it (if it has children).
 

@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='magic',
-      version='0.1',
+      version='0.1-gocept.1dev',
       description='determines a file type by its magic number',
       author='Jason Patrone',
       author_email='jp_py@jsnp.net',

@@ -1,7 +1,14 @@
 Changes
 *******
 
-0.1.6 (unreleased)
+0.1.7 (unreleased)
+==================
+
+- Remove whitespace normalization feature from typography support. The
+  implementation removed semantically important whitespace and no simple
+  fix exists.
+
+0.1.6 (2011-01-09)
 ==================
 
 - Somewhat messy release due to a lot of refactorings.

@@ -26,11 +26,6 @@ class ParagraphTests(unittest.TestCase):
         self.page.content = '<p>          </p>'
         self.assertEquals('', self.clean())
 
-    def test_do_not_remove_needed_whitespace(self):
-        self.page.content = (
-            '<p>            </p><p>Assembly  2010 </p><p>  </p>')
-        self.assertEquals('<p>Assembly  2010</p>', self.clean())
-
     def test_remove_newline(self):
         self.page.content = '<p>\n</p>'
         self.assertEquals('', self.clean())
@@ -44,7 +39,3 @@ class ParagraphTests(unittest.TestCase):
         # Our output gets beautified so we end up with additional whitespace.
         self.page.content = '<p><img src="test" /></p>'
         self.assertEquals('<p>\n    <img src="test"/>\n  </p>', self.clean())
-
-    def test_do_not_remove_space_before_links(self):
-        self.page.content = '<p>before <a href="#">link</a> after</p>'
-        self.assertEquals('<p>before <a href="#">link</a> after</p>', self.clean())

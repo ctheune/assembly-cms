@@ -14,16 +14,13 @@ def paragraph_checking(page, event=None):
 
 
 def remove_empty_paragraph(page, element):
+    remove = lambda: element.getparent().remove(element)
     if len(element):
-        return
-    if element.text in (None, ''):
-        element.getparent().remove(element)
-
-
-def normalize_whitespaces(page, element):
-    if element.text is None:
-        return
-    element.text = element.text.strip()
+        pass
+    elif element.text is None:
+        remove()
+    elif element.text.strip() == '':
+        remove()
 
 
 def remove_repeated_title_from_content(page, element):
@@ -44,8 +41,7 @@ def clean_typography(page):
     for element in document.getiterator():
         if element.tag in WHITELIST_TAGS:
             continue
-        for filter in [normalize_whitespaces,
-                       remove_empty_paragraph,
+        for filter in [remove_empty_paragraph,
                        remove_repeated_title_from_content]:
             filter(page, element)
 

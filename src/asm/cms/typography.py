@@ -5,7 +5,7 @@ import asm.cms.interfaces
 # These tags are never filtered.
 WHITELIST_TAGS =  ['pre', 'script', 'object', 'embed', 'param', 'div',
                    'img', 'body', 'html', 'head', 'javascript',
-                   'stupidcontainer']
+                   'stupidcontainer', 'br']
 
 @grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectModifiedEvent)
 @grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectAddedEvent)

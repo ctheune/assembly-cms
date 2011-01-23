@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='asm.cms',
-      version='0.1.8dev',
+      version='0.1.8',
       description="Assembly Website CMS",
       author="Assembly Webcrew",
       author_email="web@assembly.org",

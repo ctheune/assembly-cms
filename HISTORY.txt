@@ -1,5 +1,5 @@
 
-0.1.7 (unreleased)
+0.1.7 (2011-01-23)
 ------------------
 
 - Nothing changed yet.

@@ -30,6 +30,10 @@ class ParagraphTests(unittest.TestCase):
         self.page.content = '<p>\n</p>'
         self.assertEquals('', self.clean())
 
+    def test_no_removal_of_whitespace_tags(self):
+        self.page.content = '<br/>'
+        self.assertEquals('<br/>', self.clean())
+
     def test_title_in_content(self):
         self.page.title = 'Assembly 2010'
         self.page.content = '<H1>Assembly 2010</H1><p>Assembly on paras</p>'

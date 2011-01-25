@@ -30,7 +30,6 @@ class HTMLPage(asm.cms.edition.Edition):
         return self.content == other.content
 
 
-
 class TextIndexing(grok.Adapter):
 
     zope.interface.implements(asm.cms.interfaces.ISearchableText)
@@ -38,6 +37,8 @@ class TextIndexing(grok.Adapter):
     def __init__(self, page):
         self.body = page.content + ' ' + page.title
 
+        tags = page.tags.split(' ')
+        self.body += "\n" + " ".join("tag:" + x for x in tags)
 
 
 def fix_relative_links(document, current_path):

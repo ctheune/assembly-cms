@@ -22,7 +22,7 @@
 
         <div style="width:220px; float:left; margin-left:20px;">
         <form tal:attributes="action string: ${view/application_url}/@@search"
-              method="get" id="searchform"><p><input type="text" style="width: 15em; height:15px;" name="q" accesskey="f" /><!--<input type="submit" class="submit" value="Search" />--></p></form>
+              method="get" id="searchform"><p><input type="text" style="width: 15em; height:15px;" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /><!--<input type="submit" class="submit" value="Search" />--></p></form>
         </div>
 
         <div>

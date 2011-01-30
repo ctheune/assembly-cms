@@ -49,8 +49,13 @@ def datetime_to_http_timestamp(datetime_raw):
 
     # This is probably the shortest way to do this with the standard libraries
     # when assuming that datetime_raw is in UTC time.
+    assert(datetime_raw.utcoffset() is not None)
     assert(datetime_raw.utcoffset().seconds == 0)
+
     time_raw = time.asctime(datetime_raw.timetuple())
+    # There can be multiple spaces when day does not have two numbers.
+    time_raw = re.sub(' +', ' ', time_raw)
+
     wday, month, day, daytime, year = time_raw.split(" ")
     result = "%s, %s %s %s %s GMT" % (wday, day, month, year, daytime)
     return result

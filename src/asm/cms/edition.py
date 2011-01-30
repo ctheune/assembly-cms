@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Assembly Organizing
+# Copyright (c) 2010-2011 Assembly Organizing
 # See also LICENSE.txt
 
 import BTrees.OOBTree

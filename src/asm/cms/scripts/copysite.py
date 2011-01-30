@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010 Assembly Organizing
 # See also LICENSE.txt
 
 import sys

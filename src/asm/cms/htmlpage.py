@@ -37,8 +37,9 @@ class TextIndexing(grok.Adapter):
     def __init__(self, page):
         self.body = page.content + ' ' + page.title
 
-        tags = page.tags.split(' ')
-        self.body += "\n" + " ".join("tag:" + x for x in tags)
+        if page.tags is not None:
+            tags = page.tags.split(' ')
+            self.body += "\n" + " ".join("tag:" + x for x in tags)
 
 
 def fix_relative_links(document, current_path):

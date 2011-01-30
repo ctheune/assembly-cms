@@ -4,6 +4,7 @@
 import asm.cms.cms
 import asm.cms.testing
 import asm.cms.utils
+import datetime
 import grok
 import unittest
 import zope.publisher.browser
@@ -125,9 +126,54 @@ class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):
             r('<a href="#asdf"/>'))
 
 
+class DatetimeToHttpConversionTests(asm.cms.testing.FunctionalTestCase):
+
+    class CustomUtcOffset(datetime.tzinfo):
+        def __init__(self, minutes):
+            self._offset = datetime.timedelta(minutes=minutes)
+
+        def utcoffset(self, dt):
+            return self._offset
+
+        def dst(self, dt):
+            return datetime.timedelta(0)
+
+    ZERO_UTC_OFFSET = CustomUtcOffset(0)
+
+    def test_non_timezoned_time_fails(self):
+        current_date = datetime.datetime(
+            2000, 10, 10, 10, 10, 10)
+        self.assertRaises(
+            AssertionError,
+            asm.cms.utils.datetime_to_http_timestamp,
+            current_date)
+
+    def test_tzinfo_not_in_utc(self):
+        current_date = datetime.datetime(
+            2000, 10, 10, 10, 10, 10, tzinfo=self.CustomUtcOffset(1))
+        self.assertRaises(
+            AssertionError,
+            asm.cms.utils.datetime_to_http_timestamp,
+            current_date)
+
+    def test_valid_two_number_date(self):
+        current_date = datetime.datetime(
+            2000, 10, 10, 10, 10, 10, tzinfo=self.ZERO_UTC_OFFSET)
+        self.assertEquals(
+            asm.cms.utils.datetime_to_http_timestamp(current_date),
+            'Tue, 10 Oct 2000 10:10:10 GMT')
+
+    def test_valid_one_number_date(self):
+        current_date = datetime.datetime(
+            2000, 1, 1, 1, 1, 1, tzinfo=self.ZERO_UTC_OFFSET)
+        self.assertEquals(
+            asm.cms.utils.datetime_to_http_timestamp(current_date),
+            'Sat, 1 Jan 2000 01:01:01 GMT')
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(UtilityTests))
     suite.addTest(unittest.makeSuite(ViewApplicationTests))
     suite.addTest(unittest.makeSuite(ViewResolveURLsTests))
+    suite.addTest(unittest.makeSuite(DatetimeToHttpConversionTests))
     return suite

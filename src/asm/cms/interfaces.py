@@ -23,7 +23,6 @@ class EditionFactorySource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, item):
         factory = zope.component.getUtility(IEditionFactory, name=item)
-        # XXX the factory titles need to go to a reasonable place.
         return getattr(factory, 'factory_title', item)
 
 

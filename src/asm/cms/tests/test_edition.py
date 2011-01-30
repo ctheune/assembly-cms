@@ -1,13 +1,22 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import minimock
 import unittest
 import asm.cms.edition
+import zope.component
 
 EP = asm.cms.edition.EditionParameters
 
 
 class EditionTests(unittest.TestCase):
+
+    def setUp(self):
+        self.tracker = minimock.TraceTracker()
+
+    def tearDown(self):
+        minimock.restore()
+        del self.tracker
 
     def test_parameters_empty(self):
         self.assertEquals(
@@ -47,6 +56,37 @@ class EditionTests(unittest.TestCase):
             EP(['lang:fi']),
             EP(['lang:en', 'lang:de']).replace('lang:*', 'lang:fi'))
 
+    def test_edition_compares_equal_to_self(self):
+        edition = asm.cms.edition.Edition()
+        self.assertEquals(edition, edition)
 
-def test_suite():
-    return unittest.makeSuite(EditionTests)
+    def test_edition_with_same_content_is_equal(self):
+        edition1 = asm.cms.edition.Edition()
+        edition2 = asm.cms.edition.Edition()
+        self.assertEquals(edition1, edition2)
+
+    def test_edition_with_different_content_is_unequal(self):
+        edition1 = asm.cms.edition.Edition()
+        edition2 = asm.cms.edition.Edition()
+        edition2.title = u'Huah'
+        self.assertNotEquals(edition1, edition2)
+
+    def test_select_2_editions_with_same_content_selected_by_identity(self):
+        # We once hit a bad issue where we used a comparison in
+        # `select_edition` that was based on identity. However, due to the
+        # fact that we have a special implementation of __eq__ we need to 
+        # ensure that we select based on identity rather than equality.
+        # This test isn't bullet proof, but it keeps us from making the
+        # exactly same mistake again.
+        page = minimock.Mock('page')
+        ed1 = asm.cms.edition.Edition()
+        ed2 = asm.cms.edition.Edition()
+        page.editions = [ed1, ed2]
+        selector = minimock.Mock('selector')
+        selector.preferred = [ed1]
+        selector.acceptable = []
+        minimock.mock('zope.component.subscribers', returns=[selector],
+                      tracker=self.tracker)
+        self.assertTrue(ed1 is asm.cms.edition.select_edition(page, None))
+        selector.preferred = [ed2]
+        self.assertTrue(ed2 is asm.cms.edition.select_edition(page, None))

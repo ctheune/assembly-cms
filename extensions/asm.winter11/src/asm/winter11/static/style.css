@@ -515,3 +515,7 @@ div.wrap {
 	float:right;
 	margin:10px 4px 0 6px;
 }
+
+#search-results .match {
+    background-color: #bdd6de;
+}

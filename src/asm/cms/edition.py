@@ -1,4 +1,4 @@
-# Copyright (c) 2010 Assembly Organizing
+# Copyright (c) 2010-2011 Assembly Organizing
 # See also LICENSE.txt
 
 import BTrees.OOBTree
@@ -176,10 +176,6 @@ def select_edition(page, request):
             if edition not in desired:
                 del scores[edition]
             if edition in set(selector.preferred):
-                # XXX the above condition needs a test: we used to apply the
-                # __contains__ test on the list but that causes problems
-                # because lists use __eq__ where as we need __hash__ for
-                # comparison.
                 scores[edition] += 1
 
     # In case that the selectors found all the existing editions undesirable,

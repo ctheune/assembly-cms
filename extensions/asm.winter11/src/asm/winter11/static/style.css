@@ -441,6 +441,93 @@ div.listingBar {background-color:#e4e4e4; border-color:#ccc;}
     width:8em;
 }
 
+.schedulefilter .selected {
+    font-weight: bold;
+}
+
+table.schedule th {
+    background-color: #eee;
+    vertical-align: top;
+    padding:0.5em;
+    text-align: left;
+    font-size: 1.3em;
+}
+
+table.schedule td {
+    padding: 0.5em;
+    padding-left: 1em;
+    font-size: 1.3em;
+    font-weight: bold;
+    line-height:1;
+}
+
+table.schedule td a {
+    text-decoration: none;
+}
+
+table.schedule td a.location,
+table.schedule td .until {
+    font-size: 70%;
+    font-weight: normal;
+}
+
+table.schedule td .until {
+    color: #666;
+}
+
+table.schedule th {
+    border-top: 1px solid #ccc;
+}
+
+table.schedule td {
+    border-top: 1px solid #eee;
+}
+
+table.schedule tr.day th {
+    background-color: #333;
+    color: white;
+}
+
+table.schedule td.current {
+    background-color: #ebf2f3;
+}
+
+p.scheduleclasses {
+    margin-bottom:1em;
+}
+p.scheduleclasses a {
+    text-decoration: none;
+    font-size:2em;
+    margin-right:1em;
+}
+
+p.scheduledays {
+    margin-bottom:2em;
+    border-top:2px solid #eee;
+}
+
+p.scheduledays a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 1.5em;
+}
+
+p.scheduledays span {
+    margin-right:1.2em;
+    padding-top:1.5em;
+    display: inline-block;
+}
+
+p.scheduledays span.selected {
+    background-image: url("images/schedule-selected.png");
+    background-repeat: repeat-x;
+}
+
+p.scheduledays span.selected a,
+p.scheduleclasses a.selected {
+    color: black;
+}
+
 #livestream {
     background:url("images/asmtv-livestream.png") no-repeat;
     display:block;

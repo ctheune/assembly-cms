@@ -126,7 +126,7 @@ class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):
             r('<a href="#asdf"/>'))
 
 
-class DatetimeToHttpConversionTests(asm.cms.testing.FunctionalTestCase):
+class DatetimeToHttpConversionTests(unittest.TestCase):
 
     class CustomUtcOffset(datetime.tzinfo):
         def __init__(self, minutes):
@@ -169,11 +169,3 @@ class DatetimeToHttpConversionTests(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(
             asm.cms.utils.datetime_to_http_timestamp(current_date),
             'Sat, 1 Jan 2000 01:01:01 GMT')
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(UtilityTests))
-    suite.addTest(unittest.makeSuite(ViewApplicationTests))
-    suite.addTest(unittest.makeSuite(ViewResolveURLsTests))
-    suite.addTest(unittest.makeSuite(DatetimeToHttpConversionTests))
-    return suite

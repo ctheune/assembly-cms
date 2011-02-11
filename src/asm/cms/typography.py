@@ -26,6 +26,8 @@ def remove_empty_paragraph(page, element):
 def remove_repeated_title_from_content(page, element):
     if element.tag != 'h1':
         return
+    if element.text is None:
+        return
     h1 = element.text.strip().lower()
     title = page.title.strip().lower()
     if h1 == title:

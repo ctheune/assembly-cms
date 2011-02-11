@@ -7,10 +7,11 @@ WHITELIST_TAGS =  ['pre', 'script', 'object', 'embed', 'param', 'div',
                    'img', 'body', 'html', 'head', 'javascript',
                    'stupidcontainer', 'br']
 
-@grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectModifiedEvent)
-@grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectAddedEvent)
-def paragraph_checking(page, event=None):
-    clean_typography(page)
+# XXX disabled currently as this causes problems in production.
+#@grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectModifiedEvent)
+#@grok.subscribe(asm.cms.interfaces.IHTMLPage, grok.IObjectAddedEvent)
+#def paragraph_checking(page, event=None):
+#    clean_typography(page)
 
 
 def remove_empty_paragraph(page, element):

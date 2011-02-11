@@ -1,0 +1,81 @@
+<div id="content">
+
+  <div tal:replace="structure context/@@gallerynavbar"/>
+
+  <div class="single page clearfix">
+    <div class="entry"
+         tal:define="embed view/embed">
+
+      <span tal:replace="structure embed"/>
+
+    </div>
+    <div id="details">
+      <h2><span tal:replace="context/title" />
+        <tal:block tal:condition="context/page">
+          by
+          <span tal:replace="view/info/author" />
+      </tal:block></h2>
+      <p>Assembly Summer 2010 Music competition entry, 1st place.</p>
+
+        <!-- <a href="#">Download orginal <span>(ftp.scene.org)</span></a> -->
+
+      <tal:block tal:define="downloads python:view.links(include=['download', 'sceneorg'])">
+        <div class="download section" tal:condition="downloads">
+          <div tal:repeat="download downloads">
+            <span tal:replace="structure download"/> (<span tal:content="download/@@downloaddomain"/>)
+          </div>
+        </div>
+      </tal:block>
+
+      <div class="view section">
+        View on
+        <tal:block tal:repeat="download python:view.links(exclude=['download', 'sceneorg'])">
+          <span tal:replace="structure download"/>
+          <tal:block condition="not:repeat/download/end"> | </tal:block>
+        </tal:block>
+      </div>
+
+      <div class="section">
+
+        <div>
+          <script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+          <fb:like tal:attributes="href view/url" layout="button_count" show_faces="false" width="90"></fb:like>
+        </div>
+        <div>
+          <a href="http://twitter.com/share" class="twitter-share-button" tal:attributes="data-url view/url" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+        </div>
+      </div>
+    </div>
+    
+      
+  </div>
+</div>
+
+<!-- <h1 tal:content="context/title" /> -->
+
+<!-- <div tal:define="embed view/embed; -->
+<!--                        next context/@@gallerynavbar/next"> -->
+<!--   <a tal:condition="python: next and embed and embed.startswith('<img ')" -->
+<!--      tal:replace="structure python: '<a href=\'%s\'>' % view.url(next)" /> -->
+<!--   <div tal:replace="structure embed"/> -->
+<!--   <a tal:condition="python: next and embed and embed.startswith('<img ')" -->
+<!--      tal:replace="structure python: '</a>'" /> -->
+<!-- </div> -->
+
+<!-- <div class="mediabottombar"> -->
+<!--     <div class="download"> -->
+<!--       <tal:block tal:repeat="download python:view.links(include=['download', 'sceneorg'])"> -->
+<!--         <span tal:replace="structure download"/> -->
+<!--         <tal:block condition="not:repeat/download/end"> | </tal:block> -->
+<!--       </tal:block> -->
+<!--     </div> -->
+<!--     <div class="view"> -->
+<!--         View on -->
+<!--         <tal:block tal:repeat="download python:view.links(exclude=['download', 'sceneorg'])"> -->
+<!--             <span tal:replace="structure download"/> -->
+<!--             <tal:block condition="not:repeat/download/end"> | </tal:block> -->
+<!--         </tal:block> -->
+<!--     </div> -->
+<!-- </div> -->
+
+<!-- <div tal:replace="structure context/@@gallerynavbar"/> -->

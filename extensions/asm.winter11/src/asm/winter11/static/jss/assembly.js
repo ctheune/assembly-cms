@@ -31,29 +31,18 @@ $(document).ready(function(){
 });
 
 $(function() {
-// find wrap		
-	$("#livestream").overlay({
-
-		expose: {
-			opacity: 0.9,
-			color: '#000'   
-		},
-		
-		// load iframe
-		onLoad: function() {
-			var wrap = this.getContent().find("div.wrap");
-			wrap.load(this.getTrigger().attr("href"));
-		},
-	
-		onClose: function() {
-			var wrap = this.getContent().find("div.wrap");
-			wrap2.unload(); 
-		} 
-	});	
+   // if the function argument is given to overlay,
+   // it is assumed to be the onBeforeLoad event listener
+   $("#livestream").overlay({
+        mask: 'black',
+        onBeforeLoad: function() {
+            // grab wrapper element inside content
+            var wrap = this.getOverlay().find(".wrap");
+            // load the page specified in the trigger
+            wrap.load(this.getTrigger().attr("href"));
+        }
+    });
 });
-
-
-
 
 
 // Rotate News

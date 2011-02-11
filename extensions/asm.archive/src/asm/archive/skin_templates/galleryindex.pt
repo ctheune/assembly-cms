@@ -1,8 +1,4 @@
-<div id="content">
-
-  <div tal:replace="structure context/@@gallerynavbar"/>
-
-</div>
+<div tal:replace="structure context/@@gallerynavbar"/>
 
 <p tal:condition="view/info/description" tal:replace="structure view/info/description" />
 

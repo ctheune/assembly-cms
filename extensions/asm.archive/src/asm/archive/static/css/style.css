@@ -101,7 +101,7 @@ h2 {
   -moz-box-shadow:#4e2849 0 0px 5px;
   border-color:#a21438;
   -webkit-transition:-webkit-box-shadow 0.25s linear;
-  -webkit-transition:border-color 0.25s linear;    
+  -webkit-transition:border-color 0.25s linear;
 }
 
 .video .by {
@@ -145,5 +145,5 @@ h2 {
 }
 
 .mediacategory {
-  height: 240px
+  clear: both;
 }

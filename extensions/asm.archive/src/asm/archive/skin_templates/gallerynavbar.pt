@@ -2,9 +2,9 @@
      tal:define="prev view/previous;
                  next view/next">
 
-  <a class="grid_2" id="gallery-link-prev" href="#" tal:condition="prev"
+  <a class="grid_2 left gallery-navigation-link" id="gallery-link-prev" href="#" tal:condition="prev"
      tal:attributes="href python:view.url(prev)">
-    &laquo; Previous
+    &laquo; <span tal:replace="prev/title" />
   </a>
 
   <h2 class="grid_12">
@@ -28,9 +28,9 @@
     </tal:block>
   </h2>
 
-  <a class="grid_2 right" id="gallery-link-next" href="#" tal:condition="next"
+  <a class="grid_2 right gallery-navigation-link" id="gallery-link-next" href="#" tal:condition="next"
     tal:attributes="href python:view.url(next)">
-    Next &raquo;
+    <span tal:replace="next/title" /> &raquo;
   </a>
 
 </div>

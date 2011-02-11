@@ -27,30 +27,24 @@ class MediaGallery(asm.cms.Edition):
 
 class Edit(asm.cmsui.form.EditionEditForm):
 
-    grok.context(MediaGallery)
+    grok.context(asm.mediagallery.interfaces.IMediaGallery)
 
     main_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select('title')
 
 
 class Index(asm.cmsui.retail.Pagelet):
 
-    grok.context(MediaGallery)
+    grok.context(asm.mediagallery.interfaces.IMediaGallery)
 
     ITEMS_PER_PAGE = LIMIT_GALLERY_ITEMS
+
+    items = []
 
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
         self.show = LIMIT_GALLERY_ITEMS
         self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
 
-    def list_categories(self):
-        for category in self.context.list_subpages(type=[TYPE_MEDIA_GALLERY]):
-            edition = asm.cms.edition.select_edition(category, self.request)
-            if isinstance(edition, asm.cms.edition.NullEdition):
-                continue
-            yield edition
-
-    def list_items(self):
         items = []
         for item in self.context.list_subpages(type=[
                 'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]):
@@ -61,8 +55,19 @@ class Index(asm.cmsui.retail.Pagelet):
                 edition=edition,
                 gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
         items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
+        self.items = items
         self.total = len(items)
-        for item in items:
+
+
+    def list_categories(self):
+        for category in self.context.list_subpages(type=[TYPE_MEDIA_GALLERY]):
+            edition = asm.cms.edition.select_edition(category, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+
+    def list_items(self):
+        for item in self.items:
             if self.skip:
                 self.skip -= 1
                 continue

@@ -40,7 +40,7 @@ def setupObjectInputWidget(field, request):
 
 class Edit(asm.cmsui.form.EditionEditForm):
 
-    grok.context(ExternalAsset)
+    grok.context(asm.mediagallery.interfaces.IExternalAsset)
 
     main_fields = grok.AutoFields(ExternalAsset).select(
         'title', 'locations')
@@ -48,7 +48,7 @@ class Edit(asm.cmsui.form.EditionEditForm):
 
 class ViewGallery(asm.cmsui.retail.Pagelet):
 
-    grok.context(ExternalAsset)
+    grok.context(asm.mediagallery.interfaces.IExternalAsset)
 
     def update(self):
         return self.redirect(self.url(self.context))
@@ -59,7 +59,7 @@ class ViewGallery(asm.cmsui.retail.Pagelet):
 
 class Index(asm.cmsui.retail.Pagelet):
 
-    grok.context(ExternalAsset)
+    grok.context(asm.mediagallery.interfaces.IExternalAsset)
 
     def embed(self):
         for service_choice in self.context.locations:

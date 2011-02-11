@@ -15,7 +15,7 @@
           by
           <span tal:replace="view/info/author" />
       </tal:block></h2>
-      <p>Assembly Summer 2010 Music competition entry, 1st place.</p>
+      <p tal:condition="view/info/description" tal:content="view/info/description"></p>
 
         <!-- <a href="#">Download orginal <span>(ftp.scene.org)</span></a> -->
 
@@ -27,13 +27,16 @@
         </div>
       </tal:block>
 
-      <div class="view section">
+      <tal:block tal:define="view_links python:list(view.links(exclude=['download', 'sceneorg']))">
+      <div tal:condition="python: len(view_links) > 0"
+           class="view section">
         View on
-        <tal:block tal:repeat="download python:view.links(exclude=['download', 'sceneorg'])">
+        <tal:block tal:repeat="download view_links">
           <span tal:replace="structure download"/>
           <tal:block condition="not:repeat/download/end"> | </tal:block>
         </tal:block>
       </div>
+      </tal:block>
 
       <div class="section">
 

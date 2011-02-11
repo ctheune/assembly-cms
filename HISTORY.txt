@@ -2,7 +2,10 @@
 0.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add argparse usage to the copysite script to allow it to explain itself.
+
+- Fix bug in typography: the h1 filter would break if an h1 tag didn't have
+  any content at all because the text attribute would turn to None
 
 
 0.1.8 (2011-01-23)

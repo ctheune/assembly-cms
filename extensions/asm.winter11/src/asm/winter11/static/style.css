@@ -35,18 +35,16 @@ padding:20px 15px;
 -webkit-border-top-left-radius: 3px 3px;
 -webkit-box-shadow:-4px 3px 5px #1d466d;
 border-bottom:1px solid #d9d9d9;
-background-image:
--webkit-gradient(
+background-image: -webkit-gradient(
   linear,
   left bottom,
   left top,
   color-stop(0, rgb(209,209,209)),
   color-stop(0.12, rgb(255,255,255)));
-background-image:  
--moz-linear-gradient(
+background-image: -moz-linear-gradient(
   center bottom,
   rgb(209,209,209) 0%,
-  rgb(255,255,255) 12%));
+  rgb(255,255,255) 12%);
 -webkit-transition:-webkit-box-shadow 0.25s linear; 
 }
 

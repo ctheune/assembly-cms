@@ -1,11 +1,13 @@
-# Copyright (c) 2010 Assembly Organizing
+# Copyright (c) 2010-2011 Assembly Organizing
 # See also LICENSE.txt
 
-import sys
-import zope.copypastemove.interfaces
+import argparse
 import asm.cms.cms
-import zope.app.component.hooks
+import sys
 import transaction
+import zope.app.component.hooks
+import zope.copypastemove.interfaces
+
 
 def get_new_page(new_root, old_page):
     # Construct path of the old page
@@ -26,8 +28,18 @@ def get_new_page(new_root, old_page):
     new_page.type = old_page.type
     return new_page, path
 
-old_site = root[sys.argv[1]]
-new_site = root[sys.argv[2]] = asm.cms.cms.CMS()
+
+parser = argparse.ArgumentParser(
+    description='Create a new site as a copy of an existing site.')
+
+parser.add_argument('old', help='the ID of the existing site')
+parser.add_argument('new', help='the ID of the new site')
+
+args = parser.parse_args()
+
+old_site = root[args.old]
+new_site = root[args.new] = asm.cms.cms.CMS()
+
 transaction.savepoint()
 zope.app.component.hooks.setSite(new_site)
 # XXX Why do we have to do this here? This is similar to

@@ -147,3 +147,11 @@ h2 {
 .mediacategory {
   clear: both;
 }
+
+.grayed {
+  color: #bbb;
+}
+
+.smaller {
+  font-size: smaller;
+}

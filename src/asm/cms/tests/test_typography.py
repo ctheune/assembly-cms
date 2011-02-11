@@ -39,6 +39,11 @@ class ParagraphTests(unittest.TestCase):
         self.page.content = '<H1>Assembly 2010</H1><p>Assembly on paras</p>'
         self.assertEquals('<p>Assembly on paras</p>', self.clean())
 
+    def test_title_no_content(self):
+        self.page.title = 'Assembly 2010'
+        self.page.content = '<H1></H1><p>Assembly on paras</p>'
+        self.assertEquals('<p>Assembly on paras</p>', self.clean())
+
     def test_not_removing_parent(self):
         # Our output gets beautified so we end up with additional whitespace.
         self.page.content = '<p><img src="test" /></p>'

@@ -2,12 +2,15 @@
      tal:define="prev view/previous;
                  next view/next">
 
-  <a class="grid_2 left gallery-navigation-link" id="gallery-link-prev" href="#" tal:condition="prev"
+  <a class="grid_3 left gallery-navigation-link"
+     id="gallery-link-prev" href="#"
+     tal:condition="prev"
      tal:attributes="href python:view.url(prev)">
-    &laquo; <span tal:replace="prev/title" />
+    &laquo; <span tal:replace="python: view.cut_string(prev.title, 17)" />
   </a>
+  <span class="grid_3" tal:condition="not: prev">&nbsp;</span>
 
-  <h2 class="grid_12">
+  <h2 class="grid_10">
     <tal:block repeat="edition view/breadcrumbs">
       <tal:block condition="not:repeat/edition/end">
         <a tal:attributes="href python:view.url(edition)"
@@ -28,9 +31,12 @@
     </tal:block>
   </h2>
 
-  <a class="grid_2 right gallery-navigation-link" id="gallery-link-next" href="#" tal:condition="next"
-    tal:attributes="href python:view.url(next)">
-    <span tal:replace="next/title" /> &raquo;
+  <a class="grid_3 right gallery-navigation-link"
+     id="gallery-link-next"
+     href="#" tal:condition="next"
+     tal:attributes="href python:view.url(next)">
+    <span tal:replace="python: view.cut_string(next.title, 17)" /> &raquo;
   </a>
+  <span class="grid_3" tal:condition="not: next">&nbsp;</span>
 
 </div>

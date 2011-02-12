@@ -87,6 +87,28 @@ class ScheduleUpload(grok.Adapter):
 
     data = None
 
+def get_row_errors(fields, field_data):
+    errors = []
+    for field in fields:
+        if field_data.get(field, None) is None:
+            errors.append(u"Field '%s' is missing." % field)
+
+    for field in ('start_date', 'finish_date'):
+        try:
+            extract_date(field_data[field])
+        except ValueError, e:
+            errors.append(
+                u"Date string on field '%s' is invalid (%s)." % (field, e))
+            errors.append(u"For example date and time 'Saturday 11th of February 2011 18:00' would be 'Sat 12.02.11 18:00'.")
+
+    for field in ('title_fi', 'title_en', 'location_fi', 'location_en'):
+        try:
+            field_data[field].decode('UTF-8')
+        except UnicodeDecodeError, e:
+            errors.append(u"Could not decode field '%s' as UTF-8. Make sure that you are sending an UTF-8 encoded file." % field)
+
+    return errors
+
 
 class Edit(asm.cmsui.form.EditForm):
     """Editing a schedule means uploading a CSV file (as produced by Jussi)
@@ -141,6 +163,13 @@ class Edit(asm.cmsui.form.EditForm):
         for row in reader:
             if row['public'] != 'Yes':
                 continue
+            errors = get_row_errors(fields, row)
+            if len(errors) > 0:
+                self.flash(u"Schedule data has an invalid row", "warning")
+                for error in errors:
+                    self.flash(error, "warning")
+                self.flash(row, "warning")
+                return
             writer.writerow(row)
             for schedule, lang in [(finnish, 'fi'), (english, 'en')]:
                 event = Event()

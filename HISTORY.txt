@@ -1,0 +1,72 @@
+
+0.1.9 (unreleased)
+------------------
+
+- Add argparse usage to the copysite script to allow it to explain itself.
+
+- Fix bug in typography: the h1 filter would break if an h1 tag didn't have
+  any content at all because the text attribute would turn to None
+
+
+0.1.8 (2011-01-23)
+------------------
+
+- Add <br/> to the list of unfiltered tags in the typography module.
+
+0.1.7 (2011-01-23)
+------------------
+
+- Remove whitespace normalization feature from typography support. The
+  implementation removed semantically important whitespace and no simple
+  fix exists.
+
+
+0.1.6 (2011-01-09)
+------------------
+
+- Somewhat messy release due to a lot of refactorings.
+
+
+0.1.5 (2011-01-07)
+------------------
+
+- Refactor ZCML/buildouts a bit to keep shared configuration in the package's
+  ZCML avoiding duplication in the various installations of asm.cms.
+
+- Undocumented masses and masses of stuff.
+
+- #7080: In addition to selecting the current document we also open the branch
+  beneath it (if it has children).
+
+- Improve banner selection by switching to a real function call and allowing
+  to not randomize banners. Apply for summer10 skin.
+
+- #6328: Switch assets over to using blobs.
+
+0.1.4 (2010-04-27)
+------------------
+
+- Various skin adjustments for Assembly Summer 2010
+
+- Enhance content API to allow equality check of editions
+
+- Added CLI tool to remove drafts that don't have changes compared to their
+  public version.
+
+- Remove unused banner template that caused warnings.
+
+- Fix redirection target after deleting a page.
+
+- Added CLI tool to find editions with weird parameters.
+
+- Make action views redirect to @@edit again.
+
+- Add general profile mechanism to allow setting up local policies for
+  individual sites hosted in a single server.
+
+- Fix preview and add a smoke test.
+
+- Make edit forms generally redirect to themselves instead of '@@edit'.
+
+- Retrieve name of skin used in preview based on current site profile.
+

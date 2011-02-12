@@ -1,0 +1,157 @@
+body {
+  background:#18191b url(../images/noise-bg.png);
+  color:#fff;
+  font:14px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin:0;
+  padding:0;
+}
+
+a {
+  color:#0bd8b9;
+  text-decoration:none;
+}
+
+a img {border:0;}
+
+h2 {
+  font-weight:normal;
+  font-size:20px;
+}
+
+#main {
+}
+
+#header {
+  height:40px;
+  padding:30px 0 15px 0;
+  border-bottom: 1px solid #333;
+  -webkit-box-shadow:#000 0 1px 0;
+  -moz-box-shadow:#000 0 1px 0;
+  background:url(../images/ribbon.png) repeat-x;
+}
+
+.year_nav {
+  margin:0;
+  padding:0;
+  list-style:0;
+  font-size:17px;
+  font-style:italic;
+  border-bottom:1px solid #333;
+  -webkit-box-shadow:inset 0 0 10px #000;
+  -moz-box-shadow:inset 0 0 10px #000;
+  height:34px;
+}
+
+.year_nav li a {
+  color:#bbb;
+  padding:6px 5px 4px 5px;
+  display:block;
+}
+
+.year_nav a:hover, .year_nav .active a {
+  border-bottom:2px solid #a21438;
+  color:#fff;
+}
+
+.year_nav li {
+  display:inline;
+  margin:0 10px;
+  float:left;
+}
+
+
+.page {
+  padding:2em 0;
+}
+
+.navigation {
+  margin:0 0 0 0;
+  padding:1em 0;
+  border-bottom:1px solid #333;
+  -webkit-box-shadow:#111 0 1px 0;
+  -moz-box-shadow:#111 0 1px 0;
+  line-height:20px;
+}
+
+.navigation h2 {
+  text-align:center;
+  margin:0;
+}
+
+.video {
+  width:160px;
+  height:160px;
+  float:left;
+  margin:14px;
+}
+
+.video a {
+  color:#fff;
+}
+
+.video img {
+  -webkit-box-shadow:#000 0 1px 4px;
+  -moz-box-shadow:#000 0 1px 4px;
+  border:1px solid #000;
+  margin-bottom:5px;
+}
+
+.video:hover img {
+  -webkit-box-shadow:#4e2849 0 0px 5px;
+  -moz-box-shadow:#4e2849 0 0px 5px;
+  border-color:#a21438;
+  -webkit-transition:-webkit-box-shadow 0.25s linear;
+  -webkit-transition:border-color 0.25s linear;
+}
+
+.video .by {
+  color:#ccc;
+  display:block;
+}
+
+.right {
+  text-align:right;
+}
+
+#details {
+  float:right;
+  width:280px;
+}
+
+.section {
+  border-top:1px solid #333;
+  -webkit-box-shadow:#111 0 -1px 0;
+  -moz-box-shadow:#111 0 -1px 0;
+  padding:1em 0;
+}
+
+.section a span {
+  color:#999;
+}
+
+#details h2 {
+  font-weight:600;
+  text-shadow:0 0 1px #000;
+  font-size:1.5em;
+}
+
+.single .entry {
+  float:left;
+  border:4px solid #000;
+  background:#000;
+  width:640px;
+  -webkit-box-shadow:#000 0 2px 4px;
+  -webkit-moz-shadow:#000 0 2px 4px;
+}
+
+.mediacategory {
+  clear: both;
+}
+
+.grayed {
+  color: #bbb;
+}
+
+.smaller {
+  font-size: smaller;
+}

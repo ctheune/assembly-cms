@@ -1,0 +1,4 @@
+The icons found in src/asm/cms/static/icons stem from the "Silk icon set 1.3"
+created by Mark James licensed under Creative Commons Attribution 3.0.
+
+See http://www.famfamfam.com/lab/icons/silk/

@@ -1,0 +1,63 @@
+<h1 tal:content="context/title"></h1>
+
+<p tal:condition="view/info/description" tal:replace="structure view/info/description" />
+
+<div tal:repeat="category view/list_categories" class="mediacategory">
+  <h2><a tal:attributes="href python:view.url(category.page)">
+      <span tal:replace="category/title">Compo type</span> &raquo;</a></h2>
+
+  <div class="mediaitemlisting">
+    <div tal:repeat="item python:view.list_category_items(category, 3)" class="item">
+      <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail" width="165" height="77">
+        <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                             alt item/edition/title" />
+       </a>
+       <a class="description" tal:attributes="href python:view.url(item['edition'])">
+         <table>
+           <tr>
+             <td class="rank" tal:content="python:item['gallery'].ranking or default">#</td>
+             <td class="titleauthor"><span class="title" tal:content="item/edition/title"/><br/>
+             <span class="author" tal:content="item/gallery/author"/></td>
+           </tr>
+         </table>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<div class="mediaitemlisting">
+
+  <div tal:repeat="item view/list_items" class="item">
+    <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail" width="165" height="77">
+      <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                           alt item/edition/title" />
+     </a>
+       <a class="description" tal:attributes="href python:view.url(item['edition'])">
+         <table>
+           <tr>
+             <td class="rank" tal:content="python:item['gallery'].ranking or default">#</td>
+             <td class="titleauthor"><span class="title" tal:content="item/edition/title"/><br/>
+             <span class="author" tal:content="item/gallery/author"/></td>
+           </tr>
+         </table>
+      </a>
+  </div>
+
+</div>
+
+<div class="medianavigationbar"
+    tal:define="next python:view.offset + view.ITEMS_PER_PAGE;
+                prev python:view.offset - view.ITEMS_PER_PAGE">
+
+  <a class="back" id="gallery-link-previous" tal:condition="python:prev >= 0"
+      tal:attributes="href python:view.url(context, data=dict(offset=prev))">
+      <span class="control">Previous</span>
+  </a>
+
+  <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total"
+    tal:attributes="href python:view.url(context, data=dict(offset=next))">
+    <span class="control">Next</span>
+  </a>
+
+</div>

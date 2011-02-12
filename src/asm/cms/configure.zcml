@@ -1,0 +1,26 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="asm.cms">
+
+  <include package="grok" />
+
+  <includeDependencies package="." />
+  <grok:grok package="." />
+
+  <include package=".generations" />
+
+  <utility component=".htmlpage.HTMLPage" name="htmlpage" />
+  <utility component=".asset.Asset" name="asset" />
+  <utility component=".news.NewsFolder" name="news"/>
+  <utility component=".homepage.Homepage" name="homepage"/>
+
+  <subscriber
+    factory=".news.add_teaser"
+    for="asm.cms.htmlpage.HTMLPage"
+    provides="asm.cms.interfaces.IAdditionalSchema"
+    />
+
+  <include package="z3c.baseregistry" file="meta.zcml" />
+
+</configure>

@@ -1,0 +1,30 @@
+<!-- This snippet is somewhat murky: we expect it to only be used when there
+is still another level of sections in between that we don't link to. -->
+
+<div class="section">
+
+    <h2 tal:content="context/title"></h2>
+
+    <div class="subsection"
+        tal:repeat="subsection view/sub">
+
+        <h2 tal:content="subsection/title"></h2>
+
+        <div class="detail"
+                tal:define="events python:list(view.sub(subsection))">
+
+            <p tal:content="subsection/headline">
+            </p>
+
+            <p>Events (<span
+                tal:content="python:len(events)"/>)</p>
+
+            <ul>
+                <li tal:repeat="event events"
+                    tal:content="event/title" />
+            </ul>
+
+        </div>
+    </div>
+
+</div>

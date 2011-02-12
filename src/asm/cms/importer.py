@@ -1,6 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import ZODB.blob
 import asm.cms
 import asm.cms.cms
 import asm.cms.edition
@@ -15,6 +16,12 @@ import zope.interface
 import zope.schema
 import zope.traversing.api
 
+def base64_to_blob(data):
+    value = ZODB.blob.Blob()
+    f = value.open('w')
+    f.write(base64.decodestring(data))
+    f.close()
+    return value
 
 class Importer(object):
 
@@ -23,7 +30,7 @@ class Importer(object):
         self.data = data
 
     def __call__(self):
-        export = lxml.etree.fromstring(self.data.read())
+        export = lxml.etree.fromstring(self.data)
         self.base_path = export.get('base')
         for page_node in export:
             page = self.get_page(page_node.get('path'), page_node.tag)
@@ -54,7 +61,7 @@ class Importer(object):
         edition.content = content
 
     def import_asset(self, edition, node):
-        edition.content = base64.decodestring(node.text)
+        edition.content = base64_to_blob(node.text)
 
     def get_page(self, path, type_):
         path = path.split('/')

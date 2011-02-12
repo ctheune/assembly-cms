@@ -24,7 +24,7 @@ class ImportFunctional(asm.cms.testing.FunctionalTestCase):
 
     def test_import(self):
         data = open(os.path.join(os.path.dirname(__file__), 'import.xml'))
-        importer = asm.cms.importer.Importer(self.cms, data)
+        importer = asm.cms.importer.Importer(self.cms, data.read())
         importer()
         self.assertEquals(2, len(list(self.cms.subpages)))
         self.assertEquals('htmlpage', self.cms['testpage'].type)

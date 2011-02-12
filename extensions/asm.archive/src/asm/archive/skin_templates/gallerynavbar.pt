@@ -1,0 +1,36 @@
+<div class="navigation clearfix"
+     tal:define="prev view/previous;
+                 next view/next">
+
+  <a class="grid_2 left gallery-navigation-link" id="gallery-link-prev" href="#" tal:condition="prev"
+     tal:attributes="href python:view.url(prev)">
+    &laquo; <span tal:replace="prev/title" />
+  </a>
+
+  <h2 class="grid_12">
+    <tal:block repeat="edition view/breadcrumbs">
+      <tal:block condition="not:repeat/edition/end">
+        <a tal:attributes="href python:view.url(edition)"
+           tal:content="edition/title"/>
+        &raquo;
+      </tal:block>
+      <tal:block condition="repeat/edition/end">
+        <a tal:attributes="href python:view.url(edition)"
+           tal:content="edition/title"/>
+      </tal:block>
+    </tal:block>
+
+    <tal:block tal:condition="python: context.page.type != 'externalasset'">
+      <tal:block tal:condition="python: len(view.breadcrumbs) > 0">
+        &raquo;
+      </tal:block>
+      <span tal:replace="context/title" />
+    </tal:block>
+  </h2>
+
+  <a class="grid_2 right gallery-navigation-link" id="gallery-link-next" href="#" tal:condition="next"
+    tal:attributes="href python:view.url(next)">
+    <span tal:replace="next/title" /> &raquo;
+  </a>
+
+</div>

@@ -1,6 +1,5 @@
 <tal:block tal:define="items view/tree">
-
-  <ul id="navigation">
+  <ul>
   <metal:block define-macro="inner">
       <li tal:repeat="item items"
           tal:attributes="class item/class">
@@ -16,5 +15,4 @@
       </li>
   </metal:block>
   </ul>
-
 </tal:block>

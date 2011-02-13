@@ -40,9 +40,15 @@ class Index(asm.cmsui.retail.Pagelet):
 
     items = []
 
+    sort_items = True
+
+    @property
+    def max_items(self):
+        return self.ITEMS_PER_PAGE
+
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
-        self.show = LIMIT_GALLERY_ITEMS
+        self.show = self.max_items
         self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
 
         items = []
@@ -54,7 +60,9 @@ class Index(asm.cmsui.retail.Pagelet):
             items.append(dict(
                 edition=edition,
                 gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
-        items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
+
+        if self.sort_items:
+            items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
         self.items = items
         self.total = len(items)
 

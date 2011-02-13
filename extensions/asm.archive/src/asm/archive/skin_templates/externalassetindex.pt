@@ -2,9 +2,17 @@
 
 <div class="single page clearfix">
   <div class="entry"
-       tal:define="embed view/embed">
+       tal:define="embed view/embed;
+                   next context/@@gallerynavbar/next">
+
+    <a tal:condition="python: next and embed and embed.startswith('<img ')"
+       tal:replace="structure python: '<a href=\'%s\'>' % view.url(next)" />
 
     <span tal:replace="structure embed"/>
+
+    <a tal:condition="python: next and embed and embed.startswith('<img ')"
+       tal:replace="structure python: '</a>'" />
+
 
   </div>
   <div id="details">

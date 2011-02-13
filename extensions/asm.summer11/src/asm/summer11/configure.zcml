@@ -20,6 +20,7 @@
         component=".skin.skin_name"
         provides="asm.cms.interfaces.ISkinProfile"
         />
+    <include package="asm.party" />
   </registerIn>
 
 </configure>

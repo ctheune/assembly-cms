@@ -1,6 +1,8 @@
+
+
 <div class="compo clearfix">
   <div class="details grid_4 alpha">
-    <h3 tal:content="context/title">Demo Compo</h3>
+    <h3 tal:content="context/title">Demo compo</h3>
     
     <p>
       <a href="#" class="location" tal:content="context/location">Bigscreen</a>

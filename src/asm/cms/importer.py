@@ -23,14 +23,23 @@ def base64_to_blob(data):
     f.close()
     return value
 
+class ImportError(ValueError):
+    pass
+
 class Importer(object):
 
     def __init__(self, cms, data):
         self.cms = cms
         self.data = data
 
-    def __call__(self):
-        export = lxml.etree.fromstring(self.data)
+    # TODO decide what to do on duplicate content (ignore, replace, disallow).
+    # Currently disallowing by default.
+    def __call__(self, allow_duplicates=False):
+        errors = []
+        try:
+            export = lxml.etree.fromstring(self.data)
+        except lxml.etree.XMLSyntaxError, e:
+            return ["XML syntax error: %s." % e]
         self.base_path = export.get('base')
         for page_node in export:
             page_path = page_node.get('path')
@@ -38,19 +47,20 @@ class Importer(object):
 
             for edition_node in page_node:
                 assert edition_node.tag == 'edition'
-                parameters = set(edition_node.get('parameters').split())
+                parameters_value = edition_node.get('parameters')
+                parameters = set(parameters_value.split())
                 parameters = asm.cms.edition.EditionParameters(parameters)
                 if 'lang:' in parameters:
                     # ensure that the fallback language is english
                     parameters = parameters.replace('lang:', 'lang:en')
                 try:
                     edition = page.addEdition(parameters)
-                # XXX which one is correct?
-                except zope.exceptions.interfaces.DuplicationError:
-                    # Leave existing content alone.
-                    continue
                 except KeyError:
                     # Leave existing content alone.
+                    if not allow_duplicates:
+                        errors.append(
+                            "Duplicate page '%s' with edition '%s' detected" % (
+                                page_path, parameters_value))
                     continue
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
                 edition.title = edition_node.get('title')
@@ -58,6 +68,7 @@ class Importer(object):
                 edition.modified = extract_date(edition_node.get('modified'))
                 edition.created = extract_date(edition_node.get('created'))
                 zope.event.notify(grok.ObjectModifiedEvent(edition))
+        return errors
 
     def import_htmlpage(self, edition, node):
         content = base64.decodestring(node.text).decode('utf-8')

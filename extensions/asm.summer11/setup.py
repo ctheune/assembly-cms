@@ -17,6 +17,7 @@ setup(name='asm.summer11',
 
                         'zope.interface',
                         'asm.cms',
+                        'asm.party',
                         'megrok.pagelet',
                         ],
       )

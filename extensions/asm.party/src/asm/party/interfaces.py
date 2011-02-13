@@ -8,10 +8,11 @@ class IProgramSection(zope.interface.Interface):
 
     title = zope.schema.TextLine(title=u'Title')
 
-    headline = zope.schema.TextLine(title=u'Headline')
+    headline = zope.schema.TextLine(title=u'Short description')
 
+    description = zope.schema.Text(title=u'Description')
 
-class ICompetition(zope.interface.Interface):
+class IEvent(zope.interface.Interface):
 
     title = zope.schema.TextLine(title=u'Title')
 
@@ -26,6 +27,9 @@ class ICompetition(zope.interface.Interface):
     location = zope.schema.TextLine(title=u'Location', required=False)
 
     time = zope.schema.Datetime(title=u'Time', required=False)
+
+
+class ICompetition(IEvent):
 
     prizes = zope.schema.TextLine(title=u'Prizes', required=False)
 

@@ -20,12 +20,11 @@
     <div id="header" class="alpha grey clearfix">
       <div class="grid_11">
         <ul class="nav">
-          <li>Home</li>
-          <li>Program</li>
-          <li>Schedule</li>
-          <li>Location</li>
-          <li>Gallery</li>
-          <li>Guide</li>
+          <li><a tal:attributes="href view/application_url">Home</a></li>
+          <li><a tal:attributes="href string:${view/application_url}/schedule">Schedule</a></li>
+          <li><a tal:attributes="href string:${view/application_url}/program">Program</a></li>
+          <li><a tal:attributes="href string:${view/application_url}/attend">Attend</a></li>
+          <li><a tal:attributes="href string:${view/application_url}/about">About</a></li>
         </ul>
         
         <div id="masthead" class="grey clearfix">
@@ -53,7 +52,10 @@
     </div>  <!-- content_wrap -->
     
     <div id="footer">
-      <p>&copy Assembly Organizing</p>
+      <p><a tal:attributes="href string:${view/application_url}/press">Press</a> |
+      	 <a href="http://www.assembly.org/asmorg">Assembly Organizing</a>
+      </p>
+      <p>&copy; Assembly Organizing</p>
     </div>
     
   </div>

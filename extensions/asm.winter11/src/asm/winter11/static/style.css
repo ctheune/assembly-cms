@@ -86,6 +86,7 @@ font-size:0.7em;
 #main {
 margin:0 auto;
 width:994px;
+min-height:700px;
 }
 #header {
 background:url("images/header-bg2.jpg") no-repeat;

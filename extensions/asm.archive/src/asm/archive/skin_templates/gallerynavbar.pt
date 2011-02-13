@@ -3,7 +3,7 @@
                  next view/next">
 
   <a class="grid_3 left gallery-navigation-link"
-     id="gallery-link-prev" href="#"
+     id="gallery-link-prev"
      tal:condition="prev"
      tal:attributes="href python:view.url(prev)">
     &laquo; <span tal:replace="python: view.cut_string(prev.title, 17)" />
@@ -33,7 +33,7 @@
 
   <a class="grid_3 right gallery-navigation-link"
      id="gallery-link-next"
-     href="#" tal:condition="next"
+     tal:condition="next"
      tal:attributes="href python:view.url(next)">
     <span tal:replace="python: view.cut_string(next.title, 17)" /> &raquo;
   </a>

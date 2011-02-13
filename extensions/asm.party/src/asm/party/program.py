@@ -3,9 +3,10 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import asm.cmsui.tinymce
 import asm.party.interfaces
-import zope.interface
 import grok
+import zope.interface
 
 
 class ProgramSection(asm.cms.edition.Edition):
@@ -15,6 +16,7 @@ class ProgramSection(asm.cms.edition.Edition):
 
     factory_title = u'Program section'
 
+    description = u''
     headline = u''
 
 
@@ -22,6 +24,7 @@ class EditSection(asm.cmsui.form.EditionEditForm):
 
     grok.context(asm.party.interfaces.IProgramSection)
     main_fields = grok.AutoFields(asm.party.interfaces.IProgramSection)
+    main_fields['description'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
     grok.name('edit')
 
 

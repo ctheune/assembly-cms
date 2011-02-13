@@ -8,7 +8,9 @@ class IProgramSection(zope.interface.Interface):
 
     title = zope.schema.TextLine(title=u'Title')
 
-    headline = zope.schema.TextLine(title=u'Headline')
+    headline = zope.schema.TextLine(title=u'Short description')
+
+    description = zope.schema.Text(title=u'Description')
 
 class IEvent(zope.interface.Interface):
 

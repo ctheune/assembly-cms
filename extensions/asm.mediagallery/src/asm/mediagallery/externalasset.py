@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms.edition
+import asm.cms.importer
 import asm.mediagallery.interfaces
 import grok
 import persistent
@@ -36,7 +37,6 @@ def setupObjectInputWidget(field, request):
     factory = zope.component.getUtility(zope.component.interfaces.IFactory,
                                         name=field.schema.__name__)
     return zope.app.form.browser.objectwidget.ObjectWidget(field, request, factory)
-
 
 class Edit(asm.cmsui.form.EditionEditForm):
 

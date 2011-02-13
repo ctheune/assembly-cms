@@ -1,7 +1,13 @@
-<ul class="year_nav">
-  <li tal:repeat="year view/list_years_near_current_page"
+<ul class="year_nav" tal:define="visible_years view/list_years_near_current_page">
+  <li tal:condition="python: len(view.years) > 0 and view.years[0] != visible_years[0]">
+    <a tal:attributes="href python:view.url(visible_years[0])">&laquo;</a>
+  </li>
+  <li tal:repeat="year visible_years"
       tal:attributes="class python: year == view.get_closest_year() and 'active' or None">
     <a tal:attributes="href python: year != context.page and view.url(year) or None">'<span tal:replace="python: year.page.__name__[2:]" /></a>
+  </li>
+  <li tal:condition="python: len(view.years) > 0 and view.years[-1] != visible_years[-1]">
+    <a tal:attributes="href python:view.url(visible_years[-1])">&raquo;</a>
   </li>
 </ul>
 

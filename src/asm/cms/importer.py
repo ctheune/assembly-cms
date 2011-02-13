@@ -33,7 +33,8 @@ class Importer(object):
         export = lxml.etree.fromstring(self.data)
         self.base_path = export.get('base')
         for page_node in export:
-            page = self.get_page(page_node.get('path'), page_node.tag)
+            page_path = page_node.get('path')
+            page = self.get_page(page_path, page_node.tag)
 
             for edition_node in page_node:
                 assert edition_node.tag == 'edition'
@@ -44,7 +45,11 @@ class Importer(object):
                     parameters = parameters.replace('lang:', 'lang:en')
                 try:
                     edition = page.addEdition(parameters)
+                # XXX which one is correct?
                 except zope.exceptions.interfaces.DuplicationError:
+                    # Leave existing content alone.
+                    continue
+                except KeyError:
                     # Leave existing content alone.
                     continue
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)

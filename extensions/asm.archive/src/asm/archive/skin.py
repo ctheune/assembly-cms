@@ -81,7 +81,7 @@ class YearlyNavigation(grok.View):
         current_year = self.get_closest_year()
 
         max_selection = min(len(years), limit)
-        if current_year is not None and YEAR_MATCH.match(current_year.__name__):
+        if current_year is not None and YEAR_MATCH.match(current_year.page.__name__):
             before = max_selection / 2
             after = max_selection - before - 1
 
@@ -177,6 +177,10 @@ class GalleryIndex(asm.mediagallery.gallery.Index):
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IMediaGallery)
     grok.name('index')
+
+    ITEMS_PER_PAGE = 30
+
+    sort_items = False
 
     def render_parent(self):
         return asm.mediagallery.gallery.Index.template.render(self)

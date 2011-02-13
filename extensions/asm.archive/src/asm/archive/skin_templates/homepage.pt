@@ -1,5 +1,5 @@
 <div tal:repeat="year view/years" class="mediacategory">
-  <h2><a tal:content="year/title" tal:attributes="href python:view.url(year)">2010</a> <span class="grayed smaller">(random selection)</span></h2>
+  <h2><a tal:attributes="href python:view.url(year)"><span tal:content="year/title" />  &raquo;</a> <span class="grayed smaller">(random selection)</span></h2>
   <div class="mediaitemlisting">
     <tal:block tal:repeat="item python:view.select_random_items(year, 5)">
       <div class="video">

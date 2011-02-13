@@ -6,6 +6,7 @@ import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
 import grok
 import megrok.pagelet
+import random
 import re
 import urlparse
 import zope.interface
@@ -38,6 +39,21 @@ class LayoutHelper(grok.View):
 DEFAULT_YEARS = 10
 YEAR_MATCH = re.compile("^\d{4}$")
 
+def select_years(application_subpages, request):
+    years = filter(
+        lambda x: YEAR_MATCH.match(x.__name__),
+        list(application_subpages)
+        )
+    result = []
+    for year_page in years:
+        edition = asm.cms.edition.select_edition(year_page, request)
+        if isinstance(edition, asm.cms.edition.NullEdition):
+            continue
+        result.append(edition)
+
+    return result
+
+
 class YearlyNavigation(grok.View):
     grok.layer(ISkin)
     grok.context(zope.interface.Interface)
@@ -45,11 +61,7 @@ class YearlyNavigation(grok.View):
     limit = DEFAULT_YEARS
 
     def update(self):
-        self.years = filter(
-            lambda x: YEAR_MATCH.match(x.__name__),
-            reversed(list(self.application.subpages))
-            )
-
+        self.years = select_years(self.application.subpages, self.request)
         self.year_start, self.year_end = self.get_navigation_limits(self.years, self.limit)
 
     def get_closest_year(self):
@@ -58,7 +70,11 @@ class YearlyNavigation(grok.View):
             # application/yeargallery/somethingelse
             # select the yeargallery
             closest_year = traversed[1]
-            return self.application.get(closest_year, None)
+            closest_page = self.application.get(closest_year, None)
+            if closest_page is None:
+                return None
+            return asm.cms.edition.select_edition(closest_page, self.request)
+
         return None
 
     def get_navigation_limits(self, years, limit=DEFAULT_YEARS):
@@ -105,6 +121,43 @@ class Homepage(asm.cmsui.retail.Pagelet):
     grok.layer(ISkin)
     grok.name('index')
 
+    @property
+    def years(self):
+        return select_years(self.application.subpages, self.request)
+
+    def editioned_subpages(self, root):
+        for page in root.subpages:
+            edition = asm.cms.edition.select_edition(page, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            yield edition
+
+    def select_random_items(self, year, limit=None):
+
+        def randomize_and_limit(items, limit=None):
+            result = items
+            random.shuffle(result)
+            if limit is not None:
+                return result[:limit]
+            return result
+
+        items = []
+
+        for category in self.editioned_subpages(year.page):
+            category_items = []
+            for media in category.list_subpages(type=[
+                'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]):
+                edition = asm.cms.edition.select_edition(media, self.request)
+                if isinstance(edition, asm.cms.edition.NullEdition):
+                    continue
+                category_items.append(dict(
+                        edition=edition,
+                        gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
+            # Limit impact of large categories on front page listings.
+            items.extend(randomize_and_limit(category_items, limit))
+
+        return randomize_and_limit(items, limit)
+
 
 class SelectLanguage(grok.View):
 
@@ -125,10 +178,10 @@ class GalleryIndex(asm.mediagallery.gallery.Index):
     grok.context(asm.mediagallery.interfaces.IMediaGallery)
     grok.name('index')
 
-
     def render_parent(self):
         return asm.mediagallery.gallery.Index.template.render(self)
 
+ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
 
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index):
     grok.layer(ISkin)
@@ -138,9 +191,15 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index):
     def update(self):
         self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
 
+
 class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar):
     grok.layer(ISkin)
     grok.context(asm.cms.interfaces.IEdition)
+
+    def cut_string(self, data, max_length):
+        if len(data) <= max_length:
+            return data
+        return data[:max_length - 3] + "..."
 
     def update(self):
         pages = []
@@ -149,6 +208,7 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar):
             pages.insert(0, asm.cms.edition.select_edition(page, self.request))
             page = page.__parent__
         self.breadcrumbs = pages[0:-1]
+
 
 class DownloadDomain(grok.View):
     grok.layer(ISkin)

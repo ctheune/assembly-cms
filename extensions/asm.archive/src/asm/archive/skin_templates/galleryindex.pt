@@ -39,3 +39,45 @@
     </a>
   </div>
 </div>
+
+
+<div class="navigation clearfix"
+    tal:define="next python:view.offset + view.ITEMS_PER_PAGE;
+                prev python:view.offset - view.ITEMS_PER_PAGE">
+
+  <a class="grid_3 left gallery-navigation-link"
+     id="gallery-page-link-prev"
+     tal:condition="python:prev >= 0"
+     tal:attributes="href python:view.url(context, data=dict(offset=prev))"
+><span class="control">&laquo; Previous <span tal:replace="view/ITEMS_PER_PAGE" /> items</span>
+  </a>
+  <span class="grid_3" tal:condition="python:prev < 0">&nbsp;</span>
+
+  <span class="grid_10">&nbsp;</span>
+
+  <a class="grid_3 right gallery-navigation-link"
+     id="gallery-page-link-next"
+     tal:condition="python:next < view.total"
+     tal:attributes="href python:view.url(context, data=dict(offset=next))"
+>
+    <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span>
+  </a>
+  <span class="grid_3" tal:condition="python:next >= view.total">&nbsp;</span>
+
+
+  <!-- <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total" -->
+  <!--   tal:attributes="href python:view.url(context, data=dict(offset=next))"> -->
+  <!--   <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span> -->
+  <!-- </a> -->
+
+  <!-- <a class="back" id="gallery-link-previous" tal:condition="python:prev >= 0" -->
+  <!--     tal:attributes="href python:view.url(context, data=dict(offset=prev))"> -->
+  <!--     <span class="control">&laquo; Previous <span tal:replace="view/ITEMS_PER_PAGE" /> items</span> -->
+  <!-- </a> -->
+
+  <!-- <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total" -->
+  <!--   tal:attributes="href python:view.url(context, data=dict(offset=next))"> -->
+  <!--   <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span> -->
+  <!-- </a> -->
+
+</div>

@@ -1,3 +1,7 @@
+<h1 tal:content="context/title"></h1>
+
+<div tal:content="structure context/description" />
+
 <div tal:repeat="event view/events"
      tal:replace="structure event/@@snippet">
 </div>

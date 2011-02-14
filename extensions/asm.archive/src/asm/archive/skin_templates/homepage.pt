@@ -1,3 +1,5 @@
+<p></p>
+
 <div tal:repeat="year view/years" class="mediacategory">
   <h2><a tal:attributes="href python:view.url(year)"><span tal:content="year/title" />  &raquo;</a> <span class="grayed smaller">(random selection)</span></h2>
   <div class="mediaitemlisting">

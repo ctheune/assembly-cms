@@ -2,7 +2,7 @@
 
 <div class="single page clearfix">
   <div class="entry"
-       tal:define="embed view/embed;
+       tal:define="embed python:view.embed(640);
                    next context/@@gallerynavbar/next">
 
     <a tal:condition="python: next and embed and embed.startswith('<img ')"
@@ -25,6 +25,7 @@
 
     <tal:block tal:define="downloads python:view.links(include=['download', 'sceneorg'])">
       <div class="download section" tal:condition="downloads">
+        <h3 class="section-title">Download</h3>
         <div tal:repeat="download downloads">
           <span tal:replace="structure download"/> (<span tal:content="download/@@downloaddomain"/>)
         </div>
@@ -34,11 +35,10 @@
     <tal:block tal:define="view_links python:list(view.links(exclude=['download', 'sceneorg']))">
       <div tal:condition="python: len(view_links) > 0"
            class="view section">
-        View on
-        <tal:block tal:repeat="download view_links">
-          <span tal:replace="structure download"/>
-          <tal:block condition="not:repeat/download/end"> | </tal:block>
-        </tal:block>
+        <h3 class="section-title">View on</h3>
+        <div tal:repeat="view_link view_links">
+          <span tal:replace="structure view_link"/>
+        </div>
       </div>
     </tal:block>
 

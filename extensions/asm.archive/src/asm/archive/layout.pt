@@ -37,6 +37,11 @@
     
     <div id="content" tal:content="structure view/render">
     </div>
+
+    <div id="footer" class="clearfix">
+      <a href="http://www.assembly.org/">assembly.org</a>
+    </div>
   </div>
+
 </body>
 </html>

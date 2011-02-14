@@ -5,8 +5,6 @@ import grok
 import asm.mediagallery.interfaces
 import urllib
 
-MEDIA_WIDTH = 560.0
-
 def get_media_info(media_id_data, default_text):
     media_id = media_id_data
     link_text = default_text
@@ -14,6 +12,9 @@ def get_media_info(media_id_data, default_text):
         media_id, link_text = media_id_data.split(u"|")
     return media_id, link_text
 
+def calculate_embed_size(aspect_ratio, controls_height, width):
+    height = float(width) / aspect_ratio + controls_height
+    return width, height
 
 class DownloadURLService(grok.GlobalUtility):
 
@@ -33,20 +34,22 @@ class YoutubeHosted(grok.GlobalUtility):
     grok.name('youtube')
 
     YOUTUBE_PARAMETERS = "&amp;hl=en_US&amp;fs=1&amp;enablejsapi=1"
-    EMBED_TEMPLATE = """<object id="ytplayerobject" width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;playerapiid=ytplayerobject%(params)s"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed id="ytplayerembed" src="http://www.youtube.com/v/%(id)s&amp;playerapiid=ytplayerembed%(params)s" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>"""
+    EMBED_TEMPLATE = """<object id="ytplayerobject" width="%(width)d" height="%(height)d"><param name="movie" value="http://www.youtube.com/v/%(id)s&amp;autoplay=1&amp;playerapiid=ytplayerobject%(params)s"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed id="ytplayerembed" src="http://www.youtube.com/v/%(id)s&amp;autoplay=1&amp;playerapiid=ytplayerembed%(params)s" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="%(width)d" height="%(height)d"></embed></object>"""
     CONTROLS_HEIGHT = 25.0
     ASPECT_RATIO = 16.0 / 9.0
+    DEFAULT_WIDTH = 640
 
     def link_code(self, media_id):
         return ('<a href="http://www.youtube.com/watch?v=%s">'
                 'YouTube</a>') % media_id.strip()
 
-    def embed_code(self, media_id):
-        youtube_height = MEDIA_WIDTH / self.ASPECT_RATIO + self.CONTROLS_HEIGHT
+    def embed_code(self, media_id, max_width=DEFAULT_WIDTH, max_height=None):
+        width, height = calculate_embed_size(
+            self.ASPECT_RATIO, self.CONTROLS_HEIGHT, max_width)
         return self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
-            'width': MEDIA_WIDTH,
-            'height': youtube_height,
+            'width': width,
+            'height': height,
             'params': self.YOUTUBE_PARAMETERS,
             }
 
@@ -82,29 +85,35 @@ class DemosceneTV(grok.GlobalUtility):
     EMBED_TEMPLATE = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id)s" width="%(width)d" height="%(height)d" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />"""
     CONTROLS_HEIGHT = 20.0
     ASPECT_RATIO = 16.0 / 9.0
+    DEFAULT_WIDTH = 512
 
     def link_code(self, media_id):
         link, _ = media_id.split(',')
         return ('<a href="http://demoscene.tv/prod.php?id_prod=%s">'
                 'DTV</a>') % link.strip()
 
-    def embed_code(self, media_id):
+    def embed_code(self, media_id, max_width=DEFAULT_WIDTH, max_height=None):
         _ , embed = media_id.split(',')
-        dtv_height = MEDIA_WIDTH / self.ASPECT_RATIO + self.CONTROLS_HEIGHT
+        width, height = calculate_embed_size(
+            self.ASPECT_RATIO, self.CONTROLS_HEIGHT, max_width)
         return  self.EMBED_TEMPLATE % {
             'id': embed.strip(),
-            'width': MEDIA_WIDTH,
-            'height': dtv_height}
+            'width': width,
+            'height': height}
 
 
 class Vimeo(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('vimeo')
 
-    EMBED_TEMPLATE = """<object width="%(width)d" height="%(height)d"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=%(id)s&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=abebff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=%(id)s&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=1&amp;color=abebff&amp;fullscreen=1&amp;autoplay=0&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="%(width)d" height="%(height)d"></embed></object>"""
+
+
+    EMBED_TEMPLATE = """<iframe src="http://player.vimeo.com/video/%(id)s?autoplay=1" width="%(width)d" height="%(height)d" frameborder="0"></iframe>"""
+
     CONTROLS_HEIGHT = 0.0
 
     DEFAULT_ASPECT_RATIO = 16.0 / 9.0
+    DEFAULT_WIDTH = 400
 
     def _get_aspect_ratio(self, aspect_str):
         width, height = aspect_str.strip().split(":")
@@ -123,13 +132,16 @@ class Vimeo(grok.GlobalUtility):
         media_id, _ = self._get_media_data(media_id_data)
         return "<a href='http://vimeo.com/%s'>Vimeo</a>" % media_id.strip()
 
-    def embed_code(self, media_id_data):
+    def embed_code(self, media_id_data, max_width=DEFAULT_WIDTH, max_height=None):
         media_id, aspect_ratio = self._get_media_data(media_id_data)
-        player_height = MEDIA_WIDTH / aspect_ratio + self.CONTROLS_HEIGHT
+
+        width, height = calculate_embed_size(
+            aspect_ratio, self.CONTROLS_HEIGHT, max_width)
+
         return  self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
-            'width': MEDIA_WIDTH,
-            'height': player_height}
+            'width': width,
+            'height': height}
 
 
 class Image(grok.GlobalUtility):
@@ -142,7 +154,7 @@ class Image(grok.GlobalUtility):
     def link_code(self, media_id):
         return None
 
-    def embed_code(self, media_id_data):
+    def embed_code(self, media_id_data, max_width=None, max_height=None):
         media_id, image_text = get_media_info(media_id_data, self.DEFAULT_TEXT)
         return  self.EMBED_TEMPLATE % {
             'id': media_id.strip(),

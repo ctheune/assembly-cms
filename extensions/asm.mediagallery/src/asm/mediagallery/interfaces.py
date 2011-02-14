@@ -65,5 +65,5 @@ class IContentHostingService(zope.interface.Interface):
 
 class IEmbeddableContentHostingService(IContentHostingService):
 
-    def embed_code(id):
+    def embed_code(id, max_width=False, max_height=False):
         pass

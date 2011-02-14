@@ -129,6 +129,12 @@ h2 {
   color:#999;
 }
 
+.section-title {
+  font-weight: normal;
+  font-size: 100%;
+  margin-bottom: 0em;
+}
+
 #details h2 {
   font-weight:600;
   text-shadow:0 0 1px #000;

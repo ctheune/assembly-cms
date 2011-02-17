@@ -61,7 +61,7 @@ class Index(asm.cmsui.retail.Pagelet):
 
     grok.context(asm.mediagallery.interfaces.IExternalAsset)
 
-    def embed(self):
+    def embed(self, max_width):
         for service_choice in self.context.locations:
             try:
                 service = zope.component.getUtility(
@@ -70,7 +70,7 @@ class Index(asm.cmsui.retail.Pagelet):
             except LookupError:
                 pass
             else:
-                return service.embed_code(service_choice.id)
+                return service.embed_code(service_choice.id, max_width)
 
     def links(self, include=None, exclude=None, max=None):
         count = 0

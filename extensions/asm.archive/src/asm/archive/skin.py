@@ -158,6 +158,13 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
         return randomize_and_limit(items, limit)
 
+    @property
+    def description(self):
+        if 'description' in self.application:
+            edition = asm.cms.edition.select_edition(self.application['description'], self.request)
+            return edition
+        else:
+            return None
 
 class SelectLanguage(grok.View):
 

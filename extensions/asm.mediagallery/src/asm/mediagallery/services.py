@@ -106,8 +106,6 @@ class Vimeo(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('vimeo')
 
-
-
     EMBED_TEMPLATE = """<iframe src="http://player.vimeo.com/video/%(id)s?autoplay=1" width="%(width)d" height="%(height)d" frameborder="0"></iframe>"""
 
     CONTROLS_HEIGHT = 0.0

@@ -23,7 +23,7 @@
     </tal:block></h2>
     <p tal:condition="view/info/description" tal:content="view/info/description"></p>
 
-    <tal:block tal:define="downloads python:view.links(include=['download', 'sceneorg'])">
+    <tal:block tal:define="downloads python:list(view.links(include=['download', 'sceneorg']))">
       <div class="download section" tal:condition="downloads">
         <h3 class="section-title">Download</h3>
         <div tal:repeat="download downloads">

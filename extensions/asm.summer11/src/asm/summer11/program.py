@@ -17,7 +17,7 @@ class ProgramIndex(asm.cmsui.retail.Pagelet):
     def events(self):
         for page in self.context.page.subpages:
             edition = asm.cms.edition.select_edition(page, self.request)
-            if edition is asm.cms.edition.NullEdition:
+            if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
             yield edition
 
@@ -33,7 +33,7 @@ class SectionSnippet(grok.View):
             context = self.context
         for page in context.page.subpages:
             edition = asm.cms.edition.select_edition(page, self.request)
-            if edition is asm.cms.edition.NullEdition:
+            if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
             yield edition
 
@@ -43,3 +43,10 @@ class CompetitionSnippet(grok.View):
     grok.name('snippet')
     grok.layer(asm.summer11.skin.ISkin)
     grok.context(asm.party.program.Competition)
+
+
+class EventSnippet(grok.View):
+
+    grok.name('snippet')
+    grok.layer(asm.summer11.skin.ISkin)
+    grok.context(asm.party.program.Event)

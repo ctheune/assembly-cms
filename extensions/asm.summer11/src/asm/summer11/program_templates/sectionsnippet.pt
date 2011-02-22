@@ -8,16 +8,13 @@ is still another level of sections in between that we don't link to. -->
     <div class="subsection"
         tal:repeat="subsection view/sub">
 
-	<h3><a tal:content="subsection/title" tal:attributes="href python:view.url(subsection)">Demo Compo</a></h3>
+        <h3><a tal:content="subsection/title" tal:attributes="href python:view.url(subsection)">Demo Compo</a></h3>
 
         <div class="detail"
                 tal:define="events python:list(view.sub(subsection))">
 
             <p tal:content="subsection/headline">
             </p>
-
-            <p>Events (<span
-                tal:content="python:len(events)"/>)</p>
 
             <ul>
                 <li tal:repeat="event events"

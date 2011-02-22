@@ -24,11 +24,11 @@
   <body>
 
   <div id="main">
-    
+
     <div id="header" class="clearfix">
-      <h1>ASSEMBLY PARTY MANUAL</h1>
+      <h1><a tal:attributes="href view/application_url">ASSEMBLY SUMMER MANUAL</a></h1>
     </div>
-    
+
     <div id="content" class="clearfix">
       <div id="contents">
         <div tal:replace="structure context/@@navtree"> </div>

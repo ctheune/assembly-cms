@@ -36,6 +36,7 @@ connection.
 
 You can then run the CMS by calling the init script::
 
+    $ ./etc/init.d/asm.cms-zeo start
     $ ./etc/init.d/asm.cms-server start
 
 The server is now accessible from a browser by opening the URL::

@@ -55,8 +55,8 @@ class LayoutHelper(grok.View):
             return []
 
     def generateCountdown(self):
-        times = (('05.08.2010 12:00', True, "until ASSEMBLY!"),
-                 ('08.08.2010 18:00', True, "of ASSEMBLY left to enjoy!"),
+        times = (('04.08.2011 12:00', True, "until ASSEMBLY!"),
+                 ('07.08.2011 18:00', True, "of ASSEMBLY left to enjoy!"),
                   (None, False, "ASSEMBLY is over."),)
         format = '%d.%m.%Y %H:%M'
 

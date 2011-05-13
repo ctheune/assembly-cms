@@ -115,6 +115,35 @@ class YearlyNavigation(grok.View):
         return (self.year_end - before < self.limit)
 
 
+class GenerateMap(grok.View):
+    # XXX need to trigger on import or stuff might break. blah.
+    grok.context(asm.cms.homepage.Homepage)
+    grok.layer(ISkin)
+    grok.require('asm.cms.EditContent')
+
+    def update(self):
+        map = {}
+        for year in select_years(self.application.subpages, self.request):
+            map[year.__name__] = {}
+            iids = zope.component.getUtility(zope.intid.IIntIds)
+            for category in year.page.subpages:
+                map[year.__name__][category.__name__] = []
+                for media in category.subpages:
+                    if media.type not in [
+                        'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]:
+                        continue
+                    edition = asm.cms.edition.select_edition(media, self.request)
+                    if isinstance(edition, asm.cms.edition.NullEdition):
+                        continue
+                    map[year.__name__][category.__name__].append(iids.getId(edition))
+                if not map[year.__name__][category.__name__]:
+                    del map[year.__name__][category.__name__]
+        self.context.gallery_map = map
+
+    def render(self):
+        pass
+
+
 class Homepage(asm.cmsui.retail.Pagelet):
 
     grok.context(asm.cms.homepage.Homepage)
@@ -133,30 +162,19 @@ class Homepage(asm.cmsui.retail.Pagelet):
             yield edition
 
     def select_random_items(self, year, limit=None):
-
-        def randomize_and_limit(items, limit=None):
-            result = items
-            random.shuffle(result)
-            if limit is not None:
-                return result[:limit]
-            return result
-
-        items = []
-
-        for category in self.editioned_subpages(year.page):
-            category_items = []
-            for media in category.list_subpages(type=[
-                'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]):
-                edition = asm.cms.edition.select_edition(media, self.request)
-                if isinstance(edition, asm.cms.edition.NullEdition):
-                    continue
-                category_items.append(dict(
-                        edition=edition,
-                        gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
-            # Limit impact of large categories on front page listings.
-            items.extend(randomize_and_limit(category_items, limit))
-
-        return randomize_and_limit(items, limit)
+        if not hasattr(self.context, 'gallery_map'):
+            return
+        result = []
+        for category_items in self.context.gallery_map[year.__name__].values():
+            random.shuffle(category_items)
+            result.extend(category_items[:limit])
+        random.shuffle(result)
+        result = result[:limit]
+        iids = zope.component.getUtility(zope.intid.IIntIds)
+        for edition_id in result:
+            edition = iids.getObject(edition_id)
+            yield dict(edition=edition,
+                       gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition))
 
     @property
     def description(self):

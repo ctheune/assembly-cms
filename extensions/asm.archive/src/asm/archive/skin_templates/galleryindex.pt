@@ -5,13 +5,17 @@
 <div tal:repeat="category view/list_categories" class="mediacategory">
 
   <h2>
-    <a tal:attributes="href python:view.url(category.page)">
-      <span tal:replace="category/title">Compo type</span> &raquo;
+    <a tal:attributes="href python:view.url(category['edition'].page)">
+      <span tal:replace="category/edition/title">Compo type</span> &raquo;
     </a>
   </h2>
 
+  <p tal:condition="category/gallery/description"
+       tal:content="structure category/gallery/description"
+       class="description"></p>
+
   <div class="mediaitemlisting">
-    <tal:block tal:repeat="item python:view.list_category_items(category, 5)">
+    <tal:block tal:repeat="item python:view.list_category_items(category['edition'], 5)">
       <div class="video">
 
         <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">

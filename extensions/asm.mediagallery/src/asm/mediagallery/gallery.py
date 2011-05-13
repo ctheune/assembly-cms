@@ -139,8 +139,9 @@ class TextIndexAssetAnnotation(grok.Adapter):
         except LookupError:
             pass
         else:
-            result = [asset_annotation.author,
-                      asset_annotation.description]
+            # Values of these items may be None.
+            result = [asset_annotation.author or '',
+                      asset_annotation.description or '']
         self.body = ' '.join(result)
 
 

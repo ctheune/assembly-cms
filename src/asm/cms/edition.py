@@ -168,14 +168,17 @@ def select_edition(page, request):
     scores = dict((x, 0) for x in page.editions)
 
     # Consult all edition selectors
-    selectors = zope.component.subscribers(
-        (page, request), asm.cms.interfaces.IEditionSelector)
-    for selector in selectors:
-        desired = set(selector.preferred + selector.acceptable)
+    if not hasattr(request, 'selectors'):
+        selectors = zope.component.subscribers(
+            (request,), asm.cms.interfaces.IEditionSelector)
+        request.selectors = selectors
+    for selector in request.selectors:
+        preferred, acceptable = selector.select(page)
+        desired = set(preferred + acceptable)
         for edition in list(scores):
             if edition not in desired:
                 del scores[edition]
-            if edition in set(selector.preferred):
+            if edition in set(preferred):
                 scores[edition] += 1
 
     # In case that the selectors found all the existing editions undesirable,

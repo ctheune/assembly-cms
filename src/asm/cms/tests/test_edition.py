@@ -8,6 +8,8 @@ import zope.component
 
 EP = asm.cms.edition.EditionParameters
 
+class DummyRequest(object):
+    pass
 
 class EditionTests(unittest.TestCase):
 
@@ -82,11 +84,12 @@ class EditionTests(unittest.TestCase):
         ed1 = asm.cms.edition.Edition()
         ed2 = asm.cms.edition.Edition()
         page.editions = [ed1, ed2]
-        selector = minimock.Mock('selector')
-        selector.preferred = [ed1]
-        selector.acceptable = []
+        selector = minimock.Mock('selector', tracker=None)
+        selector.select.mock_returns = ([ed1], [])
         minimock.mock('zope.component.subscribers', returns=[selector],
                       tracker=self.tracker)
-        self.assertTrue(ed1 is asm.cms.edition.select_edition(page, None))
-        selector.preferred = [ed2]
-        self.assertTrue(ed2 is asm.cms.edition.select_edition(page, None))
+        self.assertTrue(
+            ed1 is asm.cms.edition.select_edition(page, DummyRequest()))
+        selector.select.mock_returns = ([ed2], [])
+        self.assertTrue(
+            ed2 is asm.cms.edition.select_edition(page, DummyRequest()))

@@ -65,17 +65,14 @@ class YearlyNavigation(grok.View):
         self.year_start, self.year_end = self.get_navigation_limits(self.years, self.limit)
 
     def get_closest_year(self):
-        traversed = self.request._traversed_names
-        if len(traversed) > 1:
-            # application/yeargallery/somethingelse
-            # select the yeargallery
-            closest_year = traversed[1]
-            closest_page = self.application.get(closest_year, None)
-            if closest_page is None:
-                return None
-            return asm.cms.edition.select_edition(closest_page, self.request)
+        closest_page = self.context
+        application = asm.cms.get_application(closest_page)
+        if closest_page == application:
+            return None
+        while closest_page.__parent__ != application:
+            closest_page = closest_page.__parent__
 
-        return None
+        return asm.cms.edition.select_edition(closest_page, self.request)
 
     def get_navigation_limits(self, years, limit=DEFAULT_YEARS):
         current_year = self.get_closest_year()
@@ -102,7 +99,7 @@ class YearlyNavigation(grok.View):
             return (0, max_selection)
 
     def list_years_near_current_page(self, limit=DEFAULT_YEARS):
-        assert limit > 2, "Limit must enable navigation back and forth."
+        assert limit > 2, "Limit must enable navigating back and forth."
 
         return self.years[self.year_start:self.year_end]
 

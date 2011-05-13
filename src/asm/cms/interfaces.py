@@ -114,6 +114,11 @@ class ISearchableText(zope.interface.Interface):
         "A Unicode string containing text for indexing.")
 
 
+class IIndexedContent(ISearchableText):
+    """A wrapper interface to accumulate the various indexes for
+    flexibility."""
+
+
 class IReplaceSupport(zope.interface.Interface):
 
     def search(term):

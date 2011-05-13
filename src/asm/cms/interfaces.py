@@ -98,8 +98,8 @@ class IAsset(zope.interface.Interface):
 
 class IEditionSelector(zope.interface.Interface):
 
-    preferred = zope.interface.Attribute('A list of preferred editions.')
-    acceptable = zope.interface.Attribute('A list of acceptable editions')
+    def select(page):
+        """Returns a tuple with sets of editions (preferred, acceptable)."""
 
 
 class IEditionLabels(zope.interface.Interface):

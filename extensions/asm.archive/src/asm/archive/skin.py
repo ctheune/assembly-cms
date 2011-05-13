@@ -210,6 +210,15 @@ class GalleryIndex(asm.mediagallery.gallery.Index):
     def render_parent(self):
         return asm.mediagallery.gallery.Index.template.render(self)
 
+    def list_categories(self):
+        for category in super(GalleryIndex, self).list_categories():
+            yield {
+                'edition': category,
+                'gallery': asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(category),
+                }
+
+
+
 ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
 
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index):
@@ -229,6 +238,19 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar):
         if len(data) <= max_length:
             return data
         return data[:max_length - 3] + "..."
+
+    def _return_same_type_page(self, page):
+        if not page:
+            return None
+        if page.page.type != self.context.page.type:
+            return None
+        return page
+
+    def next(self):
+        return self._return_same_type_page(super(GalleryNavBar, self).next())
+
+    def previous(self):
+        return self._return_same_type_page(super(GalleryNavBar, self).previous())
 
     def update(self):
         pages = []

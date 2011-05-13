@@ -44,15 +44,19 @@ class ServiceTests(asm.cms.testutils.TestCase):
 
     def test_demoscene_tv_link_code_is_ok(self):
         service = asm.mediagallery.services.DemosceneTV()
-        code = service.link_code('link-id,embed-id')
+        code = service.link_code('id_prod=1&id_file=2&id_app=3&image=imagelink&width=4&height=5')
         self.assertValidXml(code)
-        self.assertIn('link-id', code)
+        self.assertIn('1', code)
 
     def test_demoscene_tv_embed_code_is_ok(self):
         service = asm.mediagallery.services.DemosceneTV()
-        code = service.embed_code('link-id,embed-id')
+        code = service.embed_code('id_prod=1&id_file=2&id_app=3&image=imagelink&width=4&height=5')
         self.assertValidXml(code)
-        self.assertIn('embed-id', code)
+        self.assertIn('1', code)
+        self.assertIn('2', code)
+        self.assertIn('3', code)
+        self.assertIn('4', code)
+        self.assertIn('5', code)
 
     def test_vimeo_link_code_is_ok(self):
         service = asm.mediagallery.services.Vimeo()

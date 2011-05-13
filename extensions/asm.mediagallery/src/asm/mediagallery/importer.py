@@ -13,8 +13,6 @@ def import_mediagalleryadditionalinfo(self, edition, node):
     if media_info.ranking is not None:
         media_info.ranking = int(media_info.ranking)
 
-    media_info.ranking = node.get('ranking', None)
-
     if node.text is not None and len(node.text) > 0:
         media_info.thumbnail = asm.cms.importer.base64_to_blob(node.text)
 

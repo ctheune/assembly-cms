@@ -4,12 +4,15 @@ import asm.cmsui.retail
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
+import base64
 import grok
+import magic
 import megrok.pagelet
 import random
 import re
 import urlparse
 import zope.interface
+import ZODB.blob
 
 
 skin_name = 'asmarchive'
@@ -226,3 +229,13 @@ class DownloadDomain(grok.View):
     def render(self):
         address = re.sub(""".+href="([^"]+?)".+""", "\\1", self.context)
         return urlparse.urlparse(address).netloc
+
+
+# TODO Maybe move this to more generic utility place or merge with asset.
+class DataUri(grok.View):
+    grok.context(ZODB.blob.Blob)
+
+    def render(self):
+        data = self.context.open('r').read()
+        return "data:%s;base64,%s" % (
+            magic.whatis(data), base64.b64encode(data))

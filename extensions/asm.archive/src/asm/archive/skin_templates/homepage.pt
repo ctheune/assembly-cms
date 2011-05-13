@@ -8,7 +8,7 @@
       <div class="video">
 
         <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
-          <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+          <img tal:attributes="src item/gallery/thumbnail/@@datauri;
 alt item/edition/title"
                width="160" height="90" />
           <span tal:replace="item/edition/title"/>

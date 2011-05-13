@@ -55,8 +55,6 @@ class ServiceTests(asm.cms.testutils.TestCase):
         self.assertIn('1', code)
         self.assertIn('2', code)
         self.assertIn('3', code)
-        self.assertIn('4', code)
-        self.assertIn('5', code)
 
     def test_vimeo_link_code_is_ok(self):
         service = asm.mediagallery.services.Vimeo()

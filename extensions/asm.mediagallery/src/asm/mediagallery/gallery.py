@@ -126,6 +126,24 @@ class AssetAnnotation(grok.Annotation):
                 self.description == other.description)
 
 
+class TextIndexAssetAnnotation(grok.Adapter):
+
+    zope.interface.implements(asm.cms.interfaces.ISearchableText)
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def __init__(self, edition):
+        result = []
+        try:
+            asset_annotation = (
+                asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition))
+        except LookupError:
+            pass
+        else:
+            result = [asset_annotation.author,
+                      asset_annotation.description]
+        self.body = ' '.join(result)
+
+
 def add_gallery_data(edition):
     page = edition.page
     while page:

@@ -222,6 +222,8 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar):
         return data[:max_length - 3] + "..."
 
     def _return_same_type_page(self, page):
+        if not page:
+            return None
         if page.page.type != self.context.page.type:
             return None
         return page

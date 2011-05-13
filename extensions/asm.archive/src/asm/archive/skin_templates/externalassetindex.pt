@@ -2,6 +2,7 @@
 
 <div class="single page clearfix">
   <div class="entry"
+       id="gallery-item"
        tal:define="embed python:view.embed(640);
                    next context/@@gallerynavbar/next">
 

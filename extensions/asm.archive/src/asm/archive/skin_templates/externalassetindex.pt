@@ -21,7 +21,8 @@
         by
         <span tal:replace="view/info/author" />
     </tal:block></h2>
-    <p tal:condition="view/info/description" tal:content="view/info/description"></p>
+    <p tal:condition="view/info/description"
+       tal:content="structure view/info/description"></p>
 
     <tal:block tal:define="downloads python:list(view.links(include=['download', 'sceneorg']))">
       <div class="download section" tal:condition="downloads">

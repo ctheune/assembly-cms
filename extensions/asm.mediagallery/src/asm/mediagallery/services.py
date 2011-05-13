@@ -1,8 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import grok
 import asm.mediagallery.interfaces
+import cgi
+import grok
 import urllib
 
 def get_media_info(media_id_data, default_text):
@@ -82,24 +83,24 @@ class DemosceneTV(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('demoscenetv')
 
-    EMBED_TEMPLATE = """<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id)s" width="%(width)d" height="%(height)d" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />"""
+    EMBED_TEMPLATE = """
+<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id_file)s_%(id_prod)s_%(id_app)s" width="%(width)s" height="%(height)s" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />"""
     CONTROLS_HEIGHT = 20.0
     ASPECT_RATIO = 16.0 / 9.0
     DEFAULT_WIDTH = 512
 
+    def _get_vars(self, media_id):
+        return dict(map(lambda x : (x[0], x[1][0]),
+                        cgi.parse_qs(media_id).items()))
+
     def link_code(self, media_id):
-        link, _ = media_id.split(',')
+        media_vars = self._get_vars(media_id)
         return ('<a href="http://demoscene.tv/prod.php?id_prod=%s">'
-                'DTV</a>') % link.strip()
+                'DTV</a>') % media_vars['id_prod']
 
     def embed_code(self, media_id, max_width=DEFAULT_WIDTH, max_height=None):
-        _ , embed = media_id.split(',')
-        width, height = calculate_embed_size(
-            self.ASPECT_RATIO, self.CONTROLS_HEIGHT, max_width)
-        return  self.EMBED_TEMPLATE % {
-            'id': embed.strip(),
-            'width': width,
-            'height': height}
+        media_vars = self._get_vars(media_id)
+        return  self.EMBED_TEMPLATE % media_vars
 
 
 class Vimeo(grok.GlobalUtility):

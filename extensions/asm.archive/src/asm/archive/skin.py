@@ -124,10 +124,11 @@ class GenerateMap(grok.View):
     def update(self):
         map = {}
         for year in select_years(self.application.subpages, self.request):
-            map[year.__name__] = {}
+            year_name = year.page.__name__
+            map[year_name] = {}
             iids = zope.component.getUtility(zope.intid.IIntIds)
             for category in year.page.subpages:
-                map[year.__name__][category.__name__] = []
+                map[year_name][category.__name__] = []
                 for media in category.subpages:
                     if media.type not in [
                         'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]:
@@ -135,9 +136,9 @@ class GenerateMap(grok.View):
                     edition = asm.cms.edition.select_edition(media, self.request)
                     if isinstance(edition, asm.cms.edition.NullEdition):
                         continue
-                    map[year.__name__][category.__name__].append(iids.getId(edition))
-                if not map[year.__name__][category.__name__]:
-                    del map[year.__name__][category.__name__]
+                    map[year_name][category.__name__].append(iids.getId(edition))
+                if not map[year_name][category.__name__]:
+                    del map[year_name][category.__name__]
         self.context.gallery_map = map
 
     def render(self):
@@ -163,9 +164,10 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     def select_random_items(self, year, limit=None):
         if not hasattr(self.context, 'gallery_map'):
-            return
+            raise StopIteration
         result = []
-        for category_items in self.context.gallery_map[year.__name__].values():
+        year_name = year.page.__name__
+        for category_items in self.context.gallery_map[year_name].values():
             random.shuffle(category_items)
             result.extend(category_items[:limit])
         random.shuffle(result)

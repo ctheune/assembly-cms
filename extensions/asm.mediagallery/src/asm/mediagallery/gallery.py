@@ -141,7 +141,7 @@ class TextIndexAssetAnnotation(grok.Adapter):
         else:
             result = [asset_annotation.author,
                       asset_annotation.description]
-        self.body = ' '.join(result)
+        self.body = ' '.join(filter(None, result))
 
 
 def add_gallery_data(edition):

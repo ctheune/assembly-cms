@@ -100,6 +100,12 @@ class DemosceneTV(grok.GlobalUtility):
 
     def embed_code(self, media_id, max_width=DEFAULT_WIDTH, max_height=None):
         media_vars = self._get_vars(media_id)
+        width = int(media_vars['width'])
+        height = int(media_vars['height'])
+        aspect = float(width)/height
+        new_width, new_height = calculate_embed_size(aspect, 0, max_width)
+        media_vars['width'] = new_width
+        media_vars['height'] = new_height
         return  self.EMBED_TEMPLATE % media_vars
 
 

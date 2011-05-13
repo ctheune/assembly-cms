@@ -192,6 +192,15 @@ class GalleryIndex(asm.mediagallery.gallery.Index):
     def render_parent(self):
         return asm.mediagallery.gallery.Index.template.render(self)
 
+    def list_categories(self):
+        for category in super(GalleryIndex, self).list_categories():
+            yield {
+                'edition': category,
+                'gallery': asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(category),
+                }
+
+
+
 ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
 
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index):

@@ -16,6 +16,7 @@ a img {border:0;}
 #page h1 {
 	border-bottom:1px solid #ddd;
 	padding-bottom:0.4em;
+        font-size:32px;
 }
 
 h1 {
@@ -24,8 +25,8 @@ h1 {
 
 h2 {
   font-weight:normal;
-  font-size:30px;
-	margin:1.5em 0 0.5em 0;
+  font-size:26px;
+  margin:1.5em 0 0.5em 0;
 }
 
 blockquote {
@@ -115,8 +116,11 @@ blockquote {
 
 #sidebar .navigation .head {
         background-color: #3a3a3a;
-        color: white;
         font-weight: bold;
+}
+
+#sidebar .navigation .head a {
+        color: white;
 }
 
 #footer {

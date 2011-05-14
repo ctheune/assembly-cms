@@ -40,11 +40,15 @@
 
           <div id="sidebar">
             <!-- Sidebar -->
+            <ul>
+              <li tal:repeat="section context/@@layouthelper/sub_sections">
+                <a tal:attributes="href python:view.url(section)" tal:content="section/title">Blog</a></li>
+            </ul>
           </div>
 
         </div>
         <div id="footer">
-          &copy; Assembly Organizing 
+          &copy; 2011 Assembly Organizing
         </div>
       </div>
 

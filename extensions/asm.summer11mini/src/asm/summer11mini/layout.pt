@@ -134,10 +134,10 @@
 
     <div id="footer">
       <p id="footer-links">
-      <a tal:attributes="href string:${view/application_url}/asm/contact">feedback</a> |
-      <a tal:attributes="href string:${view/application_url}/asm/asmorg/privacy">privacy</a> |
-      <a tal:attributes="href string:${view/application_url}/asm/contact">contact</a> |
-      <br />Copyright &copy; <a tal:attributes="href string:${view/application_url}/asm/asmorg">Assembly Organizing</a>, 2009-2011
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact">feedback</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/legal/privacy">privacy</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact">contact</a> |
+      <br />Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg">Assembly Organizing</a>, 2009-2011
       </p>
     </div> <!-- footer -->
 

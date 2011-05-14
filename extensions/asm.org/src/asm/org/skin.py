@@ -7,7 +7,7 @@ import megrok.pagelet
 import zope.interface
 
 asmorg = asm.cms.cms.Profile('asmorg')
-languages = ['en', 'fi']
+languages = ['en']
 skin_name = 'asmorg'
 
 
@@ -40,8 +40,10 @@ class LayoutHelper(grok.View):
             candidate = candidate.__parent__
         else:
             return
-        return asm.cms.edition.find_editions(
-            candidate, request=self.request, recurse=False)
+        return dict(section=asm.cms.edition.select_edition(
+                        candidate, self.request),
+                    subs=asm.cms.edition.find_editions(
+                        candidate, request=self.request, recurse=False))
 
     # A helper class to get access to the static directory in this module from
     # the layout.
@@ -99,53 +101,3 @@ class Navtree(grok.View):
 
     def css_classes(self, *classes):
         return ' '.join(filter(None, classes))
-
-
-class Homepage(asm.cmsui.retail.Pagelet):
-    grok.context(asm.cms.homepage.Homepage)
-    grok.layer(ISkin)
-    grok.name('index')
-
-    def news(self, tag):
-        if 'news' not in self.context.page:
-           raise StopIteration() 
-        
-        news_edition = asm.cms.edition.select_edition(
-            self.context.page['news'], self.request)
-        for item in news_edition.list():
-            edition = asm.cms.edition.select_edition(
-                item, self.request)
-            if isinstance(edition, asm.cms.edition.NullEdition):
-                continue
-            if not edition.has_tag(tag):
-                continue
-            result = dict(edition=edition,
-                          news=asm.cms.news.INewsFields(edition))
-            if result['news'].image:
-                result['teaser_url'] = self.url(edition.page['teaser-image'])
-            else:
-                result['teaser_url'] = ''
-            yield result
-
-    def featured(self):
-        return sorted(self.news('featured'),
-                      key=lambda x: x['edition'].modified,
-                      reverse=True)
-
-    def frontpage(self):
-        return list(sorted(self.news('frontpage'),
-                           key=lambda x: x['edition'].modified,
-                           reverse=True))[:12]
-
-
-class SelectLanguage(grok.View):
-
-    grok.context(zope.interface.Interface)
-    grok.name('select-language')
-    grok.layer(ISkin)
-
-    def update(self, lang):
-        self.request.response.setCookie('asm.translation.lang', lang, path='/')
-
-    def render(self):
-        self.redirect(self.url(self.context))

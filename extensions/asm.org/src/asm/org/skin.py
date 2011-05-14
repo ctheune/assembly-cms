@@ -41,7 +41,9 @@ class LayoutHelper(grok.View):
         else:
             return
         editions = list(asm.cms.edition.find_editions(
-            candidate, request=self.request, recurse=False))
+            candidate, request=self.request,
+            schema=asm.cms.interfaces.IHTMLPage,
+            recurse=False))
         if not editions:
             return
         return dict(section=asm.cms.edition.select_edition(

@@ -34,3 +34,10 @@ class IndexedContent(grok.Adapter):
                 continue
             result.append(searchable_text.body)
         return ' '.join(result)
+
+
+class SearchSites(grok.Annotation):
+    grok.implements(asm.cms.interfaces.ISearchSites)
+    grok.context(asm.cms.interfaces.ICMS)
+
+    sites = ()

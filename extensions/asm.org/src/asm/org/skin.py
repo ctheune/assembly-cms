@@ -27,10 +27,21 @@ class LayoutHelper(grok.View):
 
     def sections(self):
         root = self.application
-        for section in asm.cms.edition.find_editions(root, request=self.request,
-                                                 recurse=False):
+        for section in asm.cms.edition.find_editions(
+                root, request=self.request, recurse=False):
             if section.tags and 'navigation' in section.tags:
                 yield section
+
+    def sub_sections(self):
+        candidate = self.context.page
+        while candidate is not None:
+            if asm.cms.interfaces.ICMS.providedBy(candidate.__parent__):
+                break
+            candidate = candidate.__parent__
+        else:
+            return
+        return asm.cms.edition.find_editions(
+            candidate, request=self.request, recurse=False)
 
     # A helper class to get access to the static directory in this module from
     # the layout.

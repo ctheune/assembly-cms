@@ -7,7 +7,7 @@ import megrok.pagelet
 import zope.interface
 
 asmorg = asm.cms.cms.Profile('asmorg')
-languages = ['en']
+languages = ['en', 'fi']
 skin_name = 'asmorg'
 
 

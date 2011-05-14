@@ -40,8 +40,11 @@
 
           <div id="sidebar">
             <!-- Sidebar -->
-            <ul>
-              <li tal:repeat="section context/@@layouthelper/sub_sections">
+            <ul class="navigation"
+              tal:define="sub_sections context/@@layouthelper/sub_sections"
+              tal:condition="sub_sections">
+              <li class="head" tal:content="sub_sections/section/title"></li>
+              <li tal:repeat="section sub_sections/subs">
                 <a tal:attributes="href python:view.url(section)" tal:content="section/title">Blog</a></li>
             </ul>
           </div>

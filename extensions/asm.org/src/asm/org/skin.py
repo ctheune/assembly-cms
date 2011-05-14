@@ -25,34 +25,12 @@ class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
 
-    def current_events(self):
-        if 'program' not in self.application or 'schedule' not in self.application['program']:
-            raise StopIteration()
-        schedule = asm.cms.edition.select_edition(
-            self.application['program']['schedule'], self.request)
-        now = datetime.datetime.now()
-        for key, event in schedule.events.items():
-            if event.start <= now and event.end > now:
-                yield dict(event=event, key=key)
-
-    def news(self):
-        try:
-            # This try/except block makes the skin more resilient towards
-            # incomplete data and use with databases that don't exactly fit
-            # the expected content model.
-            result = []
-            news_edition = asm.cms.edition.select_edition(
-                self.application['news'], self.request)
-            for item in news_edition.list():
-                edition = asm.cms.edition.select_edition(
-                    item, self.request)
-                if isinstance(edition, asm.cms.edition.NullEdition):
-                    continue
-                result.append(edition)
-            result.sort(key=lambda x: x.modified, reverse=True)
-            return result[:5]
-        except:
-            return []
+    def sections(self):
+        root = self.application
+        for section in asm.cms.edition.find_editions(root, request=self.request,
+                                                 recurse=False):
+            if section.tags and 'navigation' in section.tags:
+                yield section
 
     # A helper class to get access to the static directory in this module from
     # the layout.

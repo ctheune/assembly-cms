@@ -175,6 +175,12 @@ class IProfileSelection(zope.interface.Interface):
         title=u'Profile',
         source=ProfileSource())
 
+class ISearchSites(zope.interface.Interface):
+
+    sites = zope.schema.List(
+        title=u'Sites',
+        value_type=zope.schema.URI(title=u'Query URL'))
+
 
 class IImport(zope.interface.Interface):
 
@@ -182,5 +188,3 @@ class IImport(zope.interface.Interface):
         title=u'Content',
         description=(u'The content is expected to be in the Assembly CMS '
                      u'XML import format.'))
-
-

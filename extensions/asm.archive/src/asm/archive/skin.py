@@ -1,3 +1,7 @@
+# Copyright (c) 2011 Assembly Organizing
+# See also LICENSE.txt
+
+import ZODB.blob
 import asm.cms
 import asm.cmsui.interfaces
 import asm.cmsui.retail
@@ -5,15 +9,16 @@ import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
 import base64
+import email.mime.text
 import grok
 import magic
 import megrok.pagelet
+import os.path
 import random
 import re
+import smtplib
 import urlparse
 import zope.interface
-import ZODB.blob
-
 
 skin_name = 'asmarchive'
 asmarchive = asm.cms.cms.Profile(skin_name)
@@ -281,3 +286,40 @@ class DataUri(grok.View):
         data = self.context.open('r').read()
         return "data:%s;base64,%s" % (
             magic.whatis(data), base64.b64encode(data))
+
+
+class IFeedbackForm(zope.interface.Interface):
+
+    name = zope.schema.TextLine(title=u'Name')
+    mail = zope.schema.TextLine(title=u'Email address')
+    comment = zope.schema.Text(title=u'Comment')
+
+
+class Feedback(asm.cmsui.form.Form):
+
+    grok.layer(ISkin)
+    grok.context(zope.interface.Interface)
+    form_fields = grok.AutoFields(IFeedbackForm)
+    template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
+
+    mail_template = u'''
+%(comment)s
+
+URL: %(url)s
+
+'''
+
+    @grok.action(u'Send')
+    def send(self, name, mail, comment):
+        msg = email.mime.Text.MIMEText(
+            self.mail_template % dict(name=name,
+                                      comment=comment,
+                                      url=self.url(self.context)))
+        msg['Subject'] = u'Feedback about "%s"' % self.context.title
+        msg['From'] = u'%s <%s>' % (name, mail)
+        msg['To'] = u'web@assembly.org'
+        smtp = smtplib.SMTP("mail.assembly.org")
+        smtp.sendmail('web@assembly.org', ['web@assembly.org'],
+                      msg.as_string())
+        self.flash(u'Your feedback was send.')
+        self.redirect(self.url(self.context))

@@ -131,3 +131,12 @@ blockquote {
 	font-size:13px;
 }
 
+table.contact-info td {
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+table.contact-info td:first-child {
+	padding-right: 1em;
+	text-align: right;
+}

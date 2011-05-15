@@ -1,15 +1,18 @@
 # Copyright (c) 2009 Assembly Organizing
 # See also LICENSE.txt
 
+import asm.cms.edition
 import minimock
 import unittest
-import asm.cms.edition
+import zope.annotation.interfaces
 import zope.component
+import zope.interface
 
 EP = asm.cms.edition.EditionParameters
 
-class DummyRequest(object):
-    pass
+class DummyRequest(dict):
+    zope.interface.implements(zope.annotation.interfaces.IAnnotations)
+
 
 class EditionTests(unittest.TestCase):
 

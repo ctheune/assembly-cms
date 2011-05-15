@@ -168,11 +168,12 @@ def select_edition(page, request):
     scores = dict((x, 0) for x in page.editions)
 
     # Consult all edition selectors
-    if not hasattr(request, 'selectors'):
+    annotations = zope.annotation.interfaces.IAnnotations(request)
+    if 'asm.cms.edition.selectors' not in annotations:
         selectors = zope.component.subscribers(
             (request,), asm.cms.interfaces.IEditionSelector)
-        request.selectors = selectors
-    for selector in request.selectors:
+        annotations['asm.cms.edition.selectors'] = selectors
+    for selector in annotations['asm.cms.edition.selectors']:
         preferred, acceptable = selector.select(page)
         desired = set(preferred + acceptable)
         for edition in list(scores):

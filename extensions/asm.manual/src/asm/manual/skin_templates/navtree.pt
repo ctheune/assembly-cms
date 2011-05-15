@@ -1,5 +1,5 @@
 <tal:block tal:define="items view/tree">
-  <ul>
+  <ol>
   <metal:block define-macro="inner">
       <li tal:repeat="item items"
           tal:attributes="class item/class">
@@ -7,12 +7,12 @@
                              class python:view.page is item['page'] and 'selected' or ' '"
              tal:content="item/page/title"></a>
           <tal:block define="items item/subpages">
-              <ul tal:condition="items">
+              <ol tal:condition="items">
                   <metal:block use-macro="template/macros/inner">
                   </metal:block>
-              </ul>
+              </ol>
           </tal:block>
       </li>
   </metal:block>
-  </ul>
+  </ol>
 </tal:block>

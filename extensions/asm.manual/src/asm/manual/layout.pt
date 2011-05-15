@@ -12,7 +12,6 @@
 
     <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
     <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
-    <link rel="search" type="application/opensearchdescription+xml" title="Guide to Assembly Summer" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
 
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/reset.css"/>
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/text.css"/>
@@ -25,13 +24,22 @@
 
   <div id="main">
 
-    <div id="header" class="clearfix">
-      <h1><a tal:attributes="href view/application_url">ASSEMBLY SUMMER MANUAL</a></h1>
-    </div>
-
     <div id="content" class="clearfix">
       <div id="contents">
+        <div id="lang">
+          <a tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi &#155;</a>
+          <a tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English &#155;</a>
+        </div>
+        <a href="#"><img tal:attributes="src context/@@layouthelper/static/images/assembly-manual.png"></a>
+        <hr />
+        <input type="search" value="Search..." id="search"/>
+
         <div tal:replace="structure context/@@navtree"> </div>
+
+        <hr />
+        <p class="copy">
+        <strong><a href="http://www.assembly.org/asmorg">&copy; Assembly Organizing</a></strong>
+        </p>
       </div>
 
       <div id="page" class="clearfix">

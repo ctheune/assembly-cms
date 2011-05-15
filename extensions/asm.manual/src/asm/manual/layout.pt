@@ -32,7 +32,9 @@
         </div>
         <a href="#"><img tal:attributes="src context/@@layouthelper/static/images/assembly-manual.png"></a>
         <hr />
-        <input type="search" value="Search..." id="search"/>
+        <form tal:attributes="action string:${view/application_url}/search" action="GET">
+          <input type="search" value="Search..." tal:attributes="value request/form/q|default" id="search" name="q"/>
+        </form>
 
         <div tal:replace="structure context/@@navtree"> </div>
 

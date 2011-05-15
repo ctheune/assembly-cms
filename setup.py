@@ -34,7 +34,5 @@ setup(name='asm.cms',
                         'magic',
                         'lxml',
                         'BareNecessities',
-                        'hurry.zoperesource',
-                        'hurry.tinymce',
                         'hurry.query',
                         'z3c.baseregistry'])

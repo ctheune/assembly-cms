@@ -186,8 +186,9 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     @property
     def description(self):
-        if 'description' in self.application:
-            edition = asm.cms.edition.select_edition(self.application['description'], self.request)
+        if 'welcome-message' in self.application:
+            edition = asm.cms.edition.select_edition(
+                self.application['welcome-message'], self.request)
             return edition
         else:
             return None

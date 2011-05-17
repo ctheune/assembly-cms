@@ -9,7 +9,7 @@ import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
 import base64
-import email.mime.text
+import email.mime.text as email_mime_text
 import grok
 import magic
 import megrok.pagelet
@@ -290,36 +290,63 @@ class DataUri(grok.View):
 
 class IFeedbackForm(zope.interface.Interface):
 
-    name = zope.schema.TextLine(title=u'Name')
-    mail = zope.schema.TextLine(title=u'Email address')
-    comment = zope.schema.Text(title=u'Comment')
+    page = zope.schema.TextLine(title=u'Page feedback is about',
+                                required=False)
+    message = zope.schema.Text(title=u'Feedback message')
+
+    name = zope.schema.TextLine(title=u'Your name', required=False)
+    email = zope.schema.TextLine(title=u'Email address',
+                                 required=False,
+                                 constraint=re.compile("@").search)
 
 
 class Feedback(asm.cmsui.form.Form):
-
+    grok.require('zope.Public')
     grok.layer(ISkin)
-    grok.context(zope.interface.Interface)
+    grok.context(asm.cms.homepage.Homepage)
     form_fields = grok.AutoFields(IFeedbackForm)
+
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
+    prefix = ''
 
-    mail_template = u'''
-%(comment)s
+    mail_template = u'''Archive feedback.
 
-URL: %(url)s
+From: %(name)s <%(email)s>
+Page: %(page)s
+
+---- feedback starts ----
+%(message)s
+---- feedback ends ----
 
 '''
 
-    @grok.action(u'Send')
-    def send(self, name, mail, comment):
-        msg = email.mime.Text.MIMEText(
-            self.mail_template % dict(name=name,
-                                      comment=comment,
-                                      url=self.url(self.context)))
-        msg['Subject'] = u'Feedback about "%s"' % self.context.title
-        msg['From'] = u'%s <%s>' % (name, mail)
-        msg['To'] = u'web@assembly.org'
-        smtp = smtplib.SMTP("mail.assembly.org")
-        smtp.sendmail('web@assembly.org', ['web@assembly.org'],
-                      msg.as_string())
-        self.flash(u'Your feedback was send.')
-        self.redirect(self.url(self.context))
+    smtp_host = "mail.assembly.org"
+    target_address = "web@assembly.org"
+
+    @grok.action(u'Send feedback')
+    def send(self, message, page=None, name=None, email=None):
+        page = page or u""
+        name = name or u"UNKNOWN"
+        email = email or u"EMPTY-EMAIL"
+        message_body = self.mail_template % dict(
+                message=message,
+                page=page,
+                name=name,
+                email=email,
+                )
+        msg = email_mime_text.MIMEText(message_body.encode("utf-8"))
+        msg['Subject'] = u'Archive feedback about "%s"' % page
+        msg['From'] = u'%s <%s>' % (name, email)
+        msg['To'] = self.target_address
+        msg_str = msg.as_string()
+        smtp = smtplib.SMTP(self.smtp_host)
+        smtp.sendmail(self.target_address, [self.target_address], msg_str)
+        self.flash(u'Your feedback was accepted.')
+        self.redirect(self.url('feedback-accepted'))
+
+class FeedbackAccepted(asm.cmsui.retail.Pagelet):
+
+    grok.context(asm.cms.homepage.Homepage)
+    grok.layer(ISkin)
+    grok.name('feedback-accepted')
+

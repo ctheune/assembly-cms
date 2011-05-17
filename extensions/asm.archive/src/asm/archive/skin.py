@@ -363,6 +363,7 @@ Page: %(page)s
         message['From'] = from_header
 
         email_encoders.encode_quopri(message)
+        message.set_charset('utf-8')
         message_str = message.as_string()
         smtp = smtplib.SMTP(self.smtp_host)
         smtp.sendmail(self.target_address, [self.target_address], message_str)

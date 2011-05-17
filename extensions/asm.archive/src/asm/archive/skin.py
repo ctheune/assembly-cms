@@ -9,7 +9,9 @@ import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
 import base64
-import email.mime.text as email_mime_text
+import email.encoders as email_encoders
+import email.Header as email_header
+import email.Message as email_message
 import grok
 import magic
 import megrok.pagelet
@@ -344,13 +346,26 @@ Page: %(page)s
                 name=name,
                 email=email,
                 )
-        msg = email_mime_text.MIMEText(message_body.encode("utf-8"))
-        msg['Subject'] = u'Archive feedback about "%s"' % page
-        msg['From'] = u'%s <%s>' % (name, email)
-        msg['To'] = self.target_address
-        msg_str = msg.as_string()
+
+        message = email_message.Message()
+        message.set_payload(message_body.encode('utf-8'))
+
+        subject_header = email_header.Header(
+            (u'Archive feedback about "%s"' % page).encode('utf-8'),
+            'utf-8')
+        message['Subject'] = subject_header
+
+        message['To'] = self.target_address
+
+        from_header = email_header.Header(
+            (u'%s <%s>' % (name, email)).encode('utf-8'),
+            'utf-8')
+        message['From'] = from_header
+
+        email_encoders.encode_quopri(message)
+        message_str = message.as_string()
         smtp = smtplib.SMTP(self.smtp_host)
-        smtp.sendmail(self.target_address, [self.target_address], msg_str)
+        smtp.sendmail(self.target_address, [self.target_address], message_str)
         self.flash(u'Your feedback was accepted.')
         self.redirect(self.url('feedback-accepted'))
 

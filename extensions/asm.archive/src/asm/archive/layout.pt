@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 
-<title><span tal:replace="context/title" /> &ndash; Assembly Archive</title>
+<title>
+  <span tal:replace="context/title" />
+  <tal:block tal:condition="python: context.page != view.application">
+    &ndash; Assembly Archive
+  </tal:block>
+</title>
 
 <!-- <link rel="shortcut icon" tal:attributes="href context/@@layouthelper/static/images/favicon.png"> -->
 <!-- <link rel="apple-touch-icon" tal:attributes="href context/@@layouthelper/static/images/apple-touch-icon.png"> -->
@@ -39,6 +44,8 @@
     </div>
 
     <div id="footer" class="clearfix">
+      <a tal:attributes="href python:view.application_url('feedback') + '?page=' + '/'.join(x.__name__ for x in view.get_path(context, True)[1:])">Send us feedback about this page</a>
+      &#8226;
       <a href="http://www.assembly.org/">assembly.org</a>
     </div>
   </div>

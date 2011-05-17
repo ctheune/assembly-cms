@@ -161,3 +161,7 @@ h2 {
 .smaller {
   font-size: smaller;
 }
+
+#footer {
+  text-align: center;
+}

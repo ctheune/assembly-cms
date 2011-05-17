@@ -18,6 +18,7 @@ import random
 import re
 import smtplib
 import urlparse
+from zope.app.form.browser.textwidgets import TextWidget
 import zope.interface
 
 skin_name = 'asmarchive'
@@ -290,7 +291,7 @@ class DataUri(grok.View):
 
 class IFeedbackForm(zope.interface.Interface):
 
-    page = zope.schema.TextLine(title=u'Page feedback is about',
+    page = zope.schema.TextLine(title=u'The page feedback is about',
                                 required=False)
     message = zope.schema.Text(title=u'Feedback message')
 
@@ -299,12 +300,20 @@ class IFeedbackForm(zope.interface.Interface):
                                  required=False,
                                  constraint=re.compile("@").search)
 
+def get_specific_width_text_widget(size):
+    class LongTextWidget(TextWidget):
+        displayWidth = size
+    return LongTextWidget
 
 class Feedback(asm.cmsui.form.Form):
     grok.require('zope.Public')
     grok.layer(ISkin)
     grok.context(asm.cms.homepage.Homepage)
     form_fields = grok.AutoFields(IFeedbackForm)
+
+    form_fields['page'].custom_widget = get_specific_width_text_widget(70)
+    form_fields['name'].custom_widget = get_specific_width_text_widget(40)
+    form_fields['email'].custom_widget = get_specific_width_text_widget(40)
 
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     prefix = ''

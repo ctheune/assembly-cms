@@ -1,64 +1,68 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Assembly Summer 2011</title>
+  <meta charset="utf-8"/>
+  <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
+  <meta name="description" content="Assembly Summer 2011" />
 
-    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/reset.css"/>
-    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/960.css"/>
-    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/text.css"/>
-    <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css"/>
+  <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css"/>
 
-    <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
-    <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+  <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+  <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+
+  <meta name="geo.region" content="FI-ES" />
+  <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />
+  <meta name="geo.position" content="60.205868;24.929446" />
+  <meta name="ICBM" content="60.205868, 24.929446" />
+
+  <base tal:attributes="href context/@@base"/>
+
+  <link rel="stylesheet" media="all" href="context/@@layouthelper/static/css/style.css"/>
 </head>
+<body tal:attributes="style string:background:url(${context/@@layouthelper/header_background}) center top no-repeat;">
+  <div id="header">
+    <div class="header-content">
 
-<body>
+      <a tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/img/assembly.png" id="logo" alt="Assembly Summer 2011" /></a>
+      <ul>
+        <li id="date">
+          <h3>4th-7th August 2011, Helsinki, Finland</h3>
+        </li>
+        <li id="search">
+          <input type="text" value="Search Assembly.org">
+          <input type="submit" value="Go">
+        </li>
+        <li id="lang">
+          <a href="#">Suomeksi &#155;</a>
+        </li>
+      </ul>
 
+      <ul tal:replace="structure context/@@mainnavigation">
+      </ul>
 
-  <div id="main" class="container_16">
-    
-    <div id="header" class="alpha grey clearfix">
-      <div class="grid_11">
-        <ul class="nav">
-          <li><a tal:attributes="href view/application_url">Home</a></li>
-          <li><a tal:attributes="href string:${view/application_url}/schedule">Schedule</a></li>
-          <li><a tal:attributes="href string:${view/application_url}/program">Program</a></li>
-          <li><a tal:attributes="href string:${view/application_url}/attend">Attend</a></li>
-          <li><a tal:attributes="href string:${view/application_url}/about">About</a></li>
-        </ul>
-        
-        <div id="masthead" class="grey clearfix">
-          <h1 class="grid_4">Assembly Summer 2011</h1>
-          <p class="grid_6">7.-11.8.2011 <br />Hartwall Arena, Helsinki</p>
-        </div>
-      </div>
-      
-      <div class="grid_5">
-        <h2>Reserve Tickets</h2>
-      </div>
-      
-    </div> <!-- header -->
-    
-    <div id="content_wrap" class="clearfix">
-      
-      <div id="content" class="grid_11"
-          tal:content="structure view/render">
-      </div>
-      
-      <div id="sidebar" class="grid_5 grey">
-        <h3>Sponsors etc</h3>
-      </div>
-      
-    </div>  <!-- content_wrap -->
-    
-    <div id="footer">
-      <p><a tal:attributes="href string:${view/application_url}/press">Press</a> |
-      	 <a href="http://www.assembly.org/asmorg">Assembly Organizing</a>
-      </p>
-      <p>&copy; Assembly Organizing</p>
+      <!-- <ul id="nav"> -->
+        <!-- <li class="active"><a href="#">Program</a></li> -->
+        <!-- <li><a href="#">Schedule</a></li> -->
+        <!-- <li><a href="#">Attending</a></li> -->
+        <!-- <li><a href="#">About</a></li> -->
+        <!-- <li><a href="#">Party Manual</a></Li> -->
+      <!-- </ul> -->
+      <a href="https://tickets.assembly.org/" id="tickets"><img tal:attributes="src context/@@layouthelper/static/img/tickets.png" alt="Buy Tickets" /></a>
     </div>
-    
   </div>
 
+  <h1 class="content" id="title" tal:content="context/title">Page title</h1>
+
+  <div id="container">
+    <div id="main" class="content">
+
+      <div id="content" tal:content="structure view/render">
+
+      </div>
+    </div>
+  </div>
+  <div id="footer" class="content">
+    &copy; Assembly Organizing
+  </div>
 </body>
 </html>

@@ -20,12 +20,28 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
+class MainNavigation(grok.View):
+    grok.context(zope.interface.Interface)
+    grok.layer(ISkin)
+
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
 
     def render(self):
         return ''
+
+    def header_background(self):
+        page = self.context.page
+        if 'header-background' in page:
+            return self.url(page, 'header-background')
+        while page != self.application:
+            page = page.__parent__
+            if 'header-background' in page:
+                return self.url(page, 'header-background')
+        # Fallback
+        return "/@@/asm.summer11/img/bg-sleepy.jpg"
 
 
 class Homepage(asm.cmsui.retail.Pagelet):
@@ -68,3 +84,9 @@ class SelectLanguage(grok.View):
 
     def render(self):
         self.redirect(self.url(self.context))
+
+
+class HtmlPage(asm.cmsui.retail.Pagelet):
+    grok.layer(ISkin)
+    grok.context(asm.cms.htmlpage.HTMLPage)
+    grok.name("index")

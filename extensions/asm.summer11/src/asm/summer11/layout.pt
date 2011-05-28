@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
+  <title><tal:block tal:condition="python:view.url(view) != view.application_url('index')"><span tal:replace="context/title"/> &ndash; </tal:block>Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
   <meta name="description" content="Assembly Summer 2011" />
 
   <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css"/>
@@ -23,30 +23,30 @@
   <div id="header">
     <div class="header-content">
 
-      <a tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/img/assembly.png" id="logo" alt="Assembly Summer 2011" /></a>
+      <a tal:attributes="href python:view.url(view) != view.application_url('index') and view.application_url() or None"><img tal:attributes="src context/@@layouthelper/static/img/assembly.png" id="logo" alt="Assembly Summer 2011" /></a>
       <ul>
         <li id="date">
           <h3>4th-7th August 2011, Helsinki, Finland</h3>
         </li>
-        <li id="search">
-          <input type="text" value="Search Assembly.org">
-          <input type="submit" value="Go">
-        </li>
-        <li id="lang">
-          <a href="#">Suomeksi &#155;</a>
+
+        <form tal:attributes="action string: ${view/application_url}/@@search"
+              method="get" id="searchform">
+          <li id="search">
+            <input type="text" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')">
+            <input type="submit" value="Search">
+          </li>
+        </form>
+        <li id="lang" tal:define="current_language context/@@layouthelper/current_language">
+          <a tal:condition="python:current_language == 'en'"
+             tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">Suomeksi &#155;</a>
+          <a tal:condition="python:current_language != 'en'"
+             tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">In English &#155;</a>
         </li>
       </ul>
 
       <ul tal:replace="structure context/@@mainnavigation">
       </ul>
 
-      <!-- <ul id="nav"> -->
-        <!-- <li class="active"><a href="#">Program</a></li> -->
-        <!-- <li><a href="#">Schedule</a></li> -->
-        <!-- <li><a href="#">Attending</a></li> -->
-        <!-- <li><a href="#">About</a></li> -->
-        <!-- <li><a href="#">Party Manual</a></Li> -->
-      <!-- </ul> -->
       <a href="https://tickets.assembly.org/" id="tickets"><img tal:attributes="src context/@@layouthelper/static/img/tickets.png" alt="Buy Tickets" /></a>
     </div>
   </div>
@@ -62,7 +62,7 @@
     </div>
   </div>
   <div id="footer" class="content">
-    &copy; Assembly Organizing
+    &copy; <a href="http://www.assembly.org/asmorg">Assembly Organizing</a>
   </div>
 </body>
 </html>

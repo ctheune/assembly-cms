@@ -1,6 +1,7 @@
 import asm.cms
 import asm.cmsui.interfaces
 import asm.cmsui.retail
+import asm.translation.translation
 import grok
 import megrok.pagelet
 import zope.interface
@@ -24,6 +25,12 @@ class MainNavigation(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
 
+    def top_navigation_pages(self):
+        for page in self.application.subpages:
+            edition = asm.cms.edition.select_edition(page, self.request)
+            if edition.tags and "navigation" in edition.tags:
+                yield edition
+
 
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
@@ -42,6 +49,12 @@ class LayoutHelper(grok.View):
                 return self.url(page, 'header-background')
         # Fallback
         return "/@@/asm.summer11/img/bg-sleepy.jpg"
+
+    def current_language(self):
+        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
+            return self.request.cookies['asm.translation.lang']
+        else:
+            return asm.translation.translation.fallback()
 
 
 class Homepage(asm.cmsui.retail.Pagelet):

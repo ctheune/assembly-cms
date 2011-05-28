@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html tal:attributes="lang context/@@layouthelper/current_language">
 <head>
   <meta charset="utf-8"/>
   <title><tal:block tal:condition="python:view.url(view) != view.application_url('index')"><span tal:replace="context/title"/> &ndash; </tal:block>Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
@@ -9,6 +9,7 @@
 
   <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
   <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+  <link rel="search" type="application/opensearchdescription+xml" title="Assembly Summer 2011" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
 
   <meta name="geo.region" content="FI-ES" />
   <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />

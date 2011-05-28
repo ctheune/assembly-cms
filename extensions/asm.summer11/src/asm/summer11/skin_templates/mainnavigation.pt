@@ -1,29 +1,11 @@
 <ul id="nav">
-  <li class="active"><a href="#">Program</a></li>
-  <li><a href="#">Schedule</a></li>
-  <li><a href="#">Attending</a></li>
-  <li><a href="#">About</a></li>
-  <li><a href="#">Party Manual</a></Li>
+  <tal:block tal:repeat="page view/top_navigation_pages">
+    <li tal:condition="python:page == context"
+        class="active"><span tal:replace="page/title" /></li>
+    <li tal:condition="python:page != context"><a tal:attributes="href python:view.url(page)"><span tal:replace="page/title" /></a></li>
+  </tal:block>
+  <tal:block tal:define="current_language context/@@layouthelper/current_language">
+    <li tal:condition="python:current_language == 'en'"><a href="http://www.assembly.org/manual">Party manual</a></li>
+    <li tal:condition="python:current_language == 'fi'"><a href="http://www.assembly.org/manual">Partymanuaali</a></li>
+  </tal:block>
 </ul>
-
-
-<!-- <tal:block tal:define="items view/tree"> -->
-
-<!--   <ul id="navigation"> -->
-<!--   <metal:block define-macro="inner"> -->
-<!--       <li tal:repeat="item items" -->
-<!--           tal:attributes="class item/class"> -->
-<!--           <a tal:attributes="href python:view.url(item['page']); -->
-<!--                              class python:view.page is item['page'] and 'selected' or ' '" -->
-<!--              tal:content="item/page/title"></a> -->
-<!--           <tal:block define="items item/subpages"> -->
-<!--               <ul tal:condition="items"> -->
-<!--                   <metal:block use-macro="template/macros/inner"> -->
-<!--                   </metal:block> -->
-<!--               </ul> -->
-<!--           </tal:block> -->
-<!--       </li> -->
-<!--   </metal:block> -->
-<!--   </ul> -->
-
-<!-- </tal:block> -->

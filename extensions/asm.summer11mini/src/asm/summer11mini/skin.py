@@ -4,6 +4,8 @@ import asm.cmsui.interfaces
 import datetime
 import grok
 import megrok.pagelet
+from zope.app.exception.systemerror import SystemErrorView
+from zope.publisher.interfaces import INotFound
 import zope.interface
 
 summer11mini = asm.cms.cms.Profile('summer11mini')
@@ -196,3 +198,12 @@ class SelectLanguage(grok.View):
 
     def render(self):
         self.redirect(self.url(self.context))
+
+
+class Error404NotFound(grok.View, SystemErrorView):
+     grok.context(INotFound)
+     grok.name('index.html')
+
+     def update(self):
+         self.siteUrl = self.url(grok.getSite())
+         self.response.setStatus(404)

@@ -71,9 +71,9 @@ h2:first-child {
 }
 
 .small {
-	font-size: 13px !important;
-	line-height: 18px !important;
-   margin:0;
+    font-size: 13px !important;
+    line-height: 18px !important;
+    margin:0;
 }
 
 .intro {
@@ -296,7 +296,7 @@ hr {
 	        box-shadow:0 -1px 0px #030504;
 }
 
-.compo-cat li * {
+.compo-cat li p {
   color:#fff;
 }
 
@@ -329,14 +329,17 @@ hr {
     -webkit-transition:0.25s linear border-color;
 }
 
-.compos h4 {
-    margin:0;
+.compo-title {
+    display: block;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 200;
+    margin: 0;
 }
 
-.compos span {
-    color:#a8b8ae
+.compo-description {
+    color: #a8b8ae;
 }
-
 
 .compo-list dt, .compo-list dl {
     border-top:1px solid #2c3631;

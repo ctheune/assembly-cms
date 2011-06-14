@@ -51,10 +51,13 @@ class LayoutHelper(grok.View):
         return "/@@/asm.summer11/img/bg-sleepy.jpg"
 
     def current_language(self):
+        if not 'asm.translation.lang' in self.request.cookies:
+            return asm.translation.translation.fallback()
+
         if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
             return self.request.cookies['asm.translation.lang']
-        else:
-            return asm.translation.translation.fallback()
+
+        return asm.translation.translation.fallback()
 
 
 class Homepage(asm.cmsui.retail.Pagelet):

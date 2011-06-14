@@ -6,6 +6,6 @@
   </tal:block>
   <tal:block tal:define="current_language context/@@layouthelper/current_language">
     <li tal:condition="python:current_language == 'en'"><a href="http://www.assembly.org/manual/summer">Party manual</a></li>
-    <li tal:condition="python:current_language == 'fi'"><a href="http://www.assembly.org/manual/summer">Partymanuaali</a></li>
+    <li tal:condition="python:current_language == 'fi'"><a href="http://www.assembly.org/manual/summer">Partyohje</a></li>
   </tal:block>
 </ul>

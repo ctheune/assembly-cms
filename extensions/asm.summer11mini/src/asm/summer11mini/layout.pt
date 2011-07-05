@@ -155,7 +155,7 @@
         <ul i18n:domain="asm">
           <li><a href="http://www.assembly.org/summer11/" i18n:translate="">Summer'11</a></li>
           <li><a href="http://www.assembly.org/winter11/">Winter'11</a></li>
-          <li><a href="http://forum.assembly.org/">Forums</a></li>
+          <li><a href="http://archive.assembly.org/">Archive</a></li>
           <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
           <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>
         </ul>

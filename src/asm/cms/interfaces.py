@@ -188,3 +188,6 @@ class IImport(zope.interface.Interface):
         title=u'Content',
         description=(u'The content is expected to be in the Assembly CMS '
                      u'XML import format.'))
+
+class IRedirect(zope.interface.Interface):
+    target_url = zope.schema.URI(title=u'Redirect URI')

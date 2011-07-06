@@ -51,7 +51,7 @@ class LayoutHelper(grok.View):
                 if isinstance(edition, asm.cms.edition.NullEdition):
                     continue
                 result.append(edition)
-            result.sort(key=lambda x: x.modified, reverse=True)
+            result.sort(key=lambda x: x.created, reverse=True)
             return result[:5]
         except:
             return []
@@ -178,12 +178,12 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     def featured(self):
         return sorted(self.news('featured'),
-                      key=lambda x: x['edition'].modified,
+                      key=lambda x: x['edition'].created,
                       reverse=True)
 
     def frontpage(self):
         return list(sorted(self.news('frontpage'),
-                           key=lambda x: x['edition'].modified,
+                           key=lambda x: x['edition'].created,
                            reverse=True))[:12]
 
 

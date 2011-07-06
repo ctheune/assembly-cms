@@ -3,7 +3,10 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import grok
 import zope.interface
+import zope.publisher.interfaces.browser
+import zope.traversing.browser.interfaces
 
 class Redirect(asm.cms.edition.Edition):
 
@@ -22,3 +25,16 @@ class Redirect(asm.cms.edition.Edition):
         if not super(Redirect, self).__eq__(other):
             return False
         return self.target_url == other.target_url
+
+class RedirectAbsoluteUrl(grok.MultiAdapter):
+    grok.adapts(
+        asm.cms.interfaces.IRedirect,
+        zope.publisher.interfaces.browser.IBrowserRequest)
+    grok.implements(zope.traversing.browser.interfaces.IAbsoluteURL)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def __call__(self):
+        return self.context.target_url

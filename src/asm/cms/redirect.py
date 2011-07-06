@@ -13,3 +13,12 @@ class Redirect(asm.cms.edition.Edition):
     factory_title = u'Redirect'
 
     target_url = None
+
+    def copyFrom(self, other):
+        super(Redirect, self).copyFrom(other)
+        self.target_url = other.target_url
+
+    def __eq__(self, other):
+        if not super(Redirect, self).__eq__(other):
+            return False
+        return self.target_url == other.target_url

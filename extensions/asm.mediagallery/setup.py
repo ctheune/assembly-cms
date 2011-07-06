@@ -19,5 +19,4 @@ setup(name='asm.mediagallery',
                         'grok',
                         'setuptools',
                         'zope.interface',
-                        'PIL',
                         'zope.schema'])

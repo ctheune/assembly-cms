@@ -155,10 +155,10 @@ class Homepage(asm.cmsui.retail.Pagelet):
     grok.layer(ISkin)
     grok.name('index')
 
-    def news(self, tag):
+    def news(self, tag=None):
         if 'news' not in self.context.page:
-           raise StopIteration() 
-        
+           raise StopIteration()
+
         news_edition = asm.cms.edition.select_edition(
             self.context.page['news'], self.request)
         for item in news_edition.list():
@@ -166,7 +166,7 @@ class Homepage(asm.cmsui.retail.Pagelet):
                 item, self.request)
             if isinstance(edition, asm.cms.edition.NullEdition):
                 continue
-            if not edition.has_tag(tag):
+            if tag is not None and not edition.has_tag(tag):
                 continue
             result = dict(edition=edition,
                           news=asm.cms.news.INewsFields(edition))
@@ -182,7 +182,7 @@ class Homepage(asm.cmsui.retail.Pagelet):
                       reverse=True)
 
     def frontpage(self):
-        return list(sorted(self.news('frontpage'),
+        return list(sorted(self.news(),
                            key=lambda x: x['edition'].created,
                            reverse=True))[:12]
 

@@ -10,8 +10,10 @@
   </tal:block>
 </title>
 
-<!-- <link rel="shortcut icon" tal:attributes="href context/@@layouthelper/static/images/favicon.png"> -->
-<!-- <link rel="apple-touch-icon" tal:attributes="href context/@@layouthelper/static/images/apple-touch-icon.png"> -->
+<link rel="shortcut icon" type="image/vnd.microsoft.icon"
+      tal:attributes="href context/@@layouthelper/static/images/favicon.ico" />
+<link rel="icon" type="image/vnd.microsoft.icon"
+      tal:attributes="href context/@@layouthelper/static/images/favicon.ico" />
 
 <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/reset.css" />
 <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/960.css" />

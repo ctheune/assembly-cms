@@ -16,14 +16,14 @@
 
   <div class="mediaitemlisting">
     <tal:block tal:repeat="item python:view.list_category_items(category['edition'], 5)">
-      <div class="video">
+      <div class="video" tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
 
-        <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
+        <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
           <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
                                alt item/edition/title"
                width="160" height="90" />
-          <span tal:replace="item/edition/title"/>
-          <span class="by" tal:content="item/gallery/author" />
+          <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>
+          <span class="by" tal:content="python:view.cut_string(item['gallery'].author, 25)" />
         </a>
       </div>
     </tal:block>
@@ -34,12 +34,12 @@
 
   <div tal:repeat="item view/list_items" class="video">
 
-    <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
+    <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
       <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
                            alt item/edition/title"
            width="160" height="90" />
-      <span tal:replace="item/edition/title"/>
-      <span class="by" tal:content="item/gallery/author" />
+      <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>
+      <span class="by" tal:content="python:view.cut_string(item['gallery'].author, 25)" />
     </a>
   </div>
 </div>

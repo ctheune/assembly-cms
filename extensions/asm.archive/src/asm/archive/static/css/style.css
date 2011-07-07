@@ -57,6 +57,7 @@ h2 {
   display:inline;
   margin:0 10px;
   float:left;
+  height:27px;
 }
 
 
@@ -164,4 +165,76 @@ h2 {
 
 #footer {
   text-align: center;
+}
+
+.gallery-navigation-link {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+#mobile-logo {
+  display: hidden;
+}
+
+@media screen and (max-width: 640px) {
+  #archive-logo, .overview-thumbnail-3, .overview-thumbnail-4 {
+    display: none;
+  }
+
+  #mobile-logo {
+    display: inline-block;
+    float: left;
+    background: url(../images/mobile-logo.png);
+    width: 97px;
+    height: 27px;
+  }
+
+  .grid_11 {
+    width: 520px ! important;
+  }
+
+  body, #main, .container_16, .entry, .single {
+    width: 638px;
+    margin: 0;
+  }
+
+  body {
+   min-width: 0px;
+  }
+
+  #details {
+    float: none;
+    width: 100%;
+  }
+
+  .single .entry {
+    border: 0;
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+
+  #main {
+    margin-left: 0em;
+    margin-right: 0em;
+  }
+
+  .grid_3 {
+    width: 150px ! important;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .grid_10 {
+    width: 300px ! important;
+  }
+
+  .navigation, .page {
+    padding: 0.1em;
+    border: 0px;
+  }
+
+  #header {
+   padding:10px 0 0 0;
+  }
+
 }

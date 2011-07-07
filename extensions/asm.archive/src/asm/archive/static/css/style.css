@@ -173,7 +173,7 @@ h2 {
 }
 
 #mobile-logo {
-  display: hidden;
+  display: none;
 }
 
 @media screen and (max-width: 640px) {

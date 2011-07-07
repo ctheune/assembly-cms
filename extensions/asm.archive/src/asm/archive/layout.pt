@@ -18,13 +18,14 @@
 <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/text.css" />
 <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css" />
 
+<meta name="viewport" content="width=640" />
 </head>
 <body>
   <div id="main" class="container_16">
     
     <div id="header" class="clearfix">
       
-      <div class="alpha grid_5">
+      <div class="alpha grid_5" id="archive-logo">
         <tal:block tal:condition="python: context.page != view.application">
           <a tal:attributes="href view/application_url">
             <img tal:attributes="src context/@@layouthelper/static/images/archive-logo.png" alt="Assembly Archive"/>
@@ -34,6 +35,12 @@
           <img tal:attributes="src context/@@layouthelper/static/images/archive-logo.png" alt="Assembly Archive"/>
         </tal:block>
       </div>
+      <tal:block tal:condition="python: context.page != view.application">
+        <a id="mobile-logo" tal:attributes="href view/application_url"></a>
+      </tal:block>
+      <tal:block tal:condition="python: context.page == view.application">
+        <a id="mobile-logo"></a>
+      </tal:block>
       <div class="grid_11 omega">
         <ul tal:replace="structure context/@@yearlynavigation" />
       </div>

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2011 Assembly Organizing
 # See also LICENSE.txt
 
@@ -63,6 +64,13 @@ def select_years(application_subpages, request):
         result.append(edition)
 
     return result
+
+
+class ViewUtils(object):
+    def cut_string(self, data, max_length):
+        if len(data) <= max_length:
+            return data
+        return data[:max_length - 3].strip() + u"\u2026"
 
 
 class YearlyNavigation(grok.View):
@@ -153,7 +161,7 @@ class GenerateMap(grok.View):
         pass
 
 
-class Homepage(asm.cmsui.retail.Pagelet):
+class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
 
     grok.context(asm.cms.homepage.Homepage)
     grok.layer(ISkin)
@@ -208,7 +216,7 @@ class SelectLanguage(grok.View):
         self.redirect(self.url(self.context))
 
 
-class GalleryIndex(asm.mediagallery.gallery.Index):
+class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
 
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IMediaGallery)
@@ -241,14 +249,9 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index):
         self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
 
 
-class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar):
+class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
     grok.layer(ISkin)
     grok.context(asm.cms.interfaces.IEdition)
-
-    def cut_string(self, data, max_length):
-        if len(data) <= max_length:
-            return data
-        return data[:max_length - 3] + "..."
 
     def _return_same_type_page(self, page):
         if not page:

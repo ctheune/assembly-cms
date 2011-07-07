@@ -245,8 +245,8 @@ h2 {
   }
 
   .navigation {
-    margin-bottom: 0.6em;
-    margin-top: 0.6em;
+    padding-bottom: 0.6em;
+    padding-top: 0.6em;
   }
 
   #header {

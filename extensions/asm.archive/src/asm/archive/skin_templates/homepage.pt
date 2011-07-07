@@ -7,7 +7,7 @@
     <tal:block tal:repeat="item python:view.select_random_items(year, 5)">
       <div tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
 
-        <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
+        <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
           <img tal:attributes="src python:view.url(item['edition'], '@@thumbnail');
 alt item/edition/title"
                width="160" height="90" />

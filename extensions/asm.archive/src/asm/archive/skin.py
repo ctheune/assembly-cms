@@ -117,10 +117,45 @@ class YearlyNavigation(grok.View):
         else:
             return (0, max_selection)
 
-    def list_years_near_current_page(self, limit=DEFAULT_YEARS):
+    def _get_removed_years(self, years, max_remove):
+        year_count = len(years)
+        try:
+            current_year_index = years.index(self.get_closest_year())
+        # We are probably on the main page.
+        except ValueError, e:
+            if year_count < 3:
+                return [False] * year_count
+            items_left = year_count - max_remove
+            if items_left < 2:
+                items_left = 2
+            return [False] * (year_count - items_left) + [True] * items_left
+
+        # Create a list of years that we can remove when moving into mobile mode.
+        distances = [abs(index - current_year_index)
+                     for index in range(year_count)]
+        remove_years = [False] * year_count
+        removed_count = 0
+        remove_value = max(distances)
+        while removed_count < max_remove and remove_value > 1:
+            for i in range(year_count):
+                if distances[i] == remove_value:
+                    remove_years[i] = True
+                    removed_count += 1
+                if removed_count >= max_remove:
+                    break
+            remove_value -= 1
+
+        return remove_years
+
+    def list_years_near_current_page(self, limit=DEFAULT_YEARS, max_remove=0):
         assert limit > 2, "Limit must enable navigating back and forth."
 
-        return self.years[self.year_start:self.year_end]
+        years = self.years[self.year_start:self.year_end]
+
+        remove_years = self._get_removed_years(years, max_remove)
+
+        return [{'year': year, 'remove': remove}
+                for year, remove in zip(years, remove_years)]
 
     def can_navigate_forward(self):
         after = (self.limit - self.limit/2)

@@ -186,6 +186,11 @@ h2 {
     display: none;
   }
 
+  .hide-mobile {
+    background-color: red;
+    display: none ! important;
+  }
+
   #mobile-logo {
     display: inline-block;
     float: left;

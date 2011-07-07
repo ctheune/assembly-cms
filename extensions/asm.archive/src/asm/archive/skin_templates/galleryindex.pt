@@ -16,7 +16,7 @@
 
   <div class="mediaitemlisting">
     <tal:block tal:repeat="item python:view.list_category_items(category['edition'], 5)">
-      <div class="video" tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
+      <div tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
 
         <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
           <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';

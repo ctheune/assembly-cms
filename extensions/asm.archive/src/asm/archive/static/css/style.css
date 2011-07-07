@@ -181,7 +181,8 @@ h2 {
   display: none;
 }
 
-@media screen and (max-width: 640px) {
+
+@media only screen and (max-width: 680px) {
   #archive-logo, .overview-thumbnail-3, .overview-thumbnail-4 {
     display: none;
   }
@@ -241,6 +242,11 @@ h2 {
   .navigation, .page {
     padding: 0.1em;
     border: 0px;
+  }
+
+  .navigation {
+    margin-bottom: 0.6em;
+    margin-top: 0.6em;
   }
 
   #header {

@@ -1,13 +1,14 @@
-<ul class="year_nav" tal:define="visible_years view/list_years_near_current_page">
-  <li tal:condition="python: len(view.years) > 0 and view.years[0] != visible_years[0]">
-    <a tal:attributes="href python:view.url(visible_years[0])">&laquo;</a>
+<ul class="year_nav" tal:define="visible_years python:view.list_years_near_current_page(10, 3)">
+  <li tal:condition="python: len(view.years) > 0 and view.years[0] != visible_years[0]['year']">
+    <a tal:attributes="href python:view.url(visible_years[0]['year'])">&laquo;</a>
   </li>
-  <li tal:repeat="year visible_years"
-      tal:attributes="class python: year == view.get_closest_year() and 'active' or None">
-    <a tal:attributes="href python: year != context.page and view.url(year) or None">'<span tal:replace="python: year.page.__name__[2:]" /></a>
+  <li tal:repeat="year_data visible_years"
+      tal:attributes="class python: year_data['year'] == view.get_closest_year() and 'active' or
+                                    (year_data['remove'] and 'hide-mobile' or None)">
+    <a tal:attributes="href python: year_data['year'] != context.page and view.url(year_data['year']) or None">'<span tal:replace="python: year_data['year'].page.__name__[2:]" /></a>
   </li>
-  <li tal:condition="python: len(view.years) > 0 and view.years[-1] != visible_years[-1]">
-    <a tal:attributes="href python:view.url(visible_years[-1])">&raquo;</a>
+  <li tal:condition="python: len(view.years) > 0 and view.years[-1] != visible_years[-1]['year']">
+    <a tal:attributes="href python:view.url(visible_years[-1]['year'])">&raquo;</a>
   </li>
 </ul>
 

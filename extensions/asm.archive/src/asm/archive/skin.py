@@ -128,7 +128,7 @@ class YearlyNavigation(grok.View):
             items_left = year_count - max_remove
             if items_left < 2:
                 items_left = 2
-            return [False] * (year_count - items_left) + [True] * items_left
+            return [False] * items_left + [True] * (year_count - items_left)
 
         # Create a list of years that we can remove when moving into mobile mode.
         distances = [abs(index - current_year_index)

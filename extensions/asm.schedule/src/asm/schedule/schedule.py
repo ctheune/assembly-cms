@@ -37,6 +37,7 @@ class Schedule(asm.cms.Edition):
         for key, value in other.events.items():
             self.events[key] = value
         self.message = other.message
+        self.public_csv = other.public_csv
 
 
 class TextIndexing(grok.Adapter):

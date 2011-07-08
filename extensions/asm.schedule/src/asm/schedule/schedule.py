@@ -128,10 +128,15 @@ class Edit(asm.cmsui.form.EditForm):
         self.context.title = title
         self.context.message = message
         zope.event.notify(grok.ObjectModifiedEvent(self.context))
-        
-        if not data:
+
+        if data is None:
             self.flash('Saved changes.')
             return
+
+        if data == "":
+            self.flash(u"Empty data file was given!.", "warning")
+            return
+
         page = self.context.page
 
         finnish = self.context.parameters.replace('lang:*', 'lang:fi')
@@ -142,7 +147,13 @@ class Edit(asm.cmsui.form.EditForm):
         english = page.getEdition(english, create=True)
         english.events.clear()
 
-        dialect = csv.Sniffer().sniff(data)
+        try:
+            dialect = csv.Sniffer().sniff(data)
+        except csv.Error, e:
+            self.flash(u"%s." % e.message, "warning")
+            self.flash(u"Make sure that all lines contain the same amount of field delimiter characters.")
+            self.flash(u"First row of data: %s" % data.split("\n")[0])
+            return
         data = StringIO.StringIO(data)
         fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
                   'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
@@ -158,8 +169,18 @@ class Edit(asm.cmsui.form.EditForm):
 
         # Ignore the first row
         header = reader.next()
-        writer.writerow(header)
+        try:
+            writer.writerow(header)
+        except ValueError, e:
+            # This error comes only when there are too many fields in data.
+            field_count = reduce(
+                lambda x, y : type(y) == list and x + len(y) or x + 1,
+                header.values(),
+                0)
+            self.flash(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")
+            return
 
+        rows = 0
         for row in reader:
             if row['public'] != 'Yes':
                 continue
@@ -182,13 +203,14 @@ class Edit(asm.cmsui.form.EditForm):
                 event.location = row['location_%s' % lang].decode('UTF-8')
                 event.location_url = row['location_url']
                 schedule.events[int(row['id'])] = event
+            rows += 1
 
         public_csv = public_data.getvalue()
         english.public_csv = public_csv
         finnish.public_csv = public_csv
         zope.event.notify(grok.ObjectModifiedEvent(english))
         zope.event.notify(grok.ObjectModifiedEvent(finnish))
-        self.flash(u'Your schedule was imported successfully.')
+        self.flash(u'Your schedule was imported successfully with %d events.' % rows)
 
 
 @grok.subscribe(asm.workflow.interfaces.PublishedEvent)

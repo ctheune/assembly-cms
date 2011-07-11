@@ -109,7 +109,12 @@ blockquote {
 #contents .copy {
   margin:20px 40px;
   padding:0 0;
-  color:#2d5423;
+  color: #ccc;
+}
+
+#search {
+  background: #fff url("/@@/asm.manual/images/search.png") no-repeat left center;
+  padding-left: 22px;
 }
 
 #contents img {

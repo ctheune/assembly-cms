@@ -30,7 +30,7 @@
           <a tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi &#155;</a>
           <a tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English &#155;</a>
         </div>
-        <a href="#"><img tal:attributes="src context/@@layouthelper/static/images/assembly-manual.png"></a>
+        <a tal:attributes="href python:view.url(view) != view.application_url('index') and view.application_url() or None"><img tal:attributes="src context/@@layouthelper/static/images/assembly-manual.png"></a>
         <hr />
         <form tal:attributes="action string:${view/application_url}/search" action="GET">
           <input type="search" value="" tal:attributes="value request/form/q|nothing" id="search" name="q"/>

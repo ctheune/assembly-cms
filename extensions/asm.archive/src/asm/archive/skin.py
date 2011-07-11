@@ -362,7 +362,7 @@ class Feedback(asm.cmsui.form.Form):
     mail_template = u'''Archive feedback.
 
 From: %(name)s <%(email)s>
-Page: %(page)s
+Page: %(page)s <%(root)s/%(page)s>
 
 ---- feedback starts ----
 %(message)s
@@ -371,7 +371,7 @@ Page: %(page)s
 '''
 
     smtp_host = "mail.assembly.org"
-    target_address = "web@assembly.org"
+    target_address = "web-dev@assembly.org"
 
     @grok.action(u'Send feedback')
     def send(self, message, page=None, name=None, email=None):
@@ -383,6 +383,7 @@ Page: %(page)s
                 page=page,
                 name=name,
                 email=email,
+                root=self.application_url(),
                 )
 
         message = email_message.Message()

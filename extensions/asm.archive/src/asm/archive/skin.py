@@ -359,7 +359,7 @@ class Feedback(asm.cmsui.form.Form):
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     prefix = ''
 
-    mail_template = u'''Archive feedback.
+    mail_template = u'''Assembly Archive feedback.
 
 From: %(name)s <%(email)s>
 Page: %(page)s <%(root)s/%(page)s>
@@ -390,7 +390,7 @@ Page: %(page)s <%(root)s/%(page)s>
         message.set_payload(message_body.encode('utf-8'))
 
         subject_header = email_header.Header(
-            (u'Archive feedback about "%s"' % page).encode('utf-8'),
+            (u'Assembly Archive feedback about "%s"' % page).encode('utf-8'),
             'utf-8')
         message['Subject'] = subject_header
 

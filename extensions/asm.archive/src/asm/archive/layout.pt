@@ -31,14 +31,9 @@
     <div id="header" class="clearfix">
       
       <div class="alpha grid_5" id="archive-logo">
-        <tal:block tal:condition="python: context.page != view.application">
-          <a tal:attributes="href view/application_url">
-            <img tal:attributes="src context/@@layouthelper/static/images/archive-logo.png" alt="Assembly Archive"/>
-          </a>
-        </tal:block>
-        <tal:block tal:condition="python: context.page == view.application">
+        <a tal:attributes="href python:view.url(view) != view.application_url('index') and view.application_url() or None">
           <img tal:attributes="src context/@@layouthelper/static/images/archive-logo.png" alt="Assembly Archive"/>
-        </tal:block>
+        </a>
       </div>
       <tal:block tal:condition="python: context.page != view.application">
         <a id="mobile-logo" tal:attributes="href view/application_url"></a>

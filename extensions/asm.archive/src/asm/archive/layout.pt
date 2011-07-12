@@ -21,6 +21,9 @@
 <link rel="stylesheet" tal:attributes="href context/@@layouthelper/static/css/style.css" />
 
 <meta name="viewport" content="width=640" />
+
+<link rel="search" type="application/opensearchdescription+xml" title="Assembly Archive" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
+
 </head>
 <body>
   <div id="main" class="container_16">

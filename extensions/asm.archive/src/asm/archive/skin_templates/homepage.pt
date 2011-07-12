@@ -1,3 +1,8 @@
+<div class="frontpage-search">
+  <form tal:attributes="action string: ${view/application_url}/@@search"
+        method="get" id="searchform"><input type="text" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></form>
+</div>
+
 <p tal:condition="view/description"
    tal:replace="structure view/description/content"></p>
 

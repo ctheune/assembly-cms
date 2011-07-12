@@ -10,7 +10,7 @@
   </a>
   <span class="grid_3" tal:condition="not: prev">&nbsp;</span>
 
-  <h2 class="grid_10">
+  <h2 class="grid_7">
     <tal:block repeat="edition view/breadcrumbs">
       <tal:block condition="not:repeat/edition/end">
         <a tal:attributes="href python:view.url(edition)"
@@ -38,5 +38,10 @@
     <span tal:replace="python: view.cut_string(next.title, 22)" /> &raquo;
   </a>
   <span class="grid_3" tal:condition="not: next">&nbsp;</span>
+
+  <div class="grid_3 hide-mobile">
+    <form tal:attributes="action string: ${view/application_url}/@@search"
+          method="get" id="searchform"><input type="text" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></form>
+  </div>
 
 </div>

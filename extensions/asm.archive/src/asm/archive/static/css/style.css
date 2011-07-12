@@ -181,6 +181,15 @@ h2 {
   display: none;
 }
 
+#searchform input {
+  background: transparent url("/@@/asm.archive/images/search-loop.png") 98% center no-repeat;
+  color: #fff;
+}
+
+.frontpage-search {
+  float: right;
+  padding-top: 1em;
+}
 
 @media only screen and (max-width: 680px) {
   #archive-logo, .overview-thumbnail-3, .overview-thumbnail-4 {
@@ -235,7 +244,7 @@ h2 {
     margin-right: 5px;
   }
 
-  .grid_10 {
+  .grid_7 {
     width: 300px ! important;
   }
 

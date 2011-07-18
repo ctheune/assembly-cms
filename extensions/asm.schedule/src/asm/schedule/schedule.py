@@ -65,6 +65,9 @@ class SearchPreview(grok.View):
 class Event(persistent.Persistent):
     """A single event - mostly a data bag."""
 
+    description = u''
+    canceled = False
+
 
 class ScheduleUpload(grok.Adapter):
     grok.context(Schedule)
@@ -160,7 +163,7 @@ class Edit(asm.cmsui.form.EditForm):
                   'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
                   'sumtask', 'class_', 'url', 'title_en', 'title_fi',
                   'location_en', 'location_fi', 'location_url',
-                  'outline_level')
+                  'outline_level', 'description_en', 'description_fi', 'canceled')
         reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
         reader = iter(reader)
 
@@ -203,6 +206,8 @@ class Edit(asm.cmsui.form.EditForm):
                 event.title = row['title_%s' % lang].decode('UTF-8')
                 event.location = row['location_%s' % lang].decode('UTF-8')
                 event.location_url = row['location_url']
+                event.description = row['description_%s' % lang].decode('UTF-8')
+                event.canceled = (row['canceled'] == 'Yes')
                 schedule.events[int(row['id'])] = event
             rows += 1
 

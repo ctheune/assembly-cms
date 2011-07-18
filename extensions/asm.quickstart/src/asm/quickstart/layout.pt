@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Site title</title>
+
+    <link rel="stylesheet" href="/@@/asm.quickstart/css/reset.css"/>
+    <link rel="stylesheet" href="/@@/asm.quickstart/css/960.css"/>
+    <link rel="stylesheet" href="/@@/asm.quickstart/css/text.css"/>
+    <link rel="stylesheet" href="/@@/asm.quickstart/css/style.css"/>
+</head>
+
+<body>
+
+  <div id="main" class="container_16">
+
+    <div
+        tal:content="structure view/render">
+    </div>
+
+    <div>
+      <p>Powered by <a href="http://bitbucket.org/ctheune/assembly-cms">Assembly CMS</a></p>
+    </div>
+
+  </div>
+
+</body>
+</html>

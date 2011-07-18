@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title><span tal:replace="context/title"/> &ndash; Assembly Organizing</title>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+      <meta name="geo.region" content="FI-ES" />
+      <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />
+      <meta name="geo.position" content="60.205868;24.929446" />
+      <meta name="ICBM" content="60.205868, 24.929446" />
+
+      <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+      <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+      <link rel="search" type="application/opensearchdescription+xml" title="Guide to Assembly Summer" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
+
+      <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/reset.css"/>
+      <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/text.css"/>
+      <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
+
+      <base tal:attributes="href context/@@base"/>
+    </head>
+
+    <body>
+      <div id="main">
+
+        <div id="header" class="clearfix">
+          <h1><a tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/images/asmorg.png" alt="ASSEMBLY Organizing"></a></h1>
+          <ul>
+            <li tal:repeat="section context/@@layouthelper/sections">
+              <a tal:attributes="href python:view.url(section)" tal:content="section/title">Blog</a></li>
+          </ul>
+
+        </div>
+
+        <div id="content" class="clearfix">
+
+          <div id="page" class="clearfix" tal:content="structure view/render">
+          </div>
+
+          <div id="sidebar">
+            <!-- Sidebar -->
+            <ul class="navigation"
+              tal:define="sub_sections context/@@layouthelper/sub_sections"
+              tal:condition="sub_sections">
+              <li class="head"><a tal:attributes="href python:view.url(sub_sections['section'])" tal:content="sub_sections/section/title"></a></li>
+              <li tal:repeat="section sub_sections/subs">
+                <a tal:attributes="href python:view.url(section)" tal:content="section/title">Blog</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <div id="footer">
+          &copy; 2011 Assembly Organizing
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        var gaJsHost = (("https:" == document.location.protocol) ? 
+            "https://ssl." : "http://www.");
+        document.write(unescape("%3Cscript src='" + gaJsHost + 
+              "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+          try {
+            var pageTracker = _gat._getTracker("UA-7109758-1");
+            pageTracker._trackPageview();
+          } catch(err) {}
+</script>
+  </body>
+</html>

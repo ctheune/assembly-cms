@@ -1,0 +1,176 @@
+html {
+      background:url(images/bg-site.png) repeat-y #e9ebe1;
+}
+body {
+    color:#222;
+    font:15px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin:0;
+    padding:0;
+}
+
+a:link {
+    color:#419110;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+a:visited {
+  color:#2e5b34;
+}
+
+a:hover {
+  color:#4db72c;
+}
+
+a img {border:0;}
+
+#page h1 {
+    border-bottom:1px solid #ccc;
+    padding-bottom:0.4em;
+}
+
+h1 {
+    font-size:34px;
+}
+
+h2 {
+    font-size:26px;
+    margin:1.5em 0 0.5em 0;
+}
+
+h3 {
+  font-size:22px;
+  margin:1.5em 0 0.5em 0;
+}
+
+ol li, ul li {
+  margin-bottom:0.8em;
+}
+
+hr {
+  border:0;
+  border-bottom:1px solid rgba(0,0,0,0.2);
+}
+
+blockquote {
+    font:17px/1.5 Georgia, "Times New Roman", serif;
+    border-top:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+    padding:1em 0;
+    text-align:center;
+    margin:1em 0;
+    font-style:italic;
+}
+
+#main {
+  overflow:hidden;
+  width:100%;
+}
+
+#header {
+    display:none;
+}
+
+#content {
+    background:#fff;
+    width:980px;
+    -webkit-box-shadow:0 2px 3px #ccc;
+}
+
+#content #page {
+    float:right;
+    width:600px;
+    padding:40px 40px 40px;
+}
+
+#contents {
+    float:left;
+    width:290px;
+    color:#fff;
+    height:100%;
+}
+
+#lang {
+  border-bottom:1px solid rgba(0,0,0,0.2);
+  padding:10px 40px;
+}
+
+#contents #lang a {
+  font-weight:normal;
+  width:100px;
+  margin:10px 20px 10px 0;
+}
+
+#contents #search {
+  margin:0 0 10px 40px;
+  width:180px;
+}
+
+#contents .copy {
+  margin:20px 40px;
+  padding:0 0;
+  color: #ccc;
+}
+
+#search {
+  background: #fff url("/@@/asm.manual/images/search.png") no-repeat left center;
+  padding-left: 22px;
+}
+
+#contents img {
+  margin:20px 40px 10px;
+}
+
+#contents a {
+    color:inherit;
+}
+
+#contents ol {
+  text-transform:uppercase;
+  font-weight:bold;
+  text-shadow:0 1px 3px rgba(0,0,0,0.3);
+}
+
+#contents ol li.active {
+  background:rgba(0,0,0,0.1);
+  -webkit-box-shadow:0 0 3px rgba(0,0,0,0.2) inset;
+  border-bottom:1px solid rgba(255,255,255,0.3);
+}
+
+#contents ol li:hover {
+    background:rgba(0,0,0,0.1);
+}
+
+#contents ol li {
+    list-style:none;
+    margin:0;
+    font-size:18px;
+    padding:10px 40px;
+    margin:2px 0;
+}
+
+#contents ol li.active {
+}
+
+#contents ol li ol {
+    margin:0;
+    padding:0;
+    text-transform:none;
+    font-size:18px;
+}
+
+#contents ol li ol li {
+    border-bottom:0;
+    font-size:15px;
+    padding:5px 0 5px 10px;
+}
+
+table.contact-info td {
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+table.contact-info td:first-child {
+	padding-right: 1em;
+	text-align: right;
+}

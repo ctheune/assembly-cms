@@ -1,0 +1,84 @@
+<tal:block i18n:domain="asm.schedule">
+<span tal:replace="structure context/message|nothing"></span>
+
+<div class="scheduleclasses">
+<tal:block repeat="option view/filter/detail_options">
+  <a tal:attributes="href string:?details=${option/token}&day=${view/filter/day};
+                     class option/class_"
+     tal:content="option/label">Major events</a>
+</tal:block>
+</div>
+
+<div class="scheduledays">
+
+<tal:block repeat="option view/filter/day_options">
+<span tal:attributes="class option/class_">
+<a tal:attributes="href string:?day=${option/token}&details=${view/filter/details}"
+     i18n:translate=""
+     tal:content="option/label">Thursday</a>
+</span>
+</tal:block>
+</div>
+
+  <table class="schedule">
+    <tal:block repeat="record view/filter/events">
+    <tr class="day">
+      <th colspan="2" tal:content="record/day">
+      </th>
+    </tr>
+    <tal:block repeat="hour_record record/hours">
+    <tal:block repeat="event hour_record/events">
+    <tr>
+      <th tal:condition="repeat/event/start"
+          tal:attributes="rowspan repeat/event/length"
+          tal:content="hour_record/hour">
+      </th>
+      <td tal:attributes="class event/classes">
+        <span class="disclose" tal:attributes="class python:'disclose '+('' if event['description'] else 'hidden')">&nbsp;</span>
+        <span class="asmtv" tal:condition="event/assemblytv_broadcast">&nbsp;</span>
+        <a tal:content="event/title"
+           tal:attributes="name event/key; href event/url"></a>
+        <br/>
+        <a tal:condition="event/location"
+           tal:content="event/location"
+           tal:attributes="href event/location_url"
+           class="location"></a>
+
+       <span tal:condition="event/has_until"
+             i18n:translate="event_until_line"
+             class="until">&ndash;
+          until <span tal:content="event/end_time" i18n:name="hour">12:00</span>
+          <span tal:content="event/end_day" i18n:name="day"/>
+        </span>
+
+        <p tal:condition="event/canceled" i18n:translate=""
+           class="canceled" >Unfortunately, this event has been canceled. :(</p>
+
+        <div tal:condition="event/description"
+             tal:content="structure event/description"
+             class="description">
+        </div>
+      </td>
+    </tr>
+    </tal:block>
+    </tal:block>
+    </tal:block>
+  </table>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('table.schedule td').click(function() {
+        $('.description', this).slideToggle();
+        $('.disclose', this).toggleClass('opened');
+        });
+
+      $('table.schedule td').each(function() {
+        $('.description', this).hide();
+       });
+
+      $('table.schedule td').hover(
+        function(){ $('.disclose', this).addClass('hover'); },
+        function(){ $('.disclose', this).removeClass('hover');});
+  });
+</script>
+</tal:block>

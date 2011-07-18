@@ -1,0 +1,48 @@
+<div tal:replace="structure context/@@gallerynavbar"/>
+
+<div class="single page clearfix">
+  <div class="entry"
+       id="gallery-item"
+       tal:define="embed python:view.embed(640);
+                   next context/@@gallerynavbar/next">
+
+    <a tal:condition="python: next and embed and embed.startswith('<img ')"
+       tal:replace="structure python: '<a href=\'%s#content\'>' % view.url(next)" />
+
+    <span tal:replace="structure embed"/>
+
+    <a tal:condition="python: next and embed and embed.startswith('<img ')"
+       tal:replace="structure python: '</a>'" />
+
+
+  </div>
+  <div id="details">
+    <h2><span tal:replace="context/title" />
+      <tal:block tal:condition="context/page">
+        by
+        <span tal:replace="view/info/author" />
+    </tal:block></h2>
+    <p tal:condition="view/info/description"
+       tal:content="structure view/info/description"></p>
+
+    <tal:block tal:define="downloads python:list(view.links(include=['download', 'sceneorg']))">
+      <div class="download section" tal:condition="downloads">
+        <h3 class="section-title">Download</h3>
+        <div tal:repeat="download downloads">
+          <span tal:replace="structure download"/> (<span tal:content="download/@@downloaddomain"/>)
+        </div>
+      </div>
+    </tal:block>
+
+    <tal:block tal:define="view_links python:list(view.links(exclude=['download', 'sceneorg']))">
+      <div tal:condition="python: len(view_links) > 0"
+           class="view section">
+        <h3 class="section-title">View on</h3>
+        <div tal:repeat="view_link view_links">
+          <span tal:replace="structure view_link"/>
+        </div>
+      </div>
+    </tal:block>
+
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<a id="livestream" tal:attributes="href context/@@layouthelper/static/i-livestream.html" rel="#overlay" style="text-decoration:none"> </a>
+<div class="overlay" id="overlay"><div class="wrap"></div> </div>
+
+<div id="news-featured" tal:define="featured python:list(view.featured())">
+
+    <div class="newsitem" id="news-id1"
+        style=""
+        tal:repeat="item featured"
+        tal:attributes="
+            id string:news-id${repeat/item/number};
+            style string:background-image:url(${item/teaser_url})">
+        <div class="news-overlay">
+            <div class="news-padding">
+                <h2><a tal:attributes="href python:view.url(item['edition'])"
+                        tal:content="item/edition/title">Videos &amp; Photos</a></h2>
+                <p><a tal:attributes="href python:view.url(item['edition'])"
+                    tal:content="item/news/teaser">Want to catch the feeling of ASSEMBLY Summer 2009? Check out our photo and video archives!</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="news-navigation" class="tabs">
+        <a href=""
+            tal:repeat="item featured"
+            tal:attributes="id string:news-id${repeat/item/number}-nav">&bull;</a>
+    </div>
+</div>
+
+<div class="content-news">
+    <ul>
+        <li tal:repeat="item view/frontpage">
+          <h2><a tal:attributes="href python:view.url(item['edition'])"
+                 tal:content="item/edition/title">Asus desktop image competition
+                 results</a> <span
+                 tal:content="python:item['edition'].modified.strftime('%d.%m.%Y')">11.12.2009</span></h2>
+            <p tal:content="item/news/teaser">Here are the results for ASUS desktop background wallpaper competition, the winner and four runner ups.</p>
+        </li>
+    </ul>
+    <p><a tal:attributes="href string:${view/application_url}/news">Archive</a></p>
+</div>

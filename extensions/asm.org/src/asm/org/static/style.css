@@ -1,0 +1,142 @@
+body {
+  background:#fefefe url(images/bg-header.png) repeat-x;
+  color:#222;
+  font:15px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin:0;
+  padding:0;
+}
+
+a {
+  color:#0062a9;
+  text-decoration:none;
+}
+
+a img {border:0;}
+
+#page h1 {
+	border-bottom:1px solid #ddd;
+	padding-bottom:0.4em;
+        font-size:32px;
+}
+
+h1 {
+	font-size:26px;
+}
+
+h2 {
+  font-weight:normal;
+  font-size:26px;
+  margin:1.5em 0 0.5em 0;
+}
+
+blockquote {
+	font:17px/1.5 Georgia, "Times New Roman", serif;
+	border-top:1px solid #eee;
+	border-bottom:1px solid #eee;
+	padding:1em 0;
+	text-align:center;
+	margin:1em 0;
+	font-style:italic;
+}
+
+#main {
+  width:980px;
+  margin:0 auto;
+}
+
+#header {
+  height:50px;
+  padding:40px 0 15px 0;
+  color:#fff;
+}
+
+#header h1 {
+	width:400px;
+	float:left;
+}
+
+#header ul li {
+	list-style-type:none;
+	float:left;
+	text-transform:uppercase;
+	font-size:18px;
+        font-weight:bold;
+	margin-top:6px;
+}
+
+#header ul li a {
+	color:#fff;
+}
+
+#content {
+	background:#fff;
+	-webkit-box-shadow:0 2px 3px #ccc;
+}
+
+#content #page {
+	float:left;
+	width:600px;
+	padding:30px 0;
+}
+
+.post {
+	padding-bottom:20px;
+	margin-bottom:20px;
+	border-bottom:1px solid #ddd;
+}
+
+.post h2:first-child {
+	margin:0;
+}
+
+.post .byline {
+	text-transform:uppercase;
+	color:#666;
+	display:block;
+	margin-bottom:1.4em;
+	font-size:12px;
+}
+
+#sidebar {
+	float:right;
+	width:280px;
+	padding:20px;
+}
+
+#sidebar .navigation {
+        list-style-type: none;
+}
+
+#sidebar .navigation li {
+        padding: 0.5em 1em;
+        background-color: #f6f6f6;
+        width: 260px;
+        margin-bottom: 0.3em;
+}
+
+#sidebar .navigation .head {
+        background-color: #3a3a3a;
+        font-weight: bold;
+}
+
+#sidebar .navigation .head a {
+        color: white;
+}
+
+#footer {
+	clear:both;
+	padding:2em 0;
+	color:#666;
+	border-top:1px solid #ddd;
+	font-size:13px;
+}
+
+table.contact-info td {
+	padding-top: 0.1em;
+	padding-bottom: 0.1em;
+}
+
+table.contact-info td:first-child {
+	padding-right: 1em;
+	text-align: right;
+}

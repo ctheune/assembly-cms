@@ -1,0 +1,88 @@
+<div tal:replace="structure context/@@gallerynavbar"/>
+
+<p tal:condition="view/info/description" tal:replace="structure view/info/description" />
+
+<div tal:repeat="category view/list_categories" class="mediacategory">
+
+  <h2>
+    <a tal:attributes="href python:view.url(category['edition'].page)">
+      <span tal:replace="category/edition/title">Compo type</span> &raquo;
+    </a>
+  </h2>
+
+  <tal:block tal:define="items python:view.list_category_items(category['edition'], 5)">
+  <div class="mediaitemlisting" tal:condition="python:len(items) > 0">
+    <tal:block tal:repeat="item items">
+      <div tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
+
+        <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
+          <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                               alt item/edition/title"
+               width="160" height="90" />
+          <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>
+          <span class="by" tal:content="python:view.cut_string(item['gallery'].author, 25)" />
+        </a>
+      </div>
+    </tal:block>
+  </div>
+  <p tal:condition="python:len(items) == 0" class="description">
+    We are missing web viewable content for all entries in this category. If you can help us in this task, <a tal:attributes="href python:view.application_url('feedback') + '?page=' + '/'.join(x.__name__ for x in view.get_path(category['edition'], True)[1:])">contact us about <span tal:replace="context/title" /> <span tal:replace="category/edition/title" /></a> with the feedback form.
+  </p>
+  </tal:block>
+
+</div>
+<div class="index page clearfix">
+
+  <div tal:repeat="item view/list_items" class="video">
+
+    <a tal:attributes="href python:view.url(item['edition']) + '#content'" class="thumbnail">
+      <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+                           alt item/edition/title"
+           width="160" height="90" />
+      <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>
+      <span class="by" tal:content="python:view.cut_string(item['gallery'].author, 25)" />
+    </a>
+  </div>
+</div>
+
+
+<div class="navigation clearfix"
+    tal:define="next python:view.offset + view.ITEMS_PER_PAGE;
+                prev python:view.offset - view.ITEMS_PER_PAGE">
+
+  <a class="grid_3 left gallery-navigation-link"
+     id="gallery-page-link-prev"
+     tal:condition="python:prev >= 0"
+     tal:attributes="href python:view.url(context, data=dict(offset=prev))"
+><span class="control">&laquo; Previous <span tal:replace="view/ITEMS_PER_PAGE" /> items</span>
+  </a>
+  <span class="grid_3" tal:condition="python:prev < 0">&nbsp;</span>
+
+  <span class="grid_10">&nbsp;</span>
+
+  <a class="grid_3 right gallery-navigation-link"
+     id="gallery-page-link-next"
+     tal:condition="python:next < view.total"
+     tal:attributes="href python:view.url(context, data=dict(offset=next))"
+>
+    <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span>
+  </a>
+  <span class="grid_3" tal:condition="python:next >= view.total">&nbsp;</span>
+
+
+  <!-- <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total" -->
+  <!--   tal:attributes="href python:view.url(context, data=dict(offset=next))"> -->
+  <!--   <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span> -->
+  <!-- </a> -->
+
+  <!-- <a class="back" id="gallery-link-previous" tal:condition="python:prev >= 0" -->
+  <!--     tal:attributes="href python:view.url(context, data=dict(offset=prev))"> -->
+  <!--     <span class="control">&laquo; Previous <span tal:replace="view/ITEMS_PER_PAGE" /> items</span> -->
+  <!-- </a> -->
+
+  <!-- <a class="forward" id="gallery-link-next" href="#" tal:condition="python:next < view.total" -->
+  <!--   tal:attributes="href python:view.url(context, data=dict(offset=next))"> -->
+  <!--   <span class="control">Next <span tal:replace="view/ITEMS_PER_PAGE" /> items &raquo;</span> -->
+  <!-- </a> -->
+
+</div>

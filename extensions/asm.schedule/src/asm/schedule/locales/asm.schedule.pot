@@ -1,0 +1,116 @@
+##############################################################################
+#
+# Copyright (c) 2003-2004 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: Meaningless\n"
+"POT-Creation-Date: Thu Aug  4 12:12:43 2011\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+
+#: asm/schedule/i18n.py:10
+msgid "Tuesday"
+msgstr ""
+
+#: asm/schedule/i18n.py:11
+msgid "Wednesday"
+msgstr ""
+
+#: asm/schedule/i18n.py:12
+msgid "Thursday"
+msgstr ""
+
+#: asm/schedule/i18n.py:13
+msgid "Friday"
+msgstr ""
+
+#: asm/schedule/i18n.py:14
+msgid "Saturday"
+msgstr ""
+
+#: asm/schedule/i18n.py:15
+msgid "Sunday"
+msgstr ""
+
+#: asm/schedule/i18n.py:19
+msgid "Monday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:20
+msgid "Tuesday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:21
+msgid "Wednesday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:22
+msgid "Thursday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:23
+msgid "Friday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:24
+msgid "Saturday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:25
+msgid "Sunday(until)"
+msgstr ""
+
+#: asm/schedule/i18n.py:27
+msgid "%H:%M"
+msgstr ""
+
+#: asm/schedule/i18n.py:9
+msgid "Monday"
+msgstr ""
+
+#: asm/schedule/schedule.py:297
+#: asm/schedule/schedule.py:360
+msgid "All"
+msgstr ""
+
+#: asm/schedule/schedule.py:298
+msgid "Major"
+msgstr ""
+
+#: asm/schedule/schedule.py:299
+msgid "Compos"
+msgstr ""
+
+#: asm/schedule/schedule.py:326
+#: asm/schedule/schedule.py:341
+msgid "%A"
+msgstr ""
+
+#: asm/schedule/schedule_templates/index.pt:16
+msgid "${DYNAMIC_CONTENT}"
+msgstr ""
+
+#: asm/schedule/schedule_templates/index.pt:50
+#. Default: "&ndash; until ${hour} ${day}"
+msgid "event_until_line"
+msgstr ""
+
+#: asm/schedule/schedule_templates/index.pt:53
+msgid "Unfortunately, this event has been canceled. :("
+msgstr ""
+

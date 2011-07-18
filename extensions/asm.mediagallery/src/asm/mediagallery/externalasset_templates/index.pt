@@ -1,0 +1,28 @@
+<h1 tal:content="context/title" />
+
+<div tal:define="embed python:view.embed(560);
+                       next context/@@gallerynavbar/next">
+  <a tal:condition="python: next and embed and embed.startswith('<img ')"
+     tal:replace="structure python: '<a href=\'%s\'>' % view.url(next)" />
+  <div tal:replace="structure embed"/>
+  <a tal:condition="python: next and embed and embed.startswith('<img ')"
+     tal:replace="structure python: '</a>'" />
+</div>
+
+<div class="mediabottombar">
+    <div class="download">
+      <tal:block tal:repeat="download python:view.links(include=['download', 'sceneorg'])">
+        <span tal:replace="structure download"/>
+        <tal:block condition="not:repeat/download/end"> | </tal:block>
+      </tal:block>
+    </div>
+    <div class="view">
+        View on
+        <tal:block tal:repeat="download python:view.links(exclude=['download', 'sceneorg'])">
+            <span tal:replace="structure download"/>
+            <tal:block condition="not:repeat/download/end"> | </tal:block>
+        </tal:block>
+    </div>
+</div>
+
+<div tal:replace="structure context/@@gallerynavbar"/>

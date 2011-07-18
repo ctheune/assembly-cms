@@ -1,0 +1,31 @@
+<div class="compo clearfix">
+  <div class="details grid_4 alpha">
+    <h3 tal:content="context/title">Demo compo</h3>
+    
+    <p>
+      <a href="#" class="location" tal:content="context/location">Bigscreen</a>
+      <a href="#" class="time" tal:content="context/time">Sat 21.00-21.00</a>
+    </p>
+    
+    <p>
+      <strong>Prizes</strong>
+      <span tal:content="context/prizes">To be announced</span>
+    </p>
+    
+    <p>
+      <a tal:attributes="href context/gallery">&raquo; View gallery</a>
+      <a tal:attributes="href context/participation_info">&raquo; View participation details</a>
+    </p>
+    
+  </div>
+  
+  <div class="desc grid_7 omega">
+    <p class="intro" tal:content="context/headline">
+      Demo compo is the most awesome compo.
+    </p>
+    <p tal:content="context/description">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel sem orci, ut pellentesque lorem. Suspendisse ornare vehicula vestibulum. Ut et magna sem. Nulla sed velit risus. 
+    </p>
+  </div>
+  
+</div>

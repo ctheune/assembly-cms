@@ -26,7 +26,7 @@
     </tal:block>
   </div>
   <p tal:condition="python:len(items) == 0" class="description">
-    We are missing web viewable content for all entries in this category. If you can help us in this task, <a tal:attributes="href python:view.application_url('feedback') + '?page=' + '/'.join(x.__name__ for x in view.get_path(category['edition'], True)[1:])">contact us about <span tal:replace="context/title" /> <span tal:replace="category/edition/title" /></a> with feedback form.
+    We are missing web viewable content for all entries in this category. If you can help us in this task, <a tal:attributes="href python:view.application_url('feedback') + '?page=' + '/'.join(x.__name__ for x in view.get_path(category['edition'], True)[1:])">contact us about <span tal:replace="context/title" /> <span tal:replace="category/edition/title" /></a> with the feedback form.
   </p>
   </tal:block>
 

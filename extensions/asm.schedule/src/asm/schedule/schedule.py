@@ -10,6 +10,7 @@ import csv
 import datetime
 import grok
 import persistent
+import transaction
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 
@@ -169,7 +170,11 @@ class Edit(asm.cmsui.form.EditForm):
 
         # Grab all the public events so that the raw data can be shown.
         public_data = StringIO.StringIO()
-        writer = csv.DictWriter(public_data, fieldnames=fields, dialect=dialect)
+        writer = csv.DictWriter(
+            public_data,
+            fieldnames=fields,
+            dialect=dialect,
+            quotechar="\\")
 
         # Ignore the first row
         header = reader.next()
@@ -190,12 +195,24 @@ class Edit(asm.cmsui.form.EditForm):
                 continue
             errors = get_row_errors(fields, row)
             if len(errors) > 0:
+                transaction.abort()
                 self.flash(u"Schedule data has an invalid row", "warning")
                 for error in errors:
                     self.flash(error, "warning")
                 self.flash(row, "warning")
                 return
-            writer.writerow(row)
+            try:
+                writer.writerow(row)
+            except ValueError, e:
+                transaction.abort()
+                self.flash(u"Unexpected error happened: %s" % e.message, "warning")
+                self.flash(str(row))
+                return
+            except csv.Error, e:
+                transaction.abort()
+                self.flash(u"Unexpected error happened: %s" % e.message, "warning")
+                self.flash(str(row))
+                return
             for schedule, lang in [(finnish, 'fi'), (english, 'en')]:
                 event = Event()
                 event.start = extract_date(row['start_date'])
@@ -207,7 +224,7 @@ class Edit(asm.cmsui.form.EditForm):
                 event.location = row['location_%s' % lang].decode('UTF-8')
                 event.location_url = row['location_url']
                 event.description = row['description_%s' % lang].decode('UTF-8')
-                event.canceled = (row['canceled'] == 'Yes')
+                event.canceled = (row['canceled'].lower() == 'yes')
                 schedule.events[int(row['id'])] = event
             rows += 1
 

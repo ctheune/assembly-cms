@@ -1,0 +1,137 @@
+# #############################################################################
+#
+# Copyright (c) 2003-2004 Zope Foundation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+# #############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: asm.schedule\n"
+"POT-Creation-Date: Wed Aug  3 17:21:33 2011\n"
+"PO-Revision-Date: 2011-08-03 17:25+0200\n"
+"Last-Translator: Christian Theune <ct@gocept.com>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+"X-Poedit-Language: Finnish\n"
+
+#: asm/schedule/i18n.py:10
+msgid "Tuesday"
+msgstr "Tiistai"
+
+#: asm/schedule/i18n.py:11
+msgid "Wednesday"
+msgstr "Keskiviikko"
+
+#: asm/schedule/i18n.py:12
+msgid "Thursday"
+msgstr "Torstai"
+
+#: asm/schedule/i18n.py:13
+msgid "Friday"
+msgstr "Perjantai"
+
+#: asm/schedule/i18n.py:14
+msgid "Saturday"
+msgstr "Lauantai"
+
+#: asm/schedule/i18n.py:15
+msgid "Sunday"
+msgstr "Sunnuntai"
+
+#: asm/schedule/i18n.py:19
+msgid "Monday(until)"
+msgstr "maanantaihin"
+
+#: asm/schedule/i18n.py:20
+msgid "Tuesday(until)"
+msgstr "tiistaihin"
+
+#: asm/schedule/i18n.py:21
+msgid "Wednesday(until)"
+msgstr "keskiviikkoon"
+
+#: asm/schedule/i18n.py:22
+msgid "Thursday(until)"
+msgstr "torstaihin"
+
+#: asm/schedule/i18n.py:23
+msgid "Friday(until)"
+msgstr "perjantaihin"
+
+#: asm/schedule/i18n.py:24
+msgid "Saturday(until)"
+msgstr "lauantaihin"
+
+#: asm/schedule/i18n.py:25
+msgid "Sunday(until)"
+msgstr "sunnuntaihin"
+
+#: asm/schedule/i18n.py:27
+msgid "%H:%M"
+msgstr "%H.%M"
+
+#: asm/schedule/i18n.py:9
+msgid "Monday"
+msgstr "Maanantai"
+
+#: asm/schedule/schedule.py:294
+#: asm/schedule/schedule.py:356
+msgid "All"
+msgstr "Kaikki"
+
+#: asm/schedule/schedule.py:295
+msgid "Major"
+msgstr "Merkittävät"
+
+#: asm/schedule/schedule.py:296
+msgid "Compos"
+msgstr "Kilpailut"
+
+#: asm/schedule/schedule.py:323
+#: asm/schedule/schedule.py:338
+msgid "%A"
+msgstr ""
+
+#: asm/schedule/schedule_templates/index.pt:15
+msgid "Day"
+msgstr "Päivä"
+
+#: asm/schedule/schedule_templates/index.pt:19
+msgid "${DYNAMIC_CONTENT}"
+msgstr ""
+
+#: asm/schedule/schedule_templates/index.pt:5
+msgid "Events"
+msgstr "Tapahtumat"
+
+#. Default: "&ndash; until ${hour} ${day}"
+#: asm/schedule/schedule_templates/index.pt:53
+msgid "event_until_line"
+msgstr "&ndash; ${day} klo. ${hour} asti"
+
+#: asm/schedule/schedule_templates/index.pt:56
+msgid "Unfortunately, this event has been cancelled. :("
+msgstr "Valitettavasti tämä tapahtuma on peruttu. : ("
+
+#~ msgid "Full schedule"
+#~ msgstr "Kaikki tapahtumat"
+
+#~ msgid "Major events"
+#~ msgstr "Merkittävät tapahtumat"
+
+#~ msgid "event_end"
+#~ msgstr "klo. ${hour} ${day} asti"
+
+#~ msgid "until"
+#~ msgstr "asti"

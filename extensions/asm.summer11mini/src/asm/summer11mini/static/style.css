@@ -485,39 +485,39 @@ table.schedule td.current {
     background-color: #ebf2f3;
 }
 
-p.scheduleclasses {
+div.scheduleclasses {
     margin-bottom:1em;
 }
-p.scheduleclasses a {
+div.scheduleclasses a {
     text-decoration: none;
     font-size:2em;
     margin-right:1em;
 }
 
-p.scheduledays {
+div.scheduledays {
     margin-bottom:2em;
     border-top:2px solid #eee;
 }
 
-p.scheduledays a {
+div.scheduledays a {
     text-decoration: none;
     text-transform: uppercase;
-    font-size: 1.5em;
+    font-size: 1.35em;
 }
 
-p.scheduledays span {
+div.scheduledays span {
     margin-right:1.2em;
     padding-top:1.5em;
     display: inline-block;
 }
 
-p.scheduledays span.selected {
+div.scheduledays span.selected {
     background-image: url("images/schedule-selected.png");
     background-repeat: repeat-x;
 }
 
-p.scheduledays span.selected a,
-p.scheduleclasses a.selected {
+div.scheduledays span.selected a,
+div.scheduleclasses a.selected {
     color: black;
 }
 

@@ -13,7 +13,7 @@ import persistent
 import transaction
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
-
+from asm.schedule.i18n import _, i18n_strftime
 
 class Schedule(asm.cms.Edition):
     """A schedule maintains a list of events and offers a retail UI that
@@ -67,6 +67,8 @@ class Event(persistent.Persistent):
     """A single event - mostly a data bag."""
 
     description = u''
+    # XXX Dude, it's "cancelled", but now our database is screwed. ;)
+    # If you care to fix this, please also care to write a generation.
     canceled = False
 
 
@@ -289,16 +291,18 @@ def extract_date(date):
 class FilteredSchedule(object):
     """A helper to create a filtered view on a schedule."""
 
-    filters = {'all': ('Full schedule', lambda x: True),
-               'major': ('Major events', lambda x: x.major),
-               'compo': ('Compos',
+    filters = {'all': (_('All'), lambda x: True),
+               'major': (_('Major'), lambda x: x.major),
+               'compo': (_('Compos'),
                          lambda x: x.class_.startswith('Compo'))}
 
-    def __init__(self, schedule, details, day):
+    def __init__(self, request, schedule, details, day):
+        self.request = request
         day_options = set()
         self.details = details
         self.day = day
         by_day = {}
+        self.now = datetime.datetime.now()
         matches = self.filters[details][1]
 
         for key, event in schedule.events.items():
@@ -316,11 +320,29 @@ class FilteredSchedule(object):
             if not events:
                 continue
             data = {}
-            data['day'] = day
+            data['day'] = _(day.strftime('%A'))
             hours = {}
             for event in events:
-                hours.setdefault(event['event'].start, []).append(event)
-            data['hours'] = [dict(hour=k, events=v) for k,v in
+                massaged = dict()
+                massaged['classes'] = self.event_class(event['event'])
+                massaged['key'] = event['key']
+                event = event['event']
+                massaged['description'] = event.description
+                massaged['title'] = event.title
+                massaged['url'] = event.url or None
+                massaged['location'] = event.location
+                massaged['location_url'] = event.location_url
+                massaged['has_until'] = event.start != event.end
+                massaged['end_time'] = i18n_strftime(
+                    '%H:%M', event.end, self.request)
+                massaged['end_day'] = (_(event.end.strftime('%A')+'(until)')
+                                       if event.start.day != event.end.day
+                                       else u'')
+                massaged['cancelled'] = event.canceled
+                hours.setdefault(event.start, []).append(massaged)
+
+            data['hours'] = [dict(hour=i18n_strftime('%H:%M', k, self.request),
+                                  events=v) for k,v in
                              sorted(hours.items())]
             self.events.append(data)
 
@@ -331,7 +353,7 @@ class FilteredSchedule(object):
             for day in sorted(day_options)]
         self.day_options.insert(0, dict(
             token='all',
-            label='All',
+            label=_('All'),
             class_=(self.day == 'all' and 'selected' or ' ')))
 
         self.detail_options = [
@@ -339,19 +361,6 @@ class FilteredSchedule(object):
                  class_=(self.details == key and 'selected' or ' '),
                  label=value[0])
             for key, value in self.filters.items()]
-
-
-class Index(asm.cmsui.retail.Pagelet):
-
-    def update(self):
-        day = self.request.get('day', 'all')
-        if day != 'all':
-            day = datetime.datetime.strptime(day, '%Y-%m-%d').date()
-        details = self.request.get('details', 'all')
-        self.now = datetime.datetime.now()
-
-        self.filter = FilteredSchedule(
-            self.context, details, day)
 
     def event_class(self, event):
         classes = set()
@@ -364,6 +373,17 @@ class Index(asm.cmsui.retail.Pagelet):
         if event.canceled:
             classes.add('cancelled')
         return ' '.join(classes)
+
+
+class Index(asm.cmsui.retail.Pagelet):
+
+    def update(self):
+        day = self.request.get('day', 'all')
+        if day != 'all':
+            day = datetime.datetime.strptime(day, '%Y-%m-%d').date()
+        details = self.request.get('details', 'all')
+        self.filter = FilteredSchedule(
+            self.request, self.context, details, day)
 
     def format_date(self, date):
         specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',

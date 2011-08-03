@@ -1,47 +1,62 @@
-<span tal:replace="structure context/message|nothing" />
+<tal:block i18n:domain="asm.schedule">
+<span tal:replace="structure context/message|nothing"></span>
 
-<p class="scheduleclasses">
+<div class="scheduleclasses">
 <tal:block repeat="option view/filter/detail_options">
   <a tal:attributes="href string:?details=${option/token}&day=${view/filter/day};
                      class option/class_"
-     tal:content="option/label">major events only</a>
+     tal:content="option/label">Major events</a>
 </tal:block>
-</p>
+</div>
 
-<p class="scheduledays">
+<div class="scheduledays">
+
 <tal:block repeat="option view/filter/day_options">
 <span tal:attributes="class option/class_">
 <a tal:attributes="href string:?day=${option/token}&details=${view/filter/details}"
+     i18n:translate=""
      tal:content="option/label">Thursday</a>
 </span>
 </tal:block>
-</p>
-
-
+</div>
 
   <table class="schedule">
     <tal:block repeat="record view/filter/events">
     <tr class="day">
-      <th colspan="2" tal:content="python:record['day'].strftime('%A')">
+      <th colspan="2" tal:content="record/day">
       </th>
     </tr>
     <tal:block repeat="hour_record record/hours">
     <tal:block repeat="event hour_record/events">
     <tr>
       <th tal:condition="repeat/event/start"
-        tal:content="python:hour_record['hour'].strftime('%H:%M')"
-        tal:attributes="rowspan repeat/event/length">
+          tal:attributes="rowspan repeat/event/length"
+          tal:content="hour_record/hour">
       </th>
-      <td tal:attributes="class python:view.event_class(event['event'])">
-        <a tal:content="event/event/title" tal:attributes="name event/key; href python:event['event'].url or None "></a>
+      <td tal:attributes="class event/classes">
+        <span class="disclose" tal:condition="event/description">&nbsp;</span>
+        <a tal:content="event/title"
+           tal:attributes="name event/key; href event/url"></a>
         <br/>
-        <tal:block tal:condition="event/event/location">
-          <a tal:content="event/event/location" tal:attributes="href event/event/location_url" class="location"></a>
-        </tal:block>
-        <span class="until" tal:condition="python:event['event'].start != event['event'].end">&ndash;
-          until <span tal:content="python:event['event'].end.strftime('%H:%M')">12:00</span>
-          <span tal:condition="python:event['event'].start.day != event['event'].end.day" tal:content="python:event['event'].end.strftime('%A')"/>
+        <a tal:condition="event/location"
+           tal:content="event/location"
+           tal:attributes="href event/location_url"
+           class="location"></a>
+
+       <span tal:condition="event/has_until"
+             i18n:translate="event_until_line"
+             class="until">&ndash;
+          until <span tal:content="event/end_time" i18n:name="hour">12:00</span>
+          <span tal:content="event/end_day" i18n:name="day"/>
         </span>
+
+        <p tal:condition="event/cancelled" i18n:translate=""
+           class="cancelled" >Unfortunately, this event has been cancelled. :(</p>
+
+        <div tal:condition="event/description"
+             tal:content="structure event/description"
+             class="description">
+        </div>
       </td>
     </tr>
     </tal:block>
@@ -49,3 +64,15 @@
     </tal:block>
   </table>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('table.schedule td').click(function() {
+        $('.description', this).slideToggle();
+        $('.disclose', this).toggleClass('opened');
+        });
+      $('table.schedule td').hover(
+        function(){ $('.disclose', this).addClass('hover'); },
+        function(){ $('.disclose', this).removeClass('hover');});
+  });
+</script>
+</tal:block>

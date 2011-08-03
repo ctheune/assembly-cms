@@ -198,12 +198,3 @@ class SelectLanguage(grok.View):
 
     def render(self):
         self.redirect(self.url(self.context))
-
-
-class Error404NotFound(grok.View, SystemErrorView):
-     grok.context(INotFound)
-     grok.name('index.html')
-
-     def update(self):
-         self.siteUrl = self.url(grok.getSite())
-         self.response.setStatus(404)

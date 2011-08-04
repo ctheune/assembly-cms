@@ -6,6 +6,7 @@ import grok
 import megrok.pagelet
 import zope.interface
 from asm.schedule.i18n import i18n_strftime
+from asm.summer11mini.i18n import _
 
 summer11mini = asm.cms.cms.Profile('summer11mini')
 languages = ['en', 'fi']
@@ -60,9 +61,9 @@ class LayoutHelper(grok.View):
             return []
 
     def generateCountdown(self):
-        times = (('04.08.2011 12:00', True, "until ASSEMBLY!"),
-                 ('07.08.2011 18:00', True, "of ASSEMBLY left to enjoy!"),
-                  (None, False, "ASSEMBLY is over."),)
+        times = (('04.08.2011 12:00', True, _("until ASSEMBLY!")),
+                 ('07.08.2011 18:00', True, _("of ASSEMBLY left to enjoy!")),
+                  (None, False, _("ASSEMBLY is over.")),)
         format = '%d.%m.%Y %H:%M'
 
         now = datetime.datetime.now()
@@ -75,25 +76,30 @@ class LayoutHelper(grok.View):
                 if doCountDown:
                     diff = limit - now
                     diff = (diff.days * 24 * 60 * 60) + diff.seconds
-                    units = (('years', 31536000), ('months', 2592000),
-                             ('days', 86400), ('hours', 3600),
-                             ('minutes', 60), ('seconds', 1))
+                    units = ((_('years'), 31536000), (_('months'), 2592000),
+                             (_('days'), 86400), (_('hours'), 3600),
+                             (_('minutes'), 60), (_('seconds'), 1))
                     messageParts = []
                     for (name, length) in units[:-1]:
                         if diff > length:
                             messageParts.append(
                                 '<strong id="clock_%s">%s</strong> %s' %
-                                (name, int(diff / length), name))
+                                (name, int(diff / length),
+                                 zope.i18n.translate(name,
+                                                     context=self.request)))
                             diff = diff % length
 
                     message = '<span id="clock">%s %s</span>' % (
-                        ', '.join(messageParts), showString)
+                        ', '.join(messageParts),
+                        zope.i18n.translate(showString, context=self.request))
                 else:
-                    message = showString
+                    message = zope.i18n.translate(showString,
+                                                  context=self.request)
                 return message
 
         # This should never get returned...
-        return "Welcome to Assembly!"
+        return zope.i18n.translate(
+            _("Welcome to Assembly!"), context=self.request)
 
     # A helper class to get access to the static directory in this module from
     # the layout.

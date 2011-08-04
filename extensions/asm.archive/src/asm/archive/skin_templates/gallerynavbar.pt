@@ -10,7 +10,7 @@
   </a>
   <span class="grid_3" tal:condition="not: prev">&nbsp;</span>
 
-  <h2 class="grid_7">
+  <h2 class="grid_10">
     <tal:block repeat="edition view/breadcrumbs">
       <tal:block condition="not:repeat/edition/end">
         <a tal:attributes="href python:view.url(edition)"

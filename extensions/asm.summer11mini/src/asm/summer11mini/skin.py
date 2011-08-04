@@ -153,10 +153,11 @@ class Navtree(grok.View):
                 'subpages': []}
         if root in self.active:
             tree['class'].add('active')
-            for child in root.subpages:
-                sub_tree = self._create_subtree(child, levels - 1)
-                if sub_tree:
-                    tree['subpages'].append(sub_tree)
+            if root.type not in ['news']:
+                for child in root.subpages:
+                    sub_tree = self._create_subtree(child, levels - 1)
+                    if sub_tree:
+                        tree['subpages'].append(sub_tree)
         if 'active' in tree['class'] and not tree['subpages']:
             tree['class'].add('has_no_children')
         tree['class'] = ' '.join(tree['class'])
@@ -226,3 +227,23 @@ class SelectLanguage(grok.View):
 
     def render(self):
         self.redirect(self.url(self.context))
+
+
+class News(asm.cmsui.retail.Pagelet):
+
+    grok.context(asm.cms.news.NewsFolder)
+    grok.name('index')
+    grok.layer(ISkin)
+
+    def news(self):
+        news = list()
+        for item in self.context.list():
+            edition = asm.cms.edition.select_edition(
+                item, self.request)
+            if isinstance(edition, asm.cms.edition.NullEdition):
+                continue
+            result = dict(edition=edition,
+                          news=asm.cms.news.INewsFields(edition))
+            news.append(result)
+        news.sort(key=lambda x:x['edition'].created, reverse=True)
+        return news

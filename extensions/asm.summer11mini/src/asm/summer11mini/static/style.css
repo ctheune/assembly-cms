@@ -102,9 +102,9 @@ table {width:100%}
 .odd {background-color:#e4e4e4;}
 .even {background-color:#f4f4f4;}
 table td {padding:5px; margin:0;}
-tr.past {color:#666;}
-tr.running {font-weight:bold; background:#e4e4e4}
-tr.future {}
+td.past {opacity:0.5;}
+td.running {font-weight:bold; background:#e4e4e4}
+td.future {}
 ul {list-style-image:none; list-style-type:disc;margin-bottom:10px;}
 hr {color: #999; background-color: #e4e4e4; margin:15px 0 5px 0; clear:both;}
 p {margin:0 0 1.5em 0;}
@@ -422,9 +422,46 @@ table.schedule td a {
 }
 
 table.schedule td a.location,
+table.schedule td .description,
+table.schedule td .cancelled,
 table.schedule td .until {
     font-size: 70%;
     font-weight: normal;
+}
+
+table.schedule td.cancelled {
+    opacity:0.5;
+}
+table.schedule td .cancelled {
+    margin-bottom:0;
+}
+
+table.schedule td .description {
+    margin-top:0.5em;
+    display: none;
+}
+
+span.disclose {
+    background-image:url(images/bullet_arrow_down.png);
+    opacity: 0.5;
+    display: inline-block;
+    width:16px;
+    height:16px;
+    float:right;
+    padding-left:50px;
+    padding-bottom:10px;
+    background-repeat:no-repeat;
+    background-position:right top;
+}
+span.disclose.opened {
+    background-image:url(images/bullet_arrow_up.png);
+}
+span.disclose.hover {
+    opacity:1;
+}
+
+table.schedule td .description :last-child {
+    margin-bottom:0;
 }
 
 table.schedule td .until {

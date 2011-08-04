@@ -33,6 +33,7 @@
         tal:attributes="rowspan repeat/event/length">
       </th>
       <td tal:attributes="class python:view.event_class(event['event'])">
+        <span class="disclose" tal:condition="event/event/description">&nbsp;</span>
         <a tal:content="event/event/title" tal:attributes="name event/key; href python:event['event'].url or None "></a>
         <br/>
         <tal:block tal:condition="event/event/location">
@@ -42,6 +43,10 @@
           until <span tal:content="python:event['event'].end.strftime('%H:%M')">12:00</span>
           <span tal:condition="python:event['event'].start.day != event['event'].end.day" tal:content="python:event['event'].end.strftime('%A')"/>
         </span>
+        <p class="cancelled" tal:condition="event/event/canceled">Unfortunately, this event has been cancelled. :(</p>
+
+        <div class="description" tal:condition="event/event/description" tal:content="structure event/event/description">
+        </div>
       </td>
     </tr>
     </tal:block>
@@ -49,3 +54,14 @@
     </tal:block>
   </table>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('table.schedule td').click(function() {
+        $('.description', this).slideToggle();
+        $('.disclose', this).toggleClass('opened');
+        });
+      $('table.schedule td').hover(
+        function(){ $('.disclose', this).addClass('hover'); },
+        function(){ $('.disclose', this).removeClass('hover');});
+  });
+</script>

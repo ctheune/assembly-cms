@@ -26,14 +26,16 @@
     <div id="main">
       <div id="header">
         <h1 id="home"><a title="Assembly Summer" tal:attributes="href view/application_url">Assembly Summer 2011, 4.-7.8.2011, Hartwall Areena, Helsinki</a></h1>
-        <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Reserve your tickets!</a>
+        <a id="tickets" i18n:attributes="title" title="Buy Tickets!" href="http://tickets.assembly.org/" i18n:translate="">Reserve your tickets!</a>
       </div>
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
 
         <div style="width:220px; float:left; margin-left:20px;">
-        <form tal:attributes="action string: ${view/application_url}/@@search"
-              method="get" id="searchform"><p><input type="text" style="width: 15em; height:15px;" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /><!--<input type="submit" class="submit" value="Search" />--></p></form>
+          <form tal:attributes="action string: ${view/application_url}/@@search"
+            method="get" id="searchform">
+            <p><input type="text" style="width: 15em; height:15px;"
+                      name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></p></form>
         </div>
 
         <div>
@@ -50,7 +52,7 @@
           </div>
           <div class="box-light sponsors">
             <div class="box-inside" >
-              <h4><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></h4>
+              <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Sponsors</a></h4>
 
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 4)">
                 <p>
@@ -65,7 +67,7 @@
 
           <div class="box-light sponsors">
             <div class="box-inside" >
-              <h4><a tal:attributes="href string:${view/application_url}/sponsors">Associates</a></h4>
+              <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Associates</a></h4>
 
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('associate', 2)">
                 <p>
@@ -92,7 +94,7 @@
 
             <div class="box-light sponsors">
               <div class="box-inside">
-                <h4><a tal:attributes="href string:${view/application_url}/sponsors">Main sponsors</a></h4>
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Main sponsors</a></h4>
 
               <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('main', randomize=False)">
                 <p>
@@ -110,7 +112,7 @@
             </div>
 
             <div style="margin-left: 1em">
-              <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" alt="Follow assemblyparty on Twitter"/></a>
+              <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
             </div>
 
             <div class="sidebar-box">
@@ -125,7 +127,7 @@
 
             <div class="box-light sponsors">
               <div class="box-inside" >
-                <h4><a tal:attributes="href string:${view/application_url}/sponsors">Game Tournaments</a></h4>
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Game Tournaments</a></h4>
 
                 <p>
                 <a tal:attributes="href string:${view/application_url}/compos">
@@ -143,17 +145,17 @@
 
     <div id="footer">
       <p id="footer-links">
-      <a tal:attributes="href string:${view/application_url}/../asmorg/contact">feedback</a> |
-      <a tal:attributes="href string:${view/application_url}/../asmorg/legal/privacy">privacy</a> |
-      <a tal:attributes="href string:${view/application_url}/../asmorg/contact">contact</a> |
-      <br />Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg">Assembly Organizing</a>, 2009-2011
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">feedback</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/legal/privacy" i18n:translate="">privacy</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">contact</a> |
+      <br /><span i18n:translate="">Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg" i18n:name="asmorglink">Assembly Organizing</a>, 2009-2011</span>
       </p>
     </div> <!-- footer -->
 
     <div id="nav-top">
       <div id="nav-top-container">
-        <ul i18n:domain="asm">
-          <li><a href="http://www.assembly.org/summer11/" i18n:translate="">Summer'11</a></li>
+        <ul>
+          <li><a href="http://www.assembly.org/summer11/">Summer'11</a></li>
           <li><a href="http://www.assembly.org/winter11/">Winter'11</a></li>
           <li><a href="http://archive.assembly.org/">Archive</a></li>
           <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>

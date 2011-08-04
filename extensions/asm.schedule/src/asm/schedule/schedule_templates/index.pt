@@ -50,8 +50,8 @@
           <span tal:content="event/end_day" i18n:name="day"/>
         </span>
 
-        <p tal:condition="event/cancelled" i18n:translate=""
-           class="cancelled" >Unfortunately, this event has been cancelled. :(</p>
+        <p tal:condition="event/canceled" i18n:translate=""
+           class="canceled" >Unfortunately, this event has been canceled. :(</p>
 
         <div tal:condition="event/description"
              tal:content="structure event/description"

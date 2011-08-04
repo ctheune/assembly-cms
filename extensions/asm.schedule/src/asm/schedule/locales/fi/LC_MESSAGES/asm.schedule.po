@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: asm.schedule\n"
-"POT-Creation-Date: Wed Aug  3 17:21:33 2011\n"
-"PO-Revision-Date: 2011-08-03 17:25+0200\n"
+"POT-Creation-Date: Thu Aug  4 12:11:43 2011\n"
+"PO-Revision-Date: 2011-08-04 12:14+0300\n"
 "Last-Translator: Christian Theune <ct@gocept.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -85,53 +85,31 @@ msgstr "%H.%M"
 msgid "Monday"
 msgstr "Maanantai"
 
-#: asm/schedule/schedule.py:294
-#: asm/schedule/schedule.py:356
+#: asm/schedule/schedule.py:297 asm/schedule/schedule.py:360
 msgid "All"
 msgstr "Kaikki"
 
-#: asm/schedule/schedule.py:295
+#: asm/schedule/schedule.py:298
 msgid "Major"
 msgstr "Merkittävät"
 
-#: asm/schedule/schedule.py:296
+#: asm/schedule/schedule.py:299
 msgid "Compos"
 msgstr "Kilpailut"
 
-#: asm/schedule/schedule.py:323
-#: asm/schedule/schedule.py:338
+#: asm/schedule/schedule.py:326 asm/schedule/schedule.py:341
 msgid "%A"
-msgstr ""
+msgstr "%A"
 
-#: asm/schedule/schedule_templates/index.pt:15
-msgid "Day"
-msgstr "Päivä"
-
-#: asm/schedule/schedule_templates/index.pt:19
+#: asm/schedule/schedule_templates/index.pt:16
 msgid "${DYNAMIC_CONTENT}"
-msgstr ""
-
-#: asm/schedule/schedule_templates/index.pt:5
-msgid "Events"
-msgstr "Tapahtumat"
+msgstr "${DYNAMIC_CONTENT}"
 
 #. Default: "&ndash; until ${hour} ${day}"
-#: asm/schedule/schedule_templates/index.pt:53
+#: asm/schedule/schedule_templates/index.pt:50
 msgid "event_until_line"
 msgstr "&ndash; ${day} klo. ${hour} asti"
 
-#: asm/schedule/schedule_templates/index.pt:56
-msgid "Unfortunately, this event has been cancelled. :("
+#: asm/schedule/schedule_templates/index.pt:53
+msgid "Unfortunately, this event has been canceled. :("
 msgstr "Valitettavasti tämä tapahtuma on peruttu. : ("
-
-#~ msgid "Full schedule"
-#~ msgstr "Kaikki tapahtumat"
-
-#~ msgid "Major events"
-#~ msgstr "Merkittävät tapahtumat"
-
-#~ msgid "event_end"
-#~ msgstr "klo. ${hour} ${day} asti"
-
-#~ msgid "until"
-#~ msgstr "asti"

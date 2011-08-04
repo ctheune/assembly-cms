@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Aug  3 17:21:33 2011\n"
+"POT-Creation-Date: Thu Aug  4 12:12:43 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -83,42 +83,34 @@ msgstr ""
 msgid "Monday"
 msgstr ""
 
-#: asm/schedule/schedule.py:294
-#: asm/schedule/schedule.py:356
+#: asm/schedule/schedule.py:297
+#: asm/schedule/schedule.py:360
 msgid "All"
 msgstr ""
 
-#: asm/schedule/schedule.py:295
+#: asm/schedule/schedule.py:298
 msgid "Major"
 msgstr ""
 
-#: asm/schedule/schedule.py:296
+#: asm/schedule/schedule.py:299
 msgid "Compos"
 msgstr ""
 
-#: asm/schedule/schedule.py:323
-#: asm/schedule/schedule.py:338
+#: asm/schedule/schedule.py:326
+#: asm/schedule/schedule.py:341
 msgid "%A"
 msgstr ""
 
-#: asm/schedule/schedule_templates/index.pt:15
-msgid "Day"
-msgstr ""
-
-#: asm/schedule/schedule_templates/index.pt:19
+#: asm/schedule/schedule_templates/index.pt:16
 msgid "${DYNAMIC_CONTENT}"
 msgstr ""
 
-#: asm/schedule/schedule_templates/index.pt:5
-msgid "Events"
-msgstr ""
-
-#: asm/schedule/schedule_templates/index.pt:53
+#: asm/schedule/schedule_templates/index.pt:50
 #. Default: "&ndash; until ${hour} ${day}"
 msgid "event_until_line"
 msgstr ""
 
-#: asm/schedule/schedule_templates/index.pt:56
-msgid "Unfortunately, this event has been cancelled. :("
+#: asm/schedule/schedule_templates/index.pt:53
+msgid "Unfortunately, this event has been canceled. :("
 msgstr ""
 

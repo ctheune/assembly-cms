@@ -1,6 +1,6 @@
 body {
   background:#18191b url(../images/noise-bg.png);
-  color:#fff;
+  color: #fff;
   font:14px/1.3 "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin:0;
   padding:0;
@@ -11,7 +11,14 @@ a {
   text-decoration:none;
 }
 
-a img {border:0;}
+a img {
+  border:0;
+}
+
+
+h1 {
+  margin: 1em 0 0.5em;
+}
 
 h2 {
   font-weight:normal;
@@ -80,10 +87,10 @@ h2 {
 }
 
 .video {
-  width:160px;
-  height:160px;
-  float:left;
-  margin:14px;
+  width: 160px;
+  height: 160px;
+  float: left;
+  margin: 14px 32px 14px 0;
 }
 
 .video a {
@@ -132,7 +139,7 @@ h2 {
 }
 
 .section a span {
-  color:#999;
+  color: #999;
 }
 
 .section-title {
@@ -160,6 +167,10 @@ h2 {
   clear: both;
 }
 
+.mediacategory h2 {
+  margin: 14px 0 0px 0;
+}
+
 .grayed {
   color: #bbb;
 }
@@ -169,6 +180,9 @@ h2 {
 }
 
 #footer {
+  padding: 20px;
+  border-top: 1px solid #444;
+  margin-top: 30px;
   text-align: center;
 }
 
@@ -182,13 +196,24 @@ h2 {
 }
 
 #searchform input {
-  background: transparent url("/@@/asm.archive/images/search-loop.png") 98% center no-repeat;
+  border: 1px solid #333;
+  padding: 8px 10px;
+  background: #000;
+  border-radius: 20px;
   color: #fff;
 }
 
 .frontpage-search {
   float: right;
-  padding-top: 1em;
+  padding: 0;
+}
+
+#content {
+  padding-top: 20px;
+}
+
+#content.single {
+  margin-right:300px;
 }
 
 @media only screen and (max-width: 680px) {

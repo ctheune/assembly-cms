@@ -1,3 +1,4 @@
+^buildout.cfg
 .installed.cfg
 .mr.developer.cfg
 blobs
@@ -6,7 +7,6 @@ dist
 etc
 var
 downloads
-buildout.cfg
 ~
 ID
 etc/

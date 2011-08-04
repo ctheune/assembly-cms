@@ -67,9 +67,11 @@ class Event(persistent.Persistent):
     """A single event - mostly a data bag."""
 
     description = u''
-    # XXX Dude, it's "cancelled", but now our database is screwed. ;)
-    # If you care to fix this, please also care to write a generation.
+
     canceled = False
+
+    # Indicates if event is being broadcast on AssemblyTV.
+    assemblytv_broadcast = False
 
 
 class ScheduleUpload(grok.Adapter):
@@ -227,6 +229,7 @@ class Edit(asm.cmsui.form.EditForm):
                 event.location_url = row['location_url']
                 event.description = row['description_%s' % lang].decode('UTF-8')
                 event.canceled = (row['canceled'].lower() == 'yes')
+                event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
                 schedule.events[int(row['id'])] = event
             rows += 1
 
@@ -338,7 +341,8 @@ class FilteredSchedule(object):
                 massaged['end_day'] = (_(event.end.strftime('%A')+'(until)')
                                        if event.start.day != event.end.day
                                        else u'')
-                massaged['cancelled'] = event.canceled
+                massaged['canceled'] = event.canceled
+                massaged['assemblytv_broadcast'] = event.assemblytv_broadcast
                 hours.setdefault(event.start, []).append(massaged)
 
             data['hours'] = [dict(hour=i18n_strftime('%H:%M', k, self.request),
@@ -371,7 +375,7 @@ class FilteredSchedule(object):
         if event.start < self.now and event.end > self.now:
             classes.add('current')
         if event.canceled:
-            classes.add('cancelled')
+            classes.add('canceled')
         return ' '.join(classes)
 
 

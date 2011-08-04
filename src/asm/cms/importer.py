@@ -26,14 +26,17 @@ def base64_to_blob(data):
 class ImportError(ValueError):
     pass
 
+
 class Importer(object):
+    """Import content from an XML file.
+
+
+    """
 
     def __init__(self, cms, data):
         self.cms = cms
         self.data = data
 
-    # TODO decide what to do on duplicate content (ignore, replace, disallow).
-    # Currently disallowing by default.
     def __call__(self, allow_duplicates=False):
         errors = []
         try:
@@ -44,6 +47,12 @@ class Importer(object):
         for page_node in export:
             page_path = page_node.get('path')
             page = self.get_page(page_path, page_node.tag)
+
+            if page_node.get('purge', 'false').lower() == 'true':
+                for subpage in page.subpages:
+                    del page[subpage.__name__]
+                for edition in page.editions:
+                    del page[edition.__name__]
 
             for edition_node in page_node:
                 assert edition_node.tag == 'edition'
@@ -68,6 +77,7 @@ class Importer(object):
                 edition.modified = extract_date(edition_node.get('modified'))
                 edition.created = extract_date(edition_node.get('created'))
                 zope.event.notify(grok.ObjectModifiedEvent(edition))
+        zope.event.notify(ContentImported(self.cms, errors))
         return errors
 
     def import_htmlpage(self, edition, node):
@@ -96,6 +106,15 @@ class Importer(object):
                     del page[edition.__name__]
             current = current.get(name)
         return current
+
+
+class ContentImported(object):
+
+    zope.interface.implements(asm.cms.interfaces.IContentImported)
+
+    def __init__(self, site, errors):
+        self.site = site
+        self.errors = errors
 
 
 def extract_date(str):

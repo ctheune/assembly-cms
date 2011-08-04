@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.summer11mini">
   <head>
     <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
 
@@ -114,14 +114,14 @@
             </div>
 
             <div class="sidebar-box">
-              <h4>News</h4>
+              <h4 i18n:translate="">What's happening?</h4>
               <ul>
-                <li tal:repeat="item context/@@layouthelper/news">
-                <a tal:attributes="href python:view.url(item)"
-                  tal:content="item/title">Asus desktop image competition results </a>
-                <span tal:replace="python:item.modified.strftime('%d.%m.%Y')"/></li>
+                <li tal:repeat="item context/@@layouthelper/current_events">
+                  <a tal:attributes="href item/url"
+                    tal:content="item/event/title">Asus desktop image competition results </a>
+                  <span tal:replace="item/time"/></li>
               </ul>
-            </div> <!-- sidebar news -->
+            </div> <!-- sidebar current events -->
 
             <div class="box-light sponsors">
               <div class="box-inside" >

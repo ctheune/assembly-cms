@@ -27,4 +27,6 @@ _(u'Sunday(until)')
 _(u'%H:%M')
 
 def i18n_strftime(format, time, request):
-    return time.strftime(zope.i18n.translate(_(format), context=request))
+    return time.strftime(
+        zope.i18n.translate(_(format),
+                            context=request).encode('utf-8')).decode('utf-8')

@@ -108,7 +108,7 @@ msgstr "${DYNAMIC_CONTENT}"
 #. Default: "&ndash; until ${hour} ${day}"
 #: asm/schedule/schedule_templates/index.pt:50
 msgid "event_until_line"
-msgstr "event_until_line"
+msgstr "&ndash; until ${hour} ${day}"
 
 #: asm/schedule/schedule_templates/index.pt:53
 msgid "Unfortunately, this event has been canceled. :("

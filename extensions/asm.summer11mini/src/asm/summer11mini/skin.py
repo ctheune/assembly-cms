@@ -4,9 +4,8 @@ import asm.cmsui.interfaces
 import datetime
 import grok
 import megrok.pagelet
-from zope.app.exception.systemerror import SystemErrorView
-from zope.publisher.interfaces import INotFound
 import zope.interface
+from asm.schedule.i18n import i18n_strftime
 
 summer11mini = asm.cms.cms.Profile('summer11mini')
 languages = ['en', 'fi']
@@ -33,9 +32,13 @@ class LayoutHelper(grok.View):
         schedule = asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
         now = datetime.datetime.now()
+        horizon = now + datetime.timedelta(seconds=3600)
         for key, event in schedule.events.items():
-            if event.start <= now and event.end > now:
-                yield dict(event=event, key=key)
+            if event.start <= horizon and event.end > now:
+                url = '%s#%s' % (
+                    self.url(self.application['program']['schedule']), key)
+                time = i18n_strftime('%H:%M', event.start, self.request)
+                yield dict(event=event, key=key, url=url, time=time)
 
     def news(self):
         try:

@@ -157,15 +157,17 @@ class YearlyNavigation(grok.View):
                 for year, remove in zip(years, remove_years)]
 
 
-class GenerateMap(grok.View):
-    # XXX need to trigger on import or stuff might break. blah.
-    grok.context(asm.cms.homepage.Homepage)
-    grok.layer(ISkin)
-    grok.require('asm.cms.EditContent')
-
-    def update(self):
+@grok.subscribe(asm.cms.interfaces.IContentImported)
+def generate_map(event):
+    # Ensure we only operate on archive sites
+    if asmarchive not in event.site.getSiteManager().__bases__:
+        return
+    years = filter(
+        lambda x: YEAR_MATCH.match(x.__name__),
+        list(event.site.subpages))
+    for homepage in event.site.editions:
         map = {}
-        for year in select_years(self.application.subpages, self.request):
+        for year in years:
             year_name = year.page.__name__
             map[year_name] = {}
             iids = zope.component.getUtility(zope.intid.IIntIds)
@@ -175,16 +177,14 @@ class GenerateMap(grok.View):
                     if media.type not in [
                         'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]:
                         continue
-                    edition = asm.cms.edition.select_edition(media, self.request)
-                    if isinstance(edition, asm.cms.edition.NullEdition):
+                    try:
+                        edition = media.getEdition(homepage.parameters)
+                    except KeyError:
                         continue
                     map[year_name][category.__name__].append(iids.getId(edition))
                 if not map[year_name][category.__name__]:
                     del map[year_name][category.__name__]
-        self.context.gallery_map = map
-
-    def render(self):
-        pass
+        homepage.gallery_map = map
 
 
 class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
@@ -400,9 +400,9 @@ Page: %(page)s <%(root)s/%(page)s>
         self.flash(u'Your feedback was accepted.')
         self.redirect(self.url('feedback-accepted'))
 
+
 class FeedbackAccepted(asm.cmsui.retail.Pagelet):
 
     grok.context(asm.cms.homepage.Homepage)
     grok.layer(ISkin)
     grok.name('feedback-accepted')
-

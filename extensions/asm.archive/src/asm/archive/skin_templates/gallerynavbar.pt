@@ -39,9 +39,4 @@
   </a>
   <span class="grid_3" tal:condition="not: next">&nbsp;</span>
 
-  <div class="grid_3 hide-mobile">
-    <form tal:attributes="action string: ${view/application_url}/@@search"
-          method="get" id="searchform"><input type="text" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></form>
-  </div>
-
 </div>

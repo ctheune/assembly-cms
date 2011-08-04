@@ -2,7 +2,7 @@
   <h1 tal:content="site/__name__"></h1>
 
   <p>
-    <a class="button" tal:attributes="href python:view.url(site)">Edit</a>
+    <a class="button" tal:attributes="href python:view.url(site) + '#show-navigation'">Edit</a>
     <a class="button" tal:condition="python:view.skin_name(site)" tal:attributes="href python:view.url(context) + '/++skin++%s/%s' % (view.skin_name(site), site.__name__)">View</a>
   </p>
 </div>

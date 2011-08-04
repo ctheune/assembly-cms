@@ -456,6 +456,9 @@ span.disclose {
 .schedule span.asmtv {
     float:right;
     background-image:url(images/asmtv.png);
+    display:inline-block;
+    width:32px;
+    height:32px;
 }
 
 span.disclose.opened {

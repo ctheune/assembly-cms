@@ -1,4 +1,4 @@
-<ul class="year_nav" tal:define="visible_years python:view.list_years_near_current_page(10, 3)">
+<ul class="year_nav" tal:define="visible_years python:view.list_years_near_current_page(7, 3)">
   <li tal:condition="python: len(view.years) > 0 and view.years[0] != visible_years[0]['year']">
     <a tal:attributes="href python:view.url(visible_years[0]['year'])">&laquo;</a>
   </li>

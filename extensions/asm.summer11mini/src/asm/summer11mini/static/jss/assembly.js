@@ -115,23 +115,26 @@ function onYouTubePlayerReady(playerId) {
 }
 
 
-$(function() {
- 
-   // if the function argument is given to overlay,
-   // it is assumed to be the onBeforeLoad event listener
-   $("a[rel]").overlay({
- 
-      mask: 'black',
-      effect: 'apple',
- 
-      onBeforeLoad: function() {
- 
-         // grab wrapper element inside content
-         var wrap = this.getOverlay().find(".wrap");
- 
-         // load the page specified in the trigger
-         wrap.load(this.getTrigger().attr("href"));
-      }
- 
-   });
+$(document).ready(function(){
+
+    $(function() {
+     
+       // if the function argument is given to overlay,
+       // it is assumed to be the onBeforeLoad event listener
+       $("a[rel]").overlay({
+     
+          mask: 'black',
+          effect: 'apple',
+     
+          onBeforeLoad: function() {
+     
+             // grab wrapper element inside content
+             var wrap = this.getOverlay().find(".wrap");
+     
+             // load the page specified in the trigger
+             wrap.load(this.getTrigger().attr("href"));
+          }
+     
+       });
+    });
 });

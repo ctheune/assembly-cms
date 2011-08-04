@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: asm.schedule\n"
-"POT-Creation-Date: Wed Aug  3 16:53:49 2011\n"
-"PO-Revision-Date: 2011-08-03 16:53+0200\n"
+"POT-Creation-Date: Thu Aug  4 12:11:43 2011\n"
+"PO-Revision-Date: 2011-08-04 12:14+0300\n"
 "Last-Translator: Christian Theune <ct@gocept.com>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -26,47 +26,90 @@ msgstr ""
 "X-Poedit-Language: English\n"
 
 #: asm/schedule/i18n.py:10
-msgid "Tuesday(until)"
+msgid "Tuesday"
 msgstr "Tuesday"
 
 #: asm/schedule/i18n.py:11
-msgid "Wednesday(until)"
+msgid "Wednesday"
 msgstr "Wednesday"
 
 #: asm/schedule/i18n.py:12
-msgid "Thursday(until)"
+msgid "Thursday"
 msgstr "Thursday"
 
 #: asm/schedule/i18n.py:13
-msgid "Friday(until)"
+msgid "Friday"
 msgstr "Friday"
 
 #: asm/schedule/i18n.py:14
-msgid "Saturday(until)"
+msgid "Saturday"
 msgstr "Saturday"
 
 #: asm/schedule/i18n.py:15
-msgid "Sunday(until)"
+msgid "Sunday"
 msgstr "Sunday"
 
-#: asm/schedule/i18n.py:16
-msgid "%H:%M"
-msgstr ""
-
-#: asm/schedule/i18n.py:9
+#: asm/schedule/i18n.py:19
 msgid "Monday(until)"
 msgstr "Monday"
 
-#: asm/schedule/schedule.py:338
+#: asm/schedule/i18n.py:20
+msgid "Tuesday(until)"
+msgstr "Tuesday"
+
+#: asm/schedule/i18n.py:21
+msgid "Wednesday(until)"
+msgstr "Wednesday"
+
+#: asm/schedule/i18n.py:22
+msgid "Thursday(until)"
+msgstr "Thursday"
+
+#: asm/schedule/i18n.py:23
+msgid "Friday(until)"
+msgstr "Friday"
+
+#: asm/schedule/i18n.py:24
+msgid "Saturday(until)"
+msgstr "Saturday"
+
+#: asm/schedule/i18n.py:25
+msgid "Sunday(until)"
+msgstr "Sunday"
+
+#: asm/schedule/i18n.py:27
+msgid "%H:%M"
+msgstr "%H:%M"
+
+#: asm/schedule/i18n.py:9
+msgid "Monday"
+msgstr "Monday"
+
+#: asm/schedule/schedule.py:297 asm/schedule/schedule.py:360
+msgid "All"
+msgstr "All"
+
+#: asm/schedule/schedule.py:298
+msgid "Major"
+msgstr "Major"
+
+#: asm/schedule/schedule.py:299
+msgid "Compos"
+msgstr "Compos"
+
+#: asm/schedule/schedule.py:326 asm/schedule/schedule.py:341
 msgid "%A"
-msgstr ""
+msgstr "%A"
+
+#: asm/schedule/schedule_templates/index.pt:16
+msgid "${DYNAMIC_CONTENT}"
+msgstr "${DYNAMIC_CONTENT}"
 
 #. Default: "&ndash; until ${hour} ${day}"
-#: asm/schedule/schedule_templates/index.pt:48
+#: asm/schedule/schedule_templates/index.pt:50
 msgid "event_until_line"
-msgstr ""
+msgstr "event_until_line"
 
-#: asm/schedule/schedule_templates/index.pt:51
-msgid "Unfortunately, this event has been cancelled. :("
-msgstr ""
-
+#: asm/schedule/schedule_templates/index.pt:53
+msgid "Unfortunately, this event has been canceled. :("
+msgstr "Unfortunately, this event has been canceled. :("

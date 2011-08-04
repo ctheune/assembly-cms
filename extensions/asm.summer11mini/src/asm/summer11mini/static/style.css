@@ -429,22 +429,21 @@ table.schedule td a {
 
 table.schedule td a.location,
 table.schedule td .description,
-table.schedule td .cancelled,
+table.schedule td .canceled,
 table.schedule td .until {
     font-size: 70%;
     font-weight: normal;
 }
 
-table.schedule td.cancelled {
+table.schedule td.canceled {
     opacity:0.5;
 }
-table.schedule td .cancelled {
+table.schedule td .canceled {
     margin-bottom:0;
 }
 
 table.schedule td .description {
     margin-top:0.5em;
-    display: none;
 }
 
 span.disclose {

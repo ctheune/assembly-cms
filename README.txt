@@ -57,6 +57,23 @@ To stop the CMS server, you can call the init script again::
 
     $ ./etc/init.d/asm.cms-server stop
 
+Extension translations
+----------------------
+
+For example if you want to translate asm.schedule extension:
+
+..
+  cd extensions/asm.schedule
+  ../../bin/buildout bootstrap .
+  bin/buildout
+  ...buildout will take some time...
+  bin/i18extract
+  ...do the translation...
+  bin/i18nmerge
+
+And same thing with other extensions, as you can copy the buildout.cfg
+from one extension to another and modify the buildout.cfg as needed.
+
 License note
 ------------
 

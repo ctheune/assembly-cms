@@ -77,11 +77,8 @@ class YearlyNavigation(grok.View):
     grok.layer(ISkin)
     grok.context(zope.interface.Interface)
 
-    limit = DEFAULT_YEARS
-
     def update(self):
         self.years = select_years(self.application.subpages, self.request)
-        self.year_start, self.year_end = self.get_navigation_limits(self.years, self.limit)
 
     def get_closest_year(self):
         closest_page = self.context
@@ -150,20 +147,14 @@ class YearlyNavigation(grok.View):
     def list_years_near_current_page(self, limit=DEFAULT_YEARS, max_remove=0):
         assert limit > 2, "Limit must enable navigating back and forth."
 
-        years = self.years[self.year_start:self.year_end]
+        year_start, year_end = self.get_navigation_limits(self.years, limit)
+
+        years = self.years[year_start:year_end]
 
         remove_years = self._get_removed_years(years, max_remove)
 
         return [{'year': year, 'remove': remove}
                 for year, remove in zip(years, remove_years)]
-
-    def can_navigate_forward(self):
-        after = (self.limit - self.limit/2)
-        return (self.limit < self.year_start + after)
-
-    def can_navigate_backward(self):
-        before = self.limit/2
-        return (self.year_end - before < self.limit)
 
 
 class GenerateMap(grok.View):

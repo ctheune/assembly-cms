@@ -445,15 +445,22 @@ table.schedule td .description {
 span.disclose {
     background-image:url(images/bullet_arrow_down.png);
     opacity: 0.5;
-    display: inline-block;
     width:16px;
     height:16px;
     float:right;
-    padding-left:50px;
-    padding-bottom:10px;
+    padding-left:10px;
     background-repeat:no-repeat;
     background-position:right top;
 }
+
+.schedule span.asmtv {
+    float:right;
+    background-image:url(images/asmtv.png);
+    display:inline-block;
+    width:24px;
+    height:24px;
+}
+
 span.disclose.opened {
     background-image:url(images/bullet_arrow_up.png);
 }

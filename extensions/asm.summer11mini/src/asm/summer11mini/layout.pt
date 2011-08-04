@@ -115,13 +115,27 @@
               <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
             </div>
 
-            <div class="sidebar-box">
+            <div class="sidebar-box"
+                 tal:define="upcoming context/@@layouthelper/upcoming_events;
+                             current context/@@layouthelper/current_events"
+                 tal:condition="python: upcoming or current">
               <h4 i18n:translate="">What's happening?</h4>
-              <ul>
-                <li tal:repeat="item context/@@layouthelper/current_events">
+              <ul tal:condition="current">
+                <li tal:repeat="item current">
                   <a tal:attributes="href item/url"
                     tal:content="item/event/title">Asus desktop image competition results </a>
-                  <span tal:replace="item/time"/></li>
+                  <span i18n:translate="">
+                    ends <span tal:replace="item/end" i18n:name="time"/>
+                  </span></li>
+              </ul>
+              <h5 i18n:translate="" tal:condition="upcoming">Upcoming</h5>
+              <ul tal:condition="upcoming">
+                <li tal:repeat="item upcoming">
+                  <a tal:attributes="href item/url"
+                    tal:content="item/event/title">Asus desktop image competition results </a>
+                  <span i18n:translate="">
+                    begins <span tal:replace="item/start" i18n:name="time"/>
+                  </span></li>
               </ul>
             </div> <!-- sidebar current events -->
 

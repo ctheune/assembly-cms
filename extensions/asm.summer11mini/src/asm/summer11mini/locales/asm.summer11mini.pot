@@ -13,8 +13,8 @@
 ##############################################################################
 msgid ""
 msgstr ""
-"Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Aug  4 12:54:43 2011\n"
+"Project-Id-Version: Development/Unknown\n"
+"POT-Creation-Date: Thu Aug  4 15:50:14 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -24,34 +24,51 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 
 #: asm/summer11mini/layout.pt:115
-msgid "Follow @assemblyparty on Twitter"
+#. Default: "Follow @assemblyparty on Twitter"
+msgid "alt"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:119
+#: asm/summer11mini/layout.pt:122
 msgid "What's happening?"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:130
+#: asm/summer11mini/layout.pt:123
+msgid "Current"
+msgstr ""
+
+#: asm/summer11mini/layout.pt:129
+msgid "ends ${time}"
+msgstr ""
+
+#: asm/summer11mini/layout.pt:132
+msgid "Upcoming"
+msgstr ""
+
+#: asm/summer11mini/layout.pt:138
+msgid "begins ${time}"
+msgstr ""
+
+#: asm/summer11mini/layout.pt:145
 msgid "Game Tournaments"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:148
+#: asm/summer11mini/layout.pt:163
 msgid "feedback"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:149
+#: asm/summer11mini/layout.pt:164
 msgid "privacy"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:150
+#: asm/summer11mini/layout.pt:165
 msgid "contact"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:151
+#: asm/summer11mini/layout.pt:166
 msgid "Copyright &copy; ${asmorglink}, 2009-2011"
 msgstr ""
 
-#: asm/summer11mini/layout.pt:162
+#: asm/summer11mini/layout.pt:177
 msgid "Buy Tickets"
 msgstr ""
 
@@ -75,42 +92,43 @@ msgstr ""
 msgid "Main sponsors"
 msgstr ""
 
-#: asm/summer11mini/skin.py:102
-msgid "Welcome to Assembly!"
-msgstr ""
-
-#: asm/summer11mini/skin.py:64
-msgid "until ASSEMBLY!"
-msgstr ""
-
-#: asm/summer11mini/skin.py:65
-msgid "of ASSEMBLY left to enjoy!"
-msgstr ""
-
-#: asm/summer11mini/skin.py:66
-msgid "ASSEMBLY is over."
-msgstr ""
-
-#: asm/summer11mini/skin.py:79
-msgid "years"
-msgstr ""
-
-#: asm/summer11mini/skin.py:79
-msgid "months"
-msgstr ""
-
-#: asm/summer11mini/skin.py:80
-msgid "days"
-msgstr ""
-
-#: asm/summer11mini/skin.py:80
-msgid "hours"
-msgstr ""
-
-#: asm/summer11mini/skin.py:81
+#: asm/summer11mini/skin.py:100
 msgid "seconds"
 msgstr ""
 
-#: asm/summer11mini/skin.py:81
+#: asm/summer11mini/skin.py:100
 msgid "minutes"
+msgstr ""
+
+#: asm/summer11mini/skin.py:121
+msgid "Welcome to Assembly!"
+msgstr ""
+
+#: asm/summer11mini/skin.py:83
+msgid "until ASSEMBLY!"
+msgstr ""
+
+#: asm/summer11mini/skin.py:84
+msgid "of ASSEMBLY left to enjoy!"
+msgstr ""
+
+#: asm/summer11mini/skin.py:85
+msgid "ASSEMBLY is over."
+msgstr ""
+
+#: asm/summer11mini/skin.py:98
+msgid "years"
+msgstr ""
+
+#: asm/summer11mini/skin.py:98
+msgid "months"
+msgstr ""
+
+#: asm/summer11mini/skin.py:99
+msgid "hours"
+msgstr ""
+
+#: asm/summer11mini/skin.py:99
+msgid "days"
+msgstr ""
 

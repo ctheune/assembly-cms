@@ -1,44 +1,61 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: asm.summe11mini\n"
-"POT-Creation-Date: Thu Aug  4 12:54:43 2011\n"
-"PO-Revision-Date: 2011-08-04 12:55+0300\n"
+"POT-Creation-Date: Thu Aug  4 15:50:14 2011\n"
+"PO-Revision-Date: 2011-08-04 15:54+0200\n"
 "Last-Translator: Sebastian Wehrmann <sw@gocept.com>\n"
 "Language-Team: \n"
-"Language: Finnish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Finnish\n"
 
+#. Default: "Follow @assemblyparty on Twitter"
 #: asm/summer11mini/layout.pt:115
-msgid "Follow @assemblyparty on Twitter"
-msgstr "Seura @assemblyparty Twitterissä"
+msgid "alt"
+msgstr ""
 
-#: asm/summer11mini/layout.pt:119
+#: asm/summer11mini/layout.pt:122
 msgid "What's happening?"
 msgstr "Nyt tapahtuu"
 
-#: asm/summer11mini/layout.pt:130
+#: asm/summer11mini/layout.pt:123
+msgid "Current"
+msgstr "Nyt menossa"
+
+#: asm/summer11mini/layout.pt:129
+msgid "ends ${time}"
+msgstr "loppuu ${time}"
+
+#: asm/summer11mini/layout.pt:132
+msgid "Upcoming"
+msgstr "Tulevat"
+
+#: asm/summer11mini/layout.pt:138
+msgid "begins ${time}"
+msgstr "alkaa ${time}"
+
+#: asm/summer11mini/layout.pt:145
 msgid "Game Tournaments"
 msgstr "Peli turnaukset"
 
-#: asm/summer11mini/layout.pt:148
+#: asm/summer11mini/layout.pt:163
 msgid "feedback"
 msgstr "palaute"
 
-#: asm/summer11mini/layout.pt:149
+#: asm/summer11mini/layout.pt:164
 msgid "privacy"
 msgstr "yksityisyydensuoja"
 
-#: asm/summer11mini/layout.pt:150
+#: asm/summer11mini/layout.pt:165
 msgid "contact"
 msgstr "yhteystiedot"
 
-#: asm/summer11mini/layout.pt:151
+#: asm/summer11mini/layout.pt:166
 msgid "Copyright &copy; ${asmorglink}, 2009-2011"
 msgstr "&copy; ${asmorglink}, 2009-2011"
 
-#: asm/summer11mini/layout.pt:162
+#: asm/summer11mini/layout.pt:177
 msgid "Buy Tickets"
 msgstr "Osta liput"
 
@@ -62,43 +79,46 @@ msgstr "Yhteistyökumppanit"
 msgid "Main sponsors"
 msgstr "Pääsponsorit"
 
-#: asm/summer11mini/skin.py:102
-msgid "Welcome to Assembly!"
-msgstr "Tervetuloa ASSEMBLYille!"
-
-#: asm/summer11mini/skin.py:64
-msgid "until ASSEMBLY!"
-msgstr "ASSEMBLYn alkuun!"
-
-#: asm/summer11mini/skin.py:65
-msgid "of ASSEMBLY left to enjoy!"
-msgstr "ASSEMBLYjä jäljellä."
-
-#: asm/summer11mini/skin.py:66
-msgid "ASSEMBLY is over."
-msgstr "ASSEMBLY on ohi."
-
-#: asm/summer11mini/skin.py:79
-msgid "years"
-msgstr "vuotta"
-
-#: asm/summer11mini/skin.py:79
-msgid "months"
-msgstr "kuukautta"
-
-#: asm/summer11mini/skin.py:80
-msgid "days"
-msgstr "päivää"
-
-#: asm/summer11mini/skin.py:80
-msgid "hours"
-msgstr "tuntia"
-
-#: asm/summer11mini/skin.py:81
+#: asm/summer11mini/skin.py:100
 msgid "seconds"
 msgstr "sekuntia"
 
-#: asm/summer11mini/skin.py:81
+#: asm/summer11mini/skin.py:100
 msgid "minutes"
 msgstr "minuuttia"
+
+#: asm/summer11mini/skin.py:121
+msgid "Welcome to Assembly!"
+msgstr "Tervetuloa ASSEMBLYille!"
+
+#: asm/summer11mini/skin.py:83
+msgid "until ASSEMBLY!"
+msgstr "ASSEMBLYn alkuun!"
+
+#: asm/summer11mini/skin.py:84
+msgid "of ASSEMBLY left to enjoy!"
+msgstr "ASSEMBLYjä jäljellä."
+
+#: asm/summer11mini/skin.py:85
+msgid "ASSEMBLY is over."
+msgstr "ASSEMBLY on ohi."
+
+#: asm/summer11mini/skin.py:98
+msgid "years"
+msgstr "vuotta"
+
+#: asm/summer11mini/skin.py:98
+msgid "months"
+msgstr "kuukautta"
+
+#: asm/summer11mini/skin.py:99
+msgid "hours"
+msgstr "tuntia"
+
+#: asm/summer11mini/skin.py:99
+msgid "days"
+msgstr "päivää"
+
+#~ msgid "Follow @assemblyparty on Twitter"
+#~ msgstr "Seura @assemblyparty Twitterissä"
 

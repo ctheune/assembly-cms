@@ -241,6 +241,10 @@ color:#9db615;
     -webkit-border-radius:6px;
 }
 
+.sidebar-box h5 {
+  margin: 5px;
+}
+
 .sidebar-box a {text-decoration:none;font-weight:bold;}
 
 .sidebar-box ul {

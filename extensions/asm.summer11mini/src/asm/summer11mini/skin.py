@@ -27,19 +27,38 @@ class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
 
-    def current_events(self):
+    @property
+    def schedule(self):
         if 'program' not in self.application or 'schedule' not in self.application['program']:
             raise StopIteration()
-        schedule = asm.cms.edition.select_edition(
+        return asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
+
+    def event_data(self, key, event):
+        url = '%s#%s' % (self.url(self.application['program']['schedule']), key)
+        start = i18n_strftime('%H:%M', event.start, self.request)
+        end = i18n_strftime('%H:%M', event.end, self.request)
+        return dict(event=event, key=key, url=url, start=start, end=end)
+
+    @property
+    def current_events(self):
+        result = []
+        now = datetime.datetime.now()
+        for key, event in self.schedule.events.items():
+            if event.start <= now and event.end > now:
+                result.append(self.event_data(key, event))
+        return result
+
+    @property
+    def upcoming_events(self):
+        result = []
         now = datetime.datetime.now()
         horizon = now + datetime.timedelta(seconds=3600)
-        for key, event in schedule.events.items():
-            if event.start <= horizon and event.end > now:
-                url = '%s#%s' % (
-                    self.url(self.application['program']['schedule']), key)
-                time = i18n_strftime('%H:%M', event.start, self.request)
-                yield dict(event=event, key=key, url=url, time=time)
+        for key, event in self.schedule.events.items():
+            if event.start <= horizon and event.start > now:
+                result.append(self.event_data(key, event))
+        return result
+
 
     def news(self):
         try:

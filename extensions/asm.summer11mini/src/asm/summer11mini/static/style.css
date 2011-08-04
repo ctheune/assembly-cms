@@ -457,8 +457,8 @@ span.disclose {
     float:right;
     background-image:url(images/asmtv.png);
     display:inline-block;
-    width:32px;
-    height:32px;
+    width:24px;
+    height:24px;
 }
 
 span.disclose.opened {

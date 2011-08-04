@@ -354,12 +354,16 @@ class Index(asm.cmsui.retail.Pagelet):
             self.context, details, day)
 
     def event_class(self, event):
+        classes = set()
         if event.end < self.now:
-            return 'past'
+            classes.add('past')
         if event.start > self.now:
-            return 'future'
+            classes.add('future')
         if event.start < self.now and event.end > self.now:
-            return 'current'
+            classes.add('current')
+        if event.canceled:
+            classes.add('cancelled')
+        return ' '.join(classes)
 
     def format_date(self, date):
         specials = {1: 'st', 2: 'nd', 3: 'rd', 21: 'st',

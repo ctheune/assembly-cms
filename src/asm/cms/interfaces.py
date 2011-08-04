@@ -189,5 +189,13 @@ class IImport(zope.interface.Interface):
         description=(u'The content is expected to be in the Assembly CMS '
                      u'XML import format.'))
 
+
+class IContentImported(zope.interface.Interface):
+    """Content was imported into a CMS site."""
+
+    site = zope.interface.Attribute("The site that content was imported to.")
+    errors = zope.interface.Attribute(
+        "A list with textual descriptions of errors.")
+
 class IRedirect(zope.interface.Interface):
     target_url = zope.schema.URI(title=u'Redirect URI')

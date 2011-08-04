@@ -1,4 +1,4 @@
-# Copyright (c) 2009 Assembly Organizing
+# Copyright (c) 2009-2011 Assembly Organizing
 # See also LICENSE.txt
 
 from asm.cms.htmlpage import fix_relative_links
@@ -6,7 +6,7 @@ import asm.cms.importer
 import asm.cms.testing
 import os.path
 import unittest
-import zope.publisher.browser
+import zope.component
 
 
 class ImportUnit(unittest.TestCase):
@@ -20,7 +20,17 @@ class ImportUnit(unittest.TestCase):
                                '/assembly09'))
 
 
+def test_handler(event):
+    test_handler.results.append(event)
+
+
 class ImportFunctional(asm.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ImportFunctional, self).setUp()
+        zope.component.provideHandler(
+            test_handler, [asm.cms.interfaces.IContentImported])
+        test_handler.results = []
 
     def test_import(self):
         data = open(os.path.join(os.path.dirname(__file__), 'import.xml'))
@@ -29,3 +39,5 @@ class ImportFunctional(asm.cms.testing.FunctionalTestCase):
         self.assertEquals(2, len(list(self.cms.subpages)))
         self.assertEquals('htmlpage', self.cms['testpage'].type)
         self.assertEquals('asset', self.cms['testimage'].type)
+        self.assertEquals([], test_handler.results[0].errors)
+        self.assertEquals(self.cms, test_handler.results[0].site)

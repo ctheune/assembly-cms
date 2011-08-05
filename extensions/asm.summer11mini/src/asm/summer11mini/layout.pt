@@ -116,6 +116,13 @@
               <div><strong><a href="http://twitter.com/#!/search/%23assembly2011">#assembly2011</a></strong></div>
             </div>
 
+            <div style="margin:1.5em 0.5em 1em;">
+              <a href="http://archive.assembly.org/2011"><img tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
+            </div>
+            <div style="margin:1em 0.5em 1.5em;">
+              <a href="http://assembly.galleria.fi/kuvat/Assembly+Summer+2011/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
+            </div>
+
             <div class="sidebar-box"
                  tal:define="upcoming context/@@layouthelper/upcoming_events;
                              current context/@@layouthelper/current_events"

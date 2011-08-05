@@ -45,6 +45,8 @@ class LayoutHelper(grok.View):
         result = []
         now = datetime.datetime.now()
         for key, event in self.schedule.events.items():
+            if event.canceled:
+                continue
             if event.start <= now and event.end > now:
                 result.append(self.event_data(key, event))
         return result
@@ -55,6 +57,8 @@ class LayoutHelper(grok.View):
         now = datetime.datetime.now()
         horizon = now + datetime.timedelta(seconds=3600)
         for key, event in self.schedule.events.items():
+            if event.canceled:
+                continue
             if event.start <= horizon and event.start > now:
                 result.append(self.event_data(key, event))
         return result

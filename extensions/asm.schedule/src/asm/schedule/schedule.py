@@ -102,6 +102,13 @@ def get_row_errors(fields, field_data):
         if field_data.get(field, None) is None:
             errors.append(u"Field '%s' is missing." % field)
 
+
+    if None in field_data:
+        errors.append(
+            "There are extra %d field values with event %s (%s)." % (len(field_data[None]), field_data['id'].decode("utf-8"), field_data['title_en'].decode("utf-8")))
+        errors.append(
+            u"Make sure that you don't have accidentally pasted text with tab characters to descriptions or titles!")
+
     for field in ('start_date', 'finish_date'):
         try:
             extract_date(field_data[field])
@@ -209,12 +216,17 @@ class Edit(asm.cmsui.form.EditForm):
                 writer.writerow(row)
             except ValueError, e:
                 transaction.abort()
-                self.flash(u"Unexpected error happened: %s" % e.message, "warning")
+                self.flash(u"Unexpected error happened (ValueError): %s" % e.message, "warning")
                 self.flash(str(row))
                 return
             except csv.Error, e:
                 transaction.abort()
-                self.flash(u"Unexpected error happened: %s" % e.message, "warning")
+                self.flash(u"Unexpected error happened (csv.Error): %s" % e.message, "warning")
+                self.flash(str(row))
+                return
+            except TypeError, e:
+                transaction.abort()
+                self.flash(u"Unexpected error happened (TypeError): %s" % e.message, "warning")
                 self.flash(str(row))
                 return
             for schedule, lang in [(finnish, 'fi'), (english, 'en')]:

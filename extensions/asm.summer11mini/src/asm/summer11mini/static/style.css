@@ -129,9 +129,9 @@ padding:5px 0 0 10px;
 display:block;
 color:black;
 }
-#navigation .active, #navigation li.active.has_no_children {padding:0;}
+#navigation .active, #navigation > li.active.has_no_children {padding:0;}
 #navigation .active a {background-image:url("images/w8-nav-sub-bg-top.gif"); color:white;padding:2px 0 12px 20px;}
-#navigation li.active.has_no_children a {
+#navigation > li.active.has_no_children a {
   background-image:url("images/w8-nav-high-bg-top.gif");
   color:white;
   padding:2px 0 5px 20px;

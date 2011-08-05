@@ -135,6 +135,7 @@ color:black;
   background-image:url("images/w8-nav-high-bg-top.gif");
   color:white;
   padding:2px 0 5px 20px;
+  height: 15px;
 }
 /* */
 #navigation .active ul li a:before, #navigation .active a:before {content:"";}

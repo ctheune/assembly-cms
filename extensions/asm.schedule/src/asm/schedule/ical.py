@@ -12,12 +12,18 @@ class ICal(grok.View):
     grok.context(asm.schedule.schedule.Schedule)
     grok.name('schedule.ics')
 
+    def update(self, event=None):
+        if event is not None:
+            self.events = [self.context.events[int(event)]]
+        else:
+            self.events = self.context.events.values()
+
     def render(self):
         cal = icalendar.Calendar()
         cal.add('prodid', '-//asm.cms//Assembly Organizing//')
         stamp = datetime.datetime.now()
 
-        for event in self.context.events.values():
+        for event in self.events:
             ievent = icalendar.Event()
             ievent.add('summary', event.title)
             ievent.add('location', event.location)
@@ -29,4 +35,5 @@ class ICal(grok.View):
             cal.add_component(ievent)
 
         self.request.response.setHeader('Content-Type', 'text/calendar')
+
         return cal.as_string()

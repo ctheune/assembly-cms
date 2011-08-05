@@ -37,26 +37,28 @@
         <span class="disclose" tal:attributes="class python:'disclose '+('' if event['description'] else 'hidden')">&nbsp;</span>
         <span class="asmtv" tal:condition="event/assemblytv_broadcast">&nbsp;</span>
         <a tal:content="event/title"
-           tal:attributes="name event/key; href event/url"></a>
+          tal:attributes="name event/key; href event/url"></a>
         <br/>
         <a tal:condition="event/location"
-           tal:content="event/location"
-           tal:attributes="href event/location_url"
-           class="location"></a>
+          tal:content="event/location"
+          tal:attributes="href event/location_url"
+          class="location"></a>
 
-       <span tal:condition="event/has_until"
-             i18n:translate="event_until_line"
-             class="until">&ndash;
+        <span tal:condition="event/has_until"
+          i18n:translate="event_until_line"
+          class="until">&ndash;
           until <span tal:content="event/end_time" i18n:name="hour">12:00</span>
-          <span tal:content="event/end_day" i18n:name="day"/>
+          <span tal:content="event/end_day" i18n:name="day"></span>
         </span>
 
+        <span class="until">&ndash; <a tal:attributes="href python:view.url(context, 'schedule.ics')+'?event=%s'%event['key']">iCal</a></span>
+
         <p tal:condition="event/canceled" i18n:translate=""
-           class="canceled" >Unfortunately, this event has been canceled. :(</p>
+          class="canceled" >Unfortunately, this event has been canceled. :(</p>
 
         <div tal:condition="event/description"
-             tal:content="structure event/description"
-             class="description">
+          tal:content="structure event/description"
+           class="description">
         </div>
       </td>
     </tr>
@@ -67,7 +69,8 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-      $('table.schedule td').click(function() {
+      $('table.schedule td').click(function(e) {
+        if (e.target != this) return;
         $('.description', this).slideToggle();
         $('.disclose', this).toggleClass('opened');
         });

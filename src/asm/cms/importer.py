@@ -49,9 +49,9 @@ class Importer(object):
             page = self.get_page(page_path, page_node.tag)
 
             if page_node.get('purge', 'false').lower() == 'true':
-                for subpage in page.subpages:
+                for subpage in list(page.subpages):
                     del page[subpage.__name__]
-                for edition in page.editions:
+                for edition in list(page.editions):
                     del page[edition.__name__]
 
             for edition_node in page_node:

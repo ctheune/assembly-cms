@@ -367,7 +367,7 @@ class FilteredSchedule(object):
             for key, value in self.filters.items()]
 
     def event_class(self, event):
-        classes = set()
+        classes = set([event.class_])
         if event.end < self.now:
             classes.add('past')
         if event.start > self.now:

@@ -68,7 +68,6 @@ def select_years(application_subpages, request):
 
 class ViewUtils(object):
     def cut_string(self, data, max_length, max_word_length=23):
-        data = unicode(data, 'utf-8')
         words = re.split('(\W+)', data)
         short_words = []
         for word in words:

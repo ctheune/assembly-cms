@@ -67,10 +67,20 @@ def select_years(application_subpages, request):
 
 
 class ViewUtils(object):
-    def cut_string(self, data, max_length):
-        if len(data) <= max_length:
-            return data
-        return data[:max_length - 3].strip() + u"\u2026"
+    def cut_string(self, data, max_length, max_word_length=23):
+        data = unicode(data, 'utf-8')
+        words = re.split('(\W+)', data)
+        short_words = []
+        for word in words:
+            while len(word) > max_word_length:
+                # U+200B ZERO WIDTH SPACE
+                short_words.extend([word[:max_word_length], u"\u200B"])
+                word = word[max_word_length:]
+            short_words.append(word)
+        word_cut_data = u"".join(short_words)
+        if len(word_cut_data) <= max_length:
+            return word_cut_data
+        return word_cut_data[:max_length - 3].strip() + u"\u2026"
 
 
 class YearlyNavigation(grok.View):
@@ -266,7 +276,7 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
 
 ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
 
-class ExternalAssetIndex(asm.mediagallery.externalasset.Index):
+class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IExternalAsset)
     grok.name('index')

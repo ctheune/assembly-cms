@@ -6,6 +6,7 @@ import asm.cms.interfaces
 import magic
 import zope.interface
 
+
 class Asset(asm.cms.edition.Edition):
     """An asset stores binary data, like images.
 

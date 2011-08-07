@@ -5,7 +5,6 @@ import asm.cms
 import asm.cms.edition
 import grok
 import zope.interface
-import ZODB.blob
 
 
 class NewsFolder(asm.cms.Edition):
@@ -43,7 +42,7 @@ class INewsFields(zope.interface.Interface):
         description=u'The teaser text will be shown on the homepage and in '
                     u'the news portlet. Only plain text is supported.')
 
-    image = zope.schema.Bytes(
+    image = asm.cms.interfaces.Blob(
         title=u'Teaser image', required=False,
         description=u'An image that can be displayed along this news item. '
                     u'Please note that depending on the context the image '
@@ -74,11 +73,7 @@ class TeaserAnnotation(grok.Annotation):
             edition.page['teaser-image'] = image
         image = edition.page['teaser-image']
         image_edition = image.getEdition(edition.parameters, create=True)
-        if image_edition.content is None:
-            image_edition.content = ZODB.blob.Blob()
-        b = image_edition.content.open('w')
-        b.write(value)
-        b.close()
+        image_edition.content = value
 
     def get_image(self):
         edition = self.__parent__
@@ -87,11 +82,7 @@ class TeaserAnnotation(grok.Annotation):
         image = edition.page['teaser-image']
         image_edition = image.getEdition(self.__parent__.parameters,
                                          create=True)
-        if image_edition.content is not None:
-            b = image_edition.content.open('r')
-            result = b.read()
-            b.close()
-            return result
+        return image_edition.content
 
     image = property(fget=get_image, fset=set_image)
 

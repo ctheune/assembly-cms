@@ -291,8 +291,6 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
         return self.context.title
 
 
-ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
-
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IExternalAsset)

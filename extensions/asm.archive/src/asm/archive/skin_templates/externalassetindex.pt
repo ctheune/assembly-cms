@@ -17,11 +17,7 @@
 
   </div>
   <div id="details">
-    <h2><span tal:replace="python: view.cut_string(context.title, 999, 23)" />
-      <tal:block tal:condition="context/page">
-        by
-        <span tal:replace="view/info/author" />
-    </tal:block></h2>
+    <h2><span tal:replace="python: view.cut_string(context.title, 999, 23)" /></h2>
     <p tal:condition="view/info/description"
        tal:content="structure python: view.cut_string(view.info.description, 999, 28)"></p>
 

@@ -38,6 +38,12 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
+class MetadataManager(grok.ViewletManager):
+    grok.name('metadata')
+    grok.layer(ISkin)
+    grok.context(asm.cms.interfaces.IEdition)
+
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
@@ -281,7 +287,48 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     grok.name('index')
 
     def update(self):
+        super(ExternalAssetIndex, self).update()
         self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
+
+
+class ExternalAssetMetadata(grok.Viewlet):
+    grok.viewletmanager(MetadataManager)
+    grok.context(asm.mediagallery.interfaces.IExternalAsset)
+    grok.view(ExternalAssetIndex)
+
+    def application_title(self):
+        edition = asm.cms.edition.select_edition(self.view.application, self.request)
+        return edition.title
+
+    def description(self):
+        party_year = int(self.context.__parent__.__parent__.__parent__.__name__)
+        category = self.context.__parent__.__parent__
+        category_edition = asm.cms.edition.select_edition(
+            category, self.request)
+
+        party_name = None
+        if party_year < 2007:
+            party_name = u"Assembly %d" % party_year
+        elif 'winter' in category.__name__:
+            party_name = u"Assembly Winter %d" % party_year
+        else:
+            party_name = u"Assembly Summer %d" % party_year
+
+        category_description = None
+        if 'assemblytv' in category.__name__ or 'winter' in category.__name__:
+            category_description = u"AssemblyTV program"
+        else:
+            category_description = u"%s competition entry" % category_edition.title
+
+        base_description = self.view.info.description
+        description = re.sub("<[^>]+>", "", base_description)
+        description = re.sub("\nTitle:.+", "", description)
+        description = re.sub("\nAuthor:.+", "", description)
+        description = re.sub("\n+", " ", description)
+        description = re.sub(" +", " ", description)
+        full_description = u"%s %s. %s" % (party_name, category_description, description)
+        return full_description.strip()
+
 
 
 class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
@@ -415,3 +462,4 @@ class FeedbackAccepted(asm.cmsui.retail.Pagelet):
     grok.context(asm.cms.homepage.Homepage)
     grok.layer(ISkin)
     grok.name('feedback-accepted')
+

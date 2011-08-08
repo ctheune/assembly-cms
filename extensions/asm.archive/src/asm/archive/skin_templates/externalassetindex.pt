@@ -7,7 +7,7 @@
                    next context/@@gallerynavbar/next">
 
     <a tal:condition="python: next and embed and embed.startswith('<img ')"
-       tal:replace="structure python: '<a href=\'%s#content\'>' % view.url(next)" />
+       tal:replace="structure python: '<a href=\'%s\'>' % view.url(next)" />
 
     <span tal:replace="structure embed"/>
 

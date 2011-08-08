@@ -24,6 +24,13 @@
 
 <link rel="search" type="application/opensearchdescription+xml" title="Assembly Archive" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
 
+<script type="text/javascript"
+        src="/@@/asm.archive/js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript"
+        src="/@@/asm.archive/js/html5placeholder-1.01.jquery.min.js"></script>
+<script type="text/javascript"
+        src="/@@/asm.archive/js/archive.js"></script>
+
 <script type="text/javascript">
 
   var _gaq = _gaq || [];

@@ -88,6 +88,7 @@ class YearlyNavigation(grok.View):
 
     def update(self):
         self.years = select_years(self.application.subpages, self.request)
+        self.current_year = self.get_closest_year()
 
     def get_closest_year(self):
         closest_page = self.context
@@ -100,14 +101,13 @@ class YearlyNavigation(grok.View):
         return asm.cms.edition.select_edition(closest_page, self.request)
 
     def get_navigation_limits(self, years, limit=DEFAULT_YEARS):
-        current_year = self.get_closest_year()
 
         max_selection = min(len(years), limit)
-        if current_year is not None and YEAR_MATCH.match(current_year.page.__name__):
+        if self.current_year is not None and YEAR_MATCH.match(self.current_year.page.__name__):
             before = max_selection / 2
             after = max_selection - before - 1
 
-            select_index = years.index(current_year)
+            select_index = years.index(self.current_year)
 
             # In default we are at the beginning of the year list.
             selection_start = 0

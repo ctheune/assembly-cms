@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 
 <title>
-  <span tal:replace="context/title" />
+  <span tal:replace="view/title" />
   <tal:block tal:condition="python: context.page != view.application">
     &ndash; Assembly Archive
   </tal:block>

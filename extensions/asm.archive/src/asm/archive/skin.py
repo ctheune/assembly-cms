@@ -73,6 +73,7 @@ def select_years(application_subpages, request):
 
 
 class ViewUtils(object):
+
     def cut_string(self, data, max_length, max_word_length=23):
         words = re.split('(\W+)', data)
         short_words = []
@@ -209,6 +210,10 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
     grok.name('index')
 
     @property
+    def title(self):
+        return self.context.title
+
+    @property
     def years(self):
         return select_years(self.application.subpages, self.request)
 
@@ -277,6 +282,13 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
                 'gallery': asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(category),
                 }
 
+    @property
+    def title(self):
+        parent_edition = asm.cms.edition.select_edition(
+            self.context.__parent__.__parent__, self.request)
+        if asm.mediagallery.interfaces.IMediaGallery.providedBy(parent_edition):
+            return u"%s » %s" % (parent_edition.title, self.context.title)
+        return self.context.title
 
 
 ENDINGS = {1: 'st', 2: 'nd', 3: 'rd'}
@@ -285,6 +297,15 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IExternalAsset)
     grok.name('index')
+
+    @property
+    def title(self):
+        title = self.context.title
+        section = self.context.__parent__.__name__
+        if 'assemblytv' in section or 'seminars' in section or 'winter' in section:
+            return title
+        author = self.info.author
+        return u"%s by %s" % (title, author)
 
     def update(self):
         super(ExternalAssetIndex, self).update()

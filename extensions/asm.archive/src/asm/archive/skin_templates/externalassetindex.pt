@@ -40,5 +40,18 @@
       </div>
     </tal:block>
 
+    <div id="sharing-buttons">
+      <div>
+      <iframe allowtransparency="true" scrolling="no" id="facebook-like-button"
+              data-src="http://platform.twitter.com/widgets/tweet_button.html?count=horizontal&amp;via=assemblyparty"
+              style="border:none; overflow:hidden; width:130px; height:20px;"
+              class="link-button"></iframe>
+      </div>
+      <div>
+      <iframe allowtransparency="true" scrolling="no" id="twitter-tweet-button"
+         data-src="http://www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;"
+              class="link-button"></iframe>
+      </div>
+    </div>
   </div>
 </div>

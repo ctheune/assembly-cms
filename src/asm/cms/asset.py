@@ -3,6 +3,7 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import grok
 import magic
 import zope.interface
 
@@ -26,6 +27,7 @@ class Asset(asm.cms.edition.Edition):
     factory_visible = True
 
     content = None
+    _content_type = None
 
     def copyFrom(self, other):
         super(Asset, self).copyFrom(other)
@@ -51,4 +53,15 @@ class Asset(asm.cms.edition.Edition):
     def content_type(self):
         if self.content is None:
             return None
-        return magic.whatis(self.content.open('r').read())
+        if self._content_type is not None:
+            return self._content_type
+        self._content_type = magic.whatis(self.content.open('r').read())
+        return self._content_type
+
+# This might react too many times when object is published and various
+# language versions are created. At least this should keep cached
+# content type current.
+@grok.subscribe(Asset, grok.IObjectModifiedEvent)
+def redefine_content_type(obj, event):
+    obj._content_type = None
+    obj._content_type = obj.content_type

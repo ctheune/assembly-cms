@@ -210,10 +210,6 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
     grok.name('index')
 
     @property
-    def title(self):
-        return self.context.title
-
-    @property
     def years(self):
         return select_years(self.application.subpages, self.request)
 
@@ -287,8 +283,17 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
         parent_edition = asm.cms.edition.select_edition(
             self.context.__parent__.__parent__, self.request)
         if asm.mediagallery.interfaces.IMediaGallery.providedBy(parent_edition):
-            return u"%s » %s" % (parent_edition.title, self.context.title)
+            return u"%s / %s" % (parent_edition.title, self.context.title)
         return self.context.title
+
+def get_party_name(year, category):
+    if year < 2007:
+        return u"Assembly %d" % year
+    elif 'winter' in category.__name__:
+        return u"Assembly Winter %d" % year
+    else:
+        return u"Assembly Summer %d" % year
+
 
 
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
@@ -299,9 +304,15 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     @property
     def title(self):
         title = self.context.title
-        section = self.context.__parent__.__name__
-        if 'assemblytv' in section or 'seminars' in section or 'winter' in section:
-            return title
+        party_year = int(self.context.__parent__.__parent__.__parent__.__name__)
+        category = self.context.__parent__.__parent__
+        category_edition = asm.cms.edition.select_edition(
+            category, self.request)
+        party_name = get_party_name(party_year, category)
+        if 'assemblytv' in category.__name__ or \
+                'seminar' in category.__name__ or \
+                'winter' in category.__name__:
+            return u"%s / %s / %s" % (title, party_name, category_edition.title)
         author = self.info.author
         return u"%s by %s" % (title, author)
 
@@ -325,17 +336,13 @@ class ExternalAssetMetadata(grok.Viewlet):
         category_edition = asm.cms.edition.select_edition(
             category, self.request)
 
-        party_name = None
-        if party_year < 2007:
-            party_name = u"Assembly %d" % party_year
-        elif 'winter' in category.__name__:
-            party_name = u"Assembly Winter %d" % party_year
-        else:
-            party_name = u"Assembly Summer %d" % party_year
+        party_name = get_party_name(party_year, category)
 
         category_description = None
         if 'assemblytv' in category.__name__ or 'winter' in category.__name__:
             category_description = u"AssemblyTV program"
+        elif 'seminar' in category.__name__:
+            category_description = u"seminar"
         else:
             category_description = u"%s competition entry" % category_edition.title
 
@@ -416,6 +423,9 @@ class Feedback(asm.cmsui.form.Form):
     grok.require('zope.Public')
     grok.layer(ISkin)
     grok.context(asm.cms.homepage.Homepage)
+
+    title = u"Feedback"
+
     form_fields = grok.AutoFields(IFeedbackForm)
 
     form_fields['page'].custom_widget = get_specific_width_text_widget(70)

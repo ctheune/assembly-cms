@@ -1,6 +1,8 @@
 <div tal:replace="structure context/@@gallerynavbar"/>
 
+<div class="item-description">
 <p tal:condition="view/info/description" tal:replace="structure view/info/description" />
+</div>
 
 <div tal:repeat="category view/list_categories" class="mediacategory">
 
@@ -31,7 +33,7 @@
   </tal:block>
 
 </div>
-<div class="index page clearfix">
+<div class="media-index page clearfix">
 
   <div tal:repeat="item view/list_items" class="video">
 

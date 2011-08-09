@@ -1,6 +1,6 @@
 <div tal:replace="structure context/@@gallerynavbar"/>
 
-<div class="single page clearfix">
+<div class="media-item page clearfix">
   <div class="entry"
        id="gallery-item"
        tal:define="embed python:view.embed(640);

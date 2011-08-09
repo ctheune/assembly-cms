@@ -155,7 +155,7 @@ h2 {
   font-size:1.5em;
 }
 
-.single .entry {
+.media-item .entry {
   float:left;
   border:4px solid #000;
   background:#000;
@@ -209,8 +209,16 @@ h2 {
   padding: 0;
 }
 
-#content.single {
+#content.media-item {
   margin-right:300px;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.media-index, .media-item {
+  padding: 0;
 }
 
 @media only screen and (max-width: 680px) {
@@ -235,7 +243,7 @@ h2 {
     width: 520px ! important;
   }
 
-  body, #main, .container_16, .entry, .single {
+  body, #main, .container_16, .entry, .media-item {
     width: 638px;
     margin: 0;
   }
@@ -249,7 +257,7 @@ h2 {
     width: 100%;
   }
 
-  .single .entry {
+  .media-item .entry {
     border: 0;
     margin-left: -1px;
     margin-right: -1px;

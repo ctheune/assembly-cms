@@ -18,7 +18,7 @@
       <div tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">
 
         <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
-          <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+          <img tal:attributes="src python:view.url(item['edition'], 'thumbnail');
                                alt item/edition/title"
                width="160" height="90" />
           <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>
@@ -38,7 +38,7 @@
   <div tal:repeat="item view/list_items" class="video">
 
     <a tal:attributes="href python:view.url(item['edition'])" class="thumbnail">
-      <img tal:attributes="src python:view.url(item['edition']) + '/@@thumbnail';
+      <img tal:attributes="src python:view.url(item['edition'], 'thumbnail');
                            alt item/edition/title"
            width="160" height="90" />
       <span tal:replace="python:view.cut_string(item['edition'].title, 37)"/>

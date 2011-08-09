@@ -3,6 +3,8 @@ import asm.mediagallery.services
 
 class ServiceTests(asm.cms.testutils.TestCase):
 
+    request = None
+
     def test_download_url_link_code_is_ok(self):
         service = asm.mediagallery.services.DownloadURLService()
         code = service.link_code('link')
@@ -23,7 +25,7 @@ class ServiceTests(asm.cms.testutils.TestCase):
 
     def test_youtube_embed_code_is_ok(self):
         service = asm.mediagallery.services.YoutubeHosted()
-        code = service.embed_code('youtube-id')
+        code = service.embed_code(self.request, 'youtube-id')
         self.assertValidXml(code)
         self.assertIn('youtube-id', code)
 
@@ -50,7 +52,7 @@ class ServiceTests(asm.cms.testutils.TestCase):
 
     def test_demoscene_tv_embed_code_is_ok(self):
         service = asm.mediagallery.services.DemosceneTV()
-        code = service.embed_code('id_prod=1&id_file=2&id_app=3&image=imagelink&width=4&height=5')
+        code = service.embed_code(self.request, 'id_prod=1&id_file=2&id_app=3&image=imagelink&width=4&height=5')
         self.assertValidXml(code)
         self.assertIn('1', code)
         self.assertIn('2', code)
@@ -68,7 +70,7 @@ class ServiceTests(asm.cms.testutils.TestCase):
 
     def test_vimeo_embed_code_is_ok(self):
         service = asm.mediagallery.services.Vimeo()
-        code = service.embed_code('vimeo-id')
+        code = service.embed_code(self.request, 'vimeo-id')
         self.assertValidXml(code)
         self.assertIn('vimeo-id', code)
 
@@ -82,11 +84,11 @@ class ServiceTests(asm.cms.testutils.TestCase):
 
     def test_vimeo_embed_code_is_ok(self):
         service = asm.mediagallery.services.Image()
-        code = service.embed_code('image-id')
+        code = service.embed_code(self.request, 'image-id')
         self.assertValidXml(code)
         self.assertIn('image-id', code)
 
-        described_code = service.embed_code('image-id|Image text')
+        described_code = service.embed_code(self.request, 'image-id|Image text')
         self.assertValidXml(described_code)
         self.assertIn('image-id', described_code)
         self.assertIn('Image text', described_code)

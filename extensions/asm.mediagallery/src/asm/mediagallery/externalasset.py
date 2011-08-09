@@ -70,7 +70,7 @@ class Index(asm.cmsui.retail.Pagelet):
             except LookupError:
                 pass
             else:
-                return service.embed_code(service_choice.id, max_width)
+                return service.embed_code(self.request, service_choice.id, max_width)
 
     def links(self, include=None, exclude=None, max=None):
         count = 0

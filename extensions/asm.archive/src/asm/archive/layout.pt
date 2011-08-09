@@ -12,8 +12,6 @@
 
 <tal:block tal:content="structure provider:metadata" />
 
-<metal:block define-macro="extra-header"></metal:block>
-
 <link rel="shortcut icon" type="image/vnd.microsoft.icon"
       tal:attributes="href context/@@layouthelper/static/images/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon"

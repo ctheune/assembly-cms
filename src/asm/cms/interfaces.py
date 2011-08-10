@@ -197,5 +197,11 @@ class IContentImported(zope.interface.Interface):
     errors = zope.interface.Attribute(
         "A list with textual descriptions of errors.")
 
+
 class IRedirect(zope.interface.Interface):
     target_url = zope.schema.URI(title=u'Redirect URI')
+
+
+class IDataUri(zope.interface.Interface):
+    datauri = zope.schema.URI(title=u'Data URI')
+

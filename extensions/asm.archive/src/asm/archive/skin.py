@@ -2,19 +2,16 @@
 # Copyright (c) 2011 Assembly Organizing
 # See also LICENSE.txt
 
-import ZODB.blob
 import asm.cms
 import asm.cmsui.interfaces
 import asm.cmsui.retail
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
-import base64
 import email.encoders as email_encoders
 import email.Header as email_header
 import email.Message as email_message
 import grok
-import magic
 import megrok.pagelet
 import os.path
 import random
@@ -234,7 +231,9 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
         for edition_id in result:
             edition = iids.getObject(edition_id)
             yield dict(edition=edition,
-                       gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition))
+                       gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition),
+                       thumbnail=asm.cms.edition.select_edition(
+                    edition.page['thumbnail'], self.request))
 
     @property
     def description(self):
@@ -391,16 +390,6 @@ class DownloadDomain(grok.View):
     def render(self):
         address = re.sub(""".+href="([^"]+?)".+""", "\\1", self.context)
         return urlparse.urlparse(address).netloc
-
-
-# TODO Maybe move this to more generic utility place or merge with asset.
-class DataUri(grok.View):
-    grok.context(ZODB.blob.Blob)
-
-    def render(self):
-        data = self.context.open('r').read()
-        return "data:%s;base64,%s" % (
-            magic.whatis(data), base64.b64encode(data))
 
 
 class IFeedbackForm(zope.interface.Interface):

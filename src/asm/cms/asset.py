@@ -3,6 +3,7 @@
 
 import asm.cms.edition
 import asm.cms.interfaces
+import base64
 import grok
 import magic
 import zope.interface
@@ -58,6 +59,7 @@ class Asset(asm.cms.edition.Edition):
         self._content_type = magic.whatis(self.content.open('r').read())
         return self._content_type
 
+
 # This might react too many times when object is published and various
 # language versions are created. At least this should keep cached
 # content type current.
@@ -65,3 +67,27 @@ class Asset(asm.cms.edition.Edition):
 def redefine_content_type(obj, event):
     obj._content_type = None
     obj._content_type = obj.content_type
+
+
+@grok.subscribe(Asset, grok.IObjectCreatedEvent)
+@grok.subscribe(Asset, grok.IObjectModifiedEvent)
+def update_datauri(obj, event):
+    datauri = "data:%s;base64,%s" % (
+        obj.content_type,
+        base64.b64encode(obj.content.open("r").read()))
+    datauriobj = asm.cms.interfaces.IDataUri(obj)
+    datauriobj.datauri = datauri
+
+
+class DataUriAnnotation(grok.Annotation):
+    grok.implements(asm.cms.interfaces.IDataUri)
+    grok.provides(asm.cms.interfaces.IDataUri)
+    grok.context(asm.cms.interfaces.IAsset)
+
+    datauri = None
+
+    def copyFrom(self, other):
+        self.datauri = other.datauri
+
+    def __eq__(self, other):
+        return (self.datauri == other.datauri)

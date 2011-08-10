@@ -223,3 +223,11 @@ class EditionLabels(grok.GlobalUtility):
         labels = zope.component.getUtility(asm.cms.interfaces.IEditionLabels,
                                            name=prefix)
         return labels.lookup(tag)
+
+
+class DataUri(grok.View):
+    grok.context(asm.cms.interfaces.IEdition)
+
+    def render(self):
+        datauri_obj = asm.cms.interfaces.IDataUri(self.context)
+        return datauri_obj.datauri

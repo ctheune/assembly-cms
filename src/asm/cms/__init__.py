@@ -1,7 +1,7 @@
 import asm.cms.utils
 import grok
 import urlparse
-
+import zope.publisher.http
 
 def get_application(context):
     obj = context
@@ -38,6 +38,16 @@ def resolve_relative_urls(self, content, source):
     return asm.cms.utils.rewrite_urls(content, resolve)
 
 grok.View.resolve_relative_urls = resolve_relative_urls
+
+# XXX Monkey patch to force requests include Accept Encoding in the Vary header.
+old_setHeader = zope.publisher.http.HTTPResponse.setHeader
+def force_vary_header(self, name, value, *args, **kw):
+    if name.lower() == 'vary' and 'accept-encoding' not in value.lower():
+        value += ",Accept-Encoding"
+    result = old_setHeader(self, name, value, *args, **kw)
+    return result
+zope.publisher.http.HTTPResponse.setHeader = force_vary_header
+
 
 # Provide re-exports of public API
 

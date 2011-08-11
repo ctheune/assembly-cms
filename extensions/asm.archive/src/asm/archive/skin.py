@@ -194,7 +194,14 @@ def generate_map(event):
                         edition = media.getEdition(homepage.parameters)
                     except KeyError:
                         continue
-                    map[year_name][category.__name__].append(iids.getId(edition))
+                    asset_edition_id = iids.getId(edition)
+                    thumbnail_page = edition.page['thumbnail']
+                    thumbnail_edition = thumbnail_page.getEdition(homepage.parameters)
+                    thumbnail_edition_id = iids.getId(thumbnail_edition)
+                    thumbnail_page['_datauri'] = asm.cms.interfaces.IDataUri(thumbnail_edition)
+                    info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+                    map[year_name][category.__name__].append(
+                        (asset_edition_id, info, thumbnail_edition_id))
                 if not map[year_name][category.__name__]:
                     del map[year_name][category.__name__]
         homepage.gallery_map = map
@@ -228,12 +235,13 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
         random.shuffle(result)
         result = result[:limit]
         iids = zope.component.getUtility(zope.intid.IIntIds)
-        for edition_id in result:
-            edition = iids.getObject(edition_id)
+        for asset_edition_id, info, thumbnail_edition_id in result:
+            edition = iids.getObject(asset_edition_id)
+            thumbnail_edition = iids.getObject(thumbnail_edition_id)
+            thumbnail_datauri = thumbnail_edition.page['_datauri']
             yield dict(edition=edition,
-                       gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition),
-                       thumbnail=asm.cms.edition.select_edition(
-                    edition.page['thumbnail'], self.request))
+                       gallery=info,
+                       thumbnail=thumbnail_datauri.datauri)
 
     @property
     def description(self):

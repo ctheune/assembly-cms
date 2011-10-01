@@ -429,6 +429,13 @@ class Feedback(asm.cmsui.form.Form):
     form_fields['name'].custom_widget = get_specific_width_text_widget(40)
     form_fields['email'].custom_widget = get_specific_width_text_widget(40)
 
+    # This field is not visible for normal browser users.
+    form_fields += grok.Fields(
+        **{'honeypot': zope.schema.TextLine(title=u'Honeypot', description=u"You should not see this field. Do not fill it.", required=False)})
+    class HoneyPotWidget(TextWidget):
+        cssClass = 'honeypot'
+    form_fields['honeypot'].custom_widget = HoneyPotWidget
+
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))
     prefix = ''
 
@@ -444,10 +451,15 @@ Page: %(page)s <%(root)s/%(page)s>
 '''
 
     smtp_host = "mail.assembly.org"
-    target_address = "web-dev@assembly.org"
+    target_address = "web-dev<>assembly.org".replace("<>", "@")
 
     @grok.action(u'Send feedback')
-    def send(self, message, page=None, name=None, email=None):
+    def send(self, message, page=None, name=None, email=None, honeypot=None):
+        # Detect if a spambot has just filled all form fields.
+        if honeypot is not None:
+            self.redirect(self.url('feedback-accepted-honeypot'))
+            return
+
         page = page or u""
         name = name or u"UNKNOWN"
         email = email or u"EMPTY-EMAIL"
@@ -489,3 +501,9 @@ class FeedbackAccepted(asm.cmsui.retail.Pagelet):
     grok.layer(ISkin)
     grok.name('feedback-accepted')
 
+
+class FeedbackAcceptedHoneypot(asm.cmsui.retail.Pagelet):
+
+    grok.context(asm.cms.homepage.Homepage)
+    grok.layer(ISkin)
+    grok.name('feedback-accepted-honeypot')

@@ -229,6 +229,10 @@ h2 {
   padding: 0;
 }
 
+.honeypot {
+  display: none;
+}
+
 @media only screen and (max-width: 680px) {
   #archive-logo, .overview-thumbnail-3, .overview-thumbnail-4 {
     display: none;

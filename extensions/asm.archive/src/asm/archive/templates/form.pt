@@ -49,9 +49,10 @@
 
 <tal:block condition="nothing">
 <!-- Define the macro for showing individual fields -->
-<div class="field" metal:define-macro="fields">
+<div metal:define-macro="fields"
+     tal:attributes="class python:' '.join(['field'] + [widget.cssClass])">
     <label tal:attributes="for widget/name;
-        class python:widget.required and 'required' or ''">
+        class python:widget.required and 'required' or None">
         <span i18n:translate="" tal:content="widget/label">label</span> <span tal:condition="widget/required"
             class="required">(required)</span>
     </label>

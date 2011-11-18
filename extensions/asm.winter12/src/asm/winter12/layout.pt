@@ -112,14 +112,14 @@
 
             <div style="margin-left: 1em">
               <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
-              <div><strong><a href="http://twitter.com/#!/search/%23assembly2012">#assembly2012</a></strong></div>
+              <div><strong><a href="http://twitter.com/#!/search/%23assembly2012+OR+@assemblyparty">#assembly2012</a></strong></div>
             </div>
 
             <div style="margin:1.5em 0.5em 1em;">
-              <a href="http://archive.assembly.org/2011"><img tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
+              <a href="http://archive.assembly.org/2012"><img tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
             </div>
             <div style="margin:1em 0.5em 1.5em;">
-              <a href="http://assembly.galleria.fi/kuvat/Assembly+Summer+2011/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
+              <a href="http://assembly.galleria.fi/kuvat/Assembly+Winter+2012/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
             </div>
 
             <div class="sidebar-box"
@@ -169,7 +169,7 @@
       <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">feedback</a> |
       <a tal:attributes="href string:${view/application_url}/../asmorg/legal/privacy" i18n:translate="">privacy</a> |
       <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">contact</a> |
-      <br /><span i18n:translate="">Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg" i18n:name="asmorglink">Assembly Organizing</a>, 2009-2011</span>
+      <br /><span i18n:translate="">Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg" i18n:name="asmorglink">Assembly Organizing</a>, 2009-2012</span>
       </p>
     </div> <!-- footer -->
 

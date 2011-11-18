@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.winter12">
+  <head>
+    <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2011 &ndash; 4.-7.8.2011, Hartwall Areena, Helsinki </title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta name="geo.region" content="FI-ES" />
+    <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />
+    <meta name="geo.position" content="60.205868;24.929446" />
+    <meta name="ICBM" content="60.205868, 24.929446" />
+
+    <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>
+    <link rel="shortcut icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+    <link rel="icon" type="image/vnd.microsoft.icon" tal:attributes="href context/@@layouthelper/static/favicon.ico"/>
+    <link rel="search" type="application/opensearchdescription+xml" title="Assembly Summer 2011" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
+
+    <script tal:attributes="src context/@@layouthelper/static/jss/jquery-1.6.2.min.js" type="text/javascript"></script>
+    <script tal:attributes="src context/@@layouthelper/static/jss/jquery.tools-1.2.5.min.js" type="text/javascript"></script>
+    <script tal:attributes="src context/@@layouthelper/static/jss/assembly.js" type="text/javascript"></script>
+
+    <base tal:attributes="href context/@@base"/>
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="header">
+        <h1 id="home"><a title="Assembly Summer" tal:attributes="href view/application_url">Assembly Summer 2011, 4.-7.8.2011, Hartwall Areena, Helsinki</a></h1>
+      </div>
+      <div id="subheader">
+        <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
+
+        <div style="width:220px; float:left; margin-left:20px;">
+          <form tal:attributes="action string: ${view/application_url}/@@search"
+            method="get" id="searchform">
+            <p><input type="text" style="width: 15em; height:15px;"
+                      name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></p></form>
+        </div>
+
+        <div>
+          <div id="language">
+            <a class="language-english" tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English</a>
+            <a class="language-finnish" tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="container" class="clearfix">
+        <div id="leftbar" class="column">
+          <div tal:replace="structure context/@@navtree">
+          </div>
+          <div class="box-light sponsors">
+            <div class="box-inside" >
+              <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Sponsors</a></h4>
+
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('sponsor', 4)">
+                <p>
+                  <a tal:attributes="href string:${view/application_url}/sponsors">
+                    <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                  </a>
+                </p>
+                </tal:banners>
+
+            </div>
+          </div>
+
+          <div class="box-light sponsors">
+            <div class="box-inside" >
+              <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Associates</a></h4>
+
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('associate', 2)">
+                <p>
+                  <a tal:attributes="href string:${view/application_url}/sponsors">
+                    <img class="banner" alt="Sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                  </a>
+                </p>
+                </tal:banners>
+
+            </div>
+          </div>
+        </div> <!-- leftbar -->
+
+        <div id="right-container">
+          <div id="content-column">
+            <div id="content-padding">
+              <a name="documentContent"></a>
+              <div tal:replace="structure view/render">
+              </div>
+            </div>
+          </div> <!-- content-column -->
+
+          <div id="rightbar">
+
+            <div class="box-light sponsors">
+              <div class="box-inside">
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Main sponsors</a></h4>
+
+              <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose('main', randomize=False)">
+                <p>
+                  <a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow">
+                    <img class="banner" alt="Main sponsor banner" tal:attributes="src python:view.url(banner.__parent__)"/>
+                  </a>
+                </p>
+              </tal:banners>
+
+              </div>
+            </div> <!-- sponsors -->
+
+            <div>
+              <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fassemblyparty&amp;width=190&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=false&amp;height=110" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:190px; height:110px;" allowTransparency="true"></iframe>
+            </div>
+
+            <div style="margin-left: 1em">
+              <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
+              <div><strong><a href="http://twitter.com/#!/search/%23assembly2011">#assembly2011</a></strong></div>
+            </div>
+
+            <div style="margin:1.5em 0.5em 1em;">
+              <a href="http://archive.assembly.org/2011"><img tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
+            </div>
+            <div style="margin:1em 0.5em 1.5em;">
+              <a href="http://assembly.galleria.fi/kuvat/Assembly+Summer+2011/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
+            </div>
+
+            <div class="sidebar-box"
+                 tal:define="upcoming context/@@layouthelper/upcoming_events;
+                             current context/@@layouthelper/current_events"
+                 tal:condition="python: upcoming or current">
+              <h4 i18n:translate="">What's happening?</h4>
+              <ul tal:condition="current">
+                <li tal:repeat="item current">
+                  <a tal:attributes="href item/url"
+                    tal:content="item/event/title">Asus desktop image competition results </a>
+                  <span i18n:translate="">
+                    ends <span tal:replace="item/end" i18n:name="time"/>
+                  </span></li>
+              </ul>
+              <h5 i18n:translate="" tal:condition="upcoming">Upcoming</h5>
+              <ul tal:condition="upcoming">
+                <li tal:repeat="item upcoming">
+                  <a tal:attributes="href item/url"
+                    tal:content="item/event/title">Asus desktop image competition results </a>
+                  <span i18n:translate="">
+                    begins <span tal:replace="item/start" i18n:name="time"/>
+                  </span></li>
+              </ul>
+            </div> <!-- sidebar current events -->
+
+            <div class="box-light sponsors">
+              <div class="box-inside" >
+                <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Game Tournaments</a></h4>
+
+                <p>
+                <a tal:attributes="href string:${view/application_url}/compos">
+                  <img class="banner" alt="Peliliiga" src="http://www.assembly.org/winter08/compos/peliliiga-150px"/>
+                </a>
+                </p>
+
+              </div>
+            </div> <!-- sponsors -->
+          </div> <!-- right-bar -->
+        </div> <!-- right-container -->
+      </div> <!-- container -->
+
+    </div> <!-- main -->
+
+    <div id="footer">
+      <p id="footer-links">
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">feedback</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/legal/privacy" i18n:translate="">privacy</a> |
+      <a tal:attributes="href string:${view/application_url}/../asmorg/contact" i18n:translate="">contact</a> |
+      <br /><span i18n:translate="">Copyright &copy; <a tal:attributes="href string:${view/application_url}/../asmorg" i18n:name="asmorglink">Assembly Organizing</a>, 2009-2011</span>
+      </p>
+    </div> <!-- footer -->
+
+    <div id="nav-top">
+      <div id="nav-top-container">
+        <ul>
+          <li><a href="http://www.assembly.org/summer11/">Summer'11</a></li>
+          <li><a href="http://www.assembly.org/winter11/">Winter'11</a></li>
+          <li><a href="http://archive.assembly.org/">Archive</a></li>
+          <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
+          <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>
+        </ul>
+      </div>
+    </div> <!-- nav-top -->
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7109758-1']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_trackPageLoadTime']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+  </body>
+</html>

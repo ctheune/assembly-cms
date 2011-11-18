@@ -23,6 +23,11 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
+class NullSchedule(object):
+    @property
+    def events(self):
+        return {}
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
@@ -30,7 +35,7 @@ class LayoutHelper(grok.View):
     @property
     def schedule(self):
         if 'program' not in self.application or 'schedule' not in self.application['program']:
-            raise StopIteration()
+            return NullSchedule()
         return asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
 

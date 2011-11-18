@@ -302,6 +302,8 @@ def publish_schedule(event):
 def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
+class NullEvent(object):
+    end = datetime.datetime(1980, 1, 1)
 
 class FilteredSchedule(object):
     """A helper to create a filtered view on a schedule."""
@@ -310,6 +312,8 @@ class FilteredSchedule(object):
                'major': (_('Major'), lambda x: x.major),
                'compo': (_('Compos'),
                          lambda x: x.class_.startswith('Compo'))}
+
+    _last_event = NullEvent()
 
     def __init__(self, request, schedule, details, day):
         self.request = request
@@ -362,6 +366,8 @@ class FilteredSchedule(object):
                              sorted(hours.items())]
             self.events.append(data)
 
+        self._last_event = self.events[-1]
+
         self.day_options = [
             dict(token=day.isoformat(),
                  class_=(self.day == day and 'selected' or ' '),
@@ -380,7 +386,8 @@ class FilteredSchedule(object):
 
     def event_class(self, event):
         classes = set([event.class_])
-        if event.end < self.now:
+        # self.now < self.last_event.end makes
+        if self.now < self._last_event.end and event.end < self.now:
             classes.add('past')
         if event.start > self.now:
             classes.add('future')
@@ -388,6 +395,8 @@ class FilteredSchedule(object):
             classes.add('current')
         if event.canceled:
             classes.add('canceled')
+        if len(event.description) > 0:
+            classes.add('disclose')
         return ' '.join(classes)
 
 

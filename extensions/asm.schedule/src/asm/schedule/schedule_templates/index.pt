@@ -34,7 +34,8 @@
           tal:content="hour_record/hour">
       </th>
       <td tal:attributes="class event/classes">
-        <span class="disclose" tal:attributes="class python:'disclose '+('' if event['description'] else 'hidden')">&nbsp;</span>
+        <span tal:condition="event/description"
+              tal:attributes="class python:'disclose more '+('' if event['description'] else 'hidden')">more</span>
         <span class="asmtv" tal:condition="event/assemblytv_broadcast">&nbsp;</span>
         <a tal:content="event/title"
           tal:attributes="name event/key; href event/url"></a>

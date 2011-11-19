@@ -52,7 +52,7 @@
           <span tal:content="event/end_day" i18n:name="day"></span>
         </span>
 
-        <span class="until">&ndash; <a tal:attributes="href python:view.url(context, 'schedule.ics')+'?event=%s'%event['key']">iCal</a></span>
+        <span class="until">&ndash; <a tal:attributes="href python:view.url(context, 'event-%s.ics' % (event['key']))">iCal</a></span>
 
         <p tal:condition="event/canceled" i18n:translate=""
           class="canceled" >Unfortunately, this event has been canceled. :(</p>

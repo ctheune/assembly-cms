@@ -38,7 +38,9 @@
               tal:attributes="class python:'disclose more '+('' if event['description'] else 'hidden')" i18n:translate="">more</span>
         <span tal:condition="event/description"
               tal:attributes="class python:'disclose less '+('' if event['description'] else 'hidden')" i18n:translate="">less</span>
-        <span class="asmtv" tal:condition="event/assemblytv_broadcast">&nbsp;</span>
+        <span class="asmtv" tal:condition="event/assemblytv_broadcast"
+              i18n:attributes="title"
+              title="This event is shown on AssemblyTV.">&nbsp;</span>
         <a tal:content="event/title"
           tal:attributes="name event/key; href event/url"></a>
         <br/>

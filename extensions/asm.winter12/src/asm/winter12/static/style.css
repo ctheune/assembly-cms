@@ -545,6 +545,16 @@ div.scheduleclasses a.selected {
     color: black;
 }
 
+.schedule td {
+    border-left: transparent solid 2px;
+    border-right: transparent solid 2px;
+}
+
+.schedule td.major {
+    border-left: gray solid 2px;
+    border-right: gray solid 2px;
+}
+
 .forum-banner {
     margin-left:4px;
 }

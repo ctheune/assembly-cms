@@ -359,6 +359,7 @@ class FilteredSchedule(object):
                                        else u'')
                 massaged['canceled'] = event.canceled
                 massaged['assemblytv_broadcast'] = event.assemblytv_broadcast
+                massaged['major'] = event.major
                 hours.setdefault(event.start, []).append(massaged)
 
             data['hours'] = [dict(hour=i18n_strftime('%H:%M', k, self.request),
@@ -398,6 +399,8 @@ class FilteredSchedule(object):
             classes.add('canceled')
         if len(event.description) > 0:
             classes.add('disclose')
+        if event.major:
+            classes.add('major')
         return ' '.join(classes)
 
 

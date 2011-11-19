@@ -766,3 +766,10 @@ a:active {
 #search-results .match {
     background-color: #bdd6de;
 }
+
+img.contentintro {
+    border-radius: 30px;
+    width: 250px;
+    float: right;
+    margin: 2em;
+}

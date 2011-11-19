@@ -15,7 +15,6 @@
           </tal:block>
       </li>
   </metal:block>
-    <li><a href="http://www.assembly.org/asmorg">Assembly Organizing</a></li>
   </ul>
 
 </tal:block>

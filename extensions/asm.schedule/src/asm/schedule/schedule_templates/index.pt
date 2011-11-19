@@ -71,18 +71,21 @@
 <script type="text/javascript">
   $(document).ready(function() {
       $('table.schedule td').click(function(e) {
-        if (e.target != this) return;
+        if (e.target.tagName.toLowerCase() == 'a') {
+          return;
+        }
         $('.description', this).slideToggle();
         $('.disclose', this).toggleClass('opened');
-        });
+      });
 
       $('table.schedule td').each(function() {
         $('.description', this).hide();
-       });
+      });
 
       $('table.schedule td').hover(
-        function(){ $('.disclose', this).addClass('hover'); },
-        function(){ $('.disclose', this).removeClass('hover');});
+        function() { $('.disclose', this).addClass('hover'); },
+        function() { $('.disclose', this).removeClass('hover'); }
+      );
   });
 </script>
 </tal:block>

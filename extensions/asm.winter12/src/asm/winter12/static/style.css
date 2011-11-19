@@ -427,10 +427,6 @@ table.schedule td {
     line-height:1;
 }
 
-table.schedule td.disclose {
-    cursor: pointer;
-}
-
 table.schedule td a {
     text-decoration: none;
 }
@@ -455,7 +451,7 @@ table.schedule td .description {
 }
 
 span.disclose {
-    background-image:url(images/bullet_arrow_down.png);
+    display: none;
     opacity: 0.5;
     float: right;
     padding-left:10px;
@@ -464,6 +460,12 @@ span.disclose {
     background-position: right top;
     font-size: x-small;
     font-weight: normal;
+}
+span.disclose.more {
+	background-image:url(images/bullet_arrow_down.png);
+}
+span.disclose.less {
+	background-image:url(images/bullet_arrow_up.png);
 }
 
 .schedule span.disclose.hidden {
@@ -478,11 +480,7 @@ span.disclose {
     height:24px;
 }
 
-span.disclose.opened {
-    background-image:url(images/bullet_arrow_up.png);
-}
-
-span.disclose.hover {
+.schedule td:hover span.disclose {
     opacity:1;
 }
 

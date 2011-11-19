@@ -121,13 +121,13 @@ class LayoutHelper(grok.View):
                     for (name, length) in units[:-1]:
                         if diff > length:
                             messageParts.append(
-                                '<strong id="clock_%s">%s</strong> %s' %
-                                (name, int(diff / length),
-                                 zope.i18n.translate(name,
-                                                     context=self.request)))
+                                '%s %s' % (
+                                int(diff / length),
+                                zope.i18n.translate(name,
+                                                    context=self.request)))
                             diff = diff % length
 
-                    message = '<span id="clock">%s %s</span>' % (
+                    message = '%s %s' % (
                         ', '.join(messageParts),
                         zope.i18n.translate(showString, context=self.request))
                 else:

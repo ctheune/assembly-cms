@@ -28,6 +28,15 @@ class NullSchedule(object):
     def events(self):
         return {}
 
+
+class CountDown(grok.View):
+
+    grok.context(zope.interface.Interface)
+
+    def render(self):
+        return LayoutHelper(self.context, self.request).generateCountdown()
+
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)
@@ -68,7 +77,6 @@ class LayoutHelper(grok.View):
                 result.append(self.event_data(key, event))
         return result
 
-
     def news(self):
         try:
             # This try/except block makes the skin more resilient towards
@@ -104,9 +112,11 @@ class LayoutHelper(grok.View):
                 if doCountDown:
                     diff = limit - now
                     diff = (diff.days * 24 * 60 * 60) + diff.seconds
-                    units = ((_('years'), 31536000), (_('months'), 2592000),
-                             (_('days'), 86400), (_('hours'), 3600),
-                             (_('minutes'), 60), (_('seconds'), 1))
+                    units = ((_('weeks'), 7*24*60*60),
+                             (_('days'), 24*60*60),
+                             (_('hours'), 60*60),
+                             (_('minutes'), 60),
+                             (_('seconds'), 1))
                     messageParts = []
                     for (name, length) in units[:-1]:
                         if diff > length:

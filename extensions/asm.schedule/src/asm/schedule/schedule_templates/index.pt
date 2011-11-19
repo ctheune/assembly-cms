@@ -35,7 +35,9 @@
       </th>
       <td tal:attributes="class event/classes">
         <span tal:condition="event/description"
-              tal:attributes="class python:'disclose more '+('' if event['description'] else 'hidden')">more</span>
+              tal:attributes="class python:'disclose more '+('' if event['description'] else 'hidden')" i18n:translate="">more</span>
+        <span tal:condition="event/description"
+              tal:attributes="class python:'disclose less '+('' if event['description'] else 'hidden')" i18n:translate="">less</span>
         <span class="asmtv" tal:condition="event/assemblytv_broadcast">&nbsp;</span>
         <a tal:content="event/title"
           tal:attributes="name event/key; href event/url"></a>
@@ -52,7 +54,7 @@
           <span tal:content="event/end_day" i18n:name="day"></span>
         </span>
 
-        <span class="until">&ndash; <a tal:attributes="href python:view.url(context, 'schedule.ics')+'?event=%s'%event['key']">iCal</a></span>
+        <span class="until">&ndash; <a tal:attributes="href python:view.url(context, 'event-%s.ics' % (event['key']))">iCal</a></span>
 
         <p tal:condition="event/canceled" i18n:translate=""
           class="canceled" >Unfortunately, this event has been canceled. :(</p>
@@ -70,19 +72,28 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-      $('table.schedule td').click(function(e) {
-        if (e.target != this) return;
-        $('.description', this).slideToggle();
-        $('.disclose', this).toggleClass('opened');
-        });
+    $('table.schedule td').click(function (e) {
+      // Do not animate when clicking links
+      if (e.target.tagName.toLowerCase() != 'a') {
+        // Toggle visibility and button text
+        if (!$('.description', this).hasClass('visible')) {
+          $('.description', this).slideDown(200).addClass('visible');
+          $('.disclose.more', this).hide();
+          $('.disclose.less', this).show();
+        } else {
+          $('.description', this).slideUp(200).removeClass('visible');
+          $('.disclose.less', this).hide();
+          $('.disclose.more', this).show();
+        }
+      }
+    });
 
-      $('table.schedule td').each(function() {
-        $('.description', this).hide();
-       });
-
-      $('table.schedule td').hover(
-        function(){ $('.disclose', this).addClass('hover'); },
-        function(){ $('.disclose', this).removeClass('hover');});
+    // Initialize effects
+    $('table.schedule td.disclose').each(function() {
+      $(this).css('cursor', 'pointer');
+      $('.description', this).hide();
+      $('.disclose.more', this).show();
+    });
   });
 </script>
 </tal:block>

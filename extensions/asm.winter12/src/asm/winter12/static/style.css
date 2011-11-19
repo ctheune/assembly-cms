@@ -462,10 +462,10 @@ span.disclose {
     font-weight: normal;
 }
 span.disclose.more {
-	background-image:url(images/bullet_arrow_down.png);
+	background-image:url(/@@/asm.schedule/bullet_arrow_down.png);
 }
 span.disclose.less {
-	background-image:url(images/bullet_arrow_up.png);
+	background-image:url(/@@/asm.schedule/bullet_arrow_up.png);
 }
 
 .schedule span.disclose.hidden {

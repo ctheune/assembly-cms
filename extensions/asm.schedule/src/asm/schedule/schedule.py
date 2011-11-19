@@ -366,7 +366,8 @@ class FilteredSchedule(object):
                              sorted(hours.items())]
             self.events.append(data)
 
-        self._last_event = self.events[-1]
+        if self.events:
+            self._last_event = self.events[-1]
 
         self.day_options = [
             dict(token=day.isoformat(),

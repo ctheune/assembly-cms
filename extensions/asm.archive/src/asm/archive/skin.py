@@ -18,6 +18,7 @@ import random
 import re
 import smtplib
 import urlparse
+import urllib
 from zope.app.form.browser.textwidgets import TextWidget
 import zope.interface
 
@@ -312,6 +313,10 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     grok.layer(ISkin)
     grok.context(asm.mediagallery.interfaces.IExternalAsset)
     grok.name('index')
+
+    @property
+    def current_url_escaped(self):
+        return urllib.quote_plus(self.url('').rstrip("/"))
 
     @property
     def title(self):

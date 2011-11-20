@@ -316,7 +316,7 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
 
     @property
     def current_url_escaped(self):
-        return urllib.quote_plus(self.url('').rstrip("/"))
+        return urllib.quote_plus(self.url(self.context))
 
     @property
     def title(self):

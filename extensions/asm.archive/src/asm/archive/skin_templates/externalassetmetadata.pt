@@ -1,8 +1,8 @@
-<!--
 <meta property="og:title" tal:attributes="content view/title" />
+<meta property="og:type" content="article" />
 <meta property="og:author" tal:attributes="content view/info/author" />
 <meta property="og:site_name" tal:attributes="content viewlet/application_title" />
 <meta property="og:url" tal:attributes="content python:view.url(context)" />
 <meta property="og:image" tal:attributes="content python:view.url('thumbnail')"/>
 <meta property="og:description" tal:attributes="content viewlet/description"/>
--->
+<meta property="fb:app_id" content="183599045012296" />

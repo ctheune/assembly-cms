@@ -64,6 +64,8 @@ def select_years(application_subpages, request):
         edition = asm.cms.edition.select_edition(year_page, request)
         if isinstance(edition, asm.cms.edition.NullEdition):
             continue
+        if edition.tags is not None and 'hide-navigation' in edition.tags:
+            continue
         result.append(edition)
 
     return result
@@ -229,7 +231,7 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
             raise StopIteration
         result = []
         year_name = year.page.__name__
-        for category_items in self.context.gallery_map[year_name].values():
+        for category_items in self.context.gallery_map.get(year_name, {}).values():
             random.shuffle(category_items)
             result.extend(category_items[:limit])
         random.shuffle(result)

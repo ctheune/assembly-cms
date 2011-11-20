@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.winter12">
   <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
     <title><span tal:replace="context/title"/> &ndash; Assembly Winter 2012 &ndash; 24.-26.2.2012, Kaapelitehdas, Helsinki </title>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
     <meta name="geo.region" content="FI-ES" />
     <meta name="geo.position" content="60.161817;24.904606" />
@@ -52,10 +53,10 @@
           </div>
 
           <div style="margin:1.5em 0.5em 1em; ">
-            <a href="http://archive.assembly.org/2012"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
+            <a href="http://archive.assembly.org/2012"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg" alt="ASSEMBLY archive - explore assembly content"/></a>
           </div>
           <div style="margin:1em 0.5em 1.5em; border-radius:5px;">
-            <a href="http://assembly.galleria.fi/kuvat/Assembly+Winter+2012/"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
+            <a href="http://assembly.galleria.fi/kuvat/Assembly+Winter+2012/"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg" alt="ASSEMBLY gallery - fresh event photos"/></a>
           </div>
 
           <div class="box-light sponsors">
@@ -115,8 +116,8 @@
               </div>
             </div> <!-- sponsors -->
 
-            <div>
-              <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fassemblyparty&amp;width=190&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=false&amp;height=110" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:190px; height:110px;" allowTransparency="true"></iframe>
+	    <div>
+              <iframe src="http://www.facebook.com/plugins/likebox.php?href=http%3A%2F%2Fwww.facebook.com%2Fassemblyparty&amp;width=190&amp;colorscheme=light&amp;show_faces=false&amp;stream=false&amp;header=false&amp;height=110" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:190px; height:110px;"></iframe>
             </div>
 
             <div style="margin-left: 1em">

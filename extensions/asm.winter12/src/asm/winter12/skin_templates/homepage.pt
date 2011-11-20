@@ -29,9 +29,11 @@
     </div>
 </div>
 
-<div class="content-news">
+<div class="content-news"
+	tal:define="news view/frontpage"
+	tal:condition="news">
     <ul>
-        <li tal:repeat="item view/frontpage">
+        <li tal:repeat="item news">
           <h2><a tal:attributes="href python:view.url(item['edition'])"
                  tal:content="item/edition/title">Asus desktop image competition
                  results</a> <span

@@ -12,6 +12,8 @@
 
 <tal:block tal:content="structure provider:metadata" />
 
+<meta property="fb:page_id" content="183599045012296" />
+
 <link rel="shortcut icon" type="image/vnd.microsoft.icon"
       tal:attributes="href context/@@layouthelper/static/images/favicon.ico" />
 <link rel="icon" type="image/vnd.microsoft.icon"

@@ -49,14 +49,17 @@
       </div>
       <div>
 
-<iframe id="facebook-like-button"
-        tal:attributes="data-src python:'http://www.facebook.com/plugins/like.php?href=%s&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=21' % view.current_url_escaped"
-        scrolling="no"
-        frameborder="0"
-        style="border:none; overflow:hidden; width:100px; height:21px;"
-        allowTransparency="true"
-        class="link-button"></iframe>
+<div class="fb-like" tal:attributes="data-href view/current_url_escaped" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-colorscheme="dark"></div>
       </div>
     </div>
   </div>
+
 </div>
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script><div id="fb-root"></div>

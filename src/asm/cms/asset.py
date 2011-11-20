@@ -72,9 +72,12 @@ def redefine_content_type(obj, event):
 @grok.subscribe(Asset, grok.IObjectCreatedEvent)
 @grok.subscribe(Asset, grok.IObjectModifiedEvent)
 def update_datauri(obj, event):
-    datauri = "data:%s;base64,%s" % (
-        obj.content_type,
-        base64.b64encode(obj.content.open("r").read()))
+    if obj.content is None:
+        datauri = None
+    else:
+        datauri = "data:%s;base64,%s" % (
+            obj.content_type,
+            base64.b64encode(obj.content.open("r").read()))
     datauriobj = asm.cms.interfaces.IDataUri(obj)
     datauriobj.datauri = datauri
 

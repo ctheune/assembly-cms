@@ -49,7 +49,8 @@
       </div>
       <div>
       <iframe allowtransparency="true" scrolling="no" id="facebook-like-button"
-         data-src="http://www.facebook.com/plugins/like.php?href&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=21" style="border:none; overflow:hidden; width:100px; height:21px;"
+         tal:attributes="data-src python:('http://www.facebook.com/plugins/like.php?href=%s&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=dark&amp;font&amp;height=21' % view.current_url_escaped)"
+              style="border:none; overflow:hidden; width:100px; height:21px;"
               class="link-button"></iframe>
       </div>
     </div>

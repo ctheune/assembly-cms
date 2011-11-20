@@ -107,7 +107,7 @@ td.running {font-weight:bold; background:#e4e4e4}
 td.future {}
 ul {list-style-image:none; list-style-type:disc;margin-bottom:10px;}
 hr {color: #999; background-color: #e4e4e4; margin:15px 0 5px 0; clear:both;}
-p {margin:0 0 1.5em 0;}
+p {margin:0 0 0.8em 0;}
 
 
 #navigation ul {margin:0; padding:0;}

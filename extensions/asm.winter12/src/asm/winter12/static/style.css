@@ -780,6 +780,7 @@ a:active {
 img.teaser {
     border-radius: 30px;
     width: 250px;
+    height: auto;
     float: right;
     margin: 2em;
 }

@@ -108,6 +108,9 @@ class YearlyNavigation(grok.View):
 
     def get_navigation_limits(self, years, limit=DEFAULT_YEARS):
 
+        if not self.current_year in years:
+            return (0, min(limit, len(years)))
+
         max_selection = min(len(years), limit)
         if self.current_year is not None and YEAR_MATCH.match(self.current_year.page.__name__):
             before = max_selection / 2
@@ -378,10 +381,20 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
         return page
 
     def next(self):
-        return self._return_same_type_page(super(GalleryNavBar, self).next())
+        next_page = self._return_same_type_page(super(GalleryNavBar, self).next())
+        if next_page is None:
+            return None
+        if next_page.tags is not None and 'hide-navigation' in next_page.tags:
+            return None
+        return next_page
 
     def previous(self):
-        return self._return_same_type_page(super(GalleryNavBar, self).previous())
+        prev_page = self._return_same_type_page(super(GalleryNavBar, self).previous())
+        if prev_page is None:
+            return None
+        if prev_page.tags is not None and 'hide-navigation' in prev_page.tags:
+            return None
+        return prev_page
 
     def update(self):
         pages = []

@@ -5,6 +5,7 @@
 
     <title><span tal:replace="context/title"/> &ndash; Assembly Winter 2012 &ndash; 24.-26.2.2012, Kaapelitehdas, Helsinki </title>
 
+    <meta property="fb:page_id" content="183599045012296" />
 
     <meta name="geo.region" content="FI-ES" />
     <meta name="geo.position" content="60.161817;24.904606" />

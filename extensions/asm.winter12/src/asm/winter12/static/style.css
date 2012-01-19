@@ -7,9 +7,30 @@ h2 {font-size:1.5em;}
 h3 {font-size:1.3em; margin-bottom:0.3em;}
 h4 {font-size:1.2em; margin:0px;}
 h5 {font-size:1.1em;}
-a.language-english:after {content:url("images/button-english.gif"); margin-left:2px;}
-a.language-finnish:after {content:url("images/button-finnish.gif"); margin-left:2px;}
-a.language-finnish:hover, a.language-english:hover {text-decoration:underline; color:#e70101;}
+
+/* Language selection buttons */
+.language-finnish, .language-english {
+    text-decoration: none;
+    background: transparent;
+    border: 0px;
+    font-size: 100%;
+    margin: 0;
+    font-weight: bold;
+}
+.language-english:after {
+    content: url("images/button-english.gif");
+    margin-left: 4px;
+}
+.language-finnish:after {
+    content: url("images/button-finnish.gif");
+    margin-left: 4px;
+}
+.language-finnish:hover, .language-english:hover {
+    text-decoration: underline;
+    color:#e70101;
+    cursor: pointer;
+}
+
 a.readmore {color:#6e8f10; font-weight:bold; text-decoration:none; float:right; margin-bottom:5px;}
 a.readmore:hover {text-decoration:underline; color:#e70101;}
 p.subtitle {font-weight:bold; font-size:0.9em; margin:0;}

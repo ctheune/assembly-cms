@@ -143,6 +143,16 @@ class LayoutHelper(grok.View):
         return zope.i18n.translate(
             _("Welcome to Assembly!"), context=self.request)
 
+
+    def current_language(self):
+        if not 'asm.translation.lang' in self.request.cookies:
+            return asm.translation.translation.fallback()
+
+        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
+            return self.request.cookies['asm.translation.lang']
+
+        return asm.translation.translation.fallback()
+
     # A helper class to get access to the static directory in this module from
     # the layout.
 

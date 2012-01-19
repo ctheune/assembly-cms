@@ -1,10 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.winter12">
+<html xmlns="http://www.w3.org/1999/xhtml" tal:attributes="xml:lang context/@@layouthelper/current_language; lang context/@@layouthelper/current_language" i18n:domain="asm.winter12">
   <head>
     <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
 
     <title><span tal:replace="context/title"/> &ndash; Assembly Winter 2012 &ndash; 24.-26.2.2012, Kaapelitehdas, Helsinki </title>
 
+    <meta property="fb:page_id" content="183599045012296" />
 
     <meta name="geo.region" content="FI-ES" />
     <meta name="geo.position" content="60.161817;24.904606" />
@@ -33,16 +34,27 @@
         <span id="clock" tal:content="context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
 
         <div style="width:220px; float:left; margin-left:20px;">
-          <form tal:attributes="action string: ${view/application_url}/@@search"
+          <form tal:attributes="action string:${view/application_url}/@@search"
             method="get" id="searchform">
             <p><input type="text" style="width: 15em; height:15px;"
                       name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /></p></form>
         </div>
 
         <div>
-          <div id="language">
-            <a class="language-english" tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English</a>
-            <a class="language-finnish" tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi</a>
+          <div id="language"
+               tal:define="current_language context/@@layouthelper/current_language">
+            <form tal:condition="python:current_language != 'en'"
+                  tal:attributes="action python:view.url(context)+'/@@select-language'"
+                  method="get">
+              <input type="hidden" name="lang" value="en" />
+              <button type="submit" class="language-english" >in English</button>
+            </form>
+            <form tal:condition="python:current_language != 'fi'"
+                  tal:attributes="action python:view.url(context)+'/@@select-language'"
+                  method="get">
+              <input type="hidden" name="lang" value="fi" />
+              <button type="submit" class="language-finnish" >suomeksi</button>
+            </form>
           </div>
         </div>
       </div>
@@ -56,7 +68,7 @@
             <a href="http://archive.assembly.org/2012"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg" alt="ASSEMBLY archive - explore assembly content"/></a>
           </div>
           <div style="margin:1em 0.5em 1.5em; border-radius:5px;">
-            <a href="http://assembly.galleria.fi/kuvat/Assembly+Winter+2012/"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg" alt="ASSEMBLY gallery - fresh event photos"/></a>
+            <a href="http://assembly.galleria.fi"><img style="border-radius:5px;" tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg" alt="ASSEMBLY gallery - fresh event photos"/></a>
           </div>
 
           <div class="box-light sponsors">
@@ -121,8 +133,8 @@
             </div>
 
             <div style="margin-left: 1em">
-              <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
-              <div><strong><a href="http://twitter.com/#!/search/%23asm12+OR+@assemblyparty">#asm12</a></strong></div>
+<a href="https://twitter.com/assemblyparty" class="twitter-follow-button" data-show-count="false" data-width="170px">Follow @assemblyparty</a><script src="" type="text/javascript"></script>
+              <div>Hashtag <strong><a href="http://twitter.com/#!/search/%23asmw12+OR+@assemblyparty">#asmw12</a></strong></div>
             </div>
 
             <div class="sidebar-box"

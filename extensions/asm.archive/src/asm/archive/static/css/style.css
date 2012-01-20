@@ -135,7 +135,7 @@ h2 {
   text-align:right;
 }
 
-#details {
+#details, #externalasset-title {
   float:right;
   width:280px;
 }
@@ -157,7 +157,7 @@ h2 {
   margin-bottom: 0em;
 }
 
-#details h2 {
+#externalasset-title h2 {
   font-weight:600;
   text-shadow:0 0 1px #000;
   font-size:1.5em;
@@ -246,13 +246,13 @@ h2 {
   #mobile-logo {
     display: inline-block;
     float: left;
-    background: url(../images/mobile-logo.png);
+    background: url(/@@/asm.archive/images/mobile-logo.png);
     width: 97px;
     height: 27px;
   }
 
   .grid_8 {
-    width: 520px ! important;
+    width: 340px ! important;
   }
 
   body, #main, .container_16, .entry, .media-item {
@@ -267,6 +267,20 @@ h2 {
   #details {
     float: none;
     width: 100%;
+  }
+
+  #externalasset-title {
+    width: 100%;
+    clear: both;
+    text-align: center;
+    margin-top: -20px;
+  }
+
+  #externalasset-title h2 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 1px;
+    margin-bottom: 1px;
   }
 
   .media-item .entry {

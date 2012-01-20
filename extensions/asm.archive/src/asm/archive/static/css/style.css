@@ -210,6 +210,7 @@ h2 {
   background: #fff;
   border-radius: 20px;
   color: #000;
+  width: 150px;
 }
 
 .frontpage-search {
@@ -252,7 +253,7 @@ h2 {
   }
 
   .grid_8 {
-    width: 340px ! important;
+    width: 360px ! important;
   }
 
   body, #main, .container_16, .entry, .media-item {
@@ -315,7 +316,42 @@ h2 {
   }
 
   #header {
-   padding:10px 0 0 0;
+    padding:10px 0 0 0;
   }
 
+  .navigation {
+    line-height:30px;
+  }
+
+  .gallery-breadcrumbs {
+    font-size: 24px;
+    overflow: hidden;
+  }
+
+  .gallery-navigation-link, h2 {
+    font-size: 24px;
+    overflow: hidden;
+  }
+
+  .year_nav li {
+    height: 32px;
+    width: 49px;
+    font-size:20px;
+  }
+
+  li.next-years, li.prev-years {
+    width: 30px;
+  }
+
+  li.prev-years {
+    text-align: left;
+  }
+
+  li.next-years {
+    text-align: right;
+  }
+
+  #searchform input {
+    padding: 8px 4px;
+  }
 }

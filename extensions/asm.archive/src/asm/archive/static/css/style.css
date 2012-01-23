@@ -95,6 +95,11 @@ h2 {
   margin:0;
 }
 
+.thumbnail-image {
+  width: 160px;
+  height: 90px;
+}
+
 .video {
   width: 160px;
   height: 160px;
@@ -274,7 +279,6 @@ h2 {
     width: 100%;
     clear: both;
     text-align: center;
-    margin-top: -20px;
   }
 
   #externalasset-title h2 {
@@ -316,7 +320,7 @@ h2 {
   }
 
   #header {
-    padding:10px 0 0 0;
+    padding: 10px 0 0 0;
   }
 
   .navigation {
@@ -353,5 +357,28 @@ h2 {
 
   #searchform input {
     padding: 8px 4px;
+  }
+
+  .thumbnail-image {
+    width: 192px;
+    height: 99px;
+  }
+
+  .video {
+    width: 192px;
+    height: 176px;
+    float: left;
+    margin: 14px 8px 14px 8px;
+  }
+
+  .gallery-name {
+    padding-left: 8px;
+  }
+
+  .clearfix {
+   margin-top: 0;
+   margin-bottom: 0;
+   padding-top: 0;
+   padding-bottom: 0;
   }
 }

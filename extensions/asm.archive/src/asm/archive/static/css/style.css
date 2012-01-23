@@ -253,8 +253,9 @@ h2 {
     display: inline-block;
     float: left;
     background: url(/@@/asm.archive/images/mobile-logo.png);
-    width: 97px;
+    width: 96px;
     height: 27px;
+    margin-top: 7px;
   }
 
   .grid_8 {
@@ -321,6 +322,7 @@ h2 {
 
   #header {
     padding: 10px 0 0 0;
+    height: 44px;
   }
 
   .navigation {
@@ -335,6 +337,10 @@ h2 {
   .gallery-navigation-link, h2 {
     font-size: 24px;
     overflow: hidden;
+  }
+
+  .year_nav {
+    height: 38px;
   }
 
   .year_nav li {

@@ -98,6 +98,7 @@ h2 {
 .thumbnail-image {
   width: 160px;
   height: 90px;
+  margin-bottom:5px;
 }
 
 .video {
@@ -115,7 +116,6 @@ h2 {
   -webkit-box-shadow:#000 0 1px 4px;
   -moz-box-shadow:#000 0 1px 4px;
   border:1px solid #000;
-  margin-bottom:5px;
 }
 
 .video:hover img {
@@ -263,7 +263,8 @@ h2 {
   }
 
   body, #main, .container_16, .entry, .media-item {
-    width: 638px;
+    width: 640px;
+    padding: 0 1px 0 1px;
     margin: 0;
   }
 
@@ -365,16 +366,21 @@ h2 {
     padding: 8px 4px;
   }
 
+  .thumbnail {
+    font-size: larger;
+  }
+
   .thumbnail-image {
-    width: 192px;
-    height: 108px;
+    width: 208px;
+    height: 117px;
+    margin-bottom: 0px;
   }
 
   .video {
-    width: 192px;
-    height: 178px;
+    width: 210px;
+    height: 190px;
     float: left;
-    margin: 14px 8px 14px 8px;
+    margin: 8px 0px 8px 2px;
   }
 
   .gallery-name {
@@ -386,5 +392,9 @@ h2 {
    margin-bottom: 0;
    padding-top: 0;
    padding-bottom: 0;
+  }
+
+  .media-index {
+    margin-right: -2px;
   }
 }

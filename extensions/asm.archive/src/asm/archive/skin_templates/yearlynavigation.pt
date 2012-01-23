@@ -1,7 +1,7 @@
 <ul class="year_nav" tal:condition="python: len(view.years) > 0"
     tal:define="visible_years_initial python:view.list_years_near_current_page(7, 3);
-                has_larger_years python: view.years[0] != visible_years_initial[0]['year'];
-                has_smaller_years python: view.years[-1] != visible_years_initial[-1]['year'];
+                has_larger_years python: len(view.years) and view.years[0] != visible_years_initial[0]['year'];
+                has_smaller_years python: len(view.years) and view.years[-1] != visible_years_initial[-1]['year'];
                 visible_years_count python: 7 + 1 - (has_larger_years and 1 or 0) + 1 - (has_smaller_years and 1 or 0);
                 visible_years python:view.list_years_near_current_page(visible_years_count, 3)">
   <!-- XXX We have a bug here in mobile mode if the first year has hide-mobile

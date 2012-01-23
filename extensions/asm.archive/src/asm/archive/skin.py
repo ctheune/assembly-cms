@@ -75,6 +75,8 @@ def select_years(application_subpages, request):
 class ViewUtils(object):
 
     def cut_string(self, data, max_length, max_word_length=23):
+        if data is None:
+            return None
         words = re.split('(\W+)', data)
         short_words = []
         for word in words:
@@ -364,6 +366,8 @@ class ExternalAssetMetadata(grok.Viewlet):
             category_description = u"%s competition entry" % category_edition.title
 
         base_description = self.view.info.description
+        if base_description is None:
+            return None
         description = re.sub("<[^>]+>", "", base_description)
         description = re.sub("\nTitle:.+", "", description)
         description = re.sub("\nAuthor:.+", "", description)

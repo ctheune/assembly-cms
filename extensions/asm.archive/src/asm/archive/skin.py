@@ -405,6 +405,10 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
             return None
         return prev_page
 
+
+class GalleryBreadCrumbs(grok.View):
+    grok.layer(ISkin)
+    grok.context(asm.cms.interfaces.IEdition)
     def update(self):
         pages = []
         page = self.context.page

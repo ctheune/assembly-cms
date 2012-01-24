@@ -8,28 +8,11 @@
      tal:attributes="href python:view.url(prev)">
     &laquo; <span tal:replace="python: view.cut_string(prev.title, 22)" />
   </a>
-  <span class="grid_3" tal:condition="not: prev">&nbsp;</span>
+  <span class="grid_3 left gallery-navigation-link" tal:condition="not: prev">&nbsp;</span>
 
-  <h2 class="grid_10 gallery-breadcrumbs">
-    <tal:block repeat="edition view/breadcrumbs">
-      <tal:block condition="not:repeat/edition/end">
-        <a tal:attributes="href python:view.url(edition)"
-           tal:content="edition/title"/>
-        &raquo;
-      </tal:block>
-      <tal:block condition="repeat/edition/end">
-        <a tal:attributes="href python:view.url(edition)"
-           tal:content="edition/title"/>
-      </tal:block>
-    </tal:block>
-
-    <tal:block tal:condition="python: context.page.type != 'externalasset'">
-      <tal:block tal:condition="python: len(view.breadcrumbs) > 0">
-        &raquo;
-      </tal:block>
-      <span tal:replace="context/title" />
-    </tal:block>
-  </h2>
+  <div class="hide-mobile">
+    <div tal:replace="structure context/@@gallerybreadcrumbs"/>
+  </div>
 
   <a class="grid_3 right gallery-navigation-link"
      id="gallery-link-next"
@@ -37,6 +20,6 @@
      tal:attributes="href python:view.url(next)">
     <span tal:replace="python: view.cut_string(next.title, 22)" /> &raquo;
   </a>
-  <span class="grid_3" tal:condition="not: next">&nbsp;</span>
+  <span class="grid_3 right gallery-navigation-link" tal:condition="not: next">&nbsp;</span>
 
 </nav>

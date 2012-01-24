@@ -1,4 +1,6 @@
-<ul class="year_nav" tal:condition="python: len(view.years) > 0"
+<nav class="mobile-breadcrumbs hide-desktop"><div tal:replace="structure context/@@gallerybreadcrumbs"/></nav>
+
+<ul class="year_nav hide-mobile" tal:condition="python: len(view.years) > 0"
     tal:define="visible_years_initial python:view.list_years_near_current_page(7, 3);
                 has_larger_years python: len(view.years) and view.years[0] != visible_years_initial[0]['year'];
                 has_smaller_years python: len(view.years) and view.years[-1] != visible_years_initial[-1]['year'];

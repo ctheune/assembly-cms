@@ -29,7 +29,7 @@ h1 {
 
 h2 {
   font-weight:normal;
-  font-size:20px;
+  font-size: 145%;
 }
 
 #main {
@@ -93,6 +93,10 @@ h2 {
 .navigation h2 {
   text-align:center;
   margin:0;
+}
+
+.thumbnail {
+  display: block;
 }
 
 .thumbnail-image {
@@ -209,12 +213,15 @@ h2 {
   display: none;
 }
 
-#searchform input {
+#searchform input, .mobile-search input {
   border: 1px solid #333;
   padding: 8px 10px;
   background: #fff;
   border-radius: 20px;
   color: #000;
+}
+
+#searchform input {
   width: 150px;
 }
 
@@ -239,6 +246,20 @@ h2 {
   display: none;
 }
 
+.gallery-breadcrumbs {
+  width: 580px;
+  display: inline;
+  float: left;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+@media only screen and (min-width: 681px) {
+  .hide-desktop {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 680px) {
   #archive-logo, .overview-thumbnail-3, .overview-thumbnail-4 {
     display: none;
@@ -259,7 +280,7 @@ h2 {
   }
 
   .grid_8 {
-    width: 360px ! important;
+    width: 534px ! important;
   }
 
   body, #main, .container_16, .entry, .media-item {
@@ -269,7 +290,8 @@ h2 {
   }
 
   body {
-   min-width: 0px;
+    min-width: 0px;
+    font-size: 18px;
   }
 
   #details {
@@ -302,13 +324,9 @@ h2 {
   }
 
   .grid_3 {
-    width: 150px ! important;
+    width: 48% ! important;
     margin-left: 5px;
     margin-right: 5px;
-  }
-
-  .grid_10 {
-    width: 300px ! important;
   }
 
   .navigation, .page {
@@ -330,14 +348,12 @@ h2 {
     line-height:30px;
   }
 
-  .gallery-breadcrumbs {
-    font-size: 24px;
+  .gallery-navigation-link {
+    font-size: 145%;
     overflow: hidden;
-  }
-
-  .gallery-navigation-link, h2 {
-    font-size: 24px;
-    overflow: hidden;
+    display: inline-block;
+    float: none;
+    width: 48%;
   }
 
   .year_nav {
@@ -366,10 +382,6 @@ h2 {
     padding: 8px 4px;
   }
 
-  .thumbnail {
-    font-size: larger;
-  }
-
   .thumbnail-image {
     width: 208px;
     height: 117px;
@@ -378,13 +390,21 @@ h2 {
 
   .video {
     width: 210px;
-    height: 190px;
+    height: 196px;
     float: left;
     margin: 8px 0px 8px 2px;
   }
 
+  .video a {
+    height: 196px;
+  }
+
   .gallery-name {
     padding-left: 8px;
+  }
+
+  .gallery-name a {
+    display: block;
   }
 
   .clearfix {
@@ -396,5 +416,28 @@ h2 {
 
   .media-index {
     margin-right: -2px;
+  }
+
+  .mobile-search input {
+    font-size: 1.5em;
+    width: 100%;
+  }
+
+  footer {
+    margin-bottom: 2em;
+  }
+
+  .gallery-breadcrumbs {
+    width: 100%;
+    display: inline;
+    float: none;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+
+  .mobile-breadcrumbs {
+    height: 38px;
+    font-size: 120%;
+    width: 100%;
   }
 }

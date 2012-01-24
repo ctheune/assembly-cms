@@ -52,7 +52,7 @@
         <ul tal:replace="structure context/@@yearlynavigation" />
       </nav>
 
-  <div class="frontpage-search">
+  <div class="frontpage-search hide-mobile">
     <form tal:attributes="action string: ${view/application_url}/@@search"
           method="get" id="searchform"><input type="search" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" placeholder="Search..." /></form>
   </div>
@@ -62,6 +62,12 @@
     
     <div id="content" tal:content="structure view/render">
     </div>
+
+
+  <div class="mobile-search hide-desktop">
+    <form tal:attributes="action string: ${view/application_url}/@@search"
+          method="get"><input type="search" name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" placeholder="Search..." /></form>
+  </div>
 
     <footer id="footer" class="clearfix">
       <a tal:attributes="href python:view.application_url('description')">About</a> &middot;

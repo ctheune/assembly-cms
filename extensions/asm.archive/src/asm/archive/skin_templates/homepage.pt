@@ -2,7 +2,7 @@
    tal:replace="structure view/description/content"></p>
 
 <div tal:repeat="year view/years" class="mediacategory">
-  <h2 class="gallery-name"><a tal:attributes="href python:view.url(year)"><span tal:content="year/title" />  &raquo;</a> <span class="grayed smaller">(random selection)</span></h2>
+  <h2 class="gallery-name"><a tal:attributes="href python:view.url(year)"><span tal:content="year/title" />  &raquo; <span class="grayed smaller">(random selection)</span></a></h2>
   <div class="mediaitemlisting">
     <tal:block tal:repeat="item python:view.select_random_items(year, 5)">
       <div tal:attributes="class python:'video overview-thumbnail-%d' % repeat['item'].index()">

@@ -1,0 +1,20 @@
+  <h2 class="gallery-breadcrumbs">
+    <tal:block repeat="edition view/breadcrumbs">
+      <tal:block condition="not:repeat/edition/end">
+        <a tal:attributes="href python:view.url(edition)"
+           tal:content="edition/title"/>
+        &raquo;
+      </tal:block>
+      <tal:block condition="repeat/edition/end">
+        <a tal:attributes="href python:view.url(edition)"
+           tal:content="edition/title"/>
+      </tal:block>
+    </tal:block>
+
+    <tal:block tal:condition="python: context.page.type != 'externalasset'">
+      <tal:block tal:condition="python: len(view.breadcrumbs) > 0">
+        &raquo;
+      </tal:block>
+      <span tal:replace="context/title" />
+    </tal:block>
+  </h2>

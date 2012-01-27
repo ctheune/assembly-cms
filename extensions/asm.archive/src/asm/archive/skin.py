@@ -332,7 +332,11 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
 
     def list_items(self, *args, **kw):
         items = super(GalleryIndex, self).list_items(*args, **kw)
-        return self._add_thumbnail_to_gallery_items(items)
+        item_list = []
+        for item in items:
+            if 'hide-navigation' not in item['edition'].tags:
+                item_list.append(item)
+        return self._add_thumbnail_to_gallery_items(item_list)
 
 def get_party_name(year, category):
     if year < 2007:

@@ -33,6 +33,7 @@
   </tal:block>
 
 </div>
+
 <div class="media-index page clearfix">
 
   <div tal:repeat="item view/list_items" class="video">
@@ -46,7 +47,6 @@
     </a>
   </div>
 </div>
-
 
 <div class="navigation clearfix"
     tal:define="next python:view.offset + view.ITEMS_PER_PAGE;

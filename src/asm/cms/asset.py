@@ -6,6 +6,7 @@ import asm.cms.interfaces
 import base64
 import grok
 import magic
+import ZODB.blob
 import zope.interface
 
 
@@ -72,14 +73,20 @@ def redefine_content_type(obj, event):
 @grok.subscribe(Asset, grok.IObjectCreatedEvent)
 @grok.subscribe(Asset, grok.IObjectModifiedEvent)
 def update_datauri(obj, event):
-    if obj.content is None:
-        datauri = None
-    else:
-        datauri = "data:%s;base64,%s" % (
-            obj.content_type,
-            base64.b64encode(obj.content.open("r").read()))
     datauriobj = asm.cms.interfaces.IDataUri(obj)
-    datauriobj.datauri = datauri
+    if obj.content is None:
+        datauriobj._datauri = None
+        return
+
+    datauri = "data:%s;base64,%s" % (
+        obj.content_type,
+        base64.b64encode(obj.content.open("r").read()))
+
+    datauri_blob = ZODB.blob.Blob()
+    datauri_fh = datauri_blob.open('w')
+    datauri_fh.write(datauri)
+    datauri_fh.close()
+    datauriobj._datauri = datauri_blob
 
 
 class DataUriAnnotation(grok.Annotation):
@@ -87,10 +94,16 @@ class DataUriAnnotation(grok.Annotation):
     grok.provides(asm.cms.interfaces.IDataUri)
     grok.context(asm.cms.interfaces.IAsset)
 
-    datauri = None
+    _datauri = None
+
+    @property
+    def datauri(self):
+        if self._datauri is None:
+            return None
+        return self._datauri.open().read()
 
     def copyFrom(self, other):
-        self.datauri = other.datauri
+        self._datauri = other._datauri
 
     def __eq__(self, other):
-        return (self.datauri == other.datauri)
+        return (self._datauri == other._datauri)

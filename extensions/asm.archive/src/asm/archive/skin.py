@@ -203,10 +203,17 @@ def generate_map(event):
                     except KeyError:
                         continue
                     asset_edition_id = iids.getId(edition)
-                    thumbnail_page = edition.page['thumbnail']
+                    thumbnail_page = edition.page.get('thumbnail', None)
+                    # Assume that this thumbnail has something to do with music.
+                    if thumbnail_page is None:
+                        thumbnail_page = year['music-thumbnail']
+
                     thumbnail_edition = thumbnail_page.getEdition(homepage.parameters)
                     thumbnail_edition_id = iids.getId(thumbnail_edition)
-                    thumbnail_page['_datauri'] = asm.cms.interfaces.IDataUri(thumbnail_edition)
+
+                    if thumbnail_page.get('_datauri', None) is None:
+                        thumbnail_page['_datauri'] = asm.cms.interfaces.IDataUri(thumbnail_edition)
+
                     info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
                     map[year_name][category.__name__].append(
                         (asset_edition_id, info, thumbnail_edition_id))
@@ -301,6 +308,32 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
             return u"%s / %s" % (parent_edition.title, self.context.title)
         return self.context.title
 
+    def _add_thumbnail_to_gallery_items(self, items):
+        music_thumbnail = None
+        parent = self.context.page
+        while parent != self.application:
+            if 'music-thumbnail' in parent:
+                music_thumbnail = parent['music-thumbnail']
+                break
+            parent = parent.__parent__
+        item_list = list(items)
+        for item in item_list:
+            if 'thumbnail' in item['edition'].page:
+                item['thumbnail'] = item['edition'].page['thumbnail']
+            elif music_thumbnail is not None:
+                item['thumbnail'] = music_thumbnail
+            else:
+                item['thumbnail'] = None
+        return item_list
+
+    def list_category_items(self, *args, **kw):
+        items = super(GalleryIndex, self).list_category_items(*args, **kw)
+        return self._add_thumbnail_to_gallery_items(items)
+
+    def list_items(self, *args, **kw):
+        items = super(GalleryIndex, self).list_items(*args, **kw)
+        return self._add_thumbnail_to_gallery_items(items)
+
 def get_party_name(year, category):
     if year < 2007:
         return u"Assembly %d" % year
@@ -308,7 +341,6 @@ def get_party_name(year, category):
         return u"Assembly Winter %d" % year
     else:
         return u"Assembly Summer %d" % year
-
 
 
 class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):

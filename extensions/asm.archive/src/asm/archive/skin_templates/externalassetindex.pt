@@ -42,7 +42,7 @@
       </div>
     </tal:block>
 
-    <div id="sharing-buttons" class="view section">
+    <div id="sharing-buttons" class="view section hide-mobile">
       <div>
       <iframe allowtransparency="true" scrolling="no" id="twitter-tweet-button"
               data-src="http://platform.twitter.com/widgets/tweet_button.html?count=horizontal&amp;via=assemblyparty"

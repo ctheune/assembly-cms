@@ -273,10 +273,11 @@ h2 {
   #mobile-logo {
     display: inline-block;
     float: left;
-    background: url(/@@/asm.archive/images/mobile-logo.png);
+    background: url(/@@/asm.archive/images/mobile-logo.png) no-repeat;
     width: 96px;
-    height: 27px;
-    margin-top: 7px;
+    height: 45px;
+    margin-top: 4px;
+    background-position: 0px 10px;
   }
 
   .grid_8 {
@@ -310,6 +311,7 @@ h2 {
     padding-bottom: 0px;
     margin-top: 1px;
     margin-bottom: 1px;
+    font-size: 160%;
   }
 
   .media-item .entry {
@@ -324,9 +326,9 @@ h2 {
   }
 
   .grid_3 {
-    width: 48% ! important;
-    margin-left: 5px;
-    margin-right: 5px;
+    width: 49% ! important;
+    margin-left: 0px;
+    margin-right: 0px;
   }
 
   .navigation, .page {
@@ -341,19 +343,22 @@ h2 {
 
   #header {
     padding: 10px 0 0 0;
-    height: 44px;
+    height: 50px;
   }
 
   .navigation {
-    line-height:30px;
+    line-height: 30px;
   }
 
   .gallery-navigation-link {
-    font-size: 145%;
+    font-size: 160%;
     overflow: hidden;
     display: inline-block;
     float: none;
-    width: 48%;
+    width: 49%;
+    height: 38px;
+    margin-top: 8px;
+    margin-bottom: 8px;
   }
 
   .year_nav {
@@ -423,8 +428,8 @@ h2 {
     width: 100%;
   }
 
-  footer {
-    margin-bottom: 2em;
+  #footer {
+    margin-bottom: 3em;
   }
 
   .gallery-breadcrumbs {
@@ -436,8 +441,17 @@ h2 {
   }
 
   .mobile-breadcrumbs {
-    height: 38px;
-    font-size: 120%;
+    height: 50px;
+    font-size: 160%;
     width: 100%;
+    white-space: nowrap;
+  }
+
+  h2 {
+    font-size: 160%;
+  }
+
+  #details {
+    font-size: 145%;
   }
 }

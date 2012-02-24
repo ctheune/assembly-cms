@@ -1,20 +1,8 @@
 <tal:block tal:define="items view/tree">
-
-  <ul id="navigation">
-  <metal:block define-macro="inner">
+  <div class="nav-collapse">
+    <ul class="nav" tal:define="items view/tree">
       <li tal:repeat="item items"
-          tal:attributes="class item/class">
-          <a tal:attributes="href python:view.url(item['page']);
-                             class python:view.page is item['page'] and 'selected' or ' '"
-             tal:content="item/page/title"></a>
-          <tal:block define="items item/subpages">
-              <ul tal:condition="items">
-                  <metal:block use-macro="template/macros/inner">
-                  </metal:block>
-              </ul>
-          </tal:block>
-      </li>
-  </metal:block>
-  </ul>
-
+          tal:attributes="class python:view.page is item['page'] and 'active' or ' '"><a tal:attributes="href python:view.url(item['page'])" tal:content="item/page/title">About</a></li>
+    </ul>
+  </div><!--/.nav-collapse -->
 </tal:block>

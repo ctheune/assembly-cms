@@ -1,47 +1,43 @@
-<!-- Livestream button during the party. -->
-<!-- <a id="livestream"  -->
-<!--    tal:attributes="href context/@@layouthelper/static/i-livestream.html" -->
-<!--    rel="#overlay" style="text-decoration:none"> </a> -->
-<div class="overlay" id="overlay"><div class="wrap"></div> </div>
+<div class="row">
+    <div class="span8 page-header">
+      <h1>Assembly Summer 2012 <small>2.-5.8.2012, Helsinki, Finland</small></h1>
+    </div>
+</div>
 
-<div id="news-featured" tal:define="featured python:list(view.featured())">
-
-    <div class="newsitem" id="news-id1"
-        style=""
-        tal:repeat="item featured"
-        tal:attributes="
-            id string:news-id${repeat/item/number};
-            style string:background-image:url(${item/teaser_url})">
-        <div class="news-overlay">
-            <div class="news-padding">
-                <h2><a tal:attributes="href python:view.url(item['edition'])"
-                        tal:content="item/edition/title">Videos &amp; Photos</a></h2>
-                <p><a tal:attributes="href python:view.url(item['edition'])"
-                    tal:content="item/news/teaser">Want to catch the feeling of ASSEMBLY Summer 2009? Check out our photo and video archives!</a></p>
+<div class="row">
+    <div class="carousel span8">
+        <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item"><img src="http://www.assembly.org/winter12/news/date/teaser-image"/>
+                <div class="carousel-caption"><h4>ASSEMBLY Winter 24th - 26th Feb at Kaapelitehdas!</h4>
+                    <p>ASSEMBLY Winter 2012 is held from Friday 24th to Sunday 26th at the </p>
+                </div>
             </div>
+            <div class="item"><img src="http://www.assembly.org/winter12/news/ticket-sales/teaser-image"/>
+                <div class="carousel-caption"><h4>ASSEMBLY Winter 24th - 26th Feb at Kaapelitehdas!</h4>
+                    <p>ASSEMBLY Winter 2012 is held from Friday 24th to Sunday 26th at the </p>
+            </div></div>
+            <div class="item"><img src="http://www.assembly.org/winter12/news/tekken/teaser-image"/>
+                <div class="carousel-caption"><h4>ASSEMBLY Winter 24th - 26th Feb at Kaapelitehdas!</h4>
+                    <p>ASSEMBLY Winter 2012 is held from Friday 24th to Sunday 26th at the </p>
+            </div></div>
         </div>
-    </div>
-
-    <div id="news-navigation" class="tabs">
-        <a href=""
-            tal:repeat="item featured"
-            tal:attributes="id string:news-id${repeat/item/number}-nav">&bull;</a>
+        <!-- Carousel nav -->
+        <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
     </div>
 </div>
+<div class="row">
+    <div class="span8">
+        <h2>News</h2>
 
-<div class="content-news"
-	tal:define="news view/frontpage"
-	tal:condition="news">
-    <ul>
-        <li tal:repeat="item news">
-          <h2><a tal:attributes="href python:view.url(item['edition'])"
-                 tal:content="item/edition/title">Asus desktop image competition
-                 results</a> <span
-                 tal:content="python:item['edition'].modified.strftime('%d.%m.%Y')">11.12.2009</span></h2>
-            <p tal:content="item/news/teaser">Here are the results for ASUS desktop background wallpaper competition, the winner and four runner ups.</p>
-        </li>
-    </ul>
-    <p><a tal:attributes="href string:${view/application_url}/news">News archive</a></p>
+        <h3>Something happened</h3>
+        <p> asdf </p>
+
+        <h3>Something happened</h3>
+        <p> asdf </p>
+
+        <h3>Something happened</h3>
+        <p> asdf </p>
+    </div>
 </div>
-
-<div id="twitter-latest-tweets"></div>

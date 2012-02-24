@@ -200,7 +200,7 @@ class Navtree(grok.View):
     def tree(self):
         root = self.application
 
-        tree = self._create_subtree(root, 4)
+        tree = self._create_subtree(root, 1)
         return tree['subpages']
 
     @property
@@ -211,6 +211,15 @@ class Navtree(grok.View):
 
     def css_classes(self, *classes):
         return ' '.join(filter(None, classes))
+
+
+class Localnav(grok.View):
+    grok.layer(ISkin)
+    grok.context(zope.interface.Interface)
+
+    def items(self):
+        return map(lambda p:asm.cms.edition.select_edition(p, self.request),
+                   self.context.page.subpages)
 
 
 class Homepage(asm.cmsui.retail.Pagelet):

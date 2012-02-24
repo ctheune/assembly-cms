@@ -55,14 +55,22 @@
         <div class="span4"> <!-- The right column -->
           <div class="row">
             <div class="span4">
+              <h2>Topics</h2>
+              <div tal:replace="structure context/@@localnav">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span4">
               <h2>Sponsors</h2>
               <p>bla bla blaa</p>
             </div>
           </div>
+        </div>
       </div>
       <div class="row">
         <div class="span12">
-        <p>Copyright © Assembly Organizing, 2009-2012</p>
+          <p>Copyright © Assembly Organizing, 2009-2012</p>
         </div>
       </div>
     </div> <!-- /container -->

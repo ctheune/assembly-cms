@@ -1,0 +1,3 @@
+<ul class="nav nav-list">
+    <li tal:repeat="page view/items"><a tal:attributes="href python:view.url(page)" tal:content="page/title">Home</a> </li>
+</ul>

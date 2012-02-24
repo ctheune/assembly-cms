@@ -9,6 +9,8 @@ import magic
 import ZODB.blob
 import zope.interface
 
+# This is also the amount that magic library uses for file type detection.
+MAGIC_FILE_BYTES = 8192
 
 class Asset(asm.cms.edition.Edition):
     """An asset stores binary data, like images.
@@ -57,7 +59,7 @@ class Asset(asm.cms.edition.Edition):
             return None
         if self._content_type is not None:
             return self._content_type
-        self._content_type = magic.whatis(self.content.open('r').read())
+        self._content_type = magic.whatis(self.content.open('r').read(MAGIC_FILE_BYTES))
         return self._content_type
 
 

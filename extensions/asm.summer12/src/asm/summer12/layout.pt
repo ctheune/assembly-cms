@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Bootstrap, from Twitter</title>
+    <title>Assembly Summer 2012, 2.-5.8.2012, Helsinki</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -38,23 +38,33 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+          <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
+          <div tal:replace="structure context/@@navtree">
+          </div>
         </div>
       </div>
     </div>
 
     <div class="container">
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
-
+      <div class="row">
+        <div class="span8"> <!-- The left column -->
+          <div tal:replace="structure view/render">
+          </div>
+        </div>
+        <div class="span4"> <!-- The right column -->
+          <div class="row">
+            <div class="span4">
+              <h2>Sponsors</h2>
+              <p>bla bla blaa</p>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="span12">
+        <p>Copyright © Assembly Organizing, 2009-2012</p>
+        </div>
+      </div>
     </div> <!-- /container -->
 
     <!-- Le javascript
@@ -73,6 +83,5 @@
     <script tal:attributes="src context/@@layouthelper/static/js/bootstrap-collapse.js"></script>
     <script tal:attributes="src context/@@layouthelper/static/js/bootstrap-carousel.js"></script>
     <script tal:attributes="src context/@@layouthelper/static/js/bootstrap-typeahead.js"></script>
-
   </body>
 </html>

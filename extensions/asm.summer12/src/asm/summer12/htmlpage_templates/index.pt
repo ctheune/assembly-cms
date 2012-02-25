@@ -1,0 +1,49 @@
+<ul class="breadcrumb" tal:condition="viewlet/breadcrumbs">
+    <li tal:repeat="page viewlet/breadcrumbs">
+    <a tal:attributes="href python:view.url(page)" tal:content="page/title">Home</a>
+    <span class="divider" tal:condition="not:repeat/page/end">/</span>
+    </li>
+</ul>
+
+<div class="row">
+    <div class="span12 page-header">
+      <h1 tal:content="context/title"></h1>
+    </div>
+</div>
+
+<div class="row">
+  <div class="span6">
+    <tal:block tal:replace="structure context/content"/> &nbsp;
+  </div>
+  <div class="span6">
+    <div class="row" tal:condition="viewlet/gallery">
+      <div id="myCarousel" class="carousel span6">
+          <!-- Carousel items -->
+          <div class="carousel-inner">
+            <div tal:repeat="asset viewlet/gallery"
+                tal:attributes="class python:'item ' + ('active' if repeat['asset'].start() else '')">
+              <img tal:attributes="src python:view.url(asset)"/>
+            </div>
+          </div>
+          <!-- Carousel nav -->
+          <tal:block condition="python:len(viewlet.gallery) > 1">
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+          </tal:block>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="span4">
+        <ul class="nav nav-list" tal:condition="viewlet/subnavigation">
+          <li class="nav-header">
+          More
+          </li>
+          <li tal:repeat="item viewlet/subnavigation">
+          <a tal:attributes="href python:view.url(item)" tal:content="item/title">Home</a>
+          </li>
+        </ul> &nbsp;
+      </div>
+    </div>
+  </div>
+</div>

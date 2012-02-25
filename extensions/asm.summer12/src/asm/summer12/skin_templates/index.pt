@@ -37,15 +37,14 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
-          <div tal:replace="structure context/@@navtree">
-          </div>
+          <div tal:replace="structure provider:navigation-bar"></div>
         </div>
       </div>
     </div>
 
     <div class="container">
 
-      <div tal:replace="structure view/render">
+      <div tal:replace="structure provider:page-content">
       </div>
 
       <div class="row" style="margin-top:45px;">

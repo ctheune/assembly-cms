@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import asm.cms
+import asm.cms.interfaces
 import asm.cms.edition
 import grok
 import zope.interface
@@ -48,7 +49,6 @@ class INewsFields(zope.interface.Interface):
                     u'Please note that depending on the context the image '
                     u'may be displayed in different styles.')
 
-
 class TeaserAnnotation(grok.Annotation):
     grok.implements(INewsFields)
     grok.provides(INewsFields)
@@ -75,16 +75,29 @@ class TeaserAnnotation(grok.Annotation):
         image_edition = image.getEdition(edition.parameters, create=True)
         image_edition.content = value
 
-    def get_image(self):
+    def _get_image_asset(self):
         edition = self.__parent__
         if not 'teaser-image' in edition.page:
             return None
         image = edition.page['teaser-image']
         image_edition = image.getEdition(self.__parent__.parameters,
                                          create=True)
-        return image_edition.content
+        return image_edition
+
+    def get_image(self):
+        asset = self._get_image_asset()
+        if asset is None:
+            return None
+        return asset.content
 
     image = property(fget=get_image, fset=set_image)
+
+    @property
+    def content_type(self):
+        asset = self._get_image_asset()
+        if asset is None:
+            return None
+        return asset.content_type
 
 
 @grok.subscribe(asm.cms.htmlpage.HTMLPage)

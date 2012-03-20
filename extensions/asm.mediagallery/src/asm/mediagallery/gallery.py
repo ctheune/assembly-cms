@@ -132,6 +132,10 @@ class TextIndexAssetAnnotation(grok.Adapter):
     grok.context(asm.cms.interfaces.IEdition)
 
     def __init__(self, edition):
+        if edition.tags is not None and "hide-search" in edition.tags:
+            self.body = ""
+            return
+
         result = [
             edition.title,
             ]

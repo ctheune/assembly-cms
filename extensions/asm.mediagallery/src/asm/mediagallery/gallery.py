@@ -132,15 +132,24 @@ class TextIndexAssetAnnotation(grok.Adapter):
     grok.context(asm.cms.interfaces.IEdition)
 
     def __init__(self, edition):
-        result = []
+        result = [
+            edition.title,
+            ]
+
+        if edition.tags is not None and len(edition.tags):
+            tags = edition.tags.split(' ')
+            result.extend(["tag:" + x for x in tags])
+
         try:
             asset_annotation = (
                 asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition))
         except LookupError:
             pass
         else:
-            result = [asset_annotation.author,
-                      asset_annotation.description]
+            result.extend([
+                asset_annotation.author,
+                asset_annotation.description,
+                ])
         self.body = ' '.join(filter(None, result))
 
 

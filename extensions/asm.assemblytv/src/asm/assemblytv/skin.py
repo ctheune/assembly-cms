@@ -45,6 +45,15 @@ class LayoutHelper(grok.View):
 
         return asm.translation.translation.fallback()
 
+    @property
+    def navigation(self):
+        if 'navigation' in self.application:
+            edition = asm.cms.edition.select_edition(
+                self.application['navigation'], self.request)
+            return edition
+        else:
+            return None
+
     # A helper class to get access to the static directory in this module from
     # the layout.
 
@@ -57,6 +66,14 @@ class Homepage(asm.cmsui.retail.Pagelet):
     grok.layer(ISkin)
     grok.name('index')
 
+    @property
+    def content(self):
+        if 'homepage-content' in self.application:
+            edition = asm.cms.edition.select_edition(
+                self.application['homepage-content'], self.request)
+            return edition
+        else:
+            return None
 
 class SelectLanguage(grok.View):
 

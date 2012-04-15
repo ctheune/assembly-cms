@@ -24,7 +24,7 @@
 </head>
 <body>
 
-  <tal:block tal:replace="structure context/@@layouthelper/navigation" />
+  <tal:block tal:condition="context/@@layouthelper/navigation" tal:replace="structure context/@@layouthelper/navigation/content" />
 
   <div id="language-selector"
        tal:define="current_language context/@@layouthelper/current_language">

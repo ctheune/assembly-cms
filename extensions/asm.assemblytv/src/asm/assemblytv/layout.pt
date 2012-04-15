@@ -23,6 +23,7 @@
 
 </head>
 <body>
+      <a tal:attributes="href python:view.url(view) != view.application_url('index') and view.application_url() or None"><img tal:attributes="src context/@@layouthelper/static/img/logo.png" id="logo" alt="AssemblyTV" /></a>
 
   <tal:block tal:condition="context/@@layouthelper/navigation" tal:replace="structure context/@@layouthelper/navigation/content" />
 

@@ -24,6 +24,8 @@
 </head>
 <body>
 
+  <tal:block tal:replace="structure context/@@layouthelper/navigation" />
+
   <div id="language-selector"
        tal:define="current_language context/@@layouthelper/current_language">
     <form tal:condition="python:current_language != 'en'"
@@ -41,7 +43,7 @@
   </div>
 
   <a name="document-content"></a>
-  <div tal:replace="structure view/render"></div>
+  <tal:block tal:replace="structure view/render" />
 
   <tal:banners repeat="banner python:path('nocall:context/@@choosebanner').choose(None, 3)">
     <p>

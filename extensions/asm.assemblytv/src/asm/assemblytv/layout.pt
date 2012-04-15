@@ -24,6 +24,22 @@
 </head>
 <body>
 
+  <div id="language-selector"
+       tal:define="current_language context/@@layouthelper/current_language">
+    <form tal:condition="python:current_language != 'en'"
+          tal:attributes="action python:view.url(context)+'/@@select-language'"
+          method="get">
+      <input type="hidden" name="lang" value="en" />
+      <button type="submit" class="language-english" >in English</button>
+    </form>
+    <form tal:condition="python:current_language != 'fi'"
+          tal:attributes="action python:view.url(context)+'/@@select-language'"
+          method="get">
+      <input type="hidden" name="lang" value="fi" />
+      <button type="submit" class="language-finnish" >suomeksi</button>
+    </form>
+  </div>
+
   <a name="document-content"></a>
   <div tal:replace="structure view/render"></div>
 

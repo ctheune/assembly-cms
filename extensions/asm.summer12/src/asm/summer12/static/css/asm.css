@@ -9,15 +9,20 @@ body {
 .navbar {
   overflow: visible;
   background-color: blue;
-  margin-bottom: 0px;
   clear: both;
 }
 
 .toolbar {
-  margin-top: 40px;
+  margin-top: -18px;
   padding-top: 4px;
   height: 2em;
   margin-bottom: 18px;
+}
+
+@media (min-width: 980px) {
+  .toolbar {
+    margin-top: 40px;
+  }
 }
 
 #language {

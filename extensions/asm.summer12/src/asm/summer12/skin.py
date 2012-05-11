@@ -33,8 +33,30 @@ class NavigationBar(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class SelectLanguage(grok.View):
+
+    grok.context(zope.interface.Interface)
+    grok.name('select-language')
+    grok.layer(ISkin)
+
+    def update(self, lang):
+        self.request.response.setCookie('asm.translation.lang', lang, path='/')
+
+    def render(self):
+        self.redirect(self.url(self.context))
+
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
+
+    def current_language(self):
+        if not 'asm.translation.lang' in self.request.cookies:
+            return asm.translation.translation.fallback()
+
+        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
+            return self.request.cookies['asm.translation.lang']
+
+        return asm.translation.translation.fallback()
 
     def render(self):
         pass

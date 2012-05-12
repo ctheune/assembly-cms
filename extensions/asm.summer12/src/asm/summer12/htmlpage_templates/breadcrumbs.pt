@@ -1,0 +1,9 @@
+<ul>
+  <li tal:repeat="page viewlet/breadcrumbs">
+    <a tal:attributes="href python:view.url(page)" tal:content="page/title">Home</a>
+    <span class="divider">&gt;</span>
+  </li>
+    <span tal:replace="context/title"></span>
+  <li>
+  </li>
+</ul>

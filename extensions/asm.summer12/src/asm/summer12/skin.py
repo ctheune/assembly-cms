@@ -49,6 +49,11 @@ class NavigationBar(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class Breadcrumbs(grok.ViewletManager):
+    grok.name('breadcrumbs')
+    grok.context(zope.interface.Interface)
+
+
 class SelectLanguage(grok.View):
 
     grok.context(zope.interface.Interface)

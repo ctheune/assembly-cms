@@ -1,10 +1,3 @@
-<ul class="breadcrumb" tal:condition="viewlet/breadcrumbs">
-    <li tal:repeat="page viewlet/breadcrumbs">
-    <a tal:attributes="href python:view.url(page)" tal:content="page/title">Home</a>
-    <span class="divider" tal:condition="not:repeat/page/end">/</span>
-    </li>
-</ul>
-
 <div class="row">
     <div class="span12 page-header">
       <h1 tal:content="context/title"></h1>

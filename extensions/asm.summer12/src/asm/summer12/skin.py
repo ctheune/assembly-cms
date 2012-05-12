@@ -20,7 +20,6 @@ grok.layer(ISkin)
 class Index(grok.View):
     grok.context(zope.interface.Interface)
 
-
 class PageContent(grok.ViewletManager):
     """A general content manager to fill in the actual page content."""
 
@@ -30,6 +29,11 @@ class PageContent(grok.ViewletManager):
 
 class NavigationBar(grok.ViewletManager):
     grok.name('navigation-bar')
+    grok.context(zope.interface.Interface)
+
+
+class Breadcrumbs(grok.ViewletManager):
+    grok.name('breadcrumbs')
     grok.context(zope.interface.Interface)
 
 

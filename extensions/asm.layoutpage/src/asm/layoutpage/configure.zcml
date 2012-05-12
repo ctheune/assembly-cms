@@ -5,4 +5,10 @@
   <grok:grok package="." />
   <utility component=".layoutpage.LayoutPage" name="layoutpage" />
 
+  <subscriber
+    factory=".selection.add_layout_data"
+    for="asm.cms.interfaces.IEdition"
+    provides="asm.cms.interfaces.IAdditionalSchema"
+    />
+
 </configure>

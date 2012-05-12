@@ -1,1 +1,2 @@
+<h2 tal:content="context/title"></h2>
 <tal:block tal:replace="structure context/content"/>

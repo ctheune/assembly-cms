@@ -17,15 +17,22 @@ class ISkin(asm.cmsui.interfaces.IRetailBaseSkin):
 
 grok.layer(ISkin)
 
+
 class Index(grok.View):
     grok.context(zope.interface.Interface)
 
+    def render_layout(self):
+        layout = asm.layoutpage.selection.ILayoutSelection(
+            self.context).get_layout(self.request)
+        return layout.render(self.request, self.context, self.render_sub)
 
-class PageContent(grok.ViewletManager):
-    """A general content manager to fill in the actual page content."""
-
-    grok.name('page-content')
-    grok.context(zope.interface.Interface)
+    def render_sub(self, request, obj):
+        provider = zope.component.getMultiAdapter(
+                (obj, request, self),
+                zope.contentprovider.interfaces.IContentProvider,
+                name='embedded-page-content')
+        provider.update()
+        return provider.render()
 
 
 class EmbeddedPageContent(grok.ViewletManager):

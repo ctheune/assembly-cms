@@ -28,6 +28,15 @@ class PageContent(grok.ViewletManager):
     grok.context(zope.interface.Interface)
 
 
+class EmbeddedPageContent(grok.ViewletManager):
+    """A content manager to represent a page if it is embedded on a different
+    page.
+    """
+
+    grok.name('embedded-page-content')
+    grok.context(zope.interface.Interface)
+
+
 class NavigationBar(grok.ViewletManager):
     grok.name('navigation-bar')
     grok.context(zope.interface.Interface)

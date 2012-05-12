@@ -1,7 +1,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from .skin import ISkin, PageContent
+from .skin import ISkin, PageContent, EmbeddedPageContent
 from asm.cms.htmlpage import HTMLPage
 from asm.cmsui.retail import Pagelet
 from asm.cms.edition import select_edition, NullEdition
@@ -49,3 +49,9 @@ class Index(grok.Viewlet):
         self.subnavigation = list(self._generate_subnavigation())
         self.gallery = list(self._generate_gallery())
 
+
+class Embedded(Index):
+    grok.layer(ISkin)
+    grok.context(HTMLPage)
+    grok.viewletmanager(EmbeddedPageContent)
+    grok.template('embedded')

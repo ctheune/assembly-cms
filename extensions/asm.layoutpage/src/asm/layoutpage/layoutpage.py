@@ -18,10 +18,15 @@ class Layout(object):
         # ${}
         if name == '':
             return partial_render(request, context)
-        # ${subitemname}
-        page = context.page[name]
-        target = asm.cms.edition.select_edition(page, request)
-        return partial_render(request, target)
+        elif name.startswith('@@'):
+            name = name.replace('@@', '')
+            return zope.component.getMultiAdapter(
+                    (context, request), name=name)()
+        else:
+            # ${subitemname}
+            page = context.page[name]
+            target = asm.cms.edition.select_edition(page, request)
+            return partial_render(request, target)
 
     def render(self, request, context, partial_render):
         template = LayoutTemplate(

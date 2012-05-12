@@ -54,6 +54,11 @@
     </div>
 
     <div class="toolbar">
+      <span class="span7 breadcrumbs">
+        <div tal:replace="structure provider:breadcrumbs"></div>
+      </span>
+
+
       <span class="span2 language">
         <span id="language"
               tal:define="current_language context/@@layouthelper/current_language">

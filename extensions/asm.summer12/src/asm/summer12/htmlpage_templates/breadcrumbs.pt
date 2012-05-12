@@ -3,7 +3,7 @@
     <a tal:attributes="href python:view.url(page)" tal:content="page/title">Home</a>
     <span class="divider">&gt;</span>
   </li>
+  <li tal:condition="python: context.page != view.application">
     <span tal:replace="context/title"></span>
-  <li>
   </li>
 </ul>

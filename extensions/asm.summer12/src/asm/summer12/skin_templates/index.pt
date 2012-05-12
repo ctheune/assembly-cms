@@ -47,7 +47,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
+
+          <tal:block tal:condition="python: context.page != view.application">
+            <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
+          </tal:block>
+          <tal:block tal:condition="python: context.page == view.application">
+            <a class="brand">Assembly Summer 2012</a>
+          </tal:block>
+
           <div tal:replace="structure provider:navigation-bar"></div>
         </div>
       </div>

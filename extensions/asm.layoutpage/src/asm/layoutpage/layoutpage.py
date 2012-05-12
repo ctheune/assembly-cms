@@ -21,7 +21,7 @@ class Layout(object):
         # ${subitemname}
         page = context.page[name]
         target = asm.cms.edition.select_edition(page, request)
-        return partial_render(request, edition)
+        return partial_render(request, target)
 
     def render(self, request, context, partial_render):
         template = LayoutTemplate(

@@ -52,6 +52,10 @@ class IEdition(zope.interface.Interface):
 
     parameters = zope.schema.TextLine(title=u'Edition parameters')
     title = zope.schema.TextLine(title=u'Title')
+    description = zope.schema.Text(title=u'Description',
+            description=u'A very short text, maybe one or two sentences, that '
+            'will introduce this page.',
+            required=False)
     tags = zope.schema.TextLine(title=u'Tags', required=False)
 
     created = zope.schema.Datetime(title=u'Created', readonly=True)

@@ -1,0 +1,7 @@
+<div class="row" tal:repeat="row view/rows">
+    <div class="span2" tal:repeat="entry row">
+        <h3 tal:content="entry/title"/>
+
+        <div tal:content="structure entry/description"></div>
+    </div>
+</div>

@@ -22,6 +22,7 @@ class Edition(grok.Model):
     modified = None
     tags = None
     title = u''
+    description = u''
 
     def __init__(self):
         super(Edition, self).__init__()

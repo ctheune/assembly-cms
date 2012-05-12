@@ -113,6 +113,9 @@ class ISearchableText(zope.interface.Interface):
     body = zope.interface.Attribute(
         "A Unicode string containing text for indexing.")
 
+    tags_set = zope.interface.Attribute(
+        "A set with all tags of the content.")
+
 
 class IIndexedContent(ISearchableText):
     """A wrapper interface to accumulate the various indexes for

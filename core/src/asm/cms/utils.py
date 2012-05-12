@@ -5,19 +5,30 @@ import lxml.etree
 import re
 import time
 
+
+def tree_from_fragment(content):
+    # Hrgh. Why is there no obvious simple way to do this?
+    parser = lxml.etree.HTMLParser()
+    document = (
+        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
+        content)
+    return lxml.etree.fromstring(document, parser)
+
+def fragment_from_tree(document):
+    result = lxml.etree.tostring(
+        document.xpath('//stupidcontainerwrappercafebabe')[0],
+        pretty_print=True)
+    result = result.replace('<stupidcontainerwrappercafebabe>', '')
+    result = result.replace('</stupidcontainerwrappercafebabe>', '')
+    return result.strip()
+
 def rewrite_urls(content, visitor):
     """Rewrite URLs using a visitor.
 
     Visitors are expected to be callables that except a URL and return a new
     URL.
     """
-    # Hrgh. Why is there no obvious simple way to do this?
-    parser = lxml.etree.HTMLParser()
-    document = (
-        '<stupidcontainerwrappercafebabe>%s</stupidcontainerwrappercafebabe>' %
-        content)
-    document = lxml.etree.fromstring(document, parser)
-
+    document = tree_from_fragment(content)
     for (locator, attribute) in [('//a', 'href'),
                                  ('//img', 'src')]:
         for element in document.xpath(locator):
@@ -26,13 +37,7 @@ def rewrite_urls(content, visitor):
                 continue
             new = visitor(old)
             element.set(attribute, new if new is not None else old)
-
-    result = lxml.etree.tostring(
-        document.xpath('//stupidcontainerwrappercafebabe')[0],
-        pretty_print=True)
-    result = result.replace('<stupidcontainerwrappercafebabe>', '')
-    result = result.replace('</stupidcontainerwrappercafebabe>', '')
-    return result.strip()
+    return fragment_from_tree(document)
 
 
 def normalize_name(title):

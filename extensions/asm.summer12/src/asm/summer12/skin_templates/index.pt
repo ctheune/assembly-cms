@@ -7,6 +7,11 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <meta name="geo.region" content="FI-ES" />
+    <meta name="geo.placename" content="Hartwall-Areena, Helsinki" />
+    <meta name="geo.position" content="60.205868;24.929446" />
+    <meta name="ICBM" content="60.205868, 24.929446" />
+
     <!-- Le styles -->
     <link tal:attributes="href context/@@layouthelper/static/css/bootstrap.min.css" rel="stylesheet">
     <link tal:attributes="href context/@@layouthelper/static/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -24,11 +29,14 @@
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
     -->
+
+    <link rel="search" type="application/opensearchdescription+xml" title="Assembly Summer 2012" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target=".toolbar" data-offset="50">
 
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -43,21 +51,34 @@
     </div>
 
     <div class="toolbar">
-      <div id="language"
-           tal:define="current_language context/@@layouthelper/current_language">
-        <form tal:condition="python:current_language != 'en'"
-              tal:attributes="action python:view.url(context)+'/@@select-language'"
-              method="get">
-          <input type="hidden" name="lang" value="en" />
-          <button type="submit" class="language-english" >in English</button>
-        </form>
-        <form tal:condition="python:current_language != 'fi'"
-              tal:attributes="action python:view.url(context)+'/@@select-language'"
-              method="get">
-          <input type="hidden" name="lang" value="fi" />
-          <button type="submit" class="language-finnish" >suomeksi</button>
-        </form>
-      </div>
+      <span class="span2 language">
+        <span id="language"
+              tal:define="current_language context/@@layouthelper/current_language">
+          <form tal:condition="python:current_language != 'en'"
+                tal:attributes="action python:view.url(context)+'/@@select-language'"
+                method="get">
+            <input type="hidden" name="lang" value="en" />
+            <button type="submit" class="language-english" >in English</button>
+          </form>
+          <form tal:condition="python:current_language != 'fi'"
+                tal:attributes="action python:view.url(context)+'/@@select-language'"
+                method="get">
+            <input type="hidden" name="lang" value="fi" />
+            <button type="submit" class="language-finnish" >suomeksi</button>
+          </form>
+        </span>
+      </span>
+
+      <!-- XXX use this later -->
+      <!-- <span class="span3 search"> -->
+      <!--     <form class="form-search" -->
+      <!--           tal:attributes="action string:${view/application_url}/@@search" -->
+      <!--           method="get" -->
+      <!--           id="searchform"> -->
+      <!--       <input type="text" -->
+      <!--              name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /> -->
+      <!--     </form> -->
+      <!-- </span> -->
     </div>
 
     <div class="container">

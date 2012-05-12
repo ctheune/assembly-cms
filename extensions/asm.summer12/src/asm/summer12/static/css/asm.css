@@ -8,7 +8,7 @@ body {
 
 .navbar {
   overflow: visible;
-  background-color: blue;
+  white-space: nowrap;
   clear: both;
 }
 
@@ -17,16 +17,30 @@ body {
   padding-top: 4px;
   height: 2em;
   margin-bottom: 18px;
+  clear: both;
 }
 
-@media (min-width: 980px) {
-  .toolbar {
-    margin-top: 40px;
-  }
-}
-
-#language {
+.language {
   float: right;
+  text-align: right;
+}
+
+.search {
+  float: right;
+}
+
+.form-search {
+  width: 100%;
+}
+
+.form-search input {
+  width: 190px;
+  height: 10px;
+  padding-left: 20px;
+}
+
+.form-search input {
+  background-image: url("../img/search-bg.gif")
 }
 
 /* Language selection buttons */

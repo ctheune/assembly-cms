@@ -73,3 +73,7 @@ body {
 .breadcrumbs li {
     display: inline;
 }
+
+.selected-section {
+    font-weight: bold;
+}

@@ -21,10 +21,12 @@ class Breadcrumbs(grok.Viewlet):
 
     def _generate_breadcrumbs(self):
         candidate = self.context.page
+        if candidate is self.view.application:
+            return
         while True:
+            candidate = candidate.__parent__
             if candidate is self.view.application:
                 return
-            candidate = candidate.__parent__
             edition = select_edition(candidate, self.request)
             if isinstance(edition, NullEdition):
                 continue

@@ -3,6 +3,7 @@
 
 from .skin import ISkin, EmbeddedPageContent, Breadcrumbs
 from asm.cms.htmlpage import HTMLPage
+from asm.cms.edition import select_edition, NullEdition
 import grok
 
 

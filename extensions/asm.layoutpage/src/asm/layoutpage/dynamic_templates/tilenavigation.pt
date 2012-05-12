@@ -1,6 +1,7 @@
 <div class="row" tal:repeat="row view/rows">
     <div class="span2" tal:repeat="entry row">
-        <h3 tal:content="entry/title"/>
+        <h3><a tal:attributes="href python:view.url(entry)"
+                tal:content="entry/title"></a></h3>
 
         <div tal:content="structure entry/description"></div>
     </div>

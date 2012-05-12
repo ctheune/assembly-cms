@@ -59,11 +59,14 @@ class Edition(grok.Model):
         # modification date as we didn't change anything, yet.
         self.modified = other.modified
 
-    def has_tag(self, tag):
+    @property
+    def tags_set(self):
         if not self.tags:
-            return False
-        tags = self.tags.split(' ')
-        return tag in tags
+            return set()
+        return set(self.tags.split(' '))
+
+    def has_tag(self, tag):
+        return tag in self.tags_set
 
     def list_subpages(self, type=None):
         for page in self.page.subpages:

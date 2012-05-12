@@ -16,6 +16,7 @@ class EditionCatalog(grok.Indexes):
     grok.name('edition_catalog')
 
     body = grok.index.Text()
+    tags = grok.index.Set(attribute='tags_set')
 
 
 class IndexedContent(grok.Adapter):
@@ -34,6 +35,10 @@ class IndexedContent(grok.Adapter):
                 continue
             result.append(searchable_text.body)
         return ' '.join(result)
+
+    @property
+    def tags(self):
+        return self.context.tags
 
 
 class SearchSites(grok.Annotation):

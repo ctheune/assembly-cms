@@ -65,3 +65,11 @@ body {
     color:#e70101;
     cursor: pointer;
 }
+
+.breadcrumbs ul {
+    list-style: none;
+}
+
+.breadcrumbs li {
+    display: inline;
+}

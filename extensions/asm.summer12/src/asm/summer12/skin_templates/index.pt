@@ -22,13 +22,16 @@
       <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
+    <script tal:attributes="src context/@@layouthelper/static/js/jquery.js"></script>
+    <script tal:attributes="src context/@@layouthelper/static/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.carousel').carousel();
+        });
+    </script>
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" tal:attributes="href context/@@layouthelper/static/favicon.ico">
-    <!-- XXX
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-    -->
 
     <link rel="search" type="application/opensearchdescription+xml" title="Assembly Summer 2012" tal:attributes="href string:${view/application_url}/@@osdd.xml" />
 
@@ -83,7 +86,7 @@
 
     <div class="container">
 
-      <div tal:replace="structure provider:page-content">
+      <div tal:replace="structure view/render_layout">
       </div>
 
       <div class="row" style="margin-top:45px;">

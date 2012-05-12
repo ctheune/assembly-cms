@@ -1,0 +1,11 @@
+<div tal:attributes="id context/page/__name__" class="carousel slide">
+  <!-- Carousel items -->
+  <div class="carousel-inner">
+      <div tal:attributes="class python:'item ' + (repeat['item'].start() and
+          'active' or ' ')" tal:repeat="item viewlet/items">
+          <img tal:attributes="src python:view.url(item)"/></div>
+  </div>
+  <!-- Carousel nav -->
+  <a class="carousel-control left" tal:attributes="href string:#${context/page/__name__}" data-slide="prev">&lsaquo;</a>
+  <a class="carousel-control right" tal:attributes="href string:#${context/page/__name__}" data-slide="next">&rsaquo;</a>
+</div>

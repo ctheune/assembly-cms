@@ -13,6 +13,7 @@ class Embedded(grok.Viewlet):
     grok.viewletmanager(EmbeddedPageContent)
     grok.template('embedded')
 
+
 class Breadcrumbs(grok.Viewlet):
     grok.layer(ISkin)
     grok.context(HTMLPage)
@@ -21,9 +22,9 @@ class Breadcrumbs(grok.Viewlet):
     def _generate_breadcrumbs(self):
         candidate = self.context.page
         while True:
-            candidate = candidate.__parent__
             if candidate is self.view.application:
                 return
+            candidate = candidate.__parent__
             edition = select_edition(candidate, self.request)
             if isinstance(edition, NullEdition):
                 continue

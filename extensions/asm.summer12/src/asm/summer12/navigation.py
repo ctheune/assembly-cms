@@ -23,6 +23,17 @@ class ToplevelNavigation(grok.Viewlet):
                 continue
             yield edition
 
+    @property
+    def current_section(self):
+        root = self.view.application
+
+        context = self.context
+        while context != self.view.application:
+            context = context.__parent__
+            if context in root.subpages:
+                return select_edition(context, self.request)
+        return None
+
 
 class Localnav(grok.View):
     grok.layer(ISkin)

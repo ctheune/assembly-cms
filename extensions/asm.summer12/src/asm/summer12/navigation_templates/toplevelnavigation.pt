@@ -1,5 +1,10 @@
 <div class="nav-collapse">
   <ul class="nav">
-    <li tal:repeat="item viewlet/items"><a tal:attributes="href python:view.url(item)" tal:content="item/title">About</a></li>
+    <li tal:repeat="item viewlet/items">
+      <a tal:condition="python: item != viewlet.current_section"
+         tal:attributes="href python:view.url(item)" tal:content="item/title">About</a>
+      <a tal:condition="python: item == viewlet.current_section"
+            class="selected-section" tal:content="item/title">About</a>
+    </li>
   </ul>
 </div>

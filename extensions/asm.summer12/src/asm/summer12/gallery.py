@@ -17,7 +17,7 @@ class Embedded(grok.Viewlet):
 
 
     def items(self):
-        for item in self.context.list_subpages(type=['asset']):
+        for item in self.context.list_subpages():
             edition = select_edition(item, self.request)
             if isinstance(edition, NullEdition):
                 continue

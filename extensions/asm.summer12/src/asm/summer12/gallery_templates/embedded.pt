@@ -7,6 +7,6 @@
       </div>
   </div>
   <!-- Carousel nav -->
-  <a class="carousel-control left" tal:attributes="href string:#${context/page/__name__}" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" tal:attributes="href string:#${context/page/__name__}" data-slide="next">&rsaquo;</a>
+  <a class="carousel-control left" tal:attributes="href string:#${context/page/__name__}" data-slide="prev"></a>
+  <a class="carousel-control right" tal:attributes="href string:#${context/page/__name__}" data-slide="next"></a>
 </div>

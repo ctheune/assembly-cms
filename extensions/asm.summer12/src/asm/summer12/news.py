@@ -3,14 +3,15 @@
 
 import asm.cmsui.retail
 import asm.cms.news
-from .skin import ISkin
+from .skin import ISkin, EmbeddedPageContent
 import grok
 
 
-class Index(asm.cmsui.retail.Pagelet):
-
-    grok.context(asm.cms.news.NewsFolder)
+class Embedded(grok.Viewlet):
     grok.layer(ISkin)
+    grok.context(asm.cms.news.NewsFolder)
+    grok.viewletmanager(EmbeddedPageContent)
+    grok.template('embedded')
 
     def news(self):
         news = list()
@@ -23,4 +24,4 @@ class Index(asm.cmsui.retail.Pagelet):
                           news=asm.cms.news.INewsFields(edition))
             news.append(result)
         news.sort(key=lambda x:x['edition'].created, reverse=True)
-        return news
+        return news[:5]

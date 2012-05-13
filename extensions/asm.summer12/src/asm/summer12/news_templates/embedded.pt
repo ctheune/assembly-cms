@@ -1,0 +1,8 @@
+<tal:block repeat="item viewlet/news">
+<h3><span tal:content="python:item['edition'].modified.strftime('%d.%m.%Y')">11.12.2009</span>
+    <a tal:attributes="href python:view.url(item['edition'])"
+        tal:content="item/edition/title">Asus desktop image competition
+        results</a>
+    </h3>
+<p tal:content="item/news/teaser">Here are the results for ASUS desktop background wallpaper competition, the winner and four runner ups.</p>
+</tal:block>

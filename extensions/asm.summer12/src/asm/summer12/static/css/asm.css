@@ -434,7 +434,6 @@ a:hover {
 }
 
 .navbar .current-section {
-  font-weight: bold;
   color: #fff;
   display: block;
   background-color: rgba(160,190,255,0.3);

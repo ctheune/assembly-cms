@@ -22,3 +22,12 @@ class TileNavigation(grok.View):
             row.append(edition)
 
         self.rows.append(row)
+
+
+class BaseUrl(grok.View):
+
+    grok.context(asm.cms.interfaces.IEdition)
+    grok.layer(asm.cmsui.interfaces.IRetailBaseSkin)
+
+    def render(self):
+        return self.application_url()

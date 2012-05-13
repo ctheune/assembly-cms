@@ -1,7 +1,6 @@
 body {
-  /* background-image: url('../img/6798_30.jpg'); */
   color: white;
-  background-color: black;
+  background-color: #212121;
 }
 
 @media (max-width: 768px) {
@@ -422,4 +421,8 @@ a:hover {
 
 .clickable-block {
   text-decoration: none;
+}
+
+.block-title {
+  font-size: large;
 }

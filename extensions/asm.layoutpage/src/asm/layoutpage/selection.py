@@ -11,12 +11,7 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def getValues(self, context):
         layouts = zope.component.getUtilitiesFor(
             asm.layoutpage.interfaces.ILayoutPage, context=context)
-        return [layout[0] for layout in layouts]
-
-    def getTitle(self, context, value):
-        if value == '':
-            return 'default'
-        return value
+        return set([layout[0] for layout in layouts])
 
 
 class ILayoutSelection(zope.interface.Interface):
@@ -37,7 +32,7 @@ class LayoutAnnotation(grok.Annotation):
     grok.provides(ILayoutSelection)
     grok.context(asm.cms.interfaces.IEdition)
 
-    layout = ''
+    layout = '' # automatic default
 
     def copyFrom(self, other):
         self.layout = other.layout
@@ -47,7 +42,8 @@ class LayoutAnnotation(grok.Annotation):
 
     def get_layout(self, request):
         layout = zope.component.getUtility(
-            asm.layoutpage.interfaces.ILayoutPage, name=self.layout)
+            asm.layoutpage.interfaces.ILayoutPage, name=self.layout or
+            'default')
         # Special case: the layout might be a page. We then run
         # select_edition to get the actual thing.
         if asm.cms.interfaces.IPage.providedBy(layout):

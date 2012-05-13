@@ -47,7 +47,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" tal:attributes="href view/application_url"><img src="context/@@layouthelper/static/img/brand.png" alt="" /></a>
+          <a class="brand" tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/img/brand.png" alt="" /></a>
           <div class="nav-collapse">
               <div tal:replace="structure provider:navigation-bar"></div>
           </div> <!--/.nav-collapse -->
@@ -100,7 +100,7 @@
           </div>
     </div>
 
-    <div style="width:auto; margin-top:45px; background-color: black;">
+      <div class="row" style="margin-top:45px;">
     <div class="box box-trans">
       <div class="row">
         <div class="span2">

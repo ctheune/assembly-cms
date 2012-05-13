@@ -21,10 +21,6 @@ a:hover {
   color: #74a5fb;
 }
 
-.box a {
-  color: inherit;
-}
-
 .bg {
   left: 0;
   position: absolute;
@@ -147,7 +143,7 @@ a:hover {
 }
 
 .navbar-inner {
-  background: url('../img/navbar.jpg') 0 0 no-repeat;
+  background: url('../img/navbar-noasm.jpg') 0 0 no-repeat;
 }
 
 

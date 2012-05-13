@@ -37,7 +37,7 @@
 
   </head>
 
-  <body data-spy="scroll" data-target=".toolbar" data-offset="50">
+  <body>
 
     <div class="navbar">
       <div class="navbar-inner">
@@ -47,19 +47,18 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-
-          <tal:block tal:condition="python: context.page != view.application">
-            <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
-          </tal:block>
-          <tal:block tal:condition="python: context.page == view.application">
-            <a class="brand">Assembly Summer 2012</a>
-          </tal:block>
-
-          <div tal:replace="structure provider:navigation-bar"></div>
+          <a class="brand" href="#"></a>
+          <div class="nav-collapse">
+              <tal:block tal:condition="python: context.page != view.application">
+                <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
+              </tal:block>
+              <div tal:replace="structure provider:navigation-bar"></div>
+          </div> <!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
+    <img tal:attributes="src context/@@layouthelper/static/img/6798_30.jpg" class="bg" alt="" id="background-img" />
     <div class="toolbar">
       <span class="span7 breadcrumbs">
         <div tal:replace="structure provider:breadcrumbs"></div>
@@ -97,11 +96,13 @@
     </div>
 
     <div class="container">
-
       <div tal:replace="structure view/render_layout">
       </div>
+    </div>
 
-      <div class="row" style="margin-top:45px;">
+    <div style="width:auto; margin-top:45px; background-color: black;">
+    <div class="container">
+      <div class="row">
         <div class="span2">
           <ul class="nav nav-list">
             <li class="nav-header"><a href="#">About Assembly</a></li>
@@ -130,13 +131,13 @@
           </ul>
         </div>
       </div>
-      <div class="row" style="margin-top:45px;">
+      <div class="row" style="margin-top:45px; color: #999;">
         <div class="span12">
           <p>Copyright © Assembly Organizing, 2009-2012</p>
         </div>
       </div>
-
     </div> <!-- /container -->
+    </div> 
 
     <!-- Le javascript
     ================================================== -->

@@ -86,13 +86,15 @@
       <div tal:replace="structure view/render_layout">
       </div>
       <div class="row sponsors">
-          <div class="span6">
+          <div class="span7">
               <div class="box box-gray">
+		  <h2>Sponsors</h2>
                   <div tal:replace="structure context/@@sponsorbox"></div>
               </div>
           </div>
-          <div class="span6">
+          <div class="span5">
               <div class="box box-gray">
+		  <h2>Associates</h2>
                   <div tal:replace="structure context/@@associatebox"></div>
               </div>
           </div>

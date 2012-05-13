@@ -47,7 +47,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" tal:attributes="href view/application_url"></a>
+          <a class="brand" tal:attributes="href view/application_url"><img src="context/@@layouthelper/static/img/brand.png" alt="" /></a>
           <div class="nav-collapse">
               <div tal:replace="structure provider:navigation-bar"></div>
           </div> <!--/.nav-collapse -->
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <img tal:attributes="src context/@@layouthelper/static/img/6798_30.jpg" class="bg" alt="" id="background-img" />
+    <img tal:attributes="src context/@@layouthelper/static/img/bg.jpg" class="bg" alt="" id="background-img" />
     <div class="toolbar">
       <span class="span7 breadcrumbs">
         <div tal:replace="structure provider:breadcrumbs"></div>
@@ -88,7 +88,7 @@
       <div class="row sponsors">
           <div class="span7">
               <div class="box box-gray">
-		  <h2>Sponsors</h2>
+                <h2>Sponsors</h2>
                   <div tal:replace="structure context/@@sponsorbox"></div>
               </div>
           </div>
@@ -101,7 +101,7 @@
     </div>
 
     <div style="width:auto; margin-top:45px; background-color: black;">
-    <div class="container">
+    <div class="box box-trans">
       <div class="row">
         <div class="span2">
           <ul class="nav nav-list">

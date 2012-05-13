@@ -197,6 +197,10 @@ a:hover {
   background-repeat: repeat-x;
 }
 
+.box-gray .carousel-caption {
+    color: white;
+}
+
 .box-red {
   color: white;
   background-color: #962e2e;

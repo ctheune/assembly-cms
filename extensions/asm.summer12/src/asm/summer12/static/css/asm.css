@@ -255,29 +255,10 @@ a:hover {
   color: #fffcaa;
 }
 
-.box-demoscene h1, .box-demoscene h2, .box-demoscene h3 {
-  color: #c1001f;
-}
-
-.box-esports h1, .box-esports h2, .box-esports h3 {
-  color: #70ab6c;
-}
-
-.box-seminars h1, .box-seminars h2, .box-seminars h3 {
-  color: #134c95;
-}
-
-.box-activities h1, .box-activities h2, .box-activities h3 {
-  color: #72512c;
-}
-
-.box-gallery h1, .box-gallery h2, .box-gallery h3 {
-  /* color: #134c95; */
-}
-
 .box.main-sponsors {
   text-align: center;
 }
+
 .box.main-sponsors p {
   display: inherit;
   margin: 18px 0;

@@ -42,6 +42,7 @@ a:hover {
 
 .container {
   /* z-index: 6000; */
+    clear: both;
 }
 
 .navbar .nav > li > a {
@@ -230,6 +231,10 @@ a:hover {
 .row.sponsors p {
   display: inline-block;
   padding: 0.5em;
+}
+
+.box.free {
+   min-height: none;
 }
 
 .box-trans {

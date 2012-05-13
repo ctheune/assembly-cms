@@ -216,7 +216,7 @@ a:hover {
 }
 
 .row-main-first .box-gray, .row-main-first .box-red {
-  min-height: 240px;
+  min-height: 250px;
 }
 
 .row-main-second .box-gray, .row-main-second .box-red {
@@ -282,12 +282,11 @@ a:hover {
   /* color: #134c95; */
 }
 
-.box .sponsors {
+.box.main-sponsors {
   text-align: center;
-  /* width:  */
 }
-
-.box .sponsors p{
+.box.main-sponsors p {
+  display: inherit;
   margin: 18px 0;
 }
 

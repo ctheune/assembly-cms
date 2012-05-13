@@ -8,6 +8,7 @@ from asm.cmsui.retail import Pagelet
 from asm.cms.edition import select_edition, NullEdition
 from asm.cms.asset import Asset
 import grok
+import zope.component
 
 class Embedded(grok.Viewlet):
     grok.layer(ISkin)
@@ -15,6 +16,9 @@ class Embedded(grok.Viewlet):
     grok.viewletmanager(EmbeddedPageContent)
     grok.template('embedded')
 
+    def domId(self):
+        intids = zope.component.getUtility(zope.intid.IIntIds)
+        return "embedded-%d" % intids.getId(self.context)
 
     def items(self):
         for item in self.context.list_subpages():

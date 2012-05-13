@@ -15,10 +15,12 @@ h2 {
 
 a {
   color: #c2d2ee;
+  text-decoration: underline;
 }
 
 a:hover {
   color: #74a5fb;
+  text-decoration: none;
 }
 
 .box-gray a {

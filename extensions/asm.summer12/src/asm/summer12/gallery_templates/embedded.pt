@@ -1,4 +1,4 @@
-<div tal:attributes="id context/page/__name__" class="carousel slide">
+<div tal:attributes="id viewlet/domId" class="carousel slide">
   <!-- Carousel items -->
   <div class="carousel-inner">
       <div tal:attributes="class python:'item ' + (repeat['item'].start() and
@@ -7,6 +7,6 @@
       </div>
   </div>
   <!-- Carousel nav -->
-  <a class="carousel-control left" tal:attributes="href string:#${context/page/__name__}" data-slide="prev"></a>
-  <a class="carousel-control right" tal:attributes="href string:#${context/page/__name__}" data-slide="next"></a>
+  <a class="carousel-control left" tal:attributes="href string:#${viewlet/domId}" data-slide="prev"></a>
+  <a class="carousel-control right" tal:attributes="href string:#${viewlet/domId}" data-slide="next"></a>
 </div>

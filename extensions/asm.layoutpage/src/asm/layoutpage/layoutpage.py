@@ -1,11 +1,12 @@
 import asm.cms
 import asm.cms.utils
-import asm.cmsui.retail
 import asm.cmsui.form
+import asm.cmsui.retail
 import asm.layoutpage.interfaces
 import grok
-import zope.interface
 import re
+import zope.interface
+import zope.traversing.interfaces
 
 
 class Layout(object):
@@ -23,10 +24,16 @@ class Layout(object):
             return zope.component.getMultiAdapter(
                     (context, request), name=name)()
         else:
-            # ${subitemname}
-            page = context.page[name]
+            # ${subitemname} or ${subitem/foo} or ${/asdf}
+            root = context.page
+            if name.startswith('/'):
+                name = name[1:]
+                root = grok.util.getApplication()
+            traverser = zope.traversing.interfaces.ITraverser(root)
+            page = traverser.traverse(name)
             target = asm.cms.edition.select_edition(page, request)
             return partial_render(request, target)
+        raise RuntimeError("Invalid lookup: %r" % name)
 
     def render(self, request, context, partial_render):
         template = LayoutTemplate(

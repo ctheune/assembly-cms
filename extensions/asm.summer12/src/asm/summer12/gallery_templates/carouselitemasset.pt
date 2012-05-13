@@ -1,0 +1,6 @@
+<img tal:attributes="src python:view.url(context);
+                     alt view/label" />
+<div class="carousel-caption">
+  <span class="description" tal:content="python: view.description or u'&nbsp;'">description</span>
+  <span class="author-label" tal:content="view/label">label</span>
+</div>

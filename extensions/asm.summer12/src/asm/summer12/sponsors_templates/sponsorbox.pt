@@ -1,0 +1,4 @@
+<p tal:repeat="sponsor view/sponsors">
+<a tal:attributes="href string:${view/application_url}/sponsors" rel="nofollow"><img tal:attributes="src
+    python:view.url(sponsor.__parent__)" alt="" /></a>
+</p>

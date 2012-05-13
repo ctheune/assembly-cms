@@ -80,21 +80,22 @@
         </span>
       </span>
 
-      <!-- XXX use this later -->
-      <!-- <span class="span3 search"> -->
-      <!--     <form class="form-search" -->
-      <!--           tal:attributes="action string:${view/application_url}/@@search" -->
-      <!--           method="get" -->
-      <!--           id="searchform"> -->
-      <!--       <input type="text" -->
-      <!--              name="q" accesskey="f" tal:attributes="value python: view.request.form.get('q', '')" /> -->
-      <!--     </form> -->
-      <!-- </span> -->
     </div>
 
     <div class="container">
       <div tal:replace="structure view/render_layout">
       </div>
+      <div class="row sponsors">
+          <div class="span6">
+              <div class="box box-gray">
+                  <div tal:replace="structure context/@@sponsorbox"></div>
+              </div>
+          </div>
+          <div class="span6">
+              <div class="box box-gray">
+                  <div tal:replace="structure context/@@associatebox"></div>
+              </div>
+          </div>
     </div>
 
     <div style="width:auto; margin-top:45px; background-color: black;">

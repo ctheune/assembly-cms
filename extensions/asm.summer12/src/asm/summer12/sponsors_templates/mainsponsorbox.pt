@@ -1,7 +1,0 @@
-<div class="sponsors">
-
-    <p><img tal:attributes="src context/@@layouthelper/static/img/asus.png" alt="ASUS" /></p>
-    <p><img tal:attributes="src context/@@layouthelper/static/img/samsung.png" alt="ASUS" /></p>
-    <p><img tal:attributes="src context/@@layouthelper/static/img/jimms.png" alt="ASUS" /></p>
-
-</div>

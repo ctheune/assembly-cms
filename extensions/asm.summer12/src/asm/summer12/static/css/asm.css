@@ -36,7 +36,7 @@ a:hover {
   z-index: -1;
 }
 
-.navbar .nav > li > a {
+.navbar .nav > li > a, .navbar .current-section {
   color: #abc4de;
   line-height: 30px;
   padding: 9px 10px 11px;
@@ -141,7 +141,7 @@ a:hover {
   .navbar-inner {
       background: url('../img/navbar-noasm.jpg') 0 0 no-repeat;
   }
-  .navbar .nav > li > a {
+  .navbar .nav > li > a, .current-section {
     color: #abc4de;
     line-height: 19px;
     padding: 9px 10px 11px;
@@ -431,4 +431,11 @@ a:hover {
 
 .carousel-inner img {
   width: 100%;
+}
+
+.navbar .current-section {
+  font-weight: bold;
+  color: #fff;
+  display: block;
+  background-color: rgba(160,190,255,0.3);
 }

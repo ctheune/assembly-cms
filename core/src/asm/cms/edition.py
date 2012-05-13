@@ -36,7 +36,8 @@ class Edition(grok.Model):
             if not schema(self) == schema(other):
                 return False
         return (self.tags == other.tags and
-                self.title == other.title)
+                self.title == other.title and
+                self.description == other.description)
 
     @property
     def editions(self):
@@ -51,6 +52,7 @@ class Edition(grok.Model):
         self.modified = other.modified
         self.tags = other.tags
         self.title = other.title
+        self.description = other.description
         for schema in zope.component.subscribers(
                 (self,), asm.cms.interfaces.IAdditionalSchema):
             schema(self).copyFrom(schema(other))

@@ -21,7 +21,7 @@ class ILayoutSelection(zope.interface.Interface):
         'description', u'Select a page layout to use when displaying this page.')
 
     layout = zope.schema.Choice(
-        title=u'Layout',
+        title=u'Layout', required=False,
         source=LayoutSource())
 
 

@@ -4,4 +4,4 @@ import zope.schema
 
 class ILayoutPage(zope.interface.Interface):
 
-    layout = zope.schema.Text(title=u'Layout', required=False)
+    layout = zope.schema.Text(title=u'Layout')

@@ -24,7 +24,7 @@ a:hover {
 }
 
 .box a {
-  color: inherit
+  color: inherit;
 }
 
 .bg {
@@ -212,6 +212,7 @@ a:hover {
   padding: 10px;
   margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 1);
+  min-height 200px;
 }
 
 .row-main-first .box-gray, .row-main-first .box-red {
@@ -219,15 +220,9 @@ a:hover {
 }
 
 .row-main-second .box-gray, .row-main-second .box-red {
-  /* min-height: 230px; */
-  min-height: 180px;
+  min-height: 260px;
 }
 
-/*
-.row-main-first .box-trans {
-  height: 100%;
-}
-*/
 
 .box-trans {
   color: white;

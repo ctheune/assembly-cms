@@ -21,6 +21,10 @@ a:hover {
   color: #74a5fb;
 }
 
+.box-gray a {
+  color: inherit;
+}
+
 .bg {
   left: 0;
   position: absolute;

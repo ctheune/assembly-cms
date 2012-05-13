@@ -75,16 +75,24 @@ class Edit(asm.cmsui.form.EditionEditForm):
 @grok.subscribe(LayoutPage, grok.IObjectAddedEvent)
 def ensure_page_is_local_utility(obj, event):
     page = obj.page
+    # Check whether it's OK to register the layoutpage with the given name.
     try:
         registered_page = zope.component.getUtility(
             asm.layoutpage.interfaces.ILayoutPage, name=page.__name__)
     except LookupError:
-        sm = zope.component.getSiteManager(obj)
-        sm.registerUtility(page,
-             provided=asm.layoutpage.interfaces.ILayoutPage, name=page.__name__)
+        # Nothing registered with this name -> OK
+        pass
     else:
-        if registered_page is not page:
+        if isinstance(registered_page, asm.layoutpage.layouts.DefaultLayout):
+            # The registered page is the global default page -> OK
+            pass
+        elif registered_page is not page:
             raise KeyError('Layout page with this name already exists.')
+    # Alright, nothing is stopping us from registering it with the given name.
+    sm = zope.component.getSiteManager(obj)
+    sm.registerUtility(page,
+         provided=asm.layoutpage.interfaces.ILayoutPage, name=page.__name__)
+
 
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectRemovedEvent)

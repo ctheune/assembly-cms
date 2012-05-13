@@ -117,7 +117,7 @@
 	    <li class="nav-header"><a tal:attributes="href string:${view/application_url}/manual">Party manual</a></li>
 	    <li><a tal:attributes="href string:${view/application_url}/manual/faq">FAQ</a></li>
 	    <li><a tal:attributes="href string:${view/application_url}/manual/maps">Maps</a></li>
-	    <li><a tal:attributes="href string:${view/application_url}/manual/logistics">Logistics</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/logistics">Travel</a></li>
 	    <li><a tal:attributes="href string:${view/application_url}/manual/partynet">Network</a></li>
 	    <li><a tal:attributes="href string:${view/application_url}/manual/rules">Rules</a></li>
           </ul>

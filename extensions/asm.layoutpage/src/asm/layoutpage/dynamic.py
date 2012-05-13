@@ -24,6 +24,27 @@ class TileNavigation(grok.View):
         self.rows.append(row)
 
 
+class SectionNavigation(grok.View):
+    grok.context(asm.cms.interfaces.IEdition)
+    grok.layer(asm.cmsui.interfaces.IRetailBaseSkin)
+
+    def find_section(self):
+        candidate = self.context
+        while candidate != self.application:
+            if candidate.__parent__ == self.application:
+                return candidate
+            candidate = candidate.__parent__
+
+    def update(self):
+        self.section = self.find_section()
+        self.subsections = []
+        for edition in asm.cms.edition.find_editions(self.section, self.request,
+                recurse=False):
+            if edition.has_tag('hide-navigation'):
+                continue
+            self.subsections.append(edition)
+
+
 class BaseUrl(grok.View):
 
     grok.context(asm.cms.interfaces.IEdition)
@@ -31,3 +52,6 @@ class BaseUrl(grok.View):
 
     def render(self):
         return self.application_url()
+
+
+

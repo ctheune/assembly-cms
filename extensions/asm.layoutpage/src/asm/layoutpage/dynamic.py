@@ -108,6 +108,3 @@ class BaseUrl(grok.View):
 
     def render(self):
         return self.application_url()
-
-
-

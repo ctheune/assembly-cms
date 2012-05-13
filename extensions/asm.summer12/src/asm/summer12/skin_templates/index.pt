@@ -47,7 +47,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/img/brand.png" alt="" /></a>
+          <tal:block tal:condition="python: view.url() != view.url(view.application, 'index')">
+            <a class="brand" tal:attributes="href view/application_url"><img tal:attributes="src context/@@layouthelper/static/img/brand.png" alt="Assembly Summer 2012 logo." /></a>
+          </tal:block>
+          <tal:block tal:condition="python: view.url() == view.url(view.application, 'index')">
+            <span class="brand"><img tal:attributes="src context/@@layouthelper/static/img/brand.png" alt="Assembly Summer 2012 logo." /></span>
+          </tal:block>
           <div class="nav-collapse">
               <div tal:replace="structure provider:navigation-bar"></div>
           </div> <!--/.nav-collapse -->

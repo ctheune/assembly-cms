@@ -2,6 +2,8 @@ import asm.cms.utils
 import grok
 import urlparse
 import zope.publisher.http
+import zope.component
+
 
 def get_application(context):
     obj = context
@@ -22,6 +24,10 @@ def cms_edition(self):
 
 grok.View.cms_edition = property(fget=cms_edition)
 
+def view(self, name):
+    return zope.component.getMultiAdapter(
+        (self.context, self.request), name=name)
+grok.View.view = view
 
 def resolve_relative_urls(self, content, source):
 

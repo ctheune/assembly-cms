@@ -223,6 +223,14 @@ a:hover {
   min-height: 260px;
 }
 
+.row.sponsors .box {
+  min-height: 50px;
+}
+
+.row.sponsors p {
+  display: inline-block;
+  padding: 0.5em;
+}
 
 .box-trans {
   color: white;

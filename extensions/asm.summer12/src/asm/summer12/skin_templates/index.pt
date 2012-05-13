@@ -49,9 +49,6 @@
           </a>
           <a class="brand" href="#"></a>
           <div class="nav-collapse">
-              <tal:block tal:condition="python: context.page != view.application">
-                <a class="brand" tal:attributes="href view/application_url">Assembly Summer 2012</a>
-              </tal:block>
               <div tal:replace="structure provider:navigation-bar"></div>
           </div> <!--/.nav-collapse -->
         </div>

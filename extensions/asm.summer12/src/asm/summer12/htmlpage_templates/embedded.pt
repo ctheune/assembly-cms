@@ -1,2 +1,2 @@
-<h2 tal:content="context/title"></h2>
+<h2 tal:condition="python: not context.has_tag('hide-title')" tal:content="context/title"></h2>
 <tal:block tal:replace="structure context/content"/>

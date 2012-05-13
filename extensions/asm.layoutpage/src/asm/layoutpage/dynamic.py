@@ -25,12 +25,12 @@ class TileNavigation(grok.View):
 
 NAVTREE_MAX_LEVELS = 999
 
-def _create_navigation_subtree(active, root, levels, request):
+def _create_navigation_subtree(active, root_page, levels, request):
     if levels < 0:
         return
-    if root.type in ['asset']:
+    if root_page.type in ['asset']:
         return
-    edition = asm.cms.edition.select_edition(root, request)
+    edition = asm.cms.edition.select_edition(root_page, request)
     if edition.has_tag('hide-navigation'):
         return
     if isinstance(edition, asm.cms.edition.NullEdition):
@@ -38,10 +38,10 @@ def _create_navigation_subtree(active, root, levels, request):
     tree = {'page': edition,
             'class': set(),
             'subpages': []}
-    if root in active:
+    if root_page in active:
         tree['class'].add('active')
-        if root.type not in ['news']:
-            for child in root.subpages:
+        if root_page.type not in ['news']:
+            for child in root_page.subpages:
                 sub_tree = _create_navigation_subtree(active, child, levels - 1, request)
                 if sub_tree:
                     tree['subpages'].append(sub_tree)
@@ -95,7 +95,8 @@ class SubSectionNavigation(SectionNavigation):
         return self.find_section(root=section)
 
     def tree(self):
-        root = self.find_subsection()
+        root_edition = self.find_subsection()
+        root = root_edition.page
         tree = _create_navigation_subtree(self.active, root, NAVTREE_MAX_LEVELS, self.request)
         return tree['subpages']
 

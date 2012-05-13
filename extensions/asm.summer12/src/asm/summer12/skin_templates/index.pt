@@ -47,7 +47,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#"></a>
+          <a class="brand" tal:attributes="href view/application_url"></a>
           <div class="nav-collapse">
               <div tal:replace="structure provider:navigation-bar"></div>
           </div> <!--/.nav-collapse -->

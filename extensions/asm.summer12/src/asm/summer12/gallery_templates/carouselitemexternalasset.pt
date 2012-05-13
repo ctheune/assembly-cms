@@ -1,0 +1,10 @@
+<a tal:attributes="href view/content_location">
+  <img tal:attributes="src python:view.url(context, 'thumbnail');
+                       alt view/label" />
+</a>
+<div class="carousel-caption">
+  <a tal:attributes="href view/content_location">
+    <span class="description" tal:content="view/description">description</span>
+    <span class="author-label" tal:content="view/label">label</span>
+  </a>
+</div>

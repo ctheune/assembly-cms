@@ -105,29 +105,29 @@
       <div class="row">
         <div class="span2">
           <ul class="nav nav-list">
-            <li class="nav-header"><a href="#">About Assembly</a></li>
-            <li><a href="#">Tickets</a></li>
-            <li><a href="#">Schedule</a></li>
-            <li><a href="#">Announcements</a></li>
-            <li><a href="#">Sponsors</a></li>
+	    <li class="nav-header"><a tal:attributes="href string:${view/application_url}/asm">About Assembly</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/tickets">Tickets</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/schedule">Schedule</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/news">News</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/sponsors">Sponsors</a></li>
           </ul>
         </div>
         <div class="span2">
           <ul class="nav nav-list">
-            <li class="nav-header"><a href="#">Party manual</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Maps</a></li>
-            <li><a href="#">Logistics</a></li>
-            <li><a href="#">Network</a></li>
-            <li><a href="#">Rules</a></li>
+	    <li class="nav-header"><a tal:attributes="href string:${view/application_url}/manual">Party manual</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/faq">FAQ</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/maps">Maps</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/logistics">Logistics</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/partynet">Network</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/manual/rules">Rules</a></li>
           </ul>
         </div>
         <div class="span2">
           <ul class="nav nav-list">
-            <li class="nav-header"><a href="#">Assembly Organizing</a></li>
-            <li><a href="#">Press</a></li>
-            <li><a href="#">Contact</a></li>
-            <li><a href="#">Privacy policy</a></li>
+            <li class="nav-header"><a href="http://www.assembly.org/asmorg">Assembly Organizing</a></li>
+	    <li><a tal:attributes="href string:${view/application_url}/asm/press">Press</a></li>
+            <li><a href="http://www.assembly.org/asmorg/contact">Contact</a></li>
+            <li><a href="http://www.assembly.org/asmorg/legal/privacy">Privacy policy</a></li>
           </ul>
         </div>
       </div>

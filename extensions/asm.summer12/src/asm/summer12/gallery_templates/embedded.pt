@@ -3,7 +3,8 @@
   <div class="carousel-inner">
       <div tal:attributes="class python:'item ' + (repeat['item'].start() and
           'active' or ' ')" tal:repeat="item viewlet/items">
-          <img tal:attributes="src python:view.url(item)"/></div>
+          <div tal:content="structure item/@@carouselitem"/>
+      </div>
   </div>
   <!-- Carousel nav -->
   <a class="carousel-control left" tal:attributes="href string:#${context/page/__name__}" data-slide="prev">&lsaquo;</a>

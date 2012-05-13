@@ -25,14 +25,42 @@ class TileNavigation(grok.View):
 
 NAVTREE_MAX_LEVELS = 999
 
+def _create_navigation_subtree(active, root, levels, request):
+    if levels < 0:
+        return
+    if root.type in ['asset']:
+        return
+    edition = asm.cms.edition.select_edition(root, request)
+    if edition.has_tag('hide-navigation'):
+        return
+    if isinstance(edition, asm.cms.edition.NullEdition):
+        return
+    tree = {'page': edition,
+            'class': set(),
+            'subpages': []}
+    if root in active:
+        tree['class'].add('active')
+        if root.type not in ['news']:
+            for child in root.subpages:
+                sub_tree = _create_navigation_subtree(active, child, levels - 1, request)
+                if sub_tree:
+                    tree['subpages'].append(sub_tree)
+    if 'active' in tree['class'] and not tree['subpages']:
+        tree['class'].add('has_no_children')
+    tree['class'] = ' '.join(tree['class'])
+    return tree
+
+
 class SectionNavigation(grok.View):
     grok.context(asm.cms.interfaces.IEdition)
     grok.layer(asm.cmsui.interfaces.IRetailBaseSkin)
 
-    def find_section(self):
+    def find_section(self, root=None):
+        if root is None:
+            root = self.application
         candidate = self.context
-        while candidate != self.application:
-            if candidate.__parent__ == self.application:
+        while candidate != root:
+            if candidate.__parent__ == root:
                 return candidate
             candidate = candidate.__parent__
 
@@ -51,34 +79,24 @@ class SectionNavigation(grok.View):
             self.active.append(current)
             current = current.__parent__
 
-    def _create_subtree(self, root, levels):
-        if levels < 0:
-            return
-        if root.type in ['asset']:
-            return
-        edition = asm.cms.edition.select_edition(root, self.request)
-        if edition.has_tag('hide-navigation'):
-            return
-        if isinstance(edition, asm.cms.edition.NullEdition):
-            return
-        tree = {'page': edition,
-                'class': set(),
-                'subpages': []}
-        if root in self.active:
-            tree['class'].add('active')
-            if root.type not in ['news']:
-                for child in root.subpages:
-                    sub_tree = self._create_subtree(child, levels - 1)
-                    if sub_tree:
-                        tree['subpages'].append(sub_tree)
-        if 'active' in tree['class'] and not tree['subpages']:
-            tree['class'].add('has_no_children')
-        tree['class'] = ' '.join(tree['class'])
-        return tree
-
     def tree(self):
         root = self.find_section()
-        tree = self._create_subtree(root, NAVTREE_MAX_LEVELS)
+        tree = _create_navigation_subtree(self.active, root, NAVTREE_MAX_LEVELS, self.request)
+        return tree['subpages']
+
+
+class SubSectionNavigation(SectionNavigation):
+    grok.template("sectionnavigation")
+
+    def find_subsection(self):
+        section = self.find_section()
+        if section is None:
+            return
+        return self.find_section(root=section)
+
+    def tree(self):
+        root = self.find_subsection()
+        tree = _create_navigation_subtree(self.active, root, NAVTREE_MAX_LEVELS, self.request)
         return tree['subpages']
 
 

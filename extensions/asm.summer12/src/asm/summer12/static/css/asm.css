@@ -23,7 +23,7 @@ a:hover {
   text-decoration: none;
 }
 
-.box-gray a {
+.box-gray a, .box-red a {
   color: inherit;
 }
 
@@ -437,4 +437,8 @@ a:hover {
   color: #fff;
   display: block;
   background-color: rgba(160,190,255,0.3);
+}
+
+.clickable-block {
+  text-decoration: none;
 }

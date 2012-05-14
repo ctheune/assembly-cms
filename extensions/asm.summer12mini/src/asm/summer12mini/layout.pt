@@ -130,7 +130,7 @@
               <a href="http://archive.assembly.org/2012"><img tal:attributes="src context/@@layouthelper/static/images/assembly_archive.jpg"/></a>
             </div>
             <div style="margin:1em 0.5em 1.5em;">
-              <a href="http://assembly.galleria.fi/kuvat/Assembly+Summer+2012/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
+              <a href="http://assembly.galleria.fi/"><img tal:attributes="src context/@@layouthelper/static/images/assembly_gallery.jpg"/></a>
             </div>
 
             <div class="sidebar-box"

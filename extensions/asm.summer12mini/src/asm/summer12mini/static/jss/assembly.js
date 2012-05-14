@@ -138,3 +138,44 @@ $(document).ready(function(){
        });
     });
 });
+
+// Twitter Follow button.
+(function() {
+    $.getScript('//platform.twitter.com/widgets.js');
+})();
+
+// Twitter latest tweets.
+(function() {
+    $.getScript("http://widgets.twimg.com/j/2/widget.js", function() {
+        if (document.getElementById("twitter-latest-tweets") == undefined) {
+            return;
+        }
+        new TWTR.Widget({
+            id: "twitter-latest-tweets",
+            version: 2,
+            type: 'search',
+            search: '@assemblyparty OR #asms12',
+            interval: 4000,
+            title: "Assembly related tweets for <a href='http://twitter.com/#!/search/%23asms12+OR+@assemblyparty'>#asms12 and @assemblyparty</a>",
+            width: 560,
+            height: 115,
+            theme: {
+                shell: {
+                    background: '#f5f5f5',
+                    color: '#000000'
+                },
+                tweets: {
+                    background: '#ffffff',
+                    color: '#000000',
+                    links: '#2D778E'
+                }
+            },
+            features: {
+                scrollbar: false,
+                loop: true,
+                live: true,
+                behavior: 'default'
+            }
+        }).render().start();
+    });
+})();

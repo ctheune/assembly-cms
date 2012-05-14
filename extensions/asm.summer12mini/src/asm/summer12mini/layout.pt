@@ -38,9 +38,20 @@
         </div>
 
         <div>
-          <div id="language">
-            <a class="language-english" tal:attributes="href python:view.url(context)+'/@@select-language?lang=en'">in English</a>
-            <a class="language-finnish" tal:attributes="href python:view.url(context)+'/@@select-language?lang=fi'">suomeksi</a>
+          <div id="language"
+               tal:define="current_language context/@@layouthelper/current_language">
+            <form tal:condition="python:current_language != 'en'"
+                  tal:attributes="action python:view.url(context)+'/@@select-language'"
+                  method="get">
+              <input type="hidden" name="lang" value="en" />
+              <button type="submit" class="language-english" >in English</button>
+            </form>
+            <form tal:condition="python:current_language != 'fi'"
+                  tal:attributes="action python:view.url(context)+'/@@select-language'"
+                  method="get">
+              <input type="hidden" name="lang" value="fi" />
+              <button type="submit" class="language-finnish" >suomeksi</button>
+            </form>
           </div>
         </div>
       </div>
@@ -112,7 +123,7 @@
 
             <div style="margin-left: 1em">
               <a href="http://www.twitter.com/assemblyparty"><img src="http://twitter-badges.s3.amazonaws.com/follow_us-b.png" i18n:attributes="title alt" title="Follow @assemblyparty on Twitter" alt="Follow @assemblyparty on Twitter"/></a>
-              <div><strong><a href="http://twitter.com/#!/search/%23assembly2012">#assembly2012</a></strong></div>
+              <div><strong><a href="http://twitter.com/#!/search/asms12+OR+@assemblyparty">#asms12</a></strong></div>
             </div>
 
             <div style="margin:1.5em 0.5em 1em;">

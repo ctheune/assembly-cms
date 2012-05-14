@@ -1,0 +1,122 @@
+##############################################################################
+#
+# Copyright (c) 2003-2004 Zope Corporation and Contributors.
+# All Rights Reserved.
+#
+# This software is subject to the provisions of the Zope Public License,
+# Version 2.1 (ZPL).  A copy of the ZPL should accompany this distribution.
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY AND ALL EXPRESS OR IMPLIED
+# WARRANTIES ARE DISCLAIMED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF TITLE, MERCHANTABILITY, AGAINST INFRINGEMENT, AND FITNESS
+# FOR A PARTICULAR PURPOSE.
+#
+##############################################################################
+msgid ""
+msgstr ""
+"Project-Id-Version: Development/Unknown\n"
+"POT-Creation-Date: Mon May 14 21:17:29 2012\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: zope/app/locales/extract.py\n"
+
+#: asm/summer12mini/layout.pt:114
+#. Default: "Follow @assemblyparty on Twitter"
+msgid "alt"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:129
+msgid "What's happening?"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:135
+msgid "ends ${time}"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:138
+msgid "Upcoming"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:144
+msgid "begins ${time}"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:151
+msgid "Game Tournaments"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:169
+msgid "feedback"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:170
+msgid "privacy"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:171
+msgid "contact"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:172
+msgid "Copyright &copy; ${asmorglink}, 2009-2012"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:183
+msgid "Buy Tickets"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:54
+msgid "Sponsors"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:69
+msgid "Associates"
+msgstr ""
+
+#: asm/summer12mini/layout.pt:96
+msgid "Main sponsors"
+msgstr ""
+
+#: asm/summer12mini/skin.py:103
+msgid "years"
+msgstr ""
+
+#: asm/summer12mini/skin.py:103
+msgid "months"
+msgstr ""
+
+#: asm/summer12mini/skin.py:104
+msgid "hours"
+msgstr ""
+
+#: asm/summer12mini/skin.py:104
+msgid "days"
+msgstr ""
+
+#: asm/summer12mini/skin.py:105
+msgid "seconds"
+msgstr ""
+
+#: asm/summer12mini/skin.py:105
+msgid "minutes"
+msgstr ""
+
+#: asm/summer12mini/skin.py:126
+msgid "Welcome to Assembly!"
+msgstr ""
+
+#: asm/summer12mini/skin.py:88
+msgid "until ASSEMBLY!"
+msgstr ""
+
+#: asm/summer12mini/skin.py:89
+msgid "of ASSEMBLY left to enjoy!"
+msgstr ""
+
+#: asm/summer12mini/skin.py:90
+msgid "ASSEMBLY is over."
+msgstr ""
+

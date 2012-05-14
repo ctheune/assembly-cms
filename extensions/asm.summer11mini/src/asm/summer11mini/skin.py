@@ -29,10 +29,11 @@ class LayoutHelper(grok.View):
 
     @property
     def schedule(self):
-        if 'program' not in self.application or 'schedule' not in self.application['program']:
-            raise StopIteration()
-        return asm.cms.edition.select_edition(
-            self.application['program']['schedule'], self.request)
+        try:
+            schedule = self.application['program']['schedule']
+        except KeyError:
+            schedule = self.application['schedule']
+        return asm.cms.edition.select_edition(schedule, self.request)
 
     def event_data(self, key, event):
         url = '%s#%s' % (self.url(self.application['program']['schedule']), key)

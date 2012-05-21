@@ -162,7 +162,7 @@
                 <h4><a tal:attributes="href string:${view/application_url}/sponsors" i18n:translate="">Game Tournaments</a></h4>
 
                 <p>
-                <a tal:attributes="href string:${view/application_url}/compos">
+                <a tal:attributes="href string:${view/application_url}/esports">
                   <img class="banner" alt="Peliliiga" src="http://www.assembly.org/winter08/compos/peliliiga-150px"/>
                 </a>
                 </p>

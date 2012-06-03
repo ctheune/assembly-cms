@@ -8,7 +8,7 @@ $(function documentReady() {
 
 function initNewsRotation() {
     var tabItems = $('.tabs a').click(function () { clearTimeout(doRotateTabs); });
-    if (tabItems) {
+    if (tabItems.length) {
         // Create the tabs and return the api.
         var tabs = $('div.tabs').tabs('.newsitem', {api: true, current: 'active'});
         var doRotateTabs = setInterval(function rotateTabs() {

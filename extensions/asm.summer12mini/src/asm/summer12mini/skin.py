@@ -23,6 +23,15 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
+class CountDown(grok.View):
+
+    grok.context(zope.interface.Interface)
+    grok.layer(ISkin)
+
+    def render(self):
+        return LayoutHelper(self.context, self.request).generateCountdown()
+
+
 class LayoutHelper(grok.View):
     grok.context(zope.interface.Interface)
     grok.layer(ISkin)

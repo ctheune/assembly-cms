@@ -28,7 +28,7 @@
         <h1 id="home"><a title="Assembly Summer" tal:attributes="href view/application_url">Assembly Summer 2012, 2.-5.8.2012, Hartwall Areena, Helsinki</a></h1>
       </div>
       <div id="subheader">
-        <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
+        <span tal:content="structure context/@@layouthelper/generateCountdown" id="clockWrapper">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>
 
         <div style="width:220px; float:left; margin-left:20px;">
           <form tal:attributes="action string: ${view/application_url}/@@search"

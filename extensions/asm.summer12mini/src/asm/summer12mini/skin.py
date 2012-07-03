@@ -52,27 +52,30 @@ class LayoutHelper(grok.View):
 
     @property
     def current_events(self):
-        result = []
         now = datetime.datetime.now()
-        for key, event in self.schedule.events.items():
+        try:
+            events = self.schedule.events
+        except KeyError:
+            return
+        for key, event in events.items():
             if event.canceled:
                 continue
             if event.start <= now and event.end > now:
-                result.append(self.event_data(key, event))
-        return result
+                yield self.event_data(key, event)
 
     @property
     def upcoming_events(self):
-        result = []
         now = datetime.datetime.now()
         horizon = now + datetime.timedelta(seconds=3600)
-        for key, event in self.schedule.events.items():
+        try:
+            events = self.schedule.events
+        except KeyError:
+            return
+        for key, event in events.items():
             if event.canceled:
                 continue
             if event.start <= horizon and event.start > now:
-                result.append(self.event_data(key, event))
-        return result
-
+                yield self.event_data(key, event)
 
     def news(self):
         try:

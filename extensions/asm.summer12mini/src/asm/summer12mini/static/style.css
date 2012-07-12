@@ -19,7 +19,7 @@ span.date {color:#6e8f10;}
 #footer #banner-bottom {margin:35px 180px 0 170px;}
 h1#home {margin:0;text-indent:-9999cm; border:0;}
 h1#home a {width:300px; height:177px; display:block; float:left; text-indent:-9999cm;}
-#tickets {width:300px; height:177px; display:block; float:right; text-indent:-9999cm;}
+#header-tickets-link {width:300px; height:177px; display:block; float:right; text-indent:-9999cm;}
 #banner-top {float:left; margin:90px 0 0 95px;}
 #button-top-1, #button-top-2  {margin: 82px 2px 0 0px; width:157px; height:70px; float:right; padding:2px;}
 #button-top-2 {margin-right:80px; width:130px;}

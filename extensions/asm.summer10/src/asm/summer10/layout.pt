@@ -26,7 +26,7 @@
     <div id="main">
       <div id="header">
         <h1 id="home"><a title="Assembly Summer" tal:attributes="href view/application_url">Assembly Summer 2010, 5.-8.8.2010, Hartwall Areena, Helsinki</a></h1>
-        <a id ="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Reserve your tickets!</a>
+        <a id="tickets" title="Buy Tickets!" href="http://tickets.assembly.org/">Reserve your tickets!</a>
       </div>
       <div id="subheader">
         <span tal:content="structure context/@@layouthelper/generateCountdown">17 days, 23 hours, 54 minutes, 12 seconds until Assembly.</span>

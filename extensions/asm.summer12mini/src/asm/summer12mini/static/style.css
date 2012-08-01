@@ -781,3 +781,9 @@ a:active {
   color:#e70101;
   cursor: pointer;
 }
+
+.schedule td.major {
+    border-left: gray solid 2px;
+    border-right: gray solid 2px;
+}
+

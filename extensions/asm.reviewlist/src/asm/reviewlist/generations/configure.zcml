@@ -1,7 +1,7 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
   <utility
-    name="asm.reviewlist"
+    name="asm.reviewlist.generations"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".manager" />
 

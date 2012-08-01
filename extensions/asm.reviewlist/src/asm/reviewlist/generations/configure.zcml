@@ -1,0 +1,9 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <utility
+    name="asm.reviewlist"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".manager" />
+
+</configure>
+

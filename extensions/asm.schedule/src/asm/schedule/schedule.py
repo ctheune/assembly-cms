@@ -137,239 +137,250 @@ class ScheduleImportError(RuntimeError):
         self.messages = messages
 
 
-class Edit(asm.cmsui.form.EditForm):
-    """Editing a schedule means uploading a CSV file (as produced by Jussi)
-    and updating both language editions from that file.
-
-    It doesn't matter which edition we upload to: we simply put the Finnish
-    items into the Finnish edition and work with the English edition
-    accordingly.
-
-    """
-
-    form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
-    form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
-
-    def _parse_csv(self, data):
-        FIELD_SEPARATOR_SNIFF_AMOUNT = 50
-        if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT] and "\t" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
-            raise InvalidParserError()
-        try:
-            dialect = csv.Sniffer().sniff(data)
-        except csv.Error, e:
-            messages = [
+def parse_csv(data):
+    FIELD_SEPARATOR_SNIFF_AMOUNT = 50
+    if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT] and "\t" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
+        raise InvalidParserError()
+    try:
+        dialect = csv.Sniffer().sniff(data)
+    except csv.Error, e:
+        messages = [
             (u"%s." % e.message, "warning"),
             (u"Make sure that all lines contain the same amount of field delimiter characters.",),
             (u"First row of data: %s" % data.split("\n")[0],),
             ]
-            raise ScheduleImportError(messages)
-        data = StringIO.StringIO(data)
-        fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
-                  'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
-                  'sumtask', 'class_', 'url', 'title_en', 'title_fi',
-                  'location_en', 'location_fi', 'location_url',
-                  'outline_level', 'description_en', 'description_fi', 'canceled')
-        reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
-        reader = iter(reader)
+        raise ScheduleImportError(messages)
 
-        # Grab all the public events so that the raw data can be shown.
-        public_data = StringIO.StringIO()
-        writer = csv.DictWriter(
-            public_data,
-            fieldnames=fields,
-            dialect=dialect,
-            quotechar="\\")
+    data = StringIO.StringIO(data)
+    fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
+              'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
+              'sumtask', 'class_', 'url', 'title_en', 'title_fi',
+              'location_en', 'location_fi', 'location_url',
+              'outline_level', 'description_en', 'description_fi', 'canceled')
+    reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
+    reader = iter(reader)
 
-        # Ignore the first row
-        header = reader.next()
-        try:
-            writer.writerow(header)
-        except (ValueError, TypeError), e:
-            # This error comes only when there are too many fields in data.
-            field_count = reduce(
-                lambda x, y : type(y) == list and x + len(y) or x + 1,
-                header.values(),
-                0)
-            messages = [(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")]
-            raise ScheduleImportError(messages)
+    # Grab all the public events so that the raw data can be shown.
+    public_data = StringIO.StringIO()
+    writer = csv.DictWriter(
+        public_data,
+        fieldnames=fields,
+        dialect=dialect,
+        quotechar="\\")
 
-        finnish = {}
-        english = {}
+    # Ignore the first row
+    header = reader.next()
+    try:
+        writer.writerow(header)
+    except (ValueError, TypeError), e:
+        # This error comes only when there are too many fields in data.
+        field_count = reduce(
+            lambda x, y : type(y) == list and x + len(y) or x + 1,
+            header.values(),
+            0)
+        messages = [(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")]
+        raise ScheduleImportError(messages)
 
-        rows = 0
-        for row in reader:
-            if row['public'] != 'Yes':
-                continue
-            errors = get_row_errors(fields, row)
-            if len(errors) > 0:
-                messages = [
-                    (u"Schedule data has an invalid row", "warning")
-                    ]
-                for error in errors:
-                    messages.append((error, "warning"))
+    finnish = {}
+    english = {}
+
+    for row in reader:
+        if row['public'] != 'Yes':
+            continue
+        errors = get_row_errors(fields, row)
+        if len(errors) > 0:
+            messages = [
+                (u"Schedule data has an invalid row", "warning")
+                ]
+            for error in errors:
+                messages.append((error, "warning"))
                 messages.append((row, "warning"))
-                raise ScheduleImportError(messages)
-            try:
-                writer.writerow(row)
-            except (ValueError, TypeError), e:
-                messages = [
-                    (u"Unexpected error happened (ValueError): %s" % e.message, "warning"),
-                    (str(row),)
-                    ]
-                raise ScheduleImportError(messages)
-            except csv.Error, e:
-                messages = [
-                    (u"Unexpected error happened (csv.Error): %s" % e.message, "warning"),
-                    (str(row),)
-                    ]
-                raise ScheduleImportError(messages)
-            except TypeError, e:
-                messages = [
-                    (u"Unexpected error happened (TypeError): %s" % e.message, "warning"),
-                    (str(row),)
-                    ]
-                raise ScheduleImportError(messages)
-            item_id = None
-            try:
-                item_id = int(row['id'])
-            except ValueError, e:
-                messages = [
-                    (u"Row ID '%s' was not numeric." % row['id'], "warning"),
-                    (str(row),)
-                    ]
-                raise ScheduleImportError(messages)
-            for events, lang in [(finnish, 'fi'), (english, 'en')]:
-                event = Event()
-                event.start = extract_date(row['start_date'])
-                event.end = extract_date(row['finish_date'])
-                event.major = (row['major'] == 'Yes')
-                event.class_ = row['class_'].decode('UTF-8')
-                event.url = row['url']
-                event.title = row['title_%s' % lang].decode('UTF-8')
-                event.location = row['location_%s' % lang].decode('UTF-8')
-                event.location_url = row['location_url']
-                event.description = row['description_%s' % lang].decode('UTF-8')
-                event.canceled = (row['canceled'].lower() == 'yes')
-                event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
-                events[item_id] = event
-            rows += 1
-
-        public_csv = public_data.getvalue()
-
-        return {
-            "finnish": finnish,
-            "english": english,
-            "public_csv": public_csv
-            }
-
-    def _parse_json(self, data):
-        data_dict = None
+            raise ScheduleImportError(messages)
         try:
-            data_dict = json.loads(data)
+            writer.writerow(row)
+        except (ValueError, TypeError), e:
+            messages = [
+                (u"Unexpected error happened (ValueError): %s" % e.message, "warning"),
+                (str(row),)
+                ]
+            raise ScheduleImportError(messages)
+        except csv.Error, e:
+            messages = [
+                (u"Unexpected error happened (csv.Error): %s" % e.message, "warning"),
+                (str(row),)
+                ]
+            raise ScheduleImportError(messages)
+        except TypeError, e:
+            messages = [
+                (u"Unexpected error happened (TypeError): %s" % e.message, "warning"),
+                (str(row),)
+                ]
+            raise ScheduleImportError(messages)
+        item_id = None
+        try:
+            item_id = int(row['id'])
         except ValueError, e:
-            raise InvalidParserError()
+            messages = [
+                (u"Row ID '%s' was not numeric." % row['id'], "warning"),
+                (str(row),)
+                ]
+            raise ScheduleImportError(messages)
+        for events, lang in [(finnish, 'fi'), (english, 'en')]:
+            event = Event()
+            event.start = extract_date(row['start_date'])
+            event.end = extract_date(row['finish_date'])
+            event.major = (row['major'] == 'Yes')
+            event.class_ = row['class_'].decode('UTF-8')
+            event.url = row['url']
+            event.title = row['title_%s' % lang].decode('UTF-8')
+            event.location = row['location_%s' % lang].decode('UTF-8')
+            event.location_url = row['location_url']
+            event.description = row['description_%s' % lang].decode('UTF-8')
+            event.canceled = (row['canceled'].lower() == 'yes')
+            event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
+            events[item_id] = event
 
-        locations = {'fi': {}, 'en': {}}
-        for location_id, location in data_dict['locations'].items():
-            location_en = {
-                'name': location.get('name', ""),
-                'description': location.get('description', ""),
-                'url': location.get('link', "")
-                }
-            locations['en'][location_id] = location_en
-            location_fi = {
-                'name': location.get('name_fi') or location_en['name'],
-                'description': location.get('description_fi') or location_en['description'],
-                'url': location.get('link_fi') or location_en.get('link', "")
-                }
-            locations['en'][location_id] = location_en
-            locations['fi'][location_id] = location_fi
+    public_csv = public_data.getvalue()
 
-        events = {'fi': {}, 'en': {}}
-        for language, postfix in [('en', ''), ('fi', '_fi')]:
-            for event in data_dict['events']:
-                event_out = Event()
-                tags = [tag.lower() for tag in event.get("tags", "").split(",")]
-                event_out.start = extract_date_json(event['time'])
-                event_out.end = extract_date_json(event.get('end_time', event['time']))
-                event_out.major = "major" in tags
-                if "compo" in tags:
-                    event_out.class_ = "Compo"
-                else:
-                    event_out.class_ = "Event"
-                event_out.url = event.get('link') or ""
-                event_out.title = event.get('name' + postfix, event.get("name"))
-                location = locations[language].get(location_id)
-                if location is not None:
-                    event_out.location = location['name']
-                    event_out.location_url = location.get('link') or ""
+    return {
+        "finnish": finnish,
+        "english": english,
+        "public_csv": public_csv
+        }
 
-                description = event.get('description' + postfix, event.get('description')) or ""
-                event_out.description = description
-                event_out.assemblytv_broadcast = 'tv' in tags
-                events[language][event['id']] = event_out
+def parse_json(data):
+    data_dict = None
+    try:
+        data_dict = json.loads(data)
+    except ValueError, e:
+        raise InvalidParserError()
 
-        result = {
-            'finnish': events['fi'],
-            'english': events['en'],
-            'public_json': data
+    locations = {'fi': {}, 'en': {}}
+    for location_id, location in data_dict['locations'].items():
+        location_en = {
+            'name': location.get('name', ""),
+            'description': location.get('description', ""),
+            'url': location.get('link', "")
             }
+        locations['en'][location_id] = location_en
+        location_fi = {
+            'name': location.get('name_fi') or location_en['name'],
+            'description': location.get('description_fi') or location_en['description'],
+            'url': location.get('link_fi') or location_en.get('link', "")
+            }
+        locations['en'][location_id] = location_en
+        locations['fi'][location_id] = location_fi
 
-        return result
+    events = {'fi': {}, 'en': {}}
+    for language, postfix in [('en', ''), ('fi', '_fi')]:
+        for event in data_dict['events']:
+            event_out = Event()
+            tags = [tag.lower() for tag in event.get("tags", "").split(",")]
+            event_out.start = extract_date_json(event['time'])
+            event_out.end = extract_date_json(event.get('end_time', event['time']))
+            event_out.major = "major" in tags
+            if "compo" in tags:
+                event_out.class_ = "Compo"
+            else:
+                event_out.class_ = "Event"
+            event_out.url = event.get('link') or ""
+            event_out.title = event.get('name' + postfix, event.get("name"))
+            location = locations[language].get(location_id)
+            if location is not None:
+                event_out.location = location['name']
+                event_out.location_url = location.get('link') or ""
+
+            description = event.get('description' + postfix, event.get('description')) or ""
+            event_out.description = description
+            event_out.assemblytv_broadcast = 'tv' in tags
+            events[language][event['id']] = event_out
+
+    result = {
+        'finnish': events['fi'],
+        'english': events['en'],
+        'public_json': data
+        }
+
+    return result
+
+
+def update_schedule(view, data):
+    if data is None:
+        view.flash('Saved changes.')
+        return
+
+    if data == "":
+        view.flash(u"Empty data file was given!.", "warning")
+        return
+
+    parsers = [parse_json, parse_csv]
+    result = None
+    for parser in parsers:
+        try:
+            result = parser(data)
+        except InvalidParserError, e:
+            continue
+        except ScheduleImportError, e:
+            for flash_params in e.messages:
+                view.flash(*flash_params)
+            return
+
+    if not result:
+        view.flash(u"No appropriate parser found for the data.", "warning")
+        return
+
+    page = view.context.page
+
+    finnish = view.context.parameters.replace('lang:*', 'lang:fi')
+    finnish = page.getEdition(finnish, create=True)
+    finnish.events.clear()
+
+    english = view.context.parameters.replace('lang:*', 'lang:en')
+    english = page.getEdition(english, create=True)
+    english.events.clear()
+
+    rows = 0
+    for language, event_store in [('finnish', finnish), ('english', english)]:
+        rows = len(result[language])
+        if 'public_csv' in result:
+            event_store.public_csv = result['public_csv']
+        if 'public_json' in result:
+            event_store.public_json = result['public_json']
+        for event_id, event in result[language].items():
+            event_store.events[event_id] = event
+
+    zope.event.notify(grok.ObjectModifiedEvent(english))
+    zope.event.notify(grok.ObjectModifiedEvent(finnish))
+    view.flash(u'Your schedule was imported successfully with %d events.' % rows)
+
+
+class Edit(asm.cmsui.form.EditForm):
+    form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
+    form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     @grok.action(u'Upload')
-    def upload(self, data=None, title=None, message=None):
-        self.context.title = title
-        self.context.message = message
-        zope.event.notify(grok.ObjectModifiedEvent(self.context))
+    def upload(self, data=None):
+        update_schedule(self, data)
 
+
+class UploadSchedule(grok.Form):
+    grok.context(Schedule)
+    form_fields = grok.Fields(
+        data = zope.schema.Text(title=u'Data')
+        )
+
+    def flash(self, message, level=''):
+        self.messages.append(message)
+
+    @grok.action(u'Upload')
+    def upload(self, data=None):
         if data is None:
-            self.flash('Saved changes.')
-            return
-
-        if data == "":
-            self.flash(u"Empty data file was given!.", "warning")
-            return
-
-        parsers = [self._parse_json, self._parse_csv]
-        result = None
-        for parser in parsers:
-            try:
-                result = parser(data)
-            except InvalidParserError, e:
-                continue
-            except ScheduleImportError, e:
-                for flash_params in e.messages:
-                    self.flash(*flash_params)
-                return
-
-        if not result:
-            self.flash(u"No appropriate parser found for the data.", "warning")
-            return
-
-        page = self.context.page
-
-        finnish = self.context.parameters.replace('lang:*', 'lang:fi')
-        finnish = page.getEdition(finnish, create=True)
-        finnish.events.clear()
-
-        english = self.context.parameters.replace('lang:*', 'lang:en')
-        english = page.getEdition(english, create=True)
-        english.events.clear()
-
-        rows = 0
-        for language, event_store in [('finnish', finnish), ('english', english)]:
-            rows = len(result[language])
-            if 'public_csv' in result:
-                event_store.public_csv = result['public_csv']
-            if 'public_json' in result:
-                event_store.public_json = result['public_json']
-            for event_id, event in result[language].items():
-                event_store.events[event_id] = event
-
-        zope.event.notify(grok.ObjectModifiedEvent(english))
-        zope.event.notify(grok.ObjectModifiedEvent(finnish))
-        self.flash(u'Your schedule was imported successfully with %d events.' % rows)
+            return "Give data"
+        self.messages = []
+        update_schedule(self, data.encode("utf-8"))
+        if len(self.messages):
+            return "\n".join(self.messages)
+        return "OK"
 
 
 @grok.subscribe(asm.workflow.interfaces.PublishedEvent)
@@ -421,11 +432,14 @@ def publish_schedule(event):
 def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
+
 def extract_date_json(date):
     return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")], "%Y-%m-%dT%H:%M:%S")
 
+
 class NullEvent(object):
     end = datetime.datetime(1980, 1, 1)
+
 
 class FilteredSchedule(object):
     """A helper to create a filtered view on a schedule."""

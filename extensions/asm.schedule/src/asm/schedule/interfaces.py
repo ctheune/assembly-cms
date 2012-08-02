@@ -9,4 +9,4 @@ class IScheduleUpload(zope.interface.Interface):
 
     message = zope.schema.Text(title=u'Custom message', required=False)
 
-    data = zope.schema.Bytes(title=u'Schedule in CSV format', required=False)
+    data = zope.schema.Bytes(title=u'Schedule in CSV or JSON format', required=False)

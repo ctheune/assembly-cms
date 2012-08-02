@@ -79,8 +79,8 @@ class IInitialEditionParameters(zope.interface.Interface):
 
     """
 
-    def __call__():
-        """Return a set of parameters to be used for initial editions."""
+    def __call__(page):
+        """Return a set of parameters to be used for the initial edition of this page."""
 
 
 class IHTMLPage(zope.interface.Interface):

@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" >
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.summer12mini">
   <head>
     <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2012 &ndash; 2.-5.8.2012, Hartwall Areena, Helsinki </title>
@@ -11,10 +11,10 @@
     <meta name="ICBM" content="60.205868, 24.929446" />
 
     <!-- opengraph data -->
-    <meta name="og:url" tal:attributes="content view/url" />
-    <meta name="og:title" tal:attributes="content context/title" />
-    <meta name="og:type" content="Assembly Summer 2012"/>
-    <meta name="og:image" tal:repeat="image view/@@layouthelper/og_images"
+    <meta property="og:url" tal:attributes="content view/url" />
+    <meta property="og:title" tal:attributes="content context/title" />
+    <meta property="og:type" content="Assembly Summer 2012"/>
+    <meta property="og:image" tal:repeat="image view/@@layouthelper/og_images"
       tal:attributes="content image"/>
 
     <link rel="stylesheet" type="text/css" tal:attributes="href context/@@layouthelper/static/style.css"/>

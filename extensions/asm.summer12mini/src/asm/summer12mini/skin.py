@@ -147,7 +147,8 @@ class LayoutHelper(grok.View):
         if self.context.context.page.type != 'htmlpage':
           return
         edition = self.context.context
-        document = asm.cms.utils.tree_from_fragment(edition.content)
+        content = self.context.resolve_relative_urls(edition.content, edition)
+        document = asm.cms.utils.tree_from_fragment(content)
         for img in document.xpath('//img'):
             yield img.get('src')
 

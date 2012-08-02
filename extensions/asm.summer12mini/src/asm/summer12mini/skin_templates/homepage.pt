@@ -1,4 +1,4 @@
-Livestream button during the party.
+<!-- Livestream button during the party. -->
 <a id="livestream"
    tal:attributes="href context/@@layouthelper/static/i-livestream.html"
    rel="#overlay" style="text-decoration:none"> </a>

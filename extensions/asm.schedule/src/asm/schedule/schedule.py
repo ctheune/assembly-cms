@@ -139,30 +139,7 @@ class Edit(asm.cmsui.form.EditForm):
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
     form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
-    @grok.action(u'Upload')
-    def upload(self, data=None, title=None, message=None):
-        self.context.title = title
-        self.context.message = message
-        zope.event.notify(grok.ObjectModifiedEvent(self.context))
-
-        if data is None:
-            self.flash('Saved changes.')
-            return
-
-        if data == "":
-            self.flash(u"Empty data file was given!.", "warning")
-            return
-
-        page = self.context.page
-
-        finnish = self.context.parameters.replace('lang:*', 'lang:fi')
-        finnish = page.getEdition(finnish, create=True)
-        finnish.events.clear()
-
-        english = self.context.parameters.replace('lang:*', 'lang:en')
-        english = page.getEdition(english, create=True)
-        english.events.clear()
-
+    def _parse_csv(self, data, finnish, english):
         try:
             dialect = csv.Sniffer().sniff(data)
         except csv.Error, e:
@@ -248,6 +225,34 @@ class Edit(asm.cmsui.form.EditForm):
         public_csv = public_data.getvalue()
         english.public_csv = public_csv
         finnish.public_csv = public_csv
+        
+
+    @grok.action(u'Upload')
+    def upload(self, data=None, title=None, message=None):
+        self.context.title = title
+        self.context.message = message
+        zope.event.notify(grok.ObjectModifiedEvent(self.context))
+
+        if data is None:
+            self.flash('Saved changes.')
+            return
+
+        if data == "":
+            self.flash(u"Empty data file was given!.", "warning")
+            return
+
+        page = self.context.page
+
+        finnish = self.context.parameters.replace('lang:*', 'lang:fi')
+        finnish = page.getEdition(finnish, create=True)
+        finnish.events.clear()
+
+        english = self.context.parameters.replace('lang:*', 'lang:en')
+        english = page.getEdition(english, create=True)
+        english.events.clear()
+
+
+
         zope.event.notify(grok.ObjectModifiedEvent(english))
         zope.event.notify(grok.ObjectModifiedEvent(finnish))
         self.flash(u'Your schedule was imported successfully with %d events.' % rows)

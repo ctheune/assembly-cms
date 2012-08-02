@@ -45,7 +45,7 @@ class LayoutHelper(grok.View):
         return asm.cms.edition.select_edition(schedule, self.request)
 
     def event_data(self, key, event):
-        url = '%s#%s' % (self.url(self.application['program']['schedule']), key)
+        url = '%s#%s' % (self.url(self.application['schedule']), key)
         start = i18n_strftime('%H:%M', event.start, self.request)
         end = i18n_strftime('%H:%M', event.end, self.request)
         return dict(event=event, key=key, url=url, start=start, end=end)

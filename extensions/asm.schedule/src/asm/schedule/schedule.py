@@ -152,7 +152,7 @@ class Edit(asm.cmsui.form.EditForm):
 
     def _parse_csv(self, data):
         FIELD_SEPARATOR_SNIFF_AMOUNT = 50
-        if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
+        if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT] and "\t" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
             raise InvalidParserError()
         try:
             dialect = csv.Sniffer().sniff(data)

@@ -13,5 +13,7 @@ def evolve(context):
         zope.app.component.hooks.setSite(cms)
         try:
             install_utility(cms)
+        except KeyError:
+            pass
         finally:
             zope.app.component.hooks.setSite(None)

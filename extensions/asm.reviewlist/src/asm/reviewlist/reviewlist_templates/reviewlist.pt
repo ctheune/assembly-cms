@@ -12,8 +12,9 @@
   <tbody>
     <tr tal:repeat="change view/changes">
       <td tal:content="change/timestamp/@@format/when"></td>
-      <td><a tal:attributes="href python:view.url(change.object)"
-             tal:content="change/object/title"></a></td>
+      <td tal:condition="change/object"><a tal:attributes="href python:view.url(change.object)"
+             tal:content="change/title"></a></td>
+         <td tal:condition="not:change/object"><span tal:content="change/title"/> (Deleted)</td>
       <td tal:content="change/user_id"></td>
     </tr>
   </tbody>

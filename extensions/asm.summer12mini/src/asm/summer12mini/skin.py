@@ -143,6 +143,14 @@ class LayoutHelper(grok.View):
 
         return asm.translation.translation.fallback()
 
+    def og_images(self):
+        if self.context.context.page.type != 'htmlpage':
+          return
+        edition = self.context.context
+        document = asm.cms.utils.tree_from_fragment(edition.content)
+        for img in document.xpath('//img'):
+            yield img.get('src')
+
     # A helper class to get access to the static directory in this module from
     # the layout.
 

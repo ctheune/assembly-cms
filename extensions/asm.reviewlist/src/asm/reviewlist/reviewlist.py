@@ -36,11 +36,17 @@ class Change(persistent.Persistent):
     timestamp = None  # datetime.datetime
     user_id = None  # username
     object_id = None  # intid of changed object
+    deleted = False
+    title = None
 
     @property
     def object(self):
         intids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
-        return intids.getObject(self.object_id)
+        try:
+            object = intids.getObject(self.object_id)
+        except KeyError:
+            object = None
+        return object
 
 
 class IChangeLog(zope.interface.Interface):
@@ -67,11 +73,21 @@ class ChangeLog(grok.LocalUtility):
         change.timestamp = datetime.datetime.now()
         change.user_id = request.principal.title
         change.object_id = intids.register(object)
+        change.title = object.title
         key = int(time.mktime(change.timestamp.timetuple())*1000)
         self.changes[key] = change
 
     def get_changes(self, limit=50):
-        return reversed(self.changes.values()[-limit:])
+        changes = reversed(self.changes.values()[-limit:])
+        for change in changes:
+            try:
+                change.object
+                if change.title is None:
+                    # XXX soft migration.
+                    change.title = change.object.title
+            except Exception:
+                change.deleted = True
+            yield change
 
 
 def install_utility(cms):

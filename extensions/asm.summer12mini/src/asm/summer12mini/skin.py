@@ -38,10 +38,7 @@ class LayoutHelper(grok.View):
 
     @property
     def schedule(self):
-        try:
-            schedule = self.application['program']['schedule']
-        except KeyError:
-            schedule = self.application['schedule']
+        schedule = self.application['schedule']
         return asm.cms.edition.select_edition(schedule, self.request)
 
     def event_data(self, key, event):

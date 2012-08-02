@@ -291,7 +291,7 @@ class Edit(asm.cmsui.form.EditForm):
                 event_out = Event()
                 tags = [tag.lower() for tag in event.get("tags", "").split(",")]
                 event_out.start = extract_date_json(event['time'])
-                event_out.end = extract_date_json(event.get('time_end', event['time']))
+                event_out.end = extract_date_json(event.get('end_time', event['time']))
                 event_out.major = "major" in tags
                 if "compo" in tags:
                     event_out.class_ = "Compo"

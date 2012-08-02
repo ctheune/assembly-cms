@@ -9,8 +9,8 @@ import asm.workflow.interfaces
 import csv
 import datetime
 import grok
+import json
 import persistent
-import transaction
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 from asm.schedule.i18n import _, i18n_strftime
@@ -24,6 +24,7 @@ class Schedule(asm.cms.Edition):
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
     public_csv = ""
+    public_json = ""
     factory_title = u'Schedule'
 
     message = None
@@ -39,6 +40,7 @@ class Schedule(asm.cms.Edition):
             self.events[key] = value
         self.message = other.message
         self.public_csv = other.public_csv
+        self.public_json = other.public_json
 
 
 class TextIndexing(grok.Adapter):
@@ -126,10 +128,13 @@ def get_row_errors(fields, field_data):
     return errors
 
 
+class InvalidParserError(RuntimeError):
+    pass
+
+
 class ScheduleImportError(RuntimeError):
-    def __init__(self, messages, abort_transaction=True):
+    def __init__(self, messages):
         self.messages = messages
-        self.abort_transaction = abort_transaction
 
 
 class Edit(asm.cmsui.form.EditForm):
@@ -146,6 +151,9 @@ class Edit(asm.cmsui.form.EditForm):
     form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     def _parse_csv(self, data):
+        FIELD_SEPARATOR_SNIFF_AMOUNT = 50
+        if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
+            raise InvalidParserError()
         try:
             dialect = csv.Sniffer().sniff(data)
         except csv.Error, e:
@@ -154,7 +162,7 @@ class Edit(asm.cmsui.form.EditForm):
             (u"Make sure that all lines contain the same amount of field delimiter characters.",),
             (u"First row of data: %s" % data.split("\n")[0],),
             ]
-            raise ScheduleImportError(messages, abort_transaction=False)
+            raise ScheduleImportError(messages)
         data = StringIO.StringIO(data)
         fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
                   'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
@@ -183,7 +191,7 @@ class Edit(asm.cmsui.form.EditForm):
                 header.values(),
                 0)
             messages = [(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")]
-            raise ScheduleImportError(messages, abort_transaction=False)
+            raise ScheduleImportError(messages)
 
         finnish = {}
         english = {}
@@ -254,6 +262,61 @@ class Edit(asm.cmsui.form.EditForm):
             "public_csv": public_csv
             }
 
+    def _parse_json(self, data):
+        data_dict = None
+        try:
+            data_dict = json.loads(data)
+        except ValueError, e:
+            raise InvalidParserError()
+
+        locations = {'fi': {}, 'en': {}}
+        for location_id, location in data_dict['locations'].items():
+            location_en = {
+                'name': location.get('name', ""),
+                'description': location.get('description', ""),
+                'url': location.get('link', "")
+                }
+            locations['en'][location_id] = location_en
+            location_fi = {
+                'name': location.get('name_fi') or location_en['name'],
+                'description': location.get('description_fi') or location_en['description'],
+                'url': location.get('link_fi') or location_en.get('link', "")
+                }
+            locations['en'][location_id] = location_en
+            locations['fi'][location_id] = location_fi
+
+        events = {'fi': {}, 'en': {}}
+        for language, postfix in [('en', ''), ('fi', '_fi')]:
+            for event in data_dict['events']:
+                event_out = Event()
+                tags = [tag.lower() for tag in event.get("tags", "").split(",")]
+                event_out.start = extract_date_json(event['time'])
+                event_out.end = extract_date_json(event.get('time_end', event['time']))
+                event_out.major = "major" in tags
+                if "compo" in tags:
+                    event_out.class_ = "Compo"
+                else:
+                    event_out.class_ = "Event"
+                event_out.url = event.get('link') or ""
+                event_out.title = event.get('name' + postfix, event.get("name"))
+                location = locations[language].get(location_id)
+                if location is not None:
+                    event_out.location = location['name']
+                    event_out.location_url = location.get('link') or ""
+
+                description = event.get('description' + postfix, event.get('description')) or ""
+                event_out.description = description
+                event_out.assemblytv_broadcast = 'tv' in tags
+                events[language][event['id']] = event_out
+
+        result = {
+            'finnish': events['fi'],
+            'english': events['en'],
+            'public_json': data
+            }
+
+        return result
+
     @grok.action(u'Upload')
     def upload(self, data=None, title=None, message=None):
         self.context.title = title
@@ -268,6 +331,22 @@ class Edit(asm.cmsui.form.EditForm):
             self.flash(u"Empty data file was given!.", "warning")
             return
 
+        parsers = [self._parse_json, self._parse_csv]
+        result = None
+        for parser in parsers:
+            try:
+                result = parser(data)
+            except InvalidParserError, e:
+                continue
+            except ScheduleImportError, e:
+                for flash_params in e.messages:
+                    self.flash(*flash_params)
+                return
+
+        if not result:
+            self.flash(u"No appropriate parser found for the data.", "warning")
+            return
+
         page = self.context.page
 
         finnish = self.context.parameters.replace('lang:*', 'lang:fi')
@@ -278,19 +357,13 @@ class Edit(asm.cmsui.form.EditForm):
         english = page.getEdition(english, create=True)
         english.events.clear()
 
-        try:
-            result = self._parse_csv(data)
-        except ScheduleImportError, e:
-            if e.abort_transaction:
-                transaction.abort()
-            for flash_params in e.messages:
-                self.flash(*flash_params)
-            return
-
         rows = 0
         for language, event_store in [('finnish', finnish), ('english', english)]:
             rows = len(result[language])
-            event_store.public_csv = result['public_csv']
+            if 'public_csv' in result:
+                event_store.public_csv = result['public_csv']
+            if 'public_json' in result:
+                event_store.public_json = result['public_json']
             for event_id, event in result[language].items():
                 event_store.events[event_id] = event
 
@@ -347,6 +420,9 @@ def publish_schedule(event):
 
 def extract_date(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
+
+def extract_date_json(date):
+    return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")], "%Y-%m-%dT%H:%M:%S")
 
 class NullEvent(object):
     end = datetime.datetime(1980, 1, 1)
@@ -475,3 +551,11 @@ class Csv(grok.View):
 
     def render(self):
         return self.context.public_csv
+
+class Json(grok.View):
+    grok.name('json')
+    grok.context(Schedule)
+    grok.layer(asm.cmsui.interfaces.IRetailSkin)
+
+    def render(self):
+        return self.context.public_json

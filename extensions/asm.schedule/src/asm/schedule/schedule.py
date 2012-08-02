@@ -126,6 +126,12 @@ def get_row_errors(fields, field_data):
     return errors
 
 
+class ScheduleImportError(RuntimeError):
+    def __init__(self, messages, abort_transaction=True):
+        self.messages = messages
+        self.abort_transaction = abort_transaction
+
+
 class Edit(asm.cmsui.form.EditForm):
     """Editing a schedule means uploading a CSV file (as produced by Jussi)
     and updating both language editions from that file.
@@ -139,14 +145,16 @@ class Edit(asm.cmsui.form.EditForm):
     form_fields = grok.AutoFields(asm.schedule.interfaces.IScheduleUpload)
     form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
-    def _parse_csv(self, data, finnish, english):
+    def _parse_csv(self, data):
         try:
             dialect = csv.Sniffer().sniff(data)
         except csv.Error, e:
-            self.flash(u"%s." % e.message, "warning")
-            self.flash(u"Make sure that all lines contain the same amount of field delimiter characters.")
-            self.flash(u"First row of data: %s" % data.split("\n")[0])
-            return
+            messages = [
+            (u"%s." % e.message, "warning"),
+            (u"Make sure that all lines contain the same amount of field delimiter characters.",),
+            (u"First row of data: %s" % data.split("\n")[0],),
+            ]
+            raise ScheduleImportError(messages, abort_transaction=False)
         data = StringIO.StringIO(data)
         fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
                   'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
@@ -168,14 +176,17 @@ class Edit(asm.cmsui.form.EditForm):
         header = reader.next()
         try:
             writer.writerow(header)
-        except ValueError, e:
+        except (ValueError, TypeError), e:
             # This error comes only when there are too many fields in data.
             field_count = reduce(
                 lambda x, y : type(y) == list and x + len(y) or x + 1,
                 header.values(),
                 0)
-            self.flash(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")
-            return
+            messages = [(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")]
+            raise ScheduleImportError(messages, abort_transaction=False)
+
+        finnish = {}
+        english = {}
 
         rows = 0
         for row in reader:
@@ -183,30 +194,43 @@ class Edit(asm.cmsui.form.EditForm):
                 continue
             errors = get_row_errors(fields, row)
             if len(errors) > 0:
-                transaction.abort()
-                self.flash(u"Schedule data has an invalid row", "warning")
+                messages = [
+                    (u"Schedule data has an invalid row", "warning")
+                    ]
                 for error in errors:
-                    self.flash(error, "warning")
-                self.flash(row, "warning")
-                return
+                    messages.append((error, "warning"))
+                messages.append((row, "warning"))
+                raise ScheduleImportError(messages)
             try:
                 writer.writerow(row)
-            except ValueError, e:
-                transaction.abort()
-                self.flash(u"Unexpected error happened (ValueError): %s" % e.message, "warning")
-                self.flash(str(row))
-                return
+            except (ValueError, TypeError), e:
+                messages = [
+                    (u"Unexpected error happened (ValueError): %s" % e.message, "warning"),
+                    (str(row),)
+                    ]
+                raise ScheduleImportError(messages)
             except csv.Error, e:
-                transaction.abort()
-                self.flash(u"Unexpected error happened (csv.Error): %s" % e.message, "warning")
-                self.flash(str(row))
-                return
+                messages = [
+                    (u"Unexpected error happened (csv.Error): %s" % e.message, "warning"),
+                    (str(row),)
+                    ]
+                raise ScheduleImportError(messages)
             except TypeError, e:
-                transaction.abort()
-                self.flash(u"Unexpected error happened (TypeError): %s" % e.message, "warning")
-                self.flash(str(row))
-                return
-            for schedule, lang in [(finnish, 'fi'), (english, 'en')]:
+                messages = [
+                    (u"Unexpected error happened (TypeError): %s" % e.message, "warning"),
+                    (str(row),)
+                    ]
+                raise ScheduleImportError(messages)
+            item_id = None
+            try:
+                item_id = int(row['id'])
+            except ValueError, e:
+                messages = [
+                    (u"Row ID '%s' was not numeric." % row['id'], "warning"),
+                    (str(row),)
+                    ]
+                raise ScheduleImportError(messages)
+            for events, lang in [(finnish, 'fi'), (english, 'en')]:
                 event = Event()
                 event.start = extract_date(row['start_date'])
                 event.end = extract_date(row['finish_date'])
@@ -219,13 +243,16 @@ class Edit(asm.cmsui.form.EditForm):
                 event.description = row['description_%s' % lang].decode('UTF-8')
                 event.canceled = (row['canceled'].lower() == 'yes')
                 event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
-                schedule.events[int(row['id'])] = event
+                events[item_id] = event
             rows += 1
 
         public_csv = public_data.getvalue()
-        english.public_csv = public_csv
-        finnish.public_csv = public_csv
-        
+
+        return {
+            "finnish": finnish,
+            "english": english,
+            "public_csv": public_csv
+            }
 
     @grok.action(u'Upload')
     def upload(self, data=None, title=None, message=None):
@@ -251,7 +278,21 @@ class Edit(asm.cmsui.form.EditForm):
         english = page.getEdition(english, create=True)
         english.events.clear()
 
+        try:
+            result = self._parse_csv(data)
+        except ScheduleImportError, e:
+            if e.abort_transaction:
+                transaction.abort()
+            for flash_params in e.messages:
+                self.flash(*flash_params)
+            return
 
+        rows = 0
+        for language, event_store in [('finnish', finnish), ('english', english)]:
+            rows = len(result[language])
+            event_store.public_csv = result['public_csv']
+            for event_id, event in result[language].items():
+                event_store.events[event_id] = event
 
         zope.event.notify(grok.ObjectModifiedEvent(english))
         zope.event.notify(grok.ObjectModifiedEvent(finnish))

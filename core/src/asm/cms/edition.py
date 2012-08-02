@@ -133,14 +133,14 @@ class EditionParameters(object):
 
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectAddedEvent)
 def add_initial_edition(page, event=None):
-    page.addEdition(get_initial_parameters())
+    page.addEdition(get_initial_parameters(page))
 
 
-def get_initial_parameters():
+def get_initial_parameters(page):
     parameters = set()
     for factory in zope.component.getAllUtilitiesRegisteredFor(
             asm.cms.interfaces.IInitialEditionParameters):
-        parameters.update(factory())
+        parameters.update(factory(page))
     return EditionParameters(parameters)
 
 

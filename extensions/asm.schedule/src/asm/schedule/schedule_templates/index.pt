@@ -1,6 +1,7 @@
 <tal:block i18n:domain="asm.schedule">
 <span tal:replace="structure context/message|nothing"></span>
 
+<div tal:attributes="class context/page/__parent__/__name__">
 <div class="scheduleclasses">
 <tal:block repeat="option view/filter/detail_options">
   <a tal:attributes="href string:?details=${option/token}&day=${view/filter/day};
@@ -71,6 +72,7 @@
     </tal:block>
     </tal:block>
   </table>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function() {

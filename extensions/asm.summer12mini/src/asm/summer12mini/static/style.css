@@ -787,3 +787,6 @@ a:active {
     border-right: gray solid 2px;
 }
 
+.assemblytv .scheduleclasses {
+    display: none;
+}

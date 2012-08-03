@@ -167,4 +167,4 @@ class Image(grok.GlobalUtility):
         media_id, image_text = get_media_info(media_id_data, self.DEFAULT_TEXT)
         return  self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
-            'image_text': image_text.strip()}
+            'image_text': cgi.escape(image_text.strip(), quote=True)}

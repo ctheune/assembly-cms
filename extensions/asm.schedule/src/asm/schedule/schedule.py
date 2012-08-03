@@ -104,6 +104,8 @@ def get_row_errors(fields, field_data):
         if field_data.get(field, None) is None:
             errors.append(u"Field '%s' is missing." % field)
 
+    if len(errors) > 0:
+        return errors
 
     if None in field_data:
         errors.append(
@@ -359,7 +361,11 @@ class Edit(asm.cmsui.form.EditForm):
     form_fields['message'].custom_widget = asm.cmsui.tinymce.TinyMCEWidget
 
     @grok.action(u'Upload')
-    def upload(self, data=None):
+    def upload(self, data=None, title=None, message=None):
+        self.context.title = title
+        self.context.message = message
+        zope.event.notify(grok.ObjectModifiedEvent(self.context))
+
         update_schedule(self, data)
 
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.summer12mini">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.summer12mini" prefix="og: http://ogp.me/ns#">
   <head>
     <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2012 &ndash; 2.-5.8.2012, Hartwall Areena, Helsinki </title>
 
@@ -13,7 +13,8 @@
     <!-- opengraph data -->
     <meta property="og:url" tal:attributes="content view/url" />
     <meta property="og:title" tal:attributes="content context/title" />
-    <meta property="og:type" content="Assembly Summer 2012"/>
+    <meta property="og:site_name" content="Assembly Summer 2012"/>
+    <meta property="og:type" content="website"/>
     <meta property="og:image" tal:repeat="image view/@@layouthelper/og_images"
       tal:attributes="content image"/>
 

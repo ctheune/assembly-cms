@@ -1,0 +1,15 @@
+<div class="section">
+    <h3>Language</h3>
+
+    <ul>
+        <li tal:repeat="version viewlet/list_language_versions"
+            tal:attributes="class version/class">
+            <a tal:attributes="href version/url">
+                <span tal:replace="version/label"/>
+                <span tal:condition="version/hint" class="discreet"
+                      tal:content="version/hint"/>
+            </a>
+        </li>
+    </ul>
+
+</div>

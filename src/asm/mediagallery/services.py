@@ -157,7 +157,7 @@ class Image(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('image')
 
-    EMBED_TEMPLATE = """<img src='%(id)s' alt='%(image_text)s' />"""
+    EMBED_TEMPLATE = """<img src="%(id)s" alt="%(image_text)s" />"""
     DEFAULT_TEXT = "Gallery image."
 
     def link_code(self, media_id):

@@ -1,0 +1,35 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="asm.cms">
+
+  <grok:grok package="." />
+
+  <subscriber
+    factory=".translation.RetailEditionSelector"
+    provides="asm.cms.interfaces.IEditionSelector"
+    />
+
+  <subscriber
+    factory=".translation.CMSEditionSelector"
+    provides="asm.cms.interfaces.IEditionSelector"
+    />
+
+  <utility
+    component=".translation.select_initial_language"
+    provides="asm.cms.IInitialEditionParameters"
+    name="translation"
+    />
+
+  <utility
+    factory=".translation.Prefixes"
+    provides="asm.cms.interfaces.IExtensionPrefixes"
+    name="translation"
+    />
+
+  <utility
+    component=".translation.default_languages"
+    provides="asm.translation.interfaces.ILanguageProfile"
+    />
+
+</configure>

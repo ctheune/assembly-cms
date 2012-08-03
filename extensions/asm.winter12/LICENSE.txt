@@ -1,5 +1,0 @@
-Copyright (c) 2009 Karri Saarinen, all rights reserved.
-
-You may only use this package for educational purposes to learn how to create
-a custom retail skin with the Assembly CMS. You are not allowed to create
-derived works or run a CMS with this skin.

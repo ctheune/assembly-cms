@@ -16,6 +16,7 @@ skin_name = 'assemblytv'
 assemblytv = asm.cms.cms.Profile(skin_name)
 languages = ['en', 'fi']
 
+
 class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin(skin_name)
 
@@ -37,12 +38,9 @@ class LayoutHelper(grok.View):
     grok.layer(ISkin)
 
     def current_language(self):
-        if not 'asm.translation.lang' in self.request.cookies:
-            return asm.translation.translation.fallback()
-
-        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
-            return self.request.cookies['asm.translation.lang']
-
+        cookie_lang = self.request.cookies.get('asm.translation.lang')
+        if cookie_lang in asm.translation.translation.current():
+            return cookie_lang
         return asm.translation.translation.fallback()
 
     @property
@@ -60,6 +58,7 @@ class LayoutHelper(grok.View):
     def render(self):
         return ''
 
+
 class Homepage(asm.cmsui.retail.Pagelet):
 
     grok.context(asm.cms.homepage.Homepage)
@@ -74,6 +73,7 @@ class Homepage(asm.cmsui.retail.Pagelet):
             return edition
         else:
             return None
+
 
 class SelectLanguage(grok.View):
 

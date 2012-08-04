@@ -1,8 +1,5 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 from zope.app.zopeappgenerations import getRootFolder
-import ZODB.blob
 import asm.cms.cms
 import zope.app.component.hooks
 import zope.intid.interfaces
@@ -23,7 +20,7 @@ def evolve(context):
                 if not obj.type == 'externalasset':
                     continue
                 for edition in obj.editions:
-                    gallery = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+                    gallery = IMediaGalleryAdditionalInfo(edition)
                     gallery.thumbnail = edition.thumbnail
                     edition.thumbnail = None
         finally:

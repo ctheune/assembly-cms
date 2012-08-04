@@ -1,6 +1,5 @@
-# Make this a Python package
-
 import grok
+
 
 def get_path(self, item, include_self=False):
     "Return the list of pages leading to this edition."

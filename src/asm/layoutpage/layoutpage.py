@@ -37,8 +37,8 @@ class Layout(object):
 
     def render(self, request, context, partial_render):
         template = LayoutTemplate(
-            self.layout, lambda name:self._lookup(name, request, context,
-                partial_render))
+            self.layout, lambda name: self._lookup(
+                name, request, context, partial_render))
         return template()
 
 
@@ -67,7 +67,7 @@ class LayoutTemplate(object):
 
     def __call__(self):
         return self.MARKER_PATTERN.sub(
-            lambda match:self.value_lookup(match.groups()[0]),
+            lambda match: self.value_lookup(match.groups()[0]),
             self.template)
 
 
@@ -101,11 +101,10 @@ def ensure_page_is_local_utility(obj, event):
          provided=asm.layoutpage.interfaces.ILayoutPage, name=page.__name__)
 
 
-
 @grok.subscribe(asm.cms.interfaces.IPage, grok.IObjectRemovedEvent)
 def ensure_page_is_not_local_utility(obj, event):
     try:
-        registered_page = zope.component.getUtility(
+        zope.component.getUtility(
             asm.layoutpage.interfaces.ILayoutPage, name=obj.__name__)
     except LookupError:
         pass

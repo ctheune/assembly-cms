@@ -1,6 +1,7 @@
 import asm.cms
-import asm.cmsui.retail
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
+import asm.cmsui.retail
 import datetime
 import grok
 import megrok.pagelet
@@ -21,12 +22,12 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
     def current_events(self):
-        if 'program' not in self.application or 'schedule' not in self.application['program']:
+        if ('program' not in self.application or
+            'schedule' not in self.application['program']):
             raise StopIteration()
         schedule = asm.cms.edition.select_edition(
             self.application['program']['schedule'], self.request)
@@ -90,12 +91,6 @@ class LayoutHelper(grok.View):
         # This should never get returned...
         return "Welcome to Assembly!"
 
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
-
 
 class Navtree(grok.View):
     grok.layer(ISkin)
@@ -155,8 +150,8 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     def news(self, tag):
         if 'news' not in self.context.page:
-           raise StopIteration() 
-        
+            raise StopIteration()
+
         news_edition = asm.cms.edition.select_edition(
             self.context.page['news'], self.request)
         for item in news_edition.list():

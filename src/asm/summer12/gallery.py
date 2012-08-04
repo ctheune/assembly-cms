@@ -1,14 +1,11 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from .skin import ISkin, EmbeddedPageContent
-import asm.mediagallery.interfaces
-from asm.mediagallery.gallery import MediaGallery
-from asm.cmsui.retail import Pagelet
-from asm.cms.edition import select_edition, NullEdition
 from asm.cms.asset import Asset
+from asm.cms.edition import select_edition, NullEdition
+from asm.mediagallery.gallery import MediaGallery
+import asm.mediagallery.interfaces
 import grok
 import zope.component
+
 
 class Embedded(grok.Viewlet):
     grok.layer(ISkin)
@@ -26,6 +23,7 @@ class Embedded(grok.Viewlet):
             if isinstance(edition, NullEdition):
                 continue
             yield edition
+
 
 class CarouselItemExternalAsset(grok.View):
     grok.context(asm.mediagallery.interfaces.IExternalAsset)

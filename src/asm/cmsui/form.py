@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.interfaces
 import asm.cmsui.interfaces
 import grok

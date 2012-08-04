@@ -1,14 +1,12 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import megrok.pagelet
-import grok
 import asm.cms.cms
-import asm.cmsui.interfaces
 import asm.cmsui.base
+import asm.cmsui.interfaces
+import grok
+import megrok.pagelet
 import zope.interface
 
 grok.context(asm.cms.cms.CMS)
+
 
 class SearchAndReplace(megrok.pagelet.Pagelet):
     """Present the user a form to allow entering search and replace terms."""

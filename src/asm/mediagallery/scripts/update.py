@@ -1,6 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 import Image
 import StringIO
 import ZODB.blob
@@ -8,16 +6,16 @@ import asm.cms.page
 import asm.cms.utils
 import asm.mediagallery.externalasset
 import sys
+import transaction
 import urllib
 import zope.app.component.hooks
-import transaction
 
 gallery = sys.argv[1]
 file = sys.argv[2]
 
 #locate site and gallery
 steps = gallery.split('/')[1:]
-obj = root
+obj = root  # NOQA
 while steps:
     obj = obj[steps.pop(0)]
     try:
@@ -26,31 +24,32 @@ while steps:
         pass
 gallery = obj
 
-def get_thumbnail(data, target=(77.0,165.0), crop=True):
+
+def get_thumbnail(data, target=(77.0, 165.0), crop=True):
     im = Image.open(data)
     width, height = im.size
-    orig_ratio = float(width)/height
-    target_ratio = float(target[1])/target[0]
+    orig_ratio = float(width) / height
+    target_ratio = float(target[1]) / target[0]
 
     if orig_ratio > target_ratio:
-        width = width / (height/target[0])
+        width = width / (height / target[0])
         height = target[0]
     else:
-        height = height / (width/target[1])
+        height = height / (width / target[1])
         width = target[1]
 
     im = im.resize((width, height), Image.ANTIALIAS)
     width, height = im.size
 
-    width_delta = (width-target[1])/2
-    height_delta = (height-target[0])/2
+    width_delta = (width - target[1]) / 2
+    height_delta = (height - target[0]) / 2
 
     if crop:
         im = im.crop((
                   width_delta,
                   height_delta,
-                  width-width_delta,
-                  height-height_delta))
+                  width - width_delta,
+                  height - height_delta))
         im = im.crop((0, 0, int(target[1]), int(target[0])))
         im.load()
     output = StringIO.StringIO()
@@ -65,11 +64,13 @@ def update_location(locations, name, value):
             return True
     return False
 
+
 def create_service(name, value):
     service = asm.mediagallery.externalasset.HostingServiceChoice()
     service.service_id = name
     service.id = value
     return service
+
 
 def update_external(section, name, data):
     edition = section[name].page.editions.next()
@@ -78,11 +79,14 @@ def update_external(section, name, data):
     if 'youtube' in data:
         locations += (create_service('youtube', data['youtube']),)
     if 'sceneorg' in data:
-        locations += (create_service('sceneorg', data['sceneorg'] + u"|Original"),)
+        locations += (create_service(
+            'sceneorg', data['sceneorg'] + u"|Original"),)
     if 'sceneorgvideo' in data:
-        locations += (create_service('sceneorg', data['sceneorgvideo'] + u"|HQ video"),)
+        locations += (create_service(
+            'sceneorg', data['sceneorgvideo'] + u"|HQ video"),)
     if 'download' in data:
-        locations += (create_service('download', data['download'] + u"|Original"),)
+        locations += (create_service(
+            'download', data['download'] + u"|Original"),)
 
     for location in edition.locations:
         if location.service_id == 'image':
@@ -90,6 +94,7 @@ def update_external(section, name, data):
 
     edition.locations = locations
     return edition
+
 
 def create_external(name, data):
     section[name] = p = asm.cms.page.Page('externalasset')
@@ -150,7 +155,7 @@ for line in open(file, 'r'):
 
         edition = update_external(section, name, data)
         edition.title = data.get('title')
-        edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+        edition_galleryinfo = IMediaGalleryAdditionalInfo(edition)
         edition_galleryinfo.author = data.get('author')
         if data.get('position', None) is not None:
             edition_galleryinfo.ranking = int(data.get('position'))
@@ -162,4 +167,3 @@ for line in open(file, 'r'):
 
 
 transaction.commit()
-

@@ -1,8 +1,5 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import grok
 import asm.cmsui.interfaces
+import grok
 import zope.interface
 
 

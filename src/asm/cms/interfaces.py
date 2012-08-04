@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import ZODB.blob
 import zc.sourcefactory.basic
 import zope.component
@@ -80,7 +77,7 @@ class IInitialEditionParameters(zope.interface.Interface):
     """
 
     def __call__(page):
-        """Return a set of parameters to be used for the initial edition of this page."""
+        """Return a set of parameters to be used for the initial edition."""
 
 
 class IHTMLPage(zope.interface.Interface):
@@ -182,6 +179,7 @@ class IProfileSelection(zope.interface.Interface):
         title=u'Profile',
         source=ProfileSource())
 
+
 class ISearchSites(zope.interface.Interface):
 
     sites = zope.schema.List(
@@ -206,9 +204,10 @@ class IContentImported(zope.interface.Interface):
 
 
 class IRedirect(zope.interface.Interface):
+
     target_url = zope.schema.URI(title=u'Redirect URI')
 
 
 class IDataUri(zope.interface.Interface):
-    datauri = zope.schema.URI(title=u'Data URI')
 
+    datauri = zope.schema.URI(title=u'Data URI')

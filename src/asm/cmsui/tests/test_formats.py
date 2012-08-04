@@ -1,9 +1,6 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import unittest
 import asm.cmsui.format
 import datetime
+import unittest
 
 
 class FormatTests(unittest.TestCase):

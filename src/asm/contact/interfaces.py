@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import zope.interface
 import zope.schema
 
@@ -17,4 +14,3 @@ class IPublicContactData(zope.interface.Interface):
     name = zope.schema.TextLine(title=u'Your name')
     subject = zope.schema.TextLine(title=u'Subject')
     message = zope.schema.Text(title=u'Your message')
-

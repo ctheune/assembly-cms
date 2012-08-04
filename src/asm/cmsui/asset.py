@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import ZODB.blob
 import asm.cms.asset
 import asm.cms.utils
@@ -9,7 +6,6 @@ import asm.cmsui.form
 import asm.cmsui.interfaces
 import cgi
 import grok
-import magic
 import os
 import urllib
 import zope.app.form.browser.textwidgets
@@ -51,6 +47,7 @@ class FileWithDisplayWidget(zope.app.form.browser.textwidgets.FileWidget):
             f.close()
         return value
 
+
 class Edit(asm.cmsui.form.EditionEditForm):
 
     grok.layer(asm.cmsui.interfaces.ICMSSkin)
@@ -68,7 +65,8 @@ class Index(grok.View):
     def update(self):
         self.response.setHeader('Content-Type', self.context.content_type)
 
-        modified = asm.cms.utils.datetime_to_http_timestamp(self.context.modified)
+        modified = asm.cms.utils.datetime_to_http_timestamp(
+            self.context.modified)
         self.response.setHeader('Last-Modified', modified)
 
         filedata = open(self.context.content.committed())
@@ -113,7 +111,8 @@ class Download(Index):
         self.response.setHeader("Content-Transfer-Encoding", "binary")
         self.response.setHeader("Content-Description", "File Transfer")
         filename = urllib.quote_plus(self.context.page.__name__)
-        self.response.setHeader("Content-Disposition", "attachment; filename=%s" % filename)
+        self.response.setHeader(
+            "Content-Disposition", "attachment; filename=%s" % filename)
         return super(Download, self).update(*args, **kw)
 
     def render(self, *args, **kw):
@@ -132,12 +131,14 @@ def searchable_text(asset):
 
     return result
 
+
 class TextIndexing(grok.Adapter):
 
     zope.interface.implements(asm.cms.interfaces.ISearchableText)
 
     def __init__(self, asset):
         self.body = searchable_text(asset)
+
 
 class SearchPreview(grok.View):
 

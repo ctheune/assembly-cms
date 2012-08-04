@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-
 from asm.cms.interfaces import IDataUri
 from asm.mediagallery.interfaces import IMediaGallery
 from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 from zope.app.form.browser.textwidgets import TextWidget
 import asm.cms
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
 import asm.cmsui.retail
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
@@ -45,15 +45,9 @@ class MetadataManager(grok.ViewletManager):
     grok.context(asm.cms.interfaces.IEdition)
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
 
 DEFAULT_YEARS = 10
 YEAR_MATCH = re.compile("^\d{4}$")

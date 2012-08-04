@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.banner.interfaces
 import asm.cms.interfaces
 import asm.cms.edition

@@ -15,6 +15,7 @@ import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 from asm.schedule.i18n import _, i18n_strftime
 
+
 class Schedule(asm.cms.Edition):
     """A schedule maintains a list of events and offers a retail UI that
     allows users to efficiently browse the events by filtering and selecting
@@ -98,6 +99,7 @@ class ScheduleUpload(grok.Adapter):
 
     data = None
 
+
 def get_row_errors(fields, field_data):
     errors = []
     for field in fields:
@@ -109,9 +111,12 @@ def get_row_errors(fields, field_data):
 
     if None in field_data:
         errors.append(
-            "There are extra %d field values with event %s (%s)." % (len(field_data[None]), field_data['id'].decode("utf-8"), field_data['title_en'].decode("utf-8")))
+            "There are extra %d field values with event %s (%s)." %
+            (len(field_data[None]), field_data['id'].decode("utf-8"),
+             field_data['title_en'].decode("utf-8")))
         errors.append(
-            u"Make sure that you don't have accidentally pasted text with tab characters to descriptions or titles!")
+            u"Make sure that you don't have accidentally pasted text "
+            u"with tab characters to descriptions or titles!")
 
     for field in ('start_date', 'finish_date'):
         try:
@@ -119,13 +124,17 @@ def get_row_errors(fields, field_data):
         except ValueError, e:
             errors.append(
                 u"Date string on field '%s' is invalid (%s)." % (field, e))
-            errors.append(u"For example date and time 'Saturday 11th of February 2011 18:00' would be 'Sat 12.02.11 18:00'.")
+            errors.append(
+                u"For example date and time 'Saturday 11th of February 2011 "
+                u"18:00' would be 'Sat 12.02.11 18:00'.")
 
     for field in ('title_fi', 'title_en', 'location_fi', 'location_en'):
         try:
             field_data[field].decode('UTF-8')
         except UnicodeDecodeError, e:
-            errors.append(u"Could not decode field '%s' as UTF-8. Make sure that you are sending an UTF-8 encoded file." % field)
+            errors.append(
+                u"Could not decode field '%s' as UTF-8. Make sure that you "
+                u"are sending an UTF-8 encoded file." % field)
 
     return errors
 
@@ -140,15 +149,16 @@ class ScheduleImportError(RuntimeError):
 
 
 def parse_csv(data):
-    FIELD_SEPARATOR_SNIFF_AMOUNT = 50
-    if ";" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT] and "\t" not in data[:FIELD_SEPARATOR_SNIFF_AMOUNT]:
+    sniff_data = data[:50]
+    if ";" not in sniff_data and "\t" not in sniff_data:
         raise InvalidParserError()
     try:
         dialect = csv.Sniffer().sniff(data)
     except csv.Error, e:
         messages = [
             (u"%s." % e.message, "warning"),
-            (u"Make sure that all lines contain the same amount of field delimiter characters.",),
+            (u"Make sure that all lines contain the same number of field "
+             u"delimiter characters.",),
             (u"First row of data: %s" % data.split("\n")[0],),
             ]
         raise ScheduleImportError(messages)
@@ -177,10 +187,11 @@ def parse_csv(data):
     except (ValueError, TypeError), e:
         # This error comes only when there are too many fields in data.
         field_count = reduce(
-            lambda x, y : type(y) == list and x + len(y) or x + 1,
+            lambda x, y: type(y) == list and x + len(y) or x + 1,
             header.values(),
             0)
-        messages = [(u"Data contains %d fields when expecting %d." % (field_count, len(fields)), "warning")]
+        messages = [(u"Data contains %d fields when expecting %d." %
+                    (field_count, len(fields)), "warning")]
         raise ScheduleImportError(messages)
 
     finnish = {}
@@ -202,19 +213,21 @@ def parse_csv(data):
             writer.writerow(row)
         except (ValueError, TypeError), e:
             messages = [
-                (u"Unexpected error happened (ValueError): %s" % e.message, "warning"),
-                (str(row),)
-                ]
+                (u"Unexpected error happened (ValueError): %s" %
+                    e.message, "warning"),
+                (str(row),)]
             raise ScheduleImportError(messages)
         except csv.Error, e:
             messages = [
-                (u"Unexpected error happened (csv.Error): %s" % e.message, "warning"),
+                (u"Unexpected error happened (csv.Error): %s" %
+                    e.message, "warning"),
                 (str(row),)
                 ]
             raise ScheduleImportError(messages)
         except TypeError, e:
             messages = [
-                (u"Unexpected error happened (TypeError): %s" % e.message, "warning"),
+                (u"Unexpected error happened (TypeError): %s" %
+                    e.message, "warning"),
                 (str(row),)
                 ]
             raise ScheduleImportError(messages)
@@ -250,11 +263,12 @@ def parse_csv(data):
         "public_csv": public_csv
         }
 
+
 def parse_json(data):
     data_dict = None
     try:
         data_dict = json.loads(data)
-    except ValueError, e:
+    except ValueError:
         raise InvalidParserError()
 
     locations = {'fi': {}, 'en': {}}
@@ -267,7 +281,8 @@ def parse_json(data):
         locations['en'][location_id] = location_en
         location_fi = {
             'name': location.get('name_fi') or location_en['name'],
-            'description': location.get('description_fi') or location_en['description'],
+            'description': location.get('description_fi') or
+                location_en['description'],
             'url': location.get('link_fi') or location_en.get('link', "")
             }
         locations['en'][location_id] = location_en
@@ -279,7 +294,8 @@ def parse_json(data):
             event_out = Event()
             tags = [tag.lower() for tag in event.get("tags", "").split(",")]
             event_out.start = extract_date_json(event['time'])
-            event_out.end = extract_date_json(event.get('end_time', event['time']))
+            event_out.end = extract_date_json(
+                event.get('end_time', event['time']))
             event_out.major = "major" in tags
             if "compo" in tags:
                 event_out.class_ = "Compo"
@@ -292,7 +308,8 @@ def parse_json(data):
                 event_out.location = location['name']
                 event_out.location_url = location.get('link') or ""
 
-            description = event.get('description' + postfix, event.get('description')) or ""
+            description = event.get('description' + postfix,
+                                    event.get('description')) or ""
             event_out.description = description
             event_out.assemblytv_broadcast = 'tv' in tags
             events[language][event['id']] = event_out
@@ -353,7 +370,8 @@ def update_schedule(view, data):
 
     zope.event.notify(grok.ObjectModifiedEvent(english))
     zope.event.notify(grok.ObjectModifiedEvent(finnish))
-    view.flash(u'Your schedule was imported successfully with %d events.' % rows)
+    view.flash(u'Your schedule was imported successfully with %d events.' %
+               rows)
 
 
 class Edit(asm.cmsui.form.EditForm):
@@ -371,9 +389,7 @@ class Edit(asm.cmsui.form.EditForm):
 
 class UploadSchedule(grok.Form):
     grok.context(Schedule)
-    form_fields = grok.Fields(
-        data = zope.schema.Text(title=u'Data')
-        )
+    form_fields = grok.Fields(data=zope.schema.Text(title=u'Data'))
 
     def flash(self, message, level=''):
         self.messages.append(message)
@@ -440,7 +456,8 @@ def extract_date(date):
 
 
 def extract_date_json(date):
-    return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")], "%Y-%m-%dT%H:%M:%S")
+    return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")],
+                                      "%Y-%m-%dT%H:%M:%S")
 
 
 class NullEvent(object):
@@ -496,7 +513,7 @@ class FilteredSchedule(object):
                 massaged['has_until'] = event.start != event.end
                 massaged['end_time'] = i18n_strftime(
                     '%H:%M', event.end, self.request)
-                massaged['end_day'] = (_(event.end.strftime('%A')+'(until)')
+                massaged['end_day'] = (_(event.end.strftime('%A') + '(until)')
                                        if event.start.day != event.end.day
                                        else u'')
                 massaged['canceled'] = event.canceled
@@ -505,7 +522,7 @@ class FilteredSchedule(object):
                 hours.setdefault(event.start, []).append(massaged)
 
             data['hours'] = [dict(hour=i18n_strftime('%H:%M', k, self.request),
-                                  events=v) for k,v in
+                                  events=v) for k, v in
                              sorted(hours.items())]
             self.events.append(data)
 
@@ -571,6 +588,7 @@ class Csv(grok.View):
 
     def render(self):
         return self.context.public_csv
+
 
 class Json(grok.View):
     grok.name('json')

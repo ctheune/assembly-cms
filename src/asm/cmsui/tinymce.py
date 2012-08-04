@@ -1,9 +1,6 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import zope.app.form.browser.textwidgets
 import asm.cms.interfaces
 import grok
+import zope.app.form.browser.textwidgets
 
 
 class TinyMCEWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -13,6 +10,7 @@ class TinyMCEWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
     def __call__(self):
         self.cssClass += ' %s' % self.mce_class
         return super(TinyMCEWidget, self).__call__()
+
 
 class TinyMCEWidgetSmall(TinyMCEWidget):
 

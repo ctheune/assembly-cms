@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zope.i18nmessageid
 import zope.i18n
 
@@ -25,6 +22,7 @@ _(u'Saturday(until)')
 _(u'Sunday(until)')
 
 _(u'%H:%M')
+
 
 def i18n_strftime(format, time, request):
     return time.strftime(

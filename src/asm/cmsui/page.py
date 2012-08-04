@@ -253,6 +253,7 @@ class IdData(grok.View):
              'id': page_id,
              })
 
+
 class Rename(grok.View):
 
     grok.context(asm.cms.interfaces.IPage)
@@ -266,7 +267,8 @@ class Rename(grok.View):
 
         iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         open_page = iids.getObject(int(open_page_id))
-        self.open_edition = asm.cms.edition.select_edition(open_page, self.request)
+        self.open_edition = asm.cms.edition.select_edition(
+            open_page, self.request)
 
         parent = self.context.__parent__
         if new_name in parent:

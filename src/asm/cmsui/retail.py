@@ -1,13 +1,10 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.interfaces
 import asm.cmsui.interfaces
 import grok
 import megrok.pagelet
+import zope.app.folder.interfaces
 import zope.app.publication.interfaces
 import zope.interface
-import zope.app.folder.interfaces
 
 
 class Layout(megrok.pagelet.Layout):
@@ -72,7 +69,8 @@ class EditionTraverse(RetailTraverser):
         return self.context.page
 
 
-@grok.adapter(asm.cms.interfaces.IEdition, asm.cmsui.interfaces.IRetailBaseSkin)
+@grok.adapter(asm.cms.interfaces.IEdition,
+              asm.cmsui.interfaces.IRetailBaseSkin)
 @grok.implementer(zope.traversing.browser.interfaces.IAbsoluteURL)
 def edition_url(edition, request):
     return zope.component.getMultiAdapter(

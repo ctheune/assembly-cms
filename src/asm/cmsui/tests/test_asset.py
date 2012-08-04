@@ -1,8 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-# See also LICENSE.txt
-
 import asm.cmsui.testing
 import asm.cms.page
 import transaction
@@ -13,7 +8,7 @@ class Asset(asm.cmsui.testing.SeleniumTestCase):
 
     def setUp(self):
         super(Asset, self).setUp()
-        self.cms['asset'] = asset = asm.cms.page.Page('asset')
+        self.cms['asset'] = asm.cms.page.Page('asset')
         transaction.commit()
         self.selenium.open('http://%s/++skin++cms/cms/asset/edition-/@@edit' %
                            self.selenium.server)
@@ -30,5 +25,5 @@ class Asset(asm.cmsui.testing.SeleniumTestCase):
         s.open('http://%s/++skin++cms/cms/asset/edition-/@@edit' % s.server)
         s.click('xpath=//input[@type="button" and @value="Download"]')
         self.assertEquals(
-            'http://%s/++skin++cms/cms/asset/edition-/@@edit' % s.server
-            ,s.getLocation())
+            'http://%s/++skin++cms/cms/asset/edition-/@@edit' % s.server,
+            s.getLocation())

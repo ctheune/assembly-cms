@@ -1,7 +1,7 @@
 import asm.cms
-import asm.cmsui.retail
 import asm.cmsui.interfaces
-import datetime
+import asm.cmsui.public.layout
+import asm.cmsui.retail
 import grok
 import megrok.pagelet
 import zope.interface
@@ -21,8 +21,7 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
     def sections(self):
@@ -49,9 +48,3 @@ class LayoutHelper(grok.View):
         return dict(section=asm.cms.edition.select_edition(
                         candidate, self.request),
                     subs=editions)
-
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''

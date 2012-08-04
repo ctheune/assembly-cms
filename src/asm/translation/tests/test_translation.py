@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 # XXX this import is for fixing circular cmsui import bug. Remove it
 # when cmsui is removed from core. #7345
 import asm.cms.edition
@@ -35,7 +32,8 @@ class TranslationTests(unittest.TestCase):
         zope.app.testing.placelesssetup.tearDown()
 
     def _select(self):
-        selector = asm.translation.translation.RetailEditionSelector(self.request)
+        selector = asm.translation.translation.RetailEditionSelector(
+            self.request)
         return selector.select(self.page)
 
     def test_select_no_preference_no_editions(self):
@@ -57,7 +55,6 @@ class TranslationTests(unittest.TestCase):
 
     def test_select_no_preference_with_fallback_and_other(self):
         edition_fi = self.page.addEdition(['lang:fi'])
-        edition_en = self.page.addEdition(['lang:en'])
         preferred, acceptable = self._select()
         self.assertEquals([], preferred)
         self.assertEquals([edition_fi], acceptable)
@@ -90,9 +87,8 @@ class TranslationTests(unittest.TestCase):
         self.assertEquals([edition_en], preferred)
         self.assertEquals([edition_fi], acceptable)
 
-    def test_select_with_cookie_fallback_preferred_and_nonmatching_edition(self):
+    def test_select_with_cookie_fallback_preferred_and_nonmatching_edition(self):  # NOQA
         self.request._cookies['asm.translation.lang'] = 'fi'
-        edition_en = self.page.addEdition(['lang:en'])
         preferred, acceptable = self._select()
         self.assertEquals([], preferred)
         self.assertEquals([], acceptable)
@@ -106,7 +102,6 @@ class TranslationTests(unittest.TestCase):
 
     def test_select_with_cookie_fallback_preferred_and_matching_editions(self):
         self.request._cookies['asm.translation.lang'] = 'fi'
-        edition_en = self.page.addEdition(['lang:en'])
         edition_fi = self.page.addEdition(['lang:fi'])
         preferred, acceptable = self._select()
         self.assertEquals([edition_fi], preferred)
@@ -115,7 +110,6 @@ class TranslationTests(unittest.TestCase):
     def test_select_cookie_overrides_accept_language(self):
         self.request._cookies['asm.translation.lang'] = 'fi'
         self.request._environ['ACCEPT_LANGUAGE'] = 'en'
-        edition_en = self.page.addEdition(['lang:en'])
         edition_fi = self.page.addEdition(['lang:fi'])
         preferred, acceptable = self._select()
         self.assertEquals([edition_fi], preferred)
@@ -130,14 +124,12 @@ class TranslationTests(unittest.TestCase):
 
     def test_select_unknown_accept_language_without_fallback(self):
         self.request._environ['ACCEPT_LANGUAGE'] = 'none'
-        edition = self.page.addEdition(['lang:en'])
         preferred, acceptable = self._select()
         self.assertEquals([], preferred)
         self.assertEquals([], acceptable)
 
-    def test_select_unknown_accept_language_with_fallback_and_nonmatching_editions(self):
+    def test_select_unknown_accept_language_with_fallback_and_nonmatching_editions(self):  # NOQA
         self.request._environ['ACCEPT_LANGUAGE'] = 'none'
-        edition_en = self.page.addEdition(['lang:en'])
         edition_fi = self.page.addEdition(['lang:fi'])
         preferred, acceptable = self._select()
         self.assertEquals([], preferred)

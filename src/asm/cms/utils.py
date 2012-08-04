@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lxml.etree
 import re
 import time
@@ -14,6 +11,7 @@ def tree_from_fragment(content):
         content)
     return lxml.etree.fromstring(document, parser)
 
+
 def fragment_from_tree(document):
     result = lxml.etree.tostring(
         document.xpath('//stupidcontainerwrappercafebabe')[0],
@@ -21,6 +19,7 @@ def fragment_from_tree(document):
     result = result.replace('<stupidcontainerwrappercafebabe>', '')
     result = result.replace('</stupidcontainerwrappercafebabe>', '')
     return result.strip()
+
 
 def rewrite_urls(content, visitor):
     """Rewrite URLs using a visitor.

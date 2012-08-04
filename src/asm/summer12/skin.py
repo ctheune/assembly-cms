@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.cms
 import asm.cmsui.interfaces
 import grok
@@ -67,17 +64,5 @@ class SelectLanguage(grok.View):
         self.redirect(self.url(self.context))
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
-
-    def current_language(self):
-        if not 'asm.translation.lang' in self.request.cookies:
-            return asm.translation.translation.fallback()
-
-        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
-            return self.request.cookies['asm.translation.lang']
-
-        return asm.translation.translation.fallback()
-
-    def render(self):
-        pass
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
+    grok.layer(ISkin)

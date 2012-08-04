@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cmsui.retail
 import asm.cms.news
 from .skin import ISkin, EmbeddedPageContent
@@ -23,5 +20,5 @@ class Embedded(grok.Viewlet):
             result = dict(edition=edition,
                           news=asm.cms.news.INewsFields(edition))
             news.append(result)
-        news.sort(key=lambda x:x['edition'].created, reverse=True)
+        news.sort(key=lambda x: x['edition'].created, reverse=True)
         return news[:5]

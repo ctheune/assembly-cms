@@ -1,7 +1,8 @@
-import grok
+from asm.cms.edition import find_editions
+import asm.cms.edition
 import asm.cms.interfaces
 import asm.cmsui.interfaces
-import asm.cms.edition
+import grok
 
 
 class TileNavigation(grok.View):
@@ -12,8 +13,9 @@ class TileNavigation(grok.View):
     def update(self):
         self.rows = []
         row = []
-        for edition in asm.cms.edition.find_editions(self.context.page, self.request,
-                recurse=False):
+        editions = find_editions(self.context.page, self.request,
+                                 recurse=False)
+        for edition in editions:
             if edition.has_tag('hide-navigation'):
                 continue
             if len(row) == 3:
@@ -24,6 +26,7 @@ class TileNavigation(grok.View):
         self.rows.append(row)
 
 NAVTREE_MAX_LEVELS = 999
+
 
 def _create_navigation_subtree(active, root_page, levels, request):
     if levels < 0:
@@ -42,7 +45,8 @@ def _create_navigation_subtree(active, root_page, levels, request):
         tree['class'].add('active')
         if root_page.type not in ['news']:
             for child in root_page.subpages:
-                sub_tree = _create_navigation_subtree(active, child, levels - 1, request)
+                sub_tree = _create_navigation_subtree(
+                    active, child, levels - 1, request)
                 if sub_tree:
                     tree['subpages'].append(sub_tree)
     if 'active' in tree['class'] and not tree['subpages']:
@@ -67,8 +71,8 @@ class SectionNavigation(grok.View):
     def update(self):
         self.section = self.find_section()
         self.subsections = []
-        for edition in asm.cms.edition.find_editions(self.section, self.request,
-                recurse=False):
+        editions = find_editions(self.section, self.request, recurse=False)
+        for edition in editions:
             if edition.has_tag('hide-navigation'):
                 continue
             self.subsections.append(edition)
@@ -81,7 +85,8 @@ class SectionNavigation(grok.View):
 
     def tree(self):
         root = self.find_section()
-        tree = _create_navigation_subtree(self.active, root, NAVTREE_MAX_LEVELS, self.request)
+        tree = _create_navigation_subtree(
+            self.active, root, NAVTREE_MAX_LEVELS, self.request)
         return tree['subpages']
 
 
@@ -97,7 +102,8 @@ class SubSectionNavigation(SectionNavigation):
     def tree(self):
         root_edition = self.find_subsection()
         root = root_edition.page
-        tree = _create_navigation_subtree(self.active, root, NAVTREE_MAX_LEVELS, self.request)
+        tree = _create_navigation_subtree(
+            self.active, root, NAVTREE_MAX_LEVELS, self.request)
         return tree['subpages']
 
 

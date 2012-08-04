@@ -1,5 +1,6 @@
 import asm.cms
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
 import asm.cmsui.retail
 import datetime
 import grok
@@ -17,8 +18,7 @@ class Layout(megrok.pagelet.Layout):
     megrok.pagelet.template('layout.pt')
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
     def news(self):
@@ -76,12 +76,6 @@ class LayoutHelper(grok.View):
         # This should never get returned...
         return "Welcome to Assembly!"
 
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
-
 
 class Navtree(grok.View):
     grok.layer(ISkin)
@@ -110,7 +104,7 @@ class Navtree(grok.View):
         if root in self.active:
             tree['class'].add('active')
             for child in root.subpages:
-                sub_tree = self._create_subtree(child, levels-1)
+                sub_tree = self._create_subtree(child, levels - 1)
                 if sub_tree:
                     tree['subpages'].append(sub_tree)
         if 'active' in tree['class'] and not tree['subpages']:

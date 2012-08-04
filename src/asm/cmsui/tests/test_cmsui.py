@@ -1,11 +1,7 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.page
 import asm.cmsui.testing
 import grok
 import transaction
-import unittest
 import zope.event
 
 
@@ -81,10 +77,11 @@ class CMSUI(asm.cmsui.testing.SeleniumTestCase):
     def test_change_page_type(self):
         s = self.selenium
         s.assertNotVisible('xpath=//input[@value="Change page type"]')
-        s.click('//h3[contains(text(), "Page")]/following-sibling::div[@class="opener"]')
+        s.click('//h3[contains(text(), "Page")]/'
+                'following-sibling::div[@class="opener"]')
         s.assertVisible('xpath=//input[@value="Change page type"]')
         s.clickAndWait('xpath=//input[@value="Change page type"]')
-        s.click('id=form.type.0') # Redirect section
+        s.click('id=form.type.0')  # Redirect section
         s.clickAndWait('name=form.actions.change')
         self.assertEquals(
             'http://%s/++skin++cms/cms/edition-/@@edit' % s.server,

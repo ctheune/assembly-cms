@@ -1,7 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-
 from zope.app.zopeappgenerations import getRootFolder
 import asm.cms.cms
 import asm.cms.interfaces

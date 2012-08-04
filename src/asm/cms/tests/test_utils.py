@@ -1,7 +1,4 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import asm.cms.cms
+from asm.cms.patches import get_application_for_view
 import asm.cms.testing
 import asm.cms.utils
 import datetime
@@ -54,6 +51,7 @@ class UtilityTests(unittest.TestCase):
         self.assertEquals('asdf-bsdf',
                           asm.cms.utils.normalize_name(u'asdf\xfcbsdf'))
 
+
 class ViewApplicationTests(unittest.TestCase):
 
     def setUp(self):
@@ -70,18 +68,18 @@ class ViewApplicationTests(unittest.TestCase):
     def test_context_no_parent(self):
         self.view.context = self.contained
         self.assertRaises(
-            ValueError, asm.cms.get_application_for_view, self.view)
+            ValueError, get_application_for_view, self.view)
 
     def test_context_is_app(self):
         self.view.context = self.application
         self.assertEquals(
-            self.application, asm.cms.get_application_for_view(self.view))
+            self.application, get_application_for_view(self.view))
 
     def test_context_parent_is_app(self):
         self.view.context = self.contained
         self.view.context.__parent__ = self.application
         self.assertEquals(
-            self.application, asm.cms.get_application_for_view(self.view))
+            self.application, get_application_for_view(self.view))
 
 
 class ViewResolveURLsTests(asm.cms.testing.FunctionalTestCase):

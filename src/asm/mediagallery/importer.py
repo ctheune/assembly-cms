@@ -1,11 +1,12 @@
+from .interfaces import IMediaGalleryAdditionalInfo
 import asm.cms.importer
-import asm.mediagallery.interfaces
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import urllib
 
+
 def import_mediagalleryadditionalinfo(self, edition, node):
-    media_info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+    media_info = IMediaGalleryAdditionalInfo(edition)
 
     media_info.author = node.get('author', None)
     media_info.description = urllib.unquote_plus(node.get('description', None))
@@ -34,6 +35,7 @@ def import_location(self, edition, node):
     locations = list(edition.locations)
     locations.append(service)
     edition.locations = tuple(locations)
+
 
 def import_externalasset(self, edition, edition_node):
     for info_node in edition_node:

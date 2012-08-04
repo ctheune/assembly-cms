@@ -1,8 +1,6 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.interfaces
+import asm.cms.patches
 import asm.cms.utils
 import grok
 import zope.app.form.browser.source
@@ -75,7 +73,7 @@ class Page(grok.OrderedContainer):
         elif type in ['before', 'after']:
             # Insert new object before this object, or after this object.
             target = self.__parent__
-            if asm.cms.get_application(self) == self:
+            if asm.cms.patches.get_application(self) == self:
                 raise ValueError("Can not move outside this application")
             keys = list(target)
             target_position = keys.index(self.__name__)

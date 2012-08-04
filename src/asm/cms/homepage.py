@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms
 import asm.cms.edition
 import zope.interface

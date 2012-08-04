@@ -1,6 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 import Image
 import ImageFile
 import StringIO
@@ -11,11 +9,12 @@ import asm.mediagallery.externalasset
 import os.path
 import re
 import sys
+import transaction
 import urllib
 import zope.app.component.hooks
-import transaction
 
-# Workaround for JPEG encoding: http://mail.python.org/pipermail/image-sig/1999-August/000816.html
+# Workaround for JPEG encoding:
+# http://mail.python.org/pipermail/image-sig/1999-August/000816.html
 ImageFile.MAXBLOCK = 4000000
 
 gallery = sys.argv[1]
@@ -23,7 +22,7 @@ file = sys.argv[2]
 
 #locate site and gallery
 steps = gallery.split('/')[1:]
-obj = root
+obj = root  # NOQA
 while steps:
     obj = obj[steps.pop(0)]
     try:
@@ -32,12 +31,14 @@ while steps:
         pass
 gallery = obj
 
+
 def create_image_id(image_format, data):
     # Assume we only have images here.
     if 'key' in data:
         image_name = data['key'] + "." + image_format
     else:
-        image_name = asm.cms.utils.normalize_name(os.path.basename(data['image']))
+        image_name = os.path.basename(data['image'])
+        image_name = asm.cms.utils.normalize_name(image_name)
         image_name = re.sub("[^.]+$", image_format, image_name, re.M)
 
     orig_name = data['title']
@@ -45,6 +46,7 @@ def create_image_id(image_format, data):
         orig_name += ' by ' + data['author']
 
     return image_name, (u"%s|%s" % (image_name, orig_name))
+
 
 def get_smallest_format(image):
     output_png = StringIO.StringIO()
@@ -57,33 +59,34 @@ def get_smallest_format(image):
         return output_jpeg, 'jpeg'
     return output_png, 'png'
 
-def get_thumbnail(data, target=(77.0,165.0), crop=True):
+
+def get_thumbnail(data, target=(77.0, 165.0), crop=True):
     im = Image.open(data)
     width, height = im.size
-    orig_ratio = float(width)/height
+    orig_ratio = float(width) / height
 
     target_height, target_width = (float(x) for x in target)
-    target_ratio = target_width/target_height
+    target_ratio = target_width / target_height
 
     if orig_ratio > target_ratio:
-        width = width / (height/target_height)
+        width = width / (height / target_height)
         height = target_height
     else:
-        height = height / (width/target_width)
+        height = height / (width / target_width)
         width = target_width
 
     im = im.resize((width, height), Image.ANTIALIAS)
     width, height = im.size
 
-    width_delta = (width-target_width)/2
-    height_delta = (height-target_height)/2
+    width_delta = (width - target_width) / 2
+    height_delta = (height - target_height) / 2
 
     if crop:
         im = im.crop((
                   width_delta,
                   height_delta,
-                  width-width_delta,
-                  height-height_delta))
+                  width - width_delta,
+                  height - height_delta))
         im = im.crop((0, 0, int(target_width), int(target_height)))
         im.load()
     return get_smallest_format(im)
@@ -92,11 +95,11 @@ def get_thumbnail(data, target=(77.0,165.0), crop=True):
 def resize_image_to_width(data, target_width):
     im = Image.open(data)
     width, height = im.size
-    orig_ratio = float(width)/height
     target_height = int(float(height) * (float(target_width) / width))
 
     im = im.resize((target_width, target_height), Image.ANTIALIAS)
     return get_smallest_format(im)
+
 
 def create_external(name, data):
     section[name] = p = asm.cms.page.Page('externalasset')
@@ -147,7 +150,7 @@ for line in open(file, 'r'):
         section_title = line[1:].strip()
         section_name = asm.cms.utils.normalize_name(section_title)
         if section_name in gallery:
-            del gallery[section_name]     
+            del gallery[section_name]
         gallery[section_name] = p = asm.cms.page.Page('mediagallery')
         section = p.editions.next()
         section.title = section_title
@@ -174,7 +177,7 @@ for line in open(file, 'r'):
 
         edition, img = locals()['create_' + data.get('type')](name, data)
         edition.title = data.get('title')
-        edition_galleryinfo = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+        edition_galleryinfo = IMediaGalleryAdditionalInfo(edition)
         edition_galleryinfo.author = data.get('author')
         if data.get('position', None) is not None:
             edition_galleryinfo.ranking = int(data.get('position'))
@@ -191,4 +194,3 @@ for line in open(file, 'r'):
 
 
 transaction.commit()
-

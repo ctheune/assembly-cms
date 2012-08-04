@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 Assembly Organizing
-# See also LICENSE.txt
-
 from asm.cms.htmlpage import fix_relative_links
 import asm.cms.importer
 import asm.cms.testing

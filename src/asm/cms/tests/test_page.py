@@ -1,13 +1,6 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.page
 import transaction
-import unittest
-import zope.app.component.hooks
-import zope.intid.interfaces
-import zope.component
 
 
 class PageTests(asm.cms.testing.FunctionalTestCase):

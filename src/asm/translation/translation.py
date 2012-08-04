@@ -244,7 +244,7 @@ class Translate(grok.View):
 
     def update(self, language):
         page = self.context.page
-        parameters = asm.cms.edition.get_initial_parameters()
+        parameters = asm.cms.edition.get_initial_parameters(page)
         p = parameters.replace(lang2tag('*'), lang2tag(language))
         try:
             translation = page.getEdition(p)

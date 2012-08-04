@@ -1,30 +1,33 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2011 Assembly Organizing
-# See also LICENSE.txt
 
+from asm.cms.interfaces import IDataUri
+from asm.mediagallery.interfaces import IMediaGallery
+from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
+from zope.app.form.browser.textwidgets import TextWidget
 import asm.cms
 import asm.cmsui.interfaces
 import asm.cmsui.retail
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
 import asm.mediagallery.interfaces
-import email.encoders as email_encoders
 import email.Header as email_header
 import email.Message as email_message
+import email.encoders as email_encoders
 import grok
 import megrok.pagelet
 import os.path
 import random
 import re
 import smtplib
-import urlparse
 import urllib
-from zope.app.form.browser.textwidgets import TextWidget
+import urlparse
 import zope.interface
+
 
 skin_name = 'asmarchive'
 asmarchive = asm.cms.cms.Profile(skin_name)
 languages = ['en', 'fi']
+
 
 class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin(skin_name)
@@ -54,6 +57,7 @@ class LayoutHelper(grok.View):
 
 DEFAULT_YEARS = 10
 YEAR_MATCH = re.compile("^\d{4}$")
+
 
 def select_years(application_subpages, request):
     years = filter(
@@ -115,7 +119,8 @@ class YearlyNavigation(grok.View):
             return (0, min(limit, len(years)))
 
         max_selection = min(len(years), limit)
-        if self.current_year is not None and YEAR_MATCH.match(self.current_year.page.__name__):
+        if (self.current_year is not None and
+                YEAR_MATCH.match(self.current_year.page.__name__)):
             before = max_selection / 2
             after = max_selection - before - 1
 
@@ -140,7 +145,7 @@ class YearlyNavigation(grok.View):
         try:
             current_year_index = years.index(self.get_closest_year())
         # We are probably on the main page.
-        except ValueError, e:
+        except ValueError:
             if year_count < 3:
                 return [False] * year_count
             items_left = year_count - max_remove
@@ -148,7 +153,8 @@ class YearlyNavigation(grok.View):
                 items_left = 2
             return [False] * items_left + [True] * (year_count - items_left)
 
-        # Create a list of years that we can remove when moving into mobile mode.
+        # Create a list of years that we can remove when moving into mobile
+        # mode.
         distances = [abs(index - current_year_index)
                      for index in range(year_count)]
         remove_years = [False] * year_count
@@ -178,6 +184,9 @@ class YearlyNavigation(grok.View):
                 for year, remove in zip(years, remove_years)]
 
 
+ASSET_TYPES = ['asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]
+
+
 @grok.subscribe(asm.cms.interfaces.IContentImported)
 def generate_map(event):
     # Ensure we only operate on archive sites
@@ -195,8 +204,7 @@ def generate_map(event):
             for category in year.page.subpages:
                 map[year_name][category.__name__] = []
                 for media in category.subpages:
-                    if media.type not in [
-                        'asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]:
+                    if media.type not in ASSET_TYPES:
                         continue
                     try:
                         edition = media.getEdition(homepage.parameters)
@@ -204,17 +212,20 @@ def generate_map(event):
                         continue
                     asset_edition_id = iids.getId(edition)
                     thumbnail_page = edition.page.get('thumbnail', None)
-                    # Assume that this thumbnail has something to do with music.
                     if thumbnail_page is None:
+                        # Assume that this thumbnail has something to do with
+                        # music.
                         thumbnail_page = year['music-thumbnail']
 
-                    thumbnail_edition = thumbnail_page.getEdition(homepage.parameters)
+                    thumbnail_edition = thumbnail_page.getEdition(
+                        homepage.parameters)
                     thumbnail_edition_id = iids.getId(thumbnail_edition)
 
                     if thumbnail_page.get('_datauri', None) is None:
-                        thumbnail_page['_datauri'] = asm.cms.interfaces.IDataUri(thumbnail_edition)
+                        thumbnail_page['_datauri'] = (
+                            IDataUri(thumbnail_edition))
 
-                    info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)
+                    info = IMediaGalleryAdditionalInfo(edition)
                     map[year_name][category.__name__].append(
                         (asset_edition_id, info, thumbnail_edition_id))
                 if not map[year_name][category.__name__]:
@@ -244,7 +255,8 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
             raise StopIteration
         result = []
         year_name = year.page.__name__
-        for category_items in self.context.gallery_map.get(year_name, {}).values():
+        categories = self.context.gallery_map.get(year_name, {})
+        for category_items in categories.values():
             random.shuffle(category_items)
             result.extend(category_items[:limit])
         random.shuffle(result)
@@ -267,6 +279,7 @@ class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):
         else:
             return None
 
+
 class SelectLanguage(grok.View):
 
     grok.context(zope.interface.Interface)
@@ -287,7 +300,6 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
     grok.name('index')
 
     ITEMS_PER_PAGE = 30
-
     sort_items = False
 
     def render_parent(self):
@@ -297,14 +309,13 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
         for category in super(GalleryIndex, self).list_categories():
             yield {
                 'edition': category,
-                'gallery': asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(category),
-                }
+                'gallery': IMediaGalleryAdditionalInfo(category)}
 
     @property
     def title(self):
         parent_edition = asm.cms.edition.select_edition(
             self.context.__parent__.__parent__, self.request)
-        if asm.mediagallery.interfaces.IMediaGallery.providedBy(parent_edition):
+        if IMediaGallery.providedBy(parent_edition):
             return u"%s / %s" % (parent_edition.title, self.context.title)
         return self.context.title
 
@@ -338,6 +349,7 @@ class GalleryIndex(asm.mediagallery.gallery.Index, ViewUtils):
                 item_list.append(item)
         return self._add_thumbnail_to_gallery_items(item_list)
 
+
 def get_party_name(year, category):
     if year < 2007:
         return u"Assembly %d" % year
@@ -359,7 +371,8 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
     @property
     def title(self):
         title = self.context.title
-        party_year = int(self.context.__parent__.__parent__.__parent__.__name__)
+        party = self.context.__parent__.__parent__.__parent__
+        party_year = int(party.__name__)
         category = self.context.__parent__.__parent__
         category_edition = asm.cms.edition.select_edition(
             category, self.request)
@@ -367,13 +380,14 @@ class ExternalAssetIndex(asm.mediagallery.externalasset.Index, ViewUtils):
         if 'assemblytv' in category.__name__ or \
                 'seminar' in category.__name__ or \
                 'winter' in category.__name__:
-            return u"%s / %s / %s" % (title, party_name, category_edition.title)
+            return u"%s / %s / %s" % (
+                title, party_name, category_edition.title)
         author = self.info.author
         return u"%s by %s" % (title, author)
 
     def update(self):
         super(ExternalAssetIndex, self).update()
-        self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
+        self.info = IMediaGalleryAdditionalInfo(self.context)
 
 
 class ExternalAssetMetadata(grok.Viewlet):
@@ -382,11 +396,13 @@ class ExternalAssetMetadata(grok.Viewlet):
     grok.view(ExternalAssetIndex)
 
     def application_title(self):
-        edition = asm.cms.edition.select_edition(self.view.application, self.request)
+        edition = asm.cms.edition.select_edition(
+            self.view.application, self.request)
         return edition.title
 
     def description(self):
-        party_year = int(self.context.__parent__.__parent__.__parent__.__name__)
+        party = self.context.__parent__.__parent__.__parent__
+        party_year = int(party.__name__)
         category = self.context.__parent__.__parent__
         category_edition = asm.cms.edition.select_edition(
             category, self.request)
@@ -399,7 +415,8 @@ class ExternalAssetMetadata(grok.Viewlet):
         elif 'seminar' in category.__name__:
             category_description = u"seminar"
         else:
-            category_description = u"%s competition entry" % category_edition.title
+            category_description = (
+                u"%s competition entry" % category_edition.title)
 
         base_description = self.view.info.description
         if base_description is None:
@@ -409,9 +426,9 @@ class ExternalAssetMetadata(grok.Viewlet):
         description = re.sub("\nAuthor:.+", "", description)
         description = re.sub("\n+", " ", description)
         description = re.sub(" +", " ", description)
-        full_description = u"%s %s. %s" % (party_name, category_description, description)
+        full_description = u"%s %s. %s" % (
+            party_name, category_description, description)
         return full_description.strip()
-
 
 
 class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
@@ -426,7 +443,8 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
         return page
 
     def next(self):
-        next_page = self._return_same_type_page(super(GalleryNavBar, self).next())
+        next = super(GalleryNavBar, self).next()
+        next_page = self._return_same_type_page(next)
         if next_page is None:
             return None
         if next_page.tags is not None and 'hide-navigation' in next_page.tags:
@@ -434,7 +452,8 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
         return next_page
 
     def previous(self):
-        prev_page = self._return_same_type_page(super(GalleryNavBar, self).previous())
+        previous = super(GalleryNavBar, self).previous()
+        prev_page = self._return_same_type_page(previous)
         if prev_page is None:
             return None
         if prev_page.tags is not None and 'hide-navigation' in prev_page.tags:
@@ -445,6 +464,7 @@ class GalleryNavBar(asm.mediagallery.gallery.GalleryNavBar, ViewUtils):
 class GalleryBreadCrumbs(grok.View):
     grok.layer(ISkin)
     grok.context(asm.cms.interfaces.IEdition)
+
     def update(self):
         pages = []
         page = self.context.page
@@ -475,10 +495,16 @@ class IFeedbackForm(zope.interface.Interface):
                                  required=False,
                                  constraint=re.compile("@").search)
 
+
 def get_specific_width_text_widget(size):
     class LongTextWidget(TextWidget):
         displayWidth = size
     return LongTextWidget
+
+
+class HoneyPotWidget(TextWidget):
+    cssClass = 'honeypot'
+
 
 class Feedback(asm.cmsui.form.Form):
     grok.require('zope.Public')
@@ -495,9 +521,10 @@ class Feedback(asm.cmsui.form.Form):
 
     # This field is not visible for normal browser users.
     form_fields += grok.Fields(
-        **{'honeypot': zope.schema.TextLine(title=u'Honeypot', description=u"You should not see this field. Do not fill it.", required=False)})
-    class HoneyPotWidget(TextWidget):
-        cssClass = 'honeypot'
+        honeypot=zope.schema.TextLine(
+            title=u'Honeypot',
+            description=u"You should not see this field. Do not fill it.",
+            required=False))
     form_fields['honeypot'].custom_widget = HoneyPotWidget
 
     template = grok.PageTemplateFile(os.path.join("templates", "form.pt"))

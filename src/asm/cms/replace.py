@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms
 import asm.cms.cms
 import asm.cms.interfaces
@@ -105,5 +102,3 @@ class Occurrence(object):
         content_hash = hashlib.sha1().hexdigest()[:10]
         self.id = '%s-%s-%s-%s' % (self.page_id, content_hash, self.offset,
                                    urllib.quote(self.term.encode('base64')))
-
-

@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.cms
 import os.path
 import transaction

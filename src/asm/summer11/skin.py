@@ -1,5 +1,6 @@
 import asm.cms
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
 import asm.cmsui.retail
 import asm.translation.translation
 import grok
@@ -10,6 +11,7 @@ import zope.interface
 summer11 = asm.cms.cms.Profile('summer11')
 languages = ['en', 'fi']
 skin_name = 'summer11'
+
 
 class ISkin(asm.cmsui.interfaces.IRetailSkin):
     grok.skin('summer11')
@@ -32,12 +34,8 @@ class MainNavigation(grok.View):
                 yield edition
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
-
-    def render(self):
-        return ''
 
     def header_background(self):
         page = self.context.page
@@ -49,15 +47,6 @@ class LayoutHelper(grok.View):
                 return self.url(page, 'header-background')
         # Fallback
         return "/@@/asm.summer11/img/bg-sleepy.jpg"
-
-    def current_language(self):
-        if not 'asm.translation.lang' in self.request.cookies:
-            return asm.translation.translation.fallback()
-
-        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
-            return self.request.cookies['asm.translation.lang']
-
-        return asm.translation.translation.fallback()
 
 
 class Homepage(asm.cmsui.retail.Pagelet):

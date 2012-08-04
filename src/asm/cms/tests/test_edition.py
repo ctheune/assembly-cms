@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.edition
 import minimock
 import unittest
@@ -9,6 +6,7 @@ import zope.component
 import zope.interface
 
 EP = asm.cms.edition.EditionParameters
+
 
 class DummyRequest(dict):
     zope.interface.implements(zope.annotation.interfaces.IAnnotations)
@@ -47,8 +45,8 @@ class EditionTests(unittest.TestCase):
         self.assertEquals(p1, p1_1)
 
     def test_parameters_iter(self):
-        p = EP([1,2,3])
-        self.assertEquals(set([1,2,3]), set(p))
+        p = EP([1, 2, 3])
+        self.assertEquals(set([1, 2, 3]), set(p))
 
     def test_parameters_replace_simple(self):
         self.assertEquals(
@@ -79,7 +77,7 @@ class EditionTests(unittest.TestCase):
     def test_select_2_editions_with_same_content_selected_by_identity(self):
         # We once hit a bad issue where we used a comparison in
         # `select_edition` that was based on identity. However, due to the
-        # fact that we have a special implementation of __eq__ we need to 
+        # fact that we have a special implementation of __eq__ we need to
         # ensure that we select based on identity rather than equality.
         # This test isn't bullet proof, but it keeps us from making the
         # exactly same mistake again.

@@ -1,11 +1,7 @@
-
-
-from zope.app.zopeappgenerations import getRootFolder
-import asm.cms.cms
-
-
 # Install generation and fixer for ensuring that every public version has a
 # draft.
+from zope.app.zopeappgenerations import getRootFolder
+import asm.cms.cms
 
 
 def evolve(context):
@@ -21,7 +17,8 @@ def evolve(context):
             for edition in obj.editions:
                 if not 'workflow:public' in edition.parameters:
                     continue
-                draft_p = edition.parameters.replace('workflow:public', 'workflow:draft')
+                draft_p = edition.parameters.replace(
+                    'workflow:public', 'workflow:draft')
                 try:
                     draft = obj.getEdition(draft_p)
                 except KeyError:

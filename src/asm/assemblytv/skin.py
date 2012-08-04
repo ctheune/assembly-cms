@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2012 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
 import asm.cmsui.retail
 import asm.mediagallery.externalasset
 import asm.mediagallery.gallery
@@ -33,15 +31,8 @@ class MetadataManager(grok.ViewletManager):
     grok.context(asm.cms.interfaces.IEdition)
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
-
-    def current_language(self):
-        cookie_lang = self.request.cookies.get('asm.translation.lang')
-        if cookie_lang in asm.translation.translation.current():
-            return cookie_lang
-        return asm.translation.translation.fallback()
 
     @property
     def navigation(self):
@@ -51,12 +42,6 @@ class LayoutHelper(grok.View):
             return edition
         else:
             return None
-
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
 
 
 class Homepage(asm.cmsui.retail.Pagelet):

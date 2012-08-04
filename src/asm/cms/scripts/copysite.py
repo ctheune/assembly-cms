@@ -1,9 +1,5 @@
-# Copyright (c) 2010-2011 Assembly Organizing
-# See also LICENSE.txt
-
 import argparse
 import asm.cms.cms
-import sys
 import transaction
 import zope.app.component.hooks
 import zope.copypastemove.interfaces
@@ -37,8 +33,8 @@ parser.add_argument('new', help='the ID of the new site')
 
 args = parser.parse_args()
 
-old_site = root[args.old]
-new_site = root[args.new] = asm.cms.cms.CMS()
+old_site = root[args.old] # NOQA
+new_site = root[args.new] = asm.cms.cms.CMS() # NOQA
 
 transaction.savepoint()
 zope.app.component.hooks.setSite(new_site)

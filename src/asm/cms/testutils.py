@@ -2,6 +2,7 @@ import unittest
 import xml.etree.ElementTree as etree
 import xml.parsers.expat
 
+
 class TestCase(unittest.TestCase):
     """Python's unittest.TestCase extended with additional assert functions."""
 

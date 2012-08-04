@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms
 import asm.cms.interfaces
 import asm.cmsui.base
@@ -111,7 +108,7 @@ def get_language_preferences(request):
 
     prioritized_langs = sorted(
         preferred_langs.items(),
-        key=lambda x : x[1],
+        key=lambda x: x[1],
         reverse=True)
     return [lang[0] for lang in prioritized_langs]
 
@@ -203,7 +200,6 @@ class TranslationMenu(grok.Viewlet):
                 return LANGUAGE_LABELS.get(tag2lang(candidate), candidate)
 
     def list_language_versions(self):
-        parameters = self.context.parameters
         for lang in current():
             p = self.context.parameters.replace(
                 lang2tag('*'), lang2tag(lang))

@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import z3c.baseregistry.baseregistry
 import asm.cms.page
 import grok

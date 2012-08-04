@@ -38,13 +38,13 @@ class CountDown(grok.View):
         return LayoutHelper(self.context, self.request).generateCountdown()
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
     @property
     def schedule(self):
-        if 'program' not in self.application or 'schedule' not in self.application['program']:
+        if ('program' not in self.application or
+                'schedule' not in self.application['program']):
             schedule = NullSchedule()
         else:
             schedule = asm.cms.edition.select_edition(
@@ -54,7 +54,8 @@ class LayoutHelper(grok.View):
         return schedule
 
     def event_data(self, key, event):
-        url = '%s#%s' % (self.url(self.application['program']['schedule']), key)
+        url = '%s#%s' % (
+            self.url(self.application['program']['schedule']), key)
         start = i18n_strftime('%H:%M', event.start, self.request)
         end = i18n_strftime('%H:%M', event.end, self.request)
         return dict(event=event, key=key, url=url, start=start, end=end)
@@ -117,9 +118,9 @@ class LayoutHelper(grok.View):
                 if doCountDown:
                     diff = limit - now
                     diff = (diff.days * 24 * 60 * 60) + diff.seconds
-                    units = ((_('weeks'), 7*24*60*60),
-                             (_('days'), 24*60*60),
-                             (_('hours'), 60*60),
+                    units = ((_('weeks'), 7 * 24 * 60 * 60),
+                             (_('days'), 24 * 60 * 60),
+                             (_('hours'), 60 * 60),
                              (_('minutes'), 60),
                              (_('seconds'), 1))
                     messageParts = []
@@ -143,22 +144,6 @@ class LayoutHelper(grok.View):
         # This should never get returned...
         return zope.i18n.translate(
             _("Welcome to Assembly!"), context=self.request)
-
-
-    def current_language(self):
-        if not 'asm.translation.lang' in self.request.cookies:
-            return asm.translation.translation.fallback()
-
-        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
-            return self.request.cookies['asm.translation.lang']
-
-        return asm.translation.translation.fallback()
-
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
 
 
 class Navtree(grok.View):
@@ -220,7 +205,7 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     def news(self, tag=None):
         if 'news' not in self.context.page:
-           raise StopIteration()
+            raise StopIteration()
 
         news_edition = asm.cms.edition.select_edition(
             self.context.page['news'], self.request)
@@ -279,5 +264,5 @@ class News(asm.cmsui.retail.Pagelet):
             result = dict(edition=edition,
                           news=asm.cms.news.INewsFields(edition))
             news.append(result)
-        news.sort(key=lambda x:x['edition'].created, reverse=True)
+        news.sort(key=lambda x: x['edition'].created, reverse=True)
         return news

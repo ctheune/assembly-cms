@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.testing
 import asm.cmsui.interfaces
 import unittest
@@ -18,7 +15,8 @@ class SecurityTests(unittest.TestCase):
     def test_cms_skin_protected(self):
         # All views in the CMS skin are supposed to be protected by
         # 'asm.cms.EditContent' permission.
-        for registration in zope.component.globalSiteManager.registeredAdapters():
+        adapters = zope.component.globalSiteManager.registeredAdapters()
+        for registration in adapters:
             if len(registration.required) != 2:
                 continue
             if registration.required[1] is not asm.cmsui.interfaces.ICMSSkin:

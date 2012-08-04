@@ -1,11 +1,9 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.mediagallery.interfaces
 import cgi
 import grok
 import urllib
 import urlparse
+
 
 def get_media_info(media_id_data, default_text):
     media_id = media_id_data
@@ -14,9 +12,11 @@ def get_media_info(media_id_data, default_text):
         media_id, link_text = media_id_data.split(u"|")
     return media_id, link_text
 
+
 def calculate_embed_size(aspect_ratio, controls_height, width):
     height = float(width) / aspect_ratio + controls_height
     return width, height
+
 
 class DownloadURLService(grok.GlobalUtility):
 
@@ -35,9 +35,8 @@ class YoutubeHosted(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('youtube')
 
-    YOUTUBE_PARAMETERS = "&amp;hl=en_US&amp;fs=1&amp;enablejsapi=1&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1&amp;playerapiid=ytplayerembed&amp;origin=%(origin)s"
-    EMBED_TEMPLATE="""<iframe id="ytplayerembed" class="youtube-player" width="%(width)d" height="%(height)d" src="http://www.youtube.com/embed/%(id)s?%(params)s" style="border: 0">
-</iframe>"""
+    YOUTUBE_PARAMETERS = "&amp;hl=en_US&amp;fs=1&amp;enablejsapi=1&amp;showinfo=0&amp;modestbranding=1&amp;autoplay=1&amp;playerapiid=ytplayerembed&amp;origin=%(origin)s"  # NOQA
+    EMBED_TEMPLATE = '<iframe id="ytplayerembed" class="youtube-player" width="%(width)d" height="%(height)d" src="http://www.youtube.com/embed/%(id)s?%(params)s" style="border: 0">\n</iframe>'  # NOQA
     CONTROLS_HEIGHT = 25.0
     ASPECT_RATIO = 16.0 / 9.0
     DEFAULT_WIDTH = 640
@@ -46,7 +45,8 @@ class YoutubeHosted(grok.GlobalUtility):
         return ('<a href="http://www.youtube.com/watch?v=%s">'
                 'YouTube</a>') % media_id.strip()
 
-    def embed_code(self, request, media_id, max_width=DEFAULT_WIDTH, max_height=None):
+    def embed_code(self, request, media_id, max_width=DEFAULT_WIDTH,
+                   max_height=None):
         width, height = calculate_embed_size(
             self.ASPECT_RATIO, self.CONTROLS_HEIGHT, max_width)
         origin = urlparse.urlparse(request.getApplicationURL()).netloc
@@ -64,8 +64,11 @@ class PouetNet(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IContentHostingService)
     grok.name('pouet')
 
+    POUET_LINK = (
+        '<a href="http://www.pouet.net/prod.php?which=%s">pouet.net</a>')
+
     def link_code(self, media_id):
-        return '<a href="http://www.pouet.net/prod.php?which=%s">pouet.net</a>' % media_id.strip()
+        return self.POUET_LINK % media_id.strip()
 
 
 class SceneOrgDownload(grok.GlobalUtility):
@@ -88,13 +91,13 @@ class DemosceneTV(grok.GlobalUtility):
     grok.name('demoscenetv')
 
     EMBED_TEMPLATE = """
-<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id_file)s_%(id_prod)s_%(id_app)s" width="%(width)s" height="%(height)s" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />"""
+<embed src="http://www.demoscene.tv/mediaplayer.swf?id=%(id_file)s_%(id_prod)s_%(id_app)s" width="%(width)s" height="%(height)s" allowfullscreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />""" # NOQA
     CONTROLS_HEIGHT = 20.0
     ASPECT_RATIO = 16.0 / 9.0
     DEFAULT_WIDTH = 512
 
     def _get_vars(self, media_id):
-        return dict(map(lambda x : (x[0], x[1][0]),
+        return dict(map(lambda x: (x[0], x[1][0]),
                         cgi.parse_qs(media_id).items()))
 
     def link_code(self, media_id):
@@ -102,22 +105,23 @@ class DemosceneTV(grok.GlobalUtility):
         return ('<a href="http://demoscene.tv/prod.php?id_prod=%s">'
                 'DTV</a>') % media_vars['id_prod']
 
-    def embed_code(self, request, media_id, max_width=DEFAULT_WIDTH, max_height=None):
+    def embed_code(self, request, media_id, max_width=DEFAULT_WIDTH,
+                   max_height=None):
         media_vars = self._get_vars(media_id)
         width = int(media_vars['width'])
         height = int(media_vars['height'])
-        aspect = float(width)/height
+        aspect = float(width) / height
         new_width, new_height = calculate_embed_size(aspect, 0, max_width)
         media_vars['width'] = new_width
         media_vars['height'] = new_height
-        return  self.EMBED_TEMPLATE % media_vars
+        return self.EMBED_TEMPLATE % media_vars
 
 
 class Vimeo(grok.GlobalUtility):
     grok.provides(asm.mediagallery.interfaces.IEmbeddableContentHostingService)
     grok.name('vimeo')
 
-    EMBED_TEMPLATE = """<iframe src="http://player.vimeo.com/video/%(id)s?autoplay=1" width="%(width)d" height="%(height)d" frameborder="0"></iframe>"""
+    EMBED_TEMPLATE = """<iframe src="http://player.vimeo.com/video/%(id)s?autoplay=1" width="%(width)d" height="%(height)d" frameborder="0"></iframe>""" # NOQA
 
     CONTROLS_HEIGHT = 0.0
 
@@ -126,7 +130,7 @@ class Vimeo(grok.GlobalUtility):
 
     def _get_aspect_ratio(self, aspect_str):
         width, height = aspect_str.strip().split(":")
-        return float(width)/float(height)
+        return float(width) / float(height)
 
     def _get_media_data(self, media_id_data):
         if "," in media_id_data:
@@ -141,13 +145,14 @@ class Vimeo(grok.GlobalUtility):
         media_id, _ = self._get_media_data(media_id_data)
         return "<a href='http://vimeo.com/%s'>Vimeo</a>" % media_id.strip()
 
-    def embed_code(self, request, media_id_data, max_width=DEFAULT_WIDTH, max_height=None):
+    def embed_code(self, request, media_id_data, max_width=DEFAULT_WIDTH,
+                   max_height=None):
         media_id, aspect_ratio = self._get_media_data(media_id_data)
 
         width, height = calculate_embed_size(
             aspect_ratio, self.CONTROLS_HEIGHT, max_width)
 
-        return  self.EMBED_TEMPLATE % {
+        return self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
             'width': width,
             'height': height}
@@ -163,8 +168,9 @@ class Image(grok.GlobalUtility):
     def link_code(self, media_id):
         return None
 
-    def embed_code(self, request, media_id_data, max_width=None, max_height=None):
+    def embed_code(self, request, media_id_data, max_width=None,
+                   max_height=None):
         media_id, image_text = get_media_info(media_id_data, self.DEFAULT_TEXT)
-        return  self.EMBED_TEMPLATE % {
+        return self.EMBED_TEMPLATE % {
             'id': media_id.strip(),
             'image_text': cgi.escape(image_text.strip(), quote=True)}

@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms
 import asm.cms.interfaces
 import asm.cms.edition
@@ -48,6 +45,7 @@ class INewsFields(zope.interface.Interface):
         description=u'An image that can be displayed along this news item. '
                     u'Please note that depending on the context the image '
                     u'may be displayed in different styles.')
+
 
 class TeaserAnnotation(grok.Annotation):
     grok.implements(INewsFields)

@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.interfaces
 import base64
@@ -11,6 +8,7 @@ import zope.interface
 
 # This is also the amount that magic library uses for file type detection.
 MAGIC_FILE_BYTES = 8192
+
 
 class Asset(asm.cms.edition.Edition):
     """An asset stores binary data, like images.
@@ -59,7 +57,8 @@ class Asset(asm.cms.edition.Edition):
             return None
         if self._content_type is not None:
             return self._content_type
-        self._content_type = magic.whatis(self.content.open('r').read(MAGIC_FILE_BYTES))
+        significant_bytes = self.content.open('r').read(MAGIC_FILE_BYTES)
+        self._content_type = magic.whatis(significant_bytes)
         return self._content_type
 
 

@@ -18,13 +18,12 @@ class ILayoutSelection(zope.interface.Interface):
 
     zope.interface.taggedValue('label', u'Layout')
     zope.interface.taggedValue(
-        'description', u'Select a page layout to use when displaying this page.')
+        'description',
+        u'Select a page layout to use when displaying this page.')
 
     layout = zope.schema.Choice(
         title=u'Layout', required=False,
         source=LayoutSource())
-
-
 
 
 class LayoutAnnotation(grok.Annotation):
@@ -32,7 +31,7 @@ class LayoutAnnotation(grok.Annotation):
     grok.provides(ILayoutSelection)
     grok.context(asm.cms.interfaces.IEdition)
 
-    layout = '' # automatic default
+    layout = ''  # automatic default
 
     def copyFrom(self, other):
         self.layout = other.layout

@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.schedule.schedule
 import datetime
 import grok
@@ -31,7 +28,8 @@ class CalendarView(grok.View):
             ievent.add('categories', event.class_)
             ievent.add('dtstart', event.start)
             url = event.url
-            # A hack to make imported URL data to have the site address correct.
+            # A hack to make imported URL data to have the site address
+            # correct.
             if re.match("/[^/]", url):
                 url = "http://www.assembly.org%s" % url
 
@@ -40,7 +38,8 @@ class CalendarView(grok.View):
             ievent.add('dtstamp', stamp)
             cal.add_component(ievent)
 
-        self.request.response.setHeader('Content-Type', self.context.content_type)
+        self.request.response.setHeader(
+            'Content-Type', self.context.content_type)
 
         return cal.as_string()
 

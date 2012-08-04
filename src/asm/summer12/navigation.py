@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from .skin import ISkin, NavigationBar
 import grok
 import zope.interface
@@ -40,5 +37,5 @@ class Localnav(grok.View):
     grok.context(zope.interface.Interface)
 
     def items(self):
-        return map(lambda p:asm.cms.edition.select_edition(p, self.request),
+        return map(lambda p: select_edition(p, self.request),
                    self.context.page.subpages)

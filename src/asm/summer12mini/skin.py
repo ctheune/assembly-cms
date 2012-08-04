@@ -1,12 +1,13 @@
+from asm.schedule.i18n import i18n_strftime
+from asm.summer12mini.i18n import _
 import asm.cms
-import asm.cmsui.retail
 import asm.cmsui.interfaces
+import asm.cmsui.public.layout
+import asm.cmsui.retail
 import datetime
 import grok
 import megrok.pagelet
 import zope.interface
-from asm.schedule.i18n import i18n_strftime
-from asm.summer12mini.i18n import _
 
 summer12mini = asm.cms.cms.Profile('summer12mini')
 languages = ['en', 'fi']
@@ -32,8 +33,7 @@ class CountDown(grok.View):
         return LayoutHelper(self.context, self.request).generateCountdown()
 
 
-class LayoutHelper(grok.View):
-    grok.context(zope.interface.Interface)
+class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
     grok.layer(ISkin)
 
     @property
@@ -134,29 +134,14 @@ class LayoutHelper(grok.View):
         return zope.i18n.translate(
             _("Welcome to Assembly!"), context=self.request)
 
-    def current_language(self):
-        if not 'asm.translation.lang' in self.request.cookies:
-            return asm.translation.translation.fallback()
-
-        if self.request.cookies['asm.translation.lang'] in asm.translation.translation.current():
-            return self.request.cookies['asm.translation.lang']
-
-        return asm.translation.translation.fallback()
-
     def og_images(self):
         if self.context.context.page.type != 'htmlpage':
-          return
+            return
         edition = self.context.context
         content = self.context.resolve_relative_urls(edition.content, edition)
         document = asm.cms.utils.tree_from_fragment(content)
         for img in document.xpath('//img'):
             yield img.get('src')
-
-    # A helper class to get access to the static directory in this module from
-    # the layout.
-
-    def render(self):
-        return ''
 
 
 class Navtree(grok.View):
@@ -218,7 +203,7 @@ class Homepage(asm.cmsui.retail.Pagelet):
 
     def news(self, tag=None):
         if 'news' not in self.context.page:
-           raise StopIteration()
+            raise StopIteration()
 
         news_edition = asm.cms.edition.select_edition(
             self.context.page['news'], self.request)
@@ -277,5 +262,5 @@ class News(asm.cmsui.retail.Pagelet):
             result = dict(edition=edition,
                           news=asm.cms.news.INewsFields(edition))
             news.append(result)
-        news.sort(key=lambda x:x['edition'].created, reverse=True)
+        news.sort(key=lambda x: x['edition'].created, reverse=True)
         return news

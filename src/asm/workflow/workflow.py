@@ -1,6 +1,3 @@
-# Copyright (c) 2009 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.interfaces
 import asm.cmsui.base
 import asm.cmsui.interfaces
@@ -75,7 +72,7 @@ class CMSEditionSelector(object):
                 # just acceptable. This allows promotion of a public version
                 # from another plugin.
                 try:
-                    draft = page.getEdition(edition.parameters.replace(
+                    page.getEdition(edition.parameters.replace(
                         'workflow:*', WORKFLOW_DRAFT))
                 except KeyError:
                     target = preferred
@@ -286,7 +283,7 @@ class InconsistentStateNotification(grok.Viewlet):
                 WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
             try:
                 draft = page.getEdition(parameters)
-            except KeyError, e:
+            except KeyError:
                 pass
         elif WORKFLOW_DRAFT in edition_parameters:
             draft = self.context
@@ -294,11 +291,10 @@ class InconsistentStateNotification(grok.Viewlet):
                 WORKFLOW_DRAFT, WORKFLOW_PUBLIC)
             try:
                 public = page.getEdition(parameters)
-            except KeyError, e:
+            except KeyError:
                 pass
 
         return public, draft
-
 
     def update(self):
         public, draft = self._select_public_draft_editions()
@@ -308,12 +304,20 @@ class InconsistentStateNotification(grok.Viewlet):
 
         if self.context == draft:
             if public.modified > draft.modified:
-                self.message = u"Public version has been modified after a draft has been created. Press \"Revert draft\" button to edit latest published version as a draft."
-                self.instruction = u"Be careful not to lose any corrections that may have been made in the public version."
+                self.message = (u"Public version has been modified after a "
+                                u"draft has been created. Press "
+                                u"\"Revert draft\" button to edit latest "
+                                u"published version as a draft.")
+                self.instruction = (u"Be careful not to lose any corrections "
+                                    u"that may have been made in the public "
+                                    u"version.")
             elif draft.modified > public.modified:
                 self.message = u"Remember to publish this draft."
-                self.instruction = u"Changes to drafts are not visible until published."
+                self.instruction = (
+                    u"Changes to drafts are not visible until published.")
 
         if self.context == public and draft.modified > public.modified:
             self.message = u"A draft exists and has been modified."
-            self.instruction = u"Remember to update the draft with the same corrections you are making into the public version."
+            self.instruction = (u"Remember to update the draft with the same "
+                                u"corrections you are making into the public "
+                                u"version.")

@@ -1,4 +1,3 @@
-
 import zope.interface
 import zope.schema
 import asm.cms.interfaces
@@ -32,8 +31,9 @@ class IMediaGalleryAdditionalInfo(zope.interface.Interface):
 class HostingServices(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):
-        service_names = [name for name, service in
-                         zope.component.getUtilitiesFor(IContentHostingService)]
+        service_names = [name
+            for name, service
+            in zope.component.getUtilitiesFor(IContentHostingService)]
         return sorted(service_names)
 
 
@@ -57,7 +57,6 @@ class IExternalAsset(zope.interface.Interface):
 
 
 class IContentHostingService(zope.interface.Interface):
-
 
     def link_code(id):
         pass

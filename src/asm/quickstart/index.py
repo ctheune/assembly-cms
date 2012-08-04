@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.interfaces
 import asm.cmsui.interfaces
 import asm.workflow.workflow
@@ -10,6 +7,7 @@ import zope.app.folder.interfaces
 import zope.security.interfaces
 
 grok.context(zope.app.folder.interfaces.IRootFolder)
+
 
 class Index(megrok.pagelet.Pagelet):
 

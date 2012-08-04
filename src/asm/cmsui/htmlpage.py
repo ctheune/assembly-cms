@@ -1,10 +1,7 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.htmlpage
+import asm.cmsui.form
 import asm.cmsui.interfaces
 import asm.cmsui.retail
-import asm.cmsui.form
 import asm.cmsui.tinymce
 import cgi
 import grok
@@ -51,7 +48,7 @@ class SearchPreview(grok.View):
         # Select limited amount of characters
         focus = text.lower().find(self.keyword.lower())
         if focus == -1:
-            return cgi.escape(text[:2*self.PREVIEW_AMOUNT])
+            return cgi.escape(text[:2 * self.PREVIEW_AMOUNT])
         text = text[
             max(focus - self.PREVIEW_AMOUNT, 0):(focus + self.PREVIEW_AMOUNT)]
 
@@ -63,6 +60,7 @@ class SearchPreview(grok.View):
         text = '%s<span class="match">%s</span>%s' % \
             tuple(map(cgi.escape, [pre, keyword, post]))
         return text
+
 
 class ExtendedPageActions(grok.Viewlet):
 

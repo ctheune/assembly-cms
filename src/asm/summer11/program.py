@@ -1,10 +1,7 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
-import asm.party.program
-import asm.cmsui.retail
-import asm.summer11.skin
 import asm.cms.edition
+import asm.cmsui.retail
+import asm.party.program
+import asm.summer11.skin
 import grok
 
 

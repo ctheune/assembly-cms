@@ -1,14 +1,13 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+from asm.cms.edition import select_edition
 import asm.cms.cms
 import asm.cmsui.interfaces
 import grok
 import hurry.query.query
-import simplejson
 import megrok.pagelet
+import simplejson
 import zope.component
 import zope.index.text.parsetree
+
 
 class Search(megrok.pagelet.Pagelet):
 
@@ -41,7 +40,7 @@ class SearchBase(object):
 
         self.results = []
         for result in results:
-            if result is asm.cms.edition.select_edition(result.page, self.request):
+            if result is select_edition(result.page, self.request):
                 self.results.append(result)
 
 

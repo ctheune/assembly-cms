@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import ZODB.blob
 import asm.cms
 import asm.cms.cms
@@ -16,12 +13,14 @@ import zope.interface
 import zope.schema
 import zope.traversing.api
 
+
 def base64_to_blob(data):
     value = ZODB.blob.Blob()
     f = value.open('w')
     f.write(base64.decodestring(data))
     f.close()
     return value
+
 
 class ImportError(ValueError):
     pass
@@ -67,9 +66,9 @@ class Importer(object):
                 except KeyError:
                     # Leave existing content alone.
                     if not allow_duplicates:
-                        errors.append(
-                            "Duplicate page '%s' with edition '%s' detected" % (
-                                page_path, parameters_value))
+                        errors.append('Duplicate page "%s" '
+                                      'with edition "%s" detected' % (
+                                      page_path, parameters_value))
                     continue
                 getattr(self, 'import_%s' % page.type)(edition, edition_node)
                 edition.title = edition_node.get('title')

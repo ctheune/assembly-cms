@@ -74,7 +74,7 @@ class ChangeLog(grok.LocalUtility):
         change.user_id = request.principal.title
         change.object_id = intids.register(object)
         change.title = object.title
-        key = int(time.mktime(change.timestamp.timetuple())*1000)
+        key = int(time.mktime(change.timestamp.timetuple()) * 1000)
         self.changes[key] = change
 
     def get_changes(self, limit=50):

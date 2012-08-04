@@ -1,6 +1,3 @@
-# Copyright (c) 2011 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.redirect
 import asm.cmsui.interfaces
@@ -9,7 +6,9 @@ import zope.component
 import zope.publisher.interfaces.browser
 import zope.traversing.browser.interfaces
 
+
 grok.context(asm.cms.redirect.Redirect)
+
 
 class Edit(asm.cmsui.form.EditionEditForm):
 
@@ -18,6 +17,7 @@ class Edit(asm.cmsui.form.EditionEditForm):
 
     main_fields = grok.AutoFields(asm.cms.redirect.Redirect).select(
         'title', 'target_url')
+
 
 class Index(grok.View):
 
@@ -28,7 +28,9 @@ class Index(grok.View):
         self.redirect(self.context.target_url, trusted=True)
 
     def render(self):
-        return '<a href="%s">%s</a>' % (self.context.target_url, self.context.target_url)
+        return '<a href="%s">%s</a>' % (
+            self.context.target_url, self.context.target_url)
+
 
 class RedirectAbsoluteUrl(grok.MultiAdapter):
     grok.adapts(

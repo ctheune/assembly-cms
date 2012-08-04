@@ -1,12 +1,7 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.cms
 import asm.cms.htmlpage
 import asm.cms.replace
 import asm.cms.testing
-import transaction
-import unittest
 
 
 class TestReplace(asm.cms.testing.FunctionalTestCase):

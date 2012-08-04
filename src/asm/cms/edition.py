@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 Assembly Organizing
-# See also LICENSE.txt
-
 import BTrees.OOBTree
 import asm.cms.interfaces
 import datetime
@@ -144,7 +141,6 @@ def get_initial_parameters(page):
     return EditionParameters(parameters)
 
 
-
 @grok.subscribe(asm.cms.interfaces.IEdition, grok.IObjectModifiedEvent)
 def annotate_modification_date(obj, event):
     obj.modified = datetime.datetime.now(pytz.UTC)
@@ -202,7 +198,8 @@ def select_edition(page, request):
     return scores[0][0]
 
 
-def find_editions(root, request=None, schema=zope.interface.Interface, recurse=True):
+def find_editions(root, request=None, schema=zope.interface.Interface,
+                  recurse=True):
     for page in root.subpages:
         if request is not None:
             editions = [select_edition(page, request)]

@@ -1,11 +1,9 @@
-# Copyright (c) 2011 Assembly Organizing
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.interfaces
 import zope.interface
 import zope.publisher.interfaces.browser
 import zope.traversing.browser.interfaces
+
 
 class Redirect(asm.cms.edition.Edition):
 

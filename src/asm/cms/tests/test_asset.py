@@ -1,10 +1,7 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+import ZODB.blob
 import asm.cms.asset
 import os.path
 import unittest
-import ZODB.blob
 
 
 class AssetTests(unittest.TestCase):

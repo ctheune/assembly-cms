@@ -1,10 +1,11 @@
+from asm.mediagallery.interfaces import IMediaGallery
+from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 import asm.cms
 import asm.cms.edition
-import asm.cmsui.tinymce
-import asm.mediagallery.externalasset
-import asm.mediagallery.interfaces
 import asm.cmsui.form
 import asm.cmsui.retail
+import asm.cmsui.tinymce
+import asm.mediagallery.externalasset
 import asm.workflow
 import grok
 import random
@@ -12,12 +13,14 @@ import sys
 import zope.interface
 import zope.publisher.interfaces
 
+
 TYPE_MEDIA_GALLERY = 'mediagallery'
 LIMIT_GALLERY_ITEMS = 27
 
+
 class MediaGallery(asm.cms.Edition):
 
-    zope.interface.implements(asm.mediagallery.interfaces.IMediaGallery)
+    zope.interface.implements(IMediaGallery)
     zope.interface.classProvides(asm.cms.IEditionFactory)
 
     factory_title = u'Media gallery'
@@ -27,14 +30,14 @@ class MediaGallery(asm.cms.Edition):
 
 class Edit(asm.cmsui.form.EditionEditForm):
 
-    grok.context(asm.mediagallery.interfaces.IMediaGallery)
+    grok.context(IMediaGallery)
 
     main_fields = grok.AutoFields(asm.cms.interfaces.IEdition).select('title')
 
 
 class Index(asm.cmsui.retail.Pagelet):
 
-    grok.context(asm.mediagallery.interfaces.IMediaGallery)
+    grok.context(IMediaGallery)
 
     ITEMS_PER_PAGE = LIMIT_GALLERY_ITEMS
 
@@ -49,7 +52,7 @@ class Index(asm.cmsui.retail.Pagelet):
     def update(self):
         self.skip = self.offset = int(self.request.get('offset', 0))
         self.show = self.max_items
-        self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(self.context)
+        self.info = IMediaGalleryAdditionalInfo(self.context)
 
         items = []
         for item in self.context.list_subpages(type=[
@@ -59,13 +62,12 @@ class Index(asm.cmsui.retail.Pagelet):
                 continue
             items.append(dict(
                 edition=edition,
-                gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
+                gallery=IMediaGalleryAdditionalInfo(edition)))
 
         if self.sort_items:
-            items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
+            items.sort(key=lambda x: x['gallery'].ranking or sys.maxint)
         self.items = items
         self.total = len(items)
-
 
     def list_categories(self):
         for category in self.context.list_subpages(type=[TYPE_MEDIA_GALLERY]):
@@ -93,8 +95,8 @@ class Index(asm.cmsui.retail.Pagelet):
                 continue
             items.append(dict(
                 edition=edition,
-                gallery=asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition)))
-        items.sort(key=lambda x:x['gallery'].ranking or sys.maxint)
+                gallery=IMediaGalleryAdditionalInfo(edition)))
+        items.sort(key=lambda x: x['gallery'].ranking or sys.maxint)
         if limit and len(items) > 0:
             if items[0]['gallery'].ranking is None:
                 random.shuffle(items)
@@ -104,8 +106,8 @@ class Index(asm.cmsui.retail.Pagelet):
 
 class AssetAnnotation(grok.Annotation):
 
-    grok.implements(asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo)
-    grok.provides(asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo)
+    grok.implements(IMediaGalleryAdditionalInfo)
+    grok.provides(IMediaGalleryAdditionalInfo)
     grok.context(asm.cms.interfaces.IEdition)
 
     author = u''
@@ -145,8 +147,7 @@ class TextIndexAssetAnnotation(grok.Adapter):
             result.extend(["tag:" + x for x in tags])
 
         try:
-            asset_annotation = (
-                asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(edition))
+            asset_annotation = IMediaGalleryAdditionalInfo(edition)
         except LookupError:
             pass
         else:
@@ -163,7 +164,7 @@ def add_gallery_data(edition):
         if not asm.cms.interfaces.IPage.providedBy(page):
             break
         if page.type == TYPE_MEDIA_GALLERY:
-            return asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo
+            return IMediaGalleryAdditionalInfo
         page = page.__parent__
 
 
@@ -174,10 +175,11 @@ class Thumbnail(grok.View):
     info = None
 
     def update(self):
-        self.info = asm.mediagallery.interfaces.IMediaGalleryAdditionalInfo(
+        self.info = IMediaGalleryAdditionalInfo(
             self.context)
         if self.info.thumbnail is None:
-            raise zope.publisher.interfaces.NotFound(self, self.__name__, self.request)
+            raise zope.publisher.interfaces.NotFound(
+                self, self.__name__, self.request)
 
     def render(self):
         return open(self.info.thumbnail.committed())
@@ -196,7 +198,9 @@ class GalleryNavBar(grok.View):
     grok.context(asm.cms.interfaces.IEdition)
 
     def next(self):
-        return get_relative_to_this_gallery_item(self.context, +1, self.request)
+        return get_relative_to_this_gallery_item(
+            self.context, +1, self.request)
 
     def previous(self):
-        return get_relative_to_this_gallery_item(self.context, -1, self.request)
+        return get_relative_to_this_gallery_item(
+            self.context, -1, self.request)

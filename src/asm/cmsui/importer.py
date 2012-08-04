@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.cms
 import asm.cms.importer
 import asm.cmsui.base
@@ -8,6 +5,7 @@ import asm.cmsui.form
 import grok
 import transaction
 import zope.interface
+
 
 class ImportActions(grok.Viewlet):
 
@@ -33,7 +31,9 @@ class Import(asm.cmsui.form.Form):
         if len(errors) > 0:
             self.flash(u"Aborted import due to following errors:")
         if len(errors) > self.display_max_errors:
-            self.flash(u"Too many errors detected. Displaying the first %d errors." % self.display_max_errors)
+            self.flash(u"Too many errors detected. "
+                       u"Displaying the first %d errors." %
+                       self.display_max_errors)
         for error in errors[:self.display_max_errors]:
             self.flash(error, "warning")
 

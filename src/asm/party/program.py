@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.interfaces
 import asm.cmsui.tinymce
@@ -35,7 +32,7 @@ class Event(asm.cms.edition.Edition):
 
     factory_title = u'Event'
     factory_visible = staticmethod(
-        lambda parent:parent.factory is ProgramSection)
+        lambda parent: parent.factory is ProgramSection)
 
     headline = u''
     description = u''
@@ -63,7 +60,7 @@ class Competition(asm.cms.edition.Edition):
 
     factory_title = u'Competition'
     factory_visible = staticmethod(
-        lambda parent:parent.factory is ProgramSection)
+        lambda parent: parent.factory is ProgramSection)
 
     prizes = u''
     participation_info = None

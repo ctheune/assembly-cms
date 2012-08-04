@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import StringIO
 import asm.cms.edition
 import asm.cmsui.interfaces
@@ -13,6 +10,7 @@ BRANCH_STATE_CLOSED = False
 BRANCH_STATE_OPEN = True
 # We don't have any children.
 BRANCH_STATE_NONE = None
+
 
 class Tree(grok.View):
 
@@ -41,7 +39,6 @@ class Tree(grok.View):
             iids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
             page = iids.getObject(int(page_id))
             self.open_page = page
-
 
     def _get_page_data(self, page):
         intids = zope.component.getUtility(zope.intid.IIntIds)
@@ -123,7 +120,6 @@ class Tree(grok.View):
                 page['state'] = BRANCH_STATE_OPEN
 
         return pages
-
 
     def tree(self):
         pages = []

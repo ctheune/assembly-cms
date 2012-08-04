@@ -1,17 +1,16 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import asm.cms.edition
 import asm.cms.importer
+import asm.cmsui.form
+import asm.cmsui.retail
 import asm.mediagallery.interfaces
 import grok
 import persistent
-import zope.interface
 import zope.app.form.browser.objectwidget
-import asm.cmsui.form
-import asm.cmsui.retail
+import zope.interface
+from asm.mediagallery.interfaces import IEmbeddableContentHostingService
 
 TYPE_EXTERNAL_ASSET = 'externalasset'
+
 
 class ExternalAsset(asm.cms.edition.Edition):
 
@@ -34,9 +33,11 @@ class ExternalAsset(asm.cms.edition.Edition):
 
 
 def setupObjectInputWidget(field, request):
-    factory = zope.component.getUtility(zope.component.interfaces.IFactory,
-                                        name=field.schema.__name__)
-    return zope.app.form.browser.objectwidget.ObjectWidget(field, request, factory)
+    factory = zope.component.getUtility(
+        zope.component.interfaces.IFactory, name=field.schema.__name__)
+    return zope.app.form.browser.objectwidget.ObjectWidget(
+        field, request, factory)
+
 
 class Edit(asm.cmsui.form.EditionEditForm):
 
@@ -65,12 +66,13 @@ class Index(asm.cmsui.retail.Pagelet):
         for service_choice in self.context.locations:
             try:
                 service = zope.component.getUtility(
-                    asm.mediagallery.interfaces.IEmbeddableContentHostingService,
+                    IEmbeddableContentHostingService,
                     name=service_choice.service_id)
             except LookupError:
                 pass
             else:
-                return service.embed_code(self.request, service_choice.id, max_width)
+                return service.embed_code(
+                    self.request, service_choice.id, max_width)
 
     def links(self, include=None, exclude=None, max=None):
         count = 0
@@ -89,7 +91,6 @@ class Index(asm.cmsui.retail.Pagelet):
             count += 1
             if count == max:
                 return
-
 
 
 class HostingServiceChoice(persistent.Persistent):

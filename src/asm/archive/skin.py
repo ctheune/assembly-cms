@@ -4,6 +4,7 @@ from asm.mediagallery.interfaces import IMediaGallery
 from asm.mediagallery.interfaces import IMediaGalleryAdditionalInfo
 from zope.app.form.browser.textwidgets import TextWidget
 import asm.cms
+import asm.cms.patches
 import asm.cmsui.interfaces
 import asm.cmsui.public.layout
 import asm.cmsui.retail
@@ -99,7 +100,7 @@ class YearlyNavigation(grok.View):
 
     def get_closest_year(self):
         closest_page = self.context
-        application = asm.cms.get_application(closest_page)
+        application = asm.cms.patches.get_application(closest_page)
         if closest_page == application:
             return None
         while closest_page.__parent__ != application:

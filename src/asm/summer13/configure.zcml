@@ -1,0 +1,28 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:i18n="http://namespaces.zope.org/i18n"
+  i18n_domain="asm.cms">
+
+  <utility
+    component=".skin.summer13"
+    name="summer13"
+    provides="asm.cms.interfaces.IProfile"
+    />
+
+  <i18n:registerTranslations directory="locales" />
+
+  <grok:grok package="." />
+
+  <registerIn registry=".skin.summer13">
+      <utility
+        component=".skin.languages"
+        provides="asm.translation.interfaces.ILanguageProfile"
+        />
+      <utility
+        component=".skin.skin_name"
+        provides="asm.cms.interfaces.ISkinProfile"
+        />
+  </registerIn>
+
+</configure>

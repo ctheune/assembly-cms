@@ -67,11 +67,17 @@ class ChangeLog(grok.LocalUtility):
         self.changes = LOBTree()
 
     def record_change(self, object):
-        request = zope.security.management.getInteraction().participations[0]
+        try:
+                request = zope.security.management.getInteraction().participations[0]
+        except zope.security.interfaces.NoInteraction:
+                request = None
         intids = zope.component.getUtility(zope.intid.interfaces.IIntIds)
         change = Change()
         change.timestamp = datetime.datetime.now()
-        change.user_id = request.principal.title
+        if request is not None:
+                change.user_id = request.principal.title
+        else:
+                change.user_id = None
         change.object_id = intids.register(object)
         change.title = object.title
         key = int(time.mktime(change.timestamp.timetuple()) * 1000)

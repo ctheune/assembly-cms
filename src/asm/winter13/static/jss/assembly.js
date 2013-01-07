@@ -125,9 +125,9 @@ $(function() {
             id: "twitter-latest-tweets",
             version: 2,
             type: 'search',
-            search: '@assemblyparty OR #asm',
+            search: '@assemblyparty OR #asmparty',
             interval: 4000,
-            title: "Assembly related tweets for #asm and @assemblyparty",
+            title: "Assembly related tweets for #asmparty and @assemblyparty",
             width: 560,
             height: 115,
             theme: {

@@ -17,7 +17,7 @@
                 <h2><a tal:attributes="href python:view.url(item['edition'])"
                         tal:content="item/edition/title">Videos &amp; Photos</a></h2>
                 <p><a tal:attributes="href python:view.url(item['edition'])"
-                    tal:content="item/news/teaser">Want to catch the feeling of ASSEMBLY Summer 2009? Check out our photo and video archives!</a></p>
+                    tal:content="item/news/teaser">Want to catch the feeling of ASSEMBLY Winter 2013? Check out our photo and video archives!</a></p>
             </div>
         </div>
     </div>

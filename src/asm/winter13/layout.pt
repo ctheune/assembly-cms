@@ -134,7 +134,7 @@
 
             <div style="margin-left: 1em">
 <a href="https://twitter.com/assemblyparty" class="twitter-follow-button" data-show-count="false" data-width="170px">Follow @assemblyparty</a><script src="" type="text/javascript"></script>
-              <div>Hashtag <strong><a href="http://twitter.com/#!/search/%23asmw13+OR+@assemblyparty">#asmw13</a></strong></div>
+              <div>Hashtag <strong><a href="http://twitter.com/#!/search/%23asm+OR+@assemblyparty">#asm</a></strong></div>
             </div>
 
             <div class="sidebar-box"
@@ -192,8 +192,8 @@
     <div id="nav-top">
       <div id="nav-top-container">
         <ul>
-          <li><a href="http://www.assembly.org/summer11/">Summer'11</a></li>
-          <li><a href="http://www.assembly.org/winter11/">Winter'11</a></li>
+          <li><a href="http://www.assembly.org/summer12/">Summer'12</a></li>
+          <li><a href="http://www.assembly.org/winter12/">Winter'12</a></li>
           <li><a href="http://archive.assembly.org/">Archive</a></li>
           <li><a href="http://www.assemblytv.net/">AssemblyTV</a></li>
           <li><a href="http://tickets.assembly.org/" i18n:translate="">Buy Tickets</a></li>

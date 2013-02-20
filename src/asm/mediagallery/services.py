@@ -1,8 +1,22 @@
 import asm.mediagallery.interfaces
 import cgi
+import functools
 import grok
 import urllib
 import urlparse
+
+
+def no_call_on_empty(function):
+    @functools.wraps(function)
+    def link_code(*args, **kwds):
+        for arg in args:
+            if not arg:
+                return None
+        for keyword in kwds.values():
+            if not keyword:
+                return None
+        return function(*args, **kwds)
+    return link_code
 
 
 def get_media_info(media_id_data, default_text):
@@ -24,6 +38,7 @@ class DownloadURLService(grok.GlobalUtility):
     grok.name('download')
     DEFAULT_LINK_TEXT = u"Download"
 
+    @no_call_on_empty
     def link_code(self, media_id_data):
         link_address, link_text = get_media_info(
             media_id_data, self.DEFAULT_LINK_TEXT)
@@ -41,6 +56,7 @@ class YoutubeHosted(grok.GlobalUtility):
     ASPECT_RATIO = 16.0 / 9.0
     DEFAULT_WIDTH = 640
 
+    @no_call_on_empty
     def link_code(self, media_id):
         return ('<a href="http://www.youtube.com/watch?v=%s">'
                 'YouTube</a>') % media_id.strip()
@@ -67,6 +83,7 @@ class PouetNet(grok.GlobalUtility):
     POUET_LINK = (
         '<a href="http://www.pouet.net/prod.php?which=%s">pouet.net</a>')
 
+    @no_call_on_empty
     def link_code(self, media_id):
         return self.POUET_LINK % media_id.strip()
 
@@ -78,6 +95,7 @@ class SceneOrgDownload(grok.GlobalUtility):
 
     DEFAULT_LINK_TEXT = u"scene.org"
 
+    @no_call_on_empty
     def link_code(self, media_id_data):
         media_id, link_text = get_media_info(
             media_id_data, self.DEFAULT_LINK_TEXT)
@@ -100,6 +118,7 @@ class DemosceneTV(grok.GlobalUtility):
         return dict(map(lambda x: (x[0], x[1][0]),
                         cgi.parse_qs(media_id).items()))
 
+    @no_call_on_empty
     def link_code(self, media_id):
         media_vars = self._get_vars(media_id)
         return ('<a href="http://demoscene.tv/prod.php?id_prod=%s">'
@@ -141,6 +160,7 @@ class Vimeo(grok.GlobalUtility):
             aspect_ratio = self.DEFAULT_ASPECT_RATIO
         return media_id, aspect_ratio
 
+    @no_call_on_empty
     def link_code(self, media_id_data):
         media_id, _ = self._get_media_data(media_id_data)
         return "<a href='http://vimeo.com/%s'>Vimeo</a>" % media_id.strip()
@@ -165,6 +185,7 @@ class Image(grok.GlobalUtility):
     EMBED_TEMPLATE = """<img src="%(id)s" alt="%(image_text)s" />"""
     DEFAULT_TEXT = "Gallery image."
 
+    @no_call_on_empty
     def link_code(self, media_id):
         return None
 

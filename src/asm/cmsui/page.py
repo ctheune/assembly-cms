@@ -2,6 +2,7 @@ import ZODB.blob
 import asm.cms
 import asm.cms.interfaces
 import asm.cms.page
+import asm.cms.patches
 import asm.cmsui.base
 import asm.cmsui.form
 import asm.cmsui.interfaces
@@ -261,7 +262,7 @@ class Rename(grok.View):
 
     def update(self, new_name, open_page_id):
         # Can not rename applications.
-        if asm.cms.get_application(self.context) == self.context:
+        if asm.cms.patches.get_application(self.context) == self.context:
             self.status = 'failed'
             return
 

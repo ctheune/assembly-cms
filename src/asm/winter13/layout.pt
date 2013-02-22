@@ -168,7 +168,6 @@
                 <p>
 		<a href="http://peliliiga.fi">
                   <img class="banner" alt="Peliliiga" src="http://www.assembly.org/winter08/compos/peliliiga-150px"/>
-                  <img class="banner" alt="ASUS rog" tal:attributes="src string:${view/application_url}/sponsors/rogtournament-150px"/>
                 </a>
                 </p>
 

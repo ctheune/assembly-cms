@@ -199,6 +199,8 @@ class IContentImported(zope.interface.Interface):
     """Content was imported into a CMS site."""
 
     site = zope.interface.Attribute("The site that content was imported to.")
+    imported_editions = zope.interface.Attribute(
+        "A list of imported page editions.")
     errors = zope.interface.Attribute(
         "A list with textual descriptions of errors.")
 

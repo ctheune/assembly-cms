@@ -182,6 +182,40 @@ class YearlyNavigation(grok.View):
 ASSET_TYPES = ['asset', asm.mediagallery.externalasset.TYPE_EXTERNAL_ASSET]
 
 
+def generate_year_map(year, homepage_parameters):
+    year_map = {}
+    iids = zope.component.getUtility(zope.intid.IIntIds)
+    for category in year.page.subpages:
+        year_map[category.__name__] = []
+        for media in category.subpages:
+            if media.type not in ASSET_TYPES:
+                continue
+            try:
+                edition = media.getEdition(homepage_parameters)
+            except KeyError:
+                continue
+            asset_edition_id = iids.getId(edition)
+            thumbnail_page = edition.page.get('thumbnail', None)
+            if thumbnail_page is None:
+                # Assume that this thumbnail has something to do with
+                # music.
+                thumbnail_page = year['music-thumbnail']
+
+            thumbnail_edition = thumbnail_page.getEdition(
+                homepage_parameters)
+            thumbnail_edition_id = iids.getId(thumbnail_edition)
+
+            if thumbnail_page.get('_datauri', None) is None:
+                thumbnail_page['_datauri'] = (IDataUri(thumbnail_edition))
+
+            info = IMediaGalleryAdditionalInfo(edition)
+            year_map[category.__name__].append(
+                (asset_edition_id, info, thumbnail_edition_id))
+        if not year_map[category.__name__]:
+            del year_map[category.__name__]
+    return year_map
+
+
 @grok.subscribe(asm.cms.interfaces.IContentImported)
 def generate_map(event):
     # Ensure we only operate on archive sites
@@ -191,41 +225,16 @@ def generate_map(event):
         lambda x: YEAR_MATCH.match(x.__name__),
         list(event.site.subpages))
     for homepage in event.site.editions:
-        map = {}
+        gallery_map = homepage.gallery_map
         for year in years:
-            year_name = year.page.__name__
-            map[year_name] = {}
-            iids = zope.component.getUtility(zope.intid.IIntIds)
-            for category in year.page.subpages:
-                map[year_name][category.__name__] = []
-                for media in category.subpages:
-                    if media.type not in ASSET_TYPES:
-                        continue
-                    try:
-                        edition = media.getEdition(homepage.parameters)
-                    except KeyError:
-                        continue
-                    asset_edition_id = iids.getId(edition)
-                    thumbnail_page = edition.page.get('thumbnail', None)
-                    if thumbnail_page is None:
-                        # Assume that this thumbnail has something to do with
-                        # music.
-                        thumbnail_page = year['music-thumbnail']
-
-                    thumbnail_edition = thumbnail_page.getEdition(
-                        homepage.parameters)
-                    thumbnail_edition_id = iids.getId(thumbnail_edition)
-
-                    if thumbnail_page.get('_datauri', None) is None:
-                        thumbnail_page['_datauri'] = (
-                            IDataUri(thumbnail_edition))
-
-                    info = IMediaGalleryAdditionalInfo(edition)
-                    map[year_name][category.__name__].append(
-                        (asset_edition_id, info, thumbnail_edition_id))
-                if not map[year_name][category.__name__]:
-                    del map[year_name][category.__name__]
-        homepage.gallery_map = map
+            for year_edition in year.editions:
+                if not year_edition in event.imported_editions:
+                    continue
+                year_name = year.page.__name__
+                gallery_map[year_name] = generate_year_map(
+                    year, homepage.parameters)
+        homepage.gallery_map = gallery_map
+        grok.notify(grok.ObjectModifiedEvent(homepage))
 
 
 class Homepage(asm.cmsui.retail.Pagelet, ViewUtils):

@@ -43,6 +43,7 @@ class Importer(object):
         except lxml.etree.XMLSyntaxError, e:
             return ["XML syntax error: %s." % e]
         self.base_path = export.get('base')
+        imported_editions = []
         for page_node in export:
             page_path = page_node.get('path')
             page = self.get_page(page_path, page_node.tag)
@@ -75,8 +76,9 @@ class Importer(object):
                 edition.tags = edition_node.get('tags')
                 edition.modified = extract_date(edition_node.get('modified'))
                 edition.created = extract_date(edition_node.get('created'))
+                imported_editions.append(edition)
                 zope.event.notify(grok.ObjectModifiedEvent(edition))
-        zope.event.notify(ContentImported(self.cms, errors))
+        zope.event.notify(ContentImported(self.cms, imported_editions, errors))
         return errors
 
     def import_htmlpage(self, edition, node):
@@ -111,8 +113,9 @@ class ContentImported(object):
 
     zope.interface.implements(asm.cms.interfaces.IContentImported)
 
-    def __init__(self, site, errors):
+    def __init__(self, site, imported_editions, errors):
         self.site = site
+        self.imported_editions = imported_editions
         self.errors = errors
 
 

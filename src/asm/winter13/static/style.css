@@ -808,12 +808,11 @@ img.teaser {
 
 
 #galleriafiCarousel {
-    height: 374px;
-    width: 560px;
-    background: red;
+    height: 375px;
+    width: 562px;
 }
 
 #galleriafiCarousel img {
-    max-height: 374px;
-    max-width: 560px;
+    max-height: 375px;
+    max-width: 562px;
 }

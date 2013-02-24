@@ -51,15 +51,22 @@ class Asset(asm.cms.edition.Edition):
         f.close()
         return size
 
+    def _detect_content_type(self):
+        significant_bytes = self.content.open('r').read(MAGIC_FILE_BYTES)
+        return magic.whatis(significant_bytes)
+
     @property
     def content_type(self):
         if self.content is None:
             return None
         if self._content_type is not None:
             return self._content_type
-        significant_bytes = self.content.open('r').read(MAGIC_FILE_BYTES)
-        self._content_type = magic.whatis(significant_bytes)
+        self._content_type = self._detect_content_type()
         return self._content_type
+
+    @content_type.setter
+    def content_type(self, value=None):
+        self._content_type = value
 
 
 # This might react too many times when object is published and various
@@ -67,7 +74,6 @@ class Asset(asm.cms.edition.Edition):
 # content type current.
 @grok.subscribe(Asset, grok.IObjectModifiedEvent)
 def redefine_content_type(obj, event):
-    obj._content_type = None
     obj._content_type = obj.content_type
 
 

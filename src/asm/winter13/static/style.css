@@ -805,3 +805,15 @@ img.teaser {
     float: right;
     margin: 2em;
 }
+
+
+#galleriafiCarousel {
+    height: 374px;
+    width: 560px;
+    background: red;
+}
+
+#galleriafiCarousel img {
+    max-height: 374px;
+    max-width: 560px;
+}

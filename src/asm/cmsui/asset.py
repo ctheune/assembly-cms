@@ -54,7 +54,7 @@ class Edit(asm.cmsui.form.EditionEditForm):
     grok.name('edit')
 
     main_fields = grok.AutoFields(asm.cms.asset.Asset).select(
-        'title', 'content')
+        'title', 'content', 'content_type')
 
 
 class Index(grok.View):

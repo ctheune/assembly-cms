@@ -93,7 +93,7 @@ class Blob(zope.schema.Field):
 class IAsset(zope.interface.Interface):
 
     content = Blob(title=u'File', required=False)
-    content_type = zope.schema.ASCIILine(title=u'Content Type', readonly=True)
+    content_type = zope.schema.ASCIILine(title=u'Content Type', required=False)
     size = zope.schema.Int(title=u'Size of this asset', readonly=True)
 
 

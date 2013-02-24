@@ -10,7 +10,6 @@ $(document).ready ->
         $.getJSON "#{document.baseURI}/wasm-13-galleriafi.json", (data) ->
                 images = _.shuffle _.keys data
                 index = 3
-                console.log images.length
                 for image in images[0...index]
                         addImage image
                 $("#galleriafiCarousel").carousel {interval: 3000}

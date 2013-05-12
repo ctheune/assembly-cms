@@ -123,9 +123,9 @@ class PublishMenuItem(grok.Viewlet):
 
     def has_public(self):
         try:
-            draft = self.context.parameters.replace(
+            public = self.context.parameters.replace(
                 'workflow:*', WORKFLOW_PUBLIC)
-            self.context.page.getEdition(draft)
+            self.context.page.getEdition(public)
         except KeyError:
             return False
         return True
@@ -232,6 +232,46 @@ class DeleteDraft(asm.cmsui.base.ActionView):
         del draft.__parent__[draft.__name__]
         self.flash(u'Deleted draft version.')
         self.redirect(self.url(public, '@@edit'))
+
+
+class HidePublic(asm.cmsui.base.ActionView):
+    """Hides the public version of the page.
+
+    Only hides the page if there does not already exist a draft version of it.
+    """
+
+    grok.context(asm.cms.IEdition)
+    grok.name('hide-public')
+
+    def update(self):
+        page = self.context.page
+
+        public_params = self.context.parameters.replace(
+            'workflow:*', WORKFLOW_PUBLIC)
+        try:
+            public = self.context.page.getEdition(public_params)
+        except KeyError:
+            self.flash("There is no public version available.")
+            return
+
+        draft = self.context.parameters.replace(
+            WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+        try:
+            page.getEdition(draft)
+            self.flash(
+                u"There is a draft version available. Can not hide public one.")
+            return
+        except KeyError:
+            # There should be no draft version.
+            pass
+
+        draft = public.parameters.replace(WORKFLOW_PUBLIC, WORKFLOW_DRAFT)
+        draft = page.getEdition(draft, create=True)
+        draft.copyFrom(public)
+        del public.__parent__[public.__name__]
+
+        self.flash(u'Public version is now draft.')
+        self.redirect(self.url(draft, '@@edit'))
 
 
 class CreateDraft(asm.cmsui.base.ActionView):

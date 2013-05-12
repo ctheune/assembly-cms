@@ -15,6 +15,8 @@
     <ul>
         <li tal:condition="viewlet/is_draft">
             <form tal:attributes="action python:view.url(context, 'publish')" method="post"><div><input id="publish" type="submit" value="Publish draft" class="button" title="Replaces the public version with this draft and deletes draft."/></div></form></li>
+        <li tal:condition="python:viewlet.is_public() and not viewlet.has_draft()"><form tal:attributes="action
+            python:view.url(context, '@@hide-public')" method="post"><div><input type="submit" value="Hide public version" class="button" title="Hides the public version from the view."/></div></form></li>
         <li tal:condition="python:viewlet.is_public() and viewlet.has_draft()"
             class="expand"><form tal:attributes="action
             python:view.url(context, '@@delete-public')" method="post"><div><input type="submit" value="Delete public version" class="button" title="Deletes the public version."/></div></form></li>

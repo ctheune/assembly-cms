@@ -51,15 +51,15 @@ function initTwitter() {
 
     // Load latest tweets ticker.
     $.getScript("//widgets.twimg.com/j/2/widget.js", function tweetScriptLoaded() {
-      if ($('#twitter-latest-tweets').length > 0) 
+      if ($('#twitter-latest-tweets').length > 0)
         new TWTR.Widget({
             id: "twitter-latest-tweets",
             version: 2,
             type: 'search',
-            search: '@assemblyparty OR #asms12',
+            search: '@assemblyparty OR #asmparty',
             interval: 4000,
-            title: "Assembly related tweets for <a href='http://twitter.com/#!/search/%23asms12+OR"
-                 + "+@assemblyparty'>#asms12 and @assemblyparty</a>",
+            title: "Assembly related tweets for <a href='http://twitter.com/#!/search/%23party+OR"
+                 + "+@assemblyparty'>#asmparty and @assemblyparty</a>",
             width: 560,
             height: 115,
             theme: {
@@ -81,7 +81,7 @@ function initTwitter() {
             }
         }).render().start();
 
-      if ($('#twitter-latest-tweets-asmtv').length > 0) 
+      if ($('#twitter-latest-tweets-asmtv').length > 0)
         new TWTR.Widget({
             id: "twitter-latest-tweets-asmtv",
             version: 2,

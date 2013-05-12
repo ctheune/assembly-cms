@@ -94,8 +94,8 @@ class LayoutHelper(asm.cmsui.public.layout.LayoutHelper):
             return []
 
     def generateCountdown(self):
-        times = (('02.08.2012 12:00', True, _("until ASSEMBLY!")),
-                 ('05.08.2012 18:00', True, _("of ASSEMBLY left to enjoy!")),
+        times = (('01.08.2013 12:00', True, _("until ASSEMBLY!")),
+                 ('04.08.2013 18:00', True, _("of ASSEMBLY left to enjoy!")),
                   (None, False, _("ASSEMBLY is over.")),)
         format = '%d.%m.%Y %H:%M'
 

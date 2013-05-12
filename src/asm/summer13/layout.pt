@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN" "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" i18n:domain="asm.summer13" prefix="og: http://ogp.me/ns#">
   <head>
-    <title><span tal:replace="context/title"/> &ndash; Assembly Summer 2013 &ndash; Hartwall Areena, Helsinki </title>
+    <title><span tal:replace="context/title"/><tal:block tal:condition="python: view.url() != view.url(view.application, 'index')"> &ndash; Assembly Summer 2013</tal:block> &ndash; Hartwall Areena, Helsinki</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 

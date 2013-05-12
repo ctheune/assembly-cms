@@ -58,7 +58,7 @@ function initTwitter() {
             type: 'search',
             search: '@assemblyparty OR #asmparty',
             interval: 4000,
-            title: "Assembly related tweets for <a href='http://twitter.com/#!/search/%23party+OR"
+            title: "Assembly related tweets for <a href='http://twitter.com/#!/search/%23asmparty+OR"
                  + "+@assemblyparty'>#asmparty and @assemblyparty</a>",
             width: 560,
             height: 115,

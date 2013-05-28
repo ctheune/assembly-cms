@@ -183,7 +183,7 @@ class Navtree(grok.View):
     def tree(self):
         root = self.application
 
-        tree = self._create_subtree(root, 3)
+        tree = self._create_subtree(root, 4)
         return tree['subpages']
 
     @property

@@ -29,16 +29,21 @@ class Schedule(asm.cms.Edition):
     factory_title = u'Schedule'
 
     message = None
+    locations = None
 
     def __init__(self):
         super(Schedule, self).__init__()
         self.events = BTrees.IOBTree.IOBTree()
+        self.locations = BTrees.OOBTree.OOBTree()
 
     def copyFrom(self, other):
         super(Schedule, self).copyFrom(other)
         self.events.clear()
         for key, value in other.events.items():
             self.events[key] = value
+        self.locations.clear()
+        for key, value in other.locations.items():
+            self.locations[key] = value
         self.message = other.message
         self.public_csv = other.public_csv
         self.public_json = other.public_json
@@ -75,6 +80,14 @@ class Event(persistent.Persistent):
 
     # Indicates if event is being broadcast on AssemblyTV.
     assemblytv_broadcast = False
+
+    location_id = None
+    location = ""
+    location_url = ""
+
+
+class Location(persistent.Persistent):
+    """A single location."""
 
 
 class ScheduleUpload(grok.Adapter):
@@ -120,7 +133,7 @@ def get_row_errors(fields, field_data):
 
     for field in ('start_date', 'finish_date'):
         try:
-            extract_date(field_data[field])
+            extract_date_oldcsv(field_data[field])
         except ValueError, e:
             errors.append(
                 u"Date string on field '%s' is invalid (%s)." % (field, e))
@@ -129,6 +142,45 @@ def get_row_errors(fields, field_data):
                 u"18:00' would be 'Sat 12.02.11 18:00'.")
 
     for field in ('title_fi', 'title_en', 'location_fi', 'location_en'):
+        try:
+            field_data[field].decode('UTF-8')
+        except UnicodeDecodeError, e:
+            errors.append(
+                u"Could not decode field '%s' as UTF-8. Make sure that you "
+                u"are sending an UTF-8 encoded file." % field)
+
+    return errors
+
+
+def get_row_errors_new(fields, field_data):
+    errors = []
+    for field in fields:
+        if field_data.get(field, None) is None:
+            errors.append(u"Field '%s' is missing." % field)
+
+    if len(errors) > 0:
+        return errors
+
+    if None in field_data:
+        errors.append(
+            "There are extra %d field values with event %s (%s)." %
+            (len(field_data[None]), field_data['id'].decode("utf-8"),
+             field_data['title_en'].decode("utf-8")))
+        errors.append(
+            u"Make sure that you don't have accidentally pasted text "
+            u"with tab characters to descriptions or titles!")
+
+    for field in ('start_date', 'finish_date'):
+        try:
+            extract_date_newcsv(field_data[field])
+        except ValueError, e:
+            errors.append(
+                u"Date string on field '%s' is invalid (%s)." % (field, e))
+            errors.append(
+                u"For example date and time 'Saturday 11th of February 2011 "
+                u"18:00' would be '12.02.11 18:00'.")
+
+    for field in ('title_fi', 'title_en'):
         try:
             field_data[field].decode('UTF-8')
         except UnicodeDecodeError, e:
@@ -148,51 +200,159 @@ class ScheduleImportError(RuntimeError):
         self.messages = messages
 
 
-def parse_csv(data):
-    sniff_data = data[:50]
+class CsvWriter(object):
+    result_fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
+                     'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
+                     'sumtask', 'class_', 'url', 'title_en', 'title_fi',
+                     'location_en', 'location_fi', 'location_url',
+                     'outline_level', 'description_en', 'description_fi',
+                     'canceled')
+
+    def __init__(self):
+        self.data_stream = StringIO.StringIO()
+        self.writer = csv.DictWriter(
+            self.data_stream,
+            fieldnames=self.result_fields,
+            quotechar="\\",
+            delimiter='\t')
+        self.writer.writerow(dict(zip(self.result_fields, self.result_fields)))
+
+    def getCsv(self):
+        return self.data_stream.getvalue()
+
+    def __call__(self, event_id, event_en, event_fi):
+        row = {
+            'id': event_id,
+            'outline_number': 0,
+            'name': "NA",
+            'duration': "NA",
+            'start_date': format_date(event_en.start),
+            'finish_date': format_date(event_en.end),
+            'asmtv': event_en.assemblytv_broadcast and "yes" or "no",
+            'bigscreen': "no",
+            'major': event_en.major and "yes" or "no",
+            'public': "yes",
+            'sumtask': "no",
+            'class_': event_en.class_,
+            'url': event_en.url,
+            'title_en': event_en.title.encode("utf-8"),
+            'title_fi': event_fi.title.encode("utf-8"),
+            'location_en': event_en.location.encode("utf-8"),
+            'location_fi': event_fi.location.encode("utf-8"),
+            'location_url': event_en.location_url,
+            'outline_level': "NA",
+            'description_en': event_en.description.encode("utf-8"),
+            'description_fi': event_fi.description.encode("utf-8"),
+            'canceled': event_en.canceled and "yes" or "no"
+            }
+        self.writer.writerow(row)
+
+
+def get_csv_reader(string_data, data_identifier, expected_fields):
+    sniff_data = string_data[:50]
     if ";" not in sniff_data and "\t" not in sniff_data:
         raise InvalidParserError()
+    lines = string_data.split("\n")
+    if data_identifier not in lines[0].lower():
+        raise InvalidParserError()
     try:
-        dialect = csv.Sniffer().sniff(data)
+        dialect = csv.Sniffer().sniff(string_data)
     except csv.Error, e:
         messages = [
             (u"%s." % e.message, "warning"),
             (u"Make sure that all lines contain the same number of field "
              u"delimiter characters.",),
-            (u"First row of data: %s" % data.split("\n")[0],),
+            (u"First row of data: %s" % string_data.split("\n")[0],),
             ]
         raise ScheduleImportError(messages)
 
-    data = StringIO.StringIO(data)
+    data = StringIO.StringIO(string_data)
+
+    reader = csv.DictReader(data, fieldnames=expected_fields, dialect=dialect)
+    reader = iter(reader)
+    return reader
+
+
+def parse_newcsv(context, string_data):
+    fields = ("id", "name", "duration", "start_date", "finish_date",
+              "asmtv", "bigscreen", "major", "public", "onsite", "sumtask",
+              "category", "subcategory", "url", "title_en", "title_fi",
+              "location_id", "canceled")
+
+    reader = get_csv_reader(string_data, "subcategory", fields)
+
+    if "\n" not in string_data:
+        messages = [
+            (u"Schedule data is in invalid format: no newline characters in the file.", "warning")
+            ]
+        raise ScheduleImportError(messages)
+
+    # Ignore the first row
+    try:
+        reader.next()
+    except csv.Error as e:
+        messages = [
+            (u"Schedule data is in invalid format", "warning"),
+            (e.message, "warning")
+            ]
+        raise ScheduleImportError(messages)
+
+    finnish = {}
+    english = {}
+
+    for row in reader:
+        if row['public'] != 'Yes':
+            continue
+        errors = get_row_errors_new(fields, row)
+        if len(errors) > 0:
+            messages = [
+                (u"Schedule data has an invalid row", "warning")
+                ]
+            for error in errors:
+                messages.append((error, "warning"))
+                messages.append((row, "warning"))
+            raise ScheduleImportError(messages)
+        item_id = None
+        try:
+            item_id = int(row['id'])
+        except ValueError:
+            messages = [
+                (u"Row ID '%s' was not numeric." % row['id'], "warning"),
+                (str(row),)
+                ]
+            raise ScheduleImportError(messages)
+        for events, lang in [(finnish, 'fi'), (english, 'en')]:
+            event = Event()
+            event.start = extract_date_newcsv(row['start_date'])
+            event.end = extract_date_newcsv(row['finish_date'])
+            event.major = (row['major'].lower() == 'yes')
+            event.class_ = "%s_%s" % (
+                row['category'].decode('UTF-8'),
+                row['subcategory'].decode('UTF-8'))
+            event.url = row['url']
+            event.title = row['title_%s' % lang].decode('UTF-8')
+            event.location_id = row['location_id']
+            event.canceled = (row['canceled'].lower() == 'yes')
+            event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
+            events[item_id] = event
+
+    return {
+        'type': 'events',
+        "finnish": finnish,
+        "english": english
+        }
+
+
+def parse_csv(context, string_data):
     fields = ('id', 'outline_number', 'name', 'duration', 'start_date',
               'finish_date', 'asmtv', 'bigscreen', 'major', 'public',
               'sumtask', 'class_', 'url', 'title_en', 'title_fi',
               'location_en', 'location_fi', 'location_url',
               'outline_level', 'description_en', 'description_fi', 'canceled')
-    reader = csv.DictReader(data, fieldnames=fields, dialect=dialect)
-    reader = iter(reader)
-
-    # Grab all the public events so that the raw data can be shown.
-    public_data = StringIO.StringIO()
-    writer = csv.DictWriter(
-        public_data,
-        fieldnames=fields,
-        dialect=dialect,
-        quotechar="\\")
+    reader = get_csv_reader(string_data, "outline_number", fields)
 
     # Ignore the first row
-    header = reader.next()
-    try:
-        writer.writerow(header)
-    except (ValueError, TypeError), e:
-        # This error comes only when there are too many fields in data.
-        field_count = reduce(
-            lambda x, y: type(y) == list and x + len(y) or x + 1,
-            header.values(),
-            0)
-        messages = [(u"Data contains %d fields when expecting %d." %
-                    (field_count, len(fields)), "warning")]
-        raise ScheduleImportError(messages)
+    reader.next()
 
     finnish = {}
     english = {}
@@ -209,32 +369,10 @@ def parse_csv(data):
                 messages.append((error, "warning"))
                 messages.append((row, "warning"))
             raise ScheduleImportError(messages)
-        try:
-            writer.writerow(row)
-        except (ValueError, TypeError), e:
-            messages = [
-                (u"Unexpected error happened (ValueError): %s" %
-                    e.message, "warning"),
-                (str(row),)]
-            raise ScheduleImportError(messages)
-        except csv.Error, e:
-            messages = [
-                (u"Unexpected error happened (csv.Error): %s" %
-                    e.message, "warning"),
-                (str(row),)
-                ]
-            raise ScheduleImportError(messages)
-        except TypeError, e:
-            messages = [
-                (u"Unexpected error happened (TypeError): %s" %
-                    e.message, "warning"),
-                (str(row),)
-                ]
-            raise ScheduleImportError(messages)
         item_id = None
         try:
             item_id = int(row['id'])
-        except ValueError, e:
+        except ValueError:
             messages = [
                 (u"Row ID '%s' was not numeric." % row['id'], "warning"),
                 (str(row),)
@@ -242,8 +380,8 @@ def parse_csv(data):
             raise ScheduleImportError(messages)
         for events, lang in [(finnish, 'fi'), (english, 'en')]:
             event = Event()
-            event.start = extract_date(row['start_date'])
-            event.end = extract_date(row['finish_date'])
+            event.start = extract_date_oldcsv(row['start_date'])
+            event.end = extract_date_oldcsv(row['finish_date'])
             event.major = (row['major'] == 'Yes')
             event.class_ = row['class_'].decode('UTF-8')
             event.url = row['url']
@@ -255,16 +393,14 @@ def parse_csv(data):
             event.assemblytv_broadcast = (row['asmtv'].lower() == 'yes')
             events[item_id] = event
 
-    public_csv = public_data.getvalue()
-
     return {
+        'type': 'events',
         "finnish": finnish,
-        "english": english,
-        "public_csv": public_csv
+        "english": english
         }
 
 
-def parse_json(data):
+def parse_json(context, data):
     data_dict = None
     try:
         data_dict = json.loads(data)
@@ -315,9 +451,42 @@ def parse_json(data):
             events[language][event['id']] = event_out
 
     result = {
+        'type': 'events',
         'finnish': events['fi'],
         'english': events['en'],
         'public_json': data
+        }
+
+    return result
+
+
+def parse_locations(context, data):
+    fields = ('location_id',
+              'location_en',
+              'location_fi',
+              'location_url',
+              'description_en',
+              'description_fi')
+    reader = get_csv_reader(data, "location_id;location_en", fields)
+
+    # Ignore the first row
+    reader.next()
+
+    finnish = {}
+    english = {}
+
+    for row in reader:
+        for locations, lang in [(finnish, 'fi'), (english, 'en')]:
+            location = Location()
+            location.name = row['location_%s' % lang].decode("utf-8")
+            location.url = row['location_url']
+            location.description = row['description_%s' % lang].decode("utf-8")
+            locations[row['location_id']] = location
+
+    result = {
+        'type': 'locations',
+        'finnish': finnish,
+        'english': english
         }
 
     return result
@@ -332,11 +501,11 @@ def update_schedule(view, data):
         view.flash(u"Empty data file was given!.", "warning")
         return
 
-    parsers = [parse_json, parse_csv]
+    parsers = [parse_json, parse_csv, parse_locations, parse_newcsv]
     result = None
     for parser in parsers:
         try:
-            result = parser(data)
+            result = parser(view.context, data)
         except InvalidParserError, e:
             continue
         except ScheduleImportError, e:
@@ -352,26 +521,75 @@ def update_schedule(view, data):
 
     finnish = view.context.parameters.replace('lang:*', 'lang:fi')
     finnish = page.getEdition(finnish, create=True)
-    finnish.events.clear()
+    # XXX generations for this kind of data.
+    if not finnish.locations:
+        finnish.locations = BTrees.OOBTree.OOBTree()
 
     english = view.context.parameters.replace('lang:*', 'lang:en')
     english = page.getEdition(english, create=True)
-    english.events.clear()
+    # XXX generations for this kind of data.
+    if not english.locations:
+        english.locations = BTrees.OOBTree.OOBTree()
 
-    rows = 0
-    for language, event_store in [('finnish', finnish), ('english', english)]:
-        rows = len(result[language])
-        if 'public_csv' in result:
-            event_store.public_csv = result['public_csv']
-        if 'public_json' in result:
-            event_store.public_json = result['public_json']
-        for event_id, event in result[language].items():
-            event_store.events[event_id] = event
+    if result['type'] == "events":
+        rows = update_schedule_events(finnish, result['finnish'], result)
+        rows = update_schedule_events(english, result['english'], result)
+        view.flash(u'Your schedule was imported successfully with %d events.' %
+                   rows)
 
-    zope.event.notify(grok.ObjectModifiedEvent(english))
+    if result['type'] == "locations":
+        rows = update_schedule_locations(finnish, result['finnish'])
+        rows = update_schedule_locations(english, result['english'])
+        view.flash(
+            u'Your schedule was imported successfully with %d locations.' %
+            rows)
+
+    public_writer = CsvWriter()
+    for event_id in finnish.events.keys():
+        event_en = english.events[event_id]
+        event_fi = finnish.events[event_id]
+        public_writer(event_id, event_en, event_fi)
+
+    public_csv = public_writer.getCsv()
+
+    finnish.public_csv = public_csv
+    english.public_csv = public_csv
+
     zope.event.notify(grok.ObjectModifiedEvent(finnish))
-    view.flash(u'Your schedule was imported successfully with %d events.' %
-               rows)
+    zope.event.notify(grok.ObjectModifiedEvent(english))
+
+
+def update_schedule_events(schedule, events, result):
+    schedule.events.clear()
+
+    locations = schedule.locations
+
+    if 'public_json' in result:
+        schedule.public_json = result['public_json']
+    for event_id, event in events.items():
+        schedule.events[event_id] = event
+        location_id = event.location_id
+        if location_id in locations:
+            location = locations[location_id]
+            event.location = location.name
+            event.location_url = location.url
+
+    rows = len(events)
+    return rows
+
+
+def update_schedule_locations(schedule, locations):
+    schedule.locations.clear()
+    for location_id, location in locations.items():
+        schedule.locations[location_id] = location
+
+    for event_id, event in schedule.events.items():
+        if event.location_id in locations:
+            location = locations[event.location_id]
+            event.location = location.name
+            event.location_url = location.url
+
+    return len(locations)
 
 
 class Edit(asm.cmsui.form.EditForm):
@@ -451,13 +669,21 @@ def publish_schedule(event):
             pass
 
 
-def extract_date(date):
+def extract_date_newcsv(date):
+    return datetime.datetime.strptime(date, "%d.%m.%y %H:%M")
+
+
+def extract_date_oldcsv(date):
     return datetime.datetime.strptime(date, "%a %d.%m.%y %H:%M")
 
 
 def extract_date_json(date):
     return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")],
                                       "%Y-%m-%dT%H:%M:%S")
+
+
+def format_date(date_object):
+    return date_object.strftime("%a %d.%m.%y %H:%M")
 
 
 class NullEvent(object):

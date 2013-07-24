@@ -11,6 +11,7 @@ import datetime
 import grok
 import json
 import persistent
+import re
 import zope.interface
 from asm.workflow.workflow import WORKFLOW_DRAFT, WORKFLOW_PUBLIC
 from asm.schedule.i18n import _, i18n_strftime
@@ -279,6 +280,8 @@ def parse_newcsv(context, string_data):
               "category", "subcategory", "url", "title_en", "title_fi",
               "location_id", "canceled")
 
+    string_data = re.sub(r"[\r\n]+", "\n", string_data)
+
     reader = get_csv_reader(string_data, "subcategory", fields)
 
     if "\n" not in string_data:
@@ -461,6 +464,8 @@ def parse_json(context, data):
 
 
 def parse_locations(context, data):
+    data = re.sub(r"[\r\n]+", "\n", data)
+
     fields = ('location_id',
               'location_en',
               'location_fi',

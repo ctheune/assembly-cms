@@ -551,6 +551,15 @@ def parse_pms_json(context, data):
     return result
 
 
+def clean_description(description):
+    if not description:
+        return None
+    description = description.replace("\n\n", "</p><p>")
+    description = description.replace("\n", " ")
+    description = description.strip()
+    return description
+
+
 def parse_locations(context, data):
     data = re.sub(r"[\r\n]+", "\n", data)
 
@@ -573,7 +582,8 @@ def parse_locations(context, data):
             location = Location()
             location.name = row['location_%s' % lang].decode("utf-8")
             location.url = row['location_url']
-            location.description = row['description_%s' % lang].decode("utf-8")
+            location.description = clean_description(
+                row['description_%s' % lang].decode("utf-8"))
             locations[row['location_id']] = location
 
     result = {
@@ -844,7 +854,7 @@ class FilteredSchedule(object):
                 massaged['classes'] = self.event_class(event['event'])
                 massaged['key'] = event['key']
                 event = event['event']
-                massaged['description'] = event.description
+                massaged['description'] = clean_description(event.description)
                 massaged['title'] = event.title
                 massaged['url'] = event.url or None
                 massaged['location'] = event.location

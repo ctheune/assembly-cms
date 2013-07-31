@@ -410,11 +410,11 @@ def parse_json(context, data):
         data_dict = json.loads(data)
     except ValueError:
         raise InvalidParserError()
-    has_link = False
+    has_schedule = False
     for event in data_dict['events']:
-        if 'link' in event:
-            has_link = True
-    if not has_link:
+        if 'schedule_id' in event:
+            has_schedule = True
+    if not has_schedule:
         raise InvalidParserError()
 
     locations = {'fi': {}, 'en': {}}
@@ -475,13 +475,11 @@ def get_pms_data_dict(data):
     try:
         data_dict = json.loads(data)
     except ValueError:
-        print "nodict"
         raise InvalidParserError()
 
     try:
         events = data_dict['events']
     except KeyError:
-        print "noevents"
         raise InvalidParserError()
 
     has_location_key = False
@@ -490,7 +488,6 @@ def get_pms_data_dict(data):
             has_location_key = True
             break
     if not has_location_key:
-        print "nolocation"
         raise InvalidParserError()
     return data_dict
 

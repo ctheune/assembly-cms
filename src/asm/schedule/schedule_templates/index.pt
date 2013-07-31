@@ -62,9 +62,8 @@
         <p tal:condition="event/canceled" i18n:translate=""
           class="canceled" >Unfortunately, this event has been canceled. :(</p>
 
-        <div tal:condition="event/description"
-          tal:content="structure event/description"
-           class="description">
+        <div tal:condition="event/description" class="description">
+          <p tal:content="structure event/description">Here be an event description.</p>
         </div>
       </td>
     </tr>

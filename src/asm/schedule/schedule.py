@@ -243,8 +243,10 @@ class CsvWriter(object):
             'location_fi': event_fi.location.encode("utf-8"),
             'location_url': event_en.location_url,
             'outline_level': "NA",
-            'description_en': event_en.description.encode("utf-8"),
-            'description_fi': event_fi.description.encode("utf-8"),
+            'description_en': clean_description(
+                event_en.description.encode("utf-8")),
+            'description_fi': clean_description(
+                event_fi.description.encode("utf-8")),
             'canceled': event_en.canceled and "yes" or "no"
             }
         self.writer.writerow(row)

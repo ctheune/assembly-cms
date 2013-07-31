@@ -8,6 +8,7 @@ import asm.schedule.interfaces
 import asm.workflow.interfaces
 import csv
 import datetime
+import dateutil.parser
 import grok
 import json
 import persistent
@@ -409,6 +410,12 @@ def parse_json(context, data):
         data_dict = json.loads(data)
     except ValueError:
         raise InvalidParserError()
+    has_link = False
+    for event in data_dict['events']:
+        if 'link' in event:
+            has_link = True
+    if not has_link:
+        raise InvalidParserError()
 
     locations = {'fi': {}, 'en': {}}
     for location_id, location in data_dict['locations'].items():
@@ -463,6 +470,90 @@ def parse_json(context, data):
     return result
 
 
+def get_pms_data_dict(data):
+    data_dict = None
+    try:
+        data_dict = json.loads(data)
+    except ValueError:
+        print "nodict"
+        raise InvalidParserError()
+
+    try:
+        events = data_dict['events']
+    except KeyError:
+        print "noevents"
+        raise InvalidParserError()
+
+    has_location_key = False
+    for event in events:
+        if "location_key" in event:
+            has_location_key = True
+            break
+    if not has_location_key:
+        print "nolocation"
+        raise InvalidParserError()
+    return data_dict
+
+
+def parse_pms_json(context, data):
+    data_dict = get_pms_data_dict(data)
+
+    locations = {'finnish': {}, 'english': {}}
+    for location_id, location in data_dict['locations'].items():
+        location_en = {
+            'name': location.get('name', ""),
+            'description': location.get('description', ""),
+            'url': location.get('url', "")
+            }
+        location_fi = {
+            'name': location.get('name_fi') or location_en['name'],
+            'description': location.get('description_fi') or
+                location_en['description'],
+            'url': location.get('url') or location_en.get('url', "")
+            }
+        locations['english'][location_id] = location_en
+        locations['finnish'][location_id] = location_fi
+
+    events = {'finnish': {}, 'english': {}}
+    for language, postfix in [('english', ''), ('finnish', '_fi')]:
+        event_id = 0
+        for event in data_dict['events']:
+            event_out = Event()
+            event_out.start = extract_date_pms(event['start_time'])
+            event_out.end = extract_date_pms(
+                event.get('end_time', event['start_time']))
+            category, subcategory = (event['categories'] + ["", ""])[:2]
+            class_ = category
+            if subcategory:
+                class_ += "_%s" % subcategory
+            event_out.class_ = class_
+            event_out.url = event.get('url') or ""
+            event_out.title = event.get('name' + postfix, event.get("name"))
+            location_key = event.get("location_key")
+            location = locations[language].get(location_key)
+            if location is not None:
+                event_out.location = location['name']
+                event_out.location_url = location.get('url') or ""
+
+            description = event.get('description' + postfix,
+                                    event.get('description')) or ""
+            event_out.description = description
+            flags = [flag.lower() for flag in event.get("flags", [])]
+            event_out.major = "major" in flags
+            event_out.canceled = "canceled" in flags
+            event_out.assemblytv_broadcast = 'assemblytv' in flags
+            events[language][event_id] = event_out
+            event_id += 1
+
+    result = {
+        'type': 'both',
+        "events": events,
+        "locations": locations,
+        }
+
+    return result
+
+
 def parse_locations(context, data):
     data = re.sub(r"[\r\n]+", "\n", data)
 
@@ -506,7 +597,8 @@ def update_schedule(view, data):
         view.flash(u"Empty data file was given!.", "warning")
         return
 
-    parsers = [parse_json, parse_csv, parse_locations, parse_newcsv]
+    parsers = [
+        parse_json, parse_csv, parse_locations, parse_newcsv, parse_pms_json]
     result = None
     for parser in parsers:
         try:
@@ -535,6 +627,21 @@ def update_schedule(view, data):
     # XXX generations for this kind of data.
     if not english.locations:
         english.locations = BTrees.OOBTree.OOBTree()
+
+    if result["type"] == "both":
+        event_rows = update_schedule_events(
+            finnish, result['events']['finnish'], result)
+        event_rows = update_schedule_events(
+            english, result['events']['english'], result)
+        view.flash(u'Your schedule was imported successfully with %d events.' %
+                   event_rows)
+        location_rows = update_schedule_locations(
+            finnish, result['locations']['finnish'])
+        location_rows = update_schedule_locations(
+            english, result['locations']['english'])
+        view.flash(
+            u'Your schedule was imported successfully with %d locations.' %
+            location_rows)
 
     if result['type'] == "events":
         rows = update_schedule_events(finnish, result['finnish'], result)
@@ -685,6 +792,10 @@ def extract_date_oldcsv(date):
 def extract_date_json(date):
     return datetime.datetime.strptime(date[:len("yyyy-mm-ddThh:mm:ss")],
                                       "%Y-%m-%dT%H:%M:%S")
+
+
+def extract_date_pms(date):
+    return dateutil.parser.parse(date).replace(tzinfo=None)
 
 
 def format_date(date_object):

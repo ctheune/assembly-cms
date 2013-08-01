@@ -1,8 +1,8 @@
 <!-- Livestream button during the party. -->
-<!-- <a id="livestream" -->
-<!--    tal:attributes="href context/@@layouthelper/static/i-livestream.html" -->
-<!--    rel="#overlay" style="text-decoration:none"> </a> -->
-<!-- <div class="overlay" id="overlay"><div class="wrap"></div> </div> -->
+<a id="livestream"
+   tal:attributes="href context/@@layouthelper/static/i-livestream.html"
+   rel="#overlay" style="text-decoration:none"> </a>
+<div class="overlay" id="overlay"><div class="wrap"></div> </div>
 
 <div id="news-featured" tal:define="featured python:list(view.featured())">
 

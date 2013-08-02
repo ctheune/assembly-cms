@@ -602,9 +602,12 @@ div.wrap {
 }
 
 .coming-up h3 {
-    color: #ccc;
     display: inline-block;
     margin-bottom: 0;
+}
+
+.coming-up h3 a {
+    color: #ccc;
 }
 
 .coming-up ul {

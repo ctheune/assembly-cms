@@ -118,42 +118,52 @@ function initAssemblyTVSchedule() {
         return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
     }
 
-    var comingUp;
+    var comingUp, updateDelay;
     // Create container element.
     if (!$('.coming-up').length) {
         comingUp = $('<ul>');
+        var link = $('<a>').text('AssemblyTV')
+            .attr('href', 'activities/assemblytv/schedule').attr('target', '_blank');
         $('<div>').attr('class', 'coming-up').appendTo('.overlay > .wrap')
-            .append($('<h3>AssemblyTV</h3>: <span class="now"></span>'))
+            .append($('<h3>').append(link))
+            .append('<span class="now"></span>')
             .append(comingUp);
     } else {
         comingUp = $('.coming-up ul').empty();
     }
 
     $.getJSON('activities/assemblytv/schedule/json', function (data, status) {
-        if (data && data.events && data.events.length) {
-            // Filter past events and grab 3 next events.
-            var updateDelay, events = data.events.filter(function eventFilter(item, i) {
-                return (new Date(item.time)).getTime() > Date.now() ||
-                    (new Date(item.end_time)).getTime() > Date.now();
-            }).splice(0, 3);
-            console.log(events);
-            events.forEach(function eventIterator(event, i) {
-                var d = new Date(event.time),
-                    diff = d.getTime() - Date.now(); //, minutes, hours, days;
-                // Update the list 5 seconds after the first event in the list starts.
-                if (i === 1) { updateDelay = diff + 5000; }
-
-                var time = pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2);
-                // Append to HTML.
-                if (!i) {
-                    $('.coming-up .now').text(event.name);
-                } else {
-                    $('<li>').text((!i ? 'now' : time) + ' – ' + event.name)
-                        .appendTo(comingUp);
-                }
-            });
-            $('<li></li>').html('&hellip;').appendTo(comingUp);
-            setTimeout(initAssemblyTVSchedule, updateDelay);
+        if (!data || !data.events || !data.events.length) {
+            console.log('Failed to retrieve schedule!', status, data);
+            $('.coming-up').remove();
+            return;
         }
+
+        // Filter past events and grab current + 2 next events.
+        var events = data.events.filter(function eventFilter(item, i) {
+            return (new Date(item.time)).getTime() > Date.now() ||
+                (new Date(item.end_time)).getTime() > Date.now();
+        }).splice(0, 3);
+
+        // The first event has not started yet, so we only show two next shows.
+        if (new Date(events[0].time).getTime() > Date.now()) {
+            events = events.splice(0, 2);
+            updateDelay = new Date(events[0].time).getTime() - Date.now() + 5000;
+        } else {
+            updateDelay = new Date(events[1].time).getTime() - Date.now() + 5000;
+        }
+
+        events.forEach(function eventIterator(event, i) {
+            var d = new Date(event.time),
+                time = pad(d.getHours(), 2) + ':' + pad(d.getMinutes(), 2);
+            // Append to HTML.
+            if (!i && d.getTime() < Date.now()) {
+                $('.coming-up .now').text(': ' + event.name);
+            } else {
+                $('<li>').text(time + ' – ' + event.name).appendTo(comingUp);
+            }
+        });
+
+        setTimeout(initAssemblyTVSchedule, updateDelay);
     });
 }

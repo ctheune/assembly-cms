@@ -458,10 +458,10 @@ span.disclose {
     font-weight: normal;
 }
 span.disclose.more {
-	background-image:url(/@@/asm.schedule/bullet_arrow_down.png);
+    background-image:url(/@@/asm.schedule/bullet_arrow_down.png);
 }
 span.disclose.less {
-	background-image:url(/@@/asm.schedule/bullet_arrow_up.png);
+    background-image:url(/@@/asm.schedule/bullet_arrow_up.png);
 }
 
 .schedule span.disclose.hidden {
@@ -551,54 +551,54 @@ div.scheduleclasses a.selected {
 /* the overlayed element */
 div.overlay {
 
-	/* growing background image */
-	background:url("images/1x1.png") no-repeat;
-	/* dimensions after the growing animation finishes  */
-	width:600px;
+    /* growing background image */
+    background:url("images/1x1.png") no-repeat;
+    /* dimensions after the growing animation finishes  */
+    width:600px;
 
-	/* initially overlay is hidden */
-	display:none;
+    /* initially overlay is hidden */
+    display:none;
 
-	/* some padding to layout nested elements nicely  */
-	padding:55px;
+    /* some padding to layout nested elements nicely  */
+    padding:55px;
 }
 
 /* default close button positioned on upper right corner */
 div.overlay div.close {
-	/*background-image:url(http://static.flowplayer.org/tools/img/overlay/close.png);*/
+    /*background-image:url(http://static.flowplayer.org/tools/img/overlay/close.png);*/
     position:absolute;
-	right:5px;
-	top:5px;
-	cursor:pointer;
-	height:35px;
-	width:35px;
+    right:5px;
+    top:5px;
+    cursor:pointer;
+    height:35px;
+    width:35px;
 }
 
 
 /* black */
 div.overlay.black {
-	color:#fff;
+    color:#fff;
 }
 
 /* petrol */
 div.overlay.petrol {
-	color:#fff;
+    color:#fff;
 }
 
 div.black h2, div.petrol h2 {
-	color:#ddd;
+    color:#ddd;
 }
 
 #overlay {
-	background-color:black;
-	color:#efefef;
-	width:650px;
+    background-color:black;
+    color:#efefef;
+    width:650px;
     padding:30px;
     border-radius:5px;
 }
 
 div.wrap {
-	width:650px;
+    width:650px;
 }
 
 .coming-up h3 {
@@ -616,10 +616,10 @@ div.wrap {
 }
 
 .overlaybutton {
-	width:65px;
-	height:50px;
-	float:right;
-	margin:10px 4px 0 6px;
+    width:65px;
+    height:50px;
+    float:right;
+    margin:10px 4px 0 6px;
 }
 
 /* get rid of those system borders being generated for A tags */
